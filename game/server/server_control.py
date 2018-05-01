@@ -18,6 +18,8 @@ class ServerControl:
         self.wait_on_client = wait_on_client
 
         self._clients_connected = 0
+        self.connection_wait_timer = 10
+
         self._client_ids = []
         self._quit = False
 
@@ -47,8 +49,13 @@ class ServerControl:
         if self.verbose:
             print("Waiting for clients...")
 
-        if self._clients_connected < 1:
+        if self._clients_connected == 0:
             self.schedule(self.wait_for_clients, 2)
+        elif self._clients_connected > 0 and self.connection_wait_timer > 0:
+            # this will slowly count down every  second and then start the game
+            self.connection_wait_timer -= 1
+            print(f"Starting in {self.connection_wait_timer}")
+            self.schedule(self.wait_for_clients, 1)
         else:
             self.schedule(self.initialize, delay=0.1)
 

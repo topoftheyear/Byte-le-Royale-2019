@@ -31,36 +31,6 @@ class CustomServer(ServerControl):
             # first turn, ask for client config, e.g. team name
             return # purposefully short circuit to get to send data
 
-
-
-    def post_turn(self):
-        self.print("SERVER POST TURN")
-
-        self.deserialize_turn_data()
-
-        # handle response if we got one
-        if self.turn_data is not None:
-            data = self.turn_data
-
-            if "message_type" not in data:
-                return # bad turn
-
-            if not self.started:
-                if data["message_type"] == g.demo:
-                    # handle network message
-                    # this code block is reserved for registering team info
-                    # the game will not start until the client send a message
-                    # that gets to this code block
-                    self.started = True
-
-            else:
-                # handle game turns
-                pass
-
-            self.client_turn_data = None
-
-
-
     def send_turn_data(self):
         # send turn data to clients
         self.print("SERVER SEND DATA")
@@ -85,6 +55,50 @@ class CustomServer(ServerControl):
             "payload": payload
         })
 
+
+
+    def post_turn(self):
+        self.print("SERVER POST TURN")
+
+        self.deserialize_turn_data()
+
+        # handle response if we got one
+        for data in self.turn_data:
+            if "message_type" not in data:
+                return # bad turn
+
+            if not self.started:
+                if data["message_type"] == g.demo:
+                    # handle network message
+                    # this code block is reserved for registering team info
+                    # the game will not start until the client send a message
+                    # that gets to this code block
+                    self.started = True
+
+            else:
+
+                # queue action a player wants to take
+                #   deal damage if a player would be damaged
+
+                # check if player still alive
+
+                # queue movement action player wants to take
+
+                pass
+
+        # check if player still alive
+
+        # apply the results of any actions a player took if player still alive
+
+        # apply movement action player wanted to take
+
+        # update station market
+
+        self.turn_data = []
+
+
+
+
     def log(self):
         # saves the turn log to this turn's log file.
         # This is what the visualizer reads
@@ -97,9 +111,9 @@ class CustomServer(ServerControl):
         # Deserialize a message from a client
 
         # if we have recieved a message, then turn data will not be none
-        if self.turn_data is not None:
-            if self.turn_data["message_type"] != MessageType.demo:
-                # Deserialize message data
+        for idx, data in enumerate(self.turn_data):
+            if data["message_type"] != MessageType.demo:
+                # Deserialize message data, i.e. load ship data
                 pass
 
     def check_end(self):
