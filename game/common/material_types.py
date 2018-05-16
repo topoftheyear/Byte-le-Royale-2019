@@ -20,31 +20,31 @@ def load_ore(material_type, data):
     return new_ore
 
 class Ironium(Ore):
-    def init(self):
+    def init(self, value=100):
         Ore.init(self,
-                100,                        #value
+                value,                      #value
                 MaterialType.ironium)       #material_type
                 
 class Food(Ore):
-    def init(self):
+    def init(self, value=100):
         Ore.init(self,
-                100,                        #value
+                value,                      #value
                 MaterialType.food)          #material_type
                 
 class Electrum(Ore):
-    def init(self):
+    def init(self, value=100):
         Ore.init(self,
-                100,                        #value
+                value,                      #value
                 MaterialType.electrum)      #material_type
                
 class Circuitry(Ore):
-    def init(self):
+    def init(self, value=100):
         Ore.init(self,
-                100,                        #value
+                value,                      #value
                 MaterialType.circuitry)     #material_type
                 
 class Weaponry(Ore):
-    def init(self):
+    def init(self, value=100):
         Ore.init(self,
-                100,                        #value
+                value,                      #value
                 MaterialType.weaponry)      #material_type
