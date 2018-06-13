@@ -1,50 +1,50 @@
 from game.common.material import *
 from game.common.enums import *
 
-def load_ore(material_type, data):
+def load_material(material_type, data):
     if material_type == MaterialType.ironium:
-        new_ore = Ironium()
+        new_material = Ironium()
     elif material_type == MaterialType.food:
-        new_ore = Food()
+        new_material = Food()
     elif material_type == MaterialType.electrum:
-        new_ore = Electrum()
+        new_material = Electrum()
     elif material_type == MaterialType.circuitry:
-        new_ore = Circuitry()
+        new_material = Circuitry()
     elif material_type == MaterialType.weaponry:
-        new_ore = Weaponry()
+        new_material = Weaponry()
         
     else:
-        raise Exception("Invalid ore type: "{0}.format(material_type))
+        raise Exception("Invalid material type: "{0}.format(material_type))
     
-    new_ore.from_dict(data)
-    return new_ore
+    new_material.from_dict(data)
+    return new_material
 
-class Ironium(Ore):
+class Ironium(Material):
     def init(self, value=100):
-        Ore.init(self,
+        Material.init(self,
                 value,                      #value
                 MaterialType.ironium)       #material_type
                 
-class Food(Ore):
+class Food(Material):
     def init(self, value=100):
-        Ore.init(self,
+        Material.init(self,
                 value,                      #value
                 MaterialType.food)          #material_type
                 
-class Electrum(Ore):
+class Electrum(Material):
     def init(self, value=100):
-        Ore.init(self,
+        Material.init(self,
                 value,                      #value
                 MaterialType.electrum)      #material_type
                
-class Circuitry(Ore):
+class Circuitry(Material):
     def init(self, value=100):
-        Ore.init(self,
+        Material.init(self,
                 value,                      #value
                 MaterialType.circuitry)     #material_type
                 
-class Weaponry(Ore):
+class Weaponry(Material):
     def init(self, value=100):
-        Ore.init(self,
+        Material.init(self,
                 value,                      #value
                 MaterialType.weaponry)      #material_type
