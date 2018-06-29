@@ -8,36 +8,6 @@ from game.common.trap_types import get_trap
 
 import sys
 
-class ClientStorefront:
-    def __init__(self, turn_data):
-        self.items = turn_data["items"]
-        self.purchases = []
-        self.town_number = turn_data["town_number"]
-
-    def get_town_number(self):
-        return self.town_number
-
-
-    def purchase(self, unit, item, item_level, item_slot=None):
-        if item_slot:
-            self.purchases.append( {
-                "unit": unit.id,
-                "slot": item_slot,
-                "item": item,
-                "item_level": item_level
-            } )
-        else:
-            self.purchases.append( {
-                "unit": unit.id,
-                "item": item,
-                "item_level": item_level
-            } )
-
-    def get_return_data(self):
-        return {
-            "message_type": MessageType.town,
-            "purchases": self.purchases
-        }
 
 class ClientLogic:
 

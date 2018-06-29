@@ -40,3 +40,5 @@ class SecurityLevel:
     player_owned = 1 # visible if a player owns the object
     other_player = 2 # visible if a player does not own the object
 
+class ObjectType:
+    ship = 0

@@ -1,17 +1,19 @@
 from uuid import uuid4
 
 from game.common.game_serializable import Serializable
+from game.common.game_object import GameObject
 from game.common.enums import *
-from game.common.stats import GameStates
+from game.common.stats import GameStats
 
 
-class Ship(Serializable):
+class Ship(GameObject):
 
     def __init__(self):
         self.initialized = False
 
 
-    def init(self, player_name, ):
+    def init(self, player_name):
+        super(self).init(ObjectType.ship)
 
         # used by engine to track ships
         self.id = str(uuid4())
@@ -51,7 +53,7 @@ class Ship(Serializable):
 
 
     def to_dict(self, security_level=SecurityLevel.other_player):
-        data = {}
+        data = super(self).to_dict()
 
         if security_level is SecurityLevel.engine:
             # fields that only the engine (server, visualizer, logs) should
@@ -103,6 +105,7 @@ class Ship(Serializable):
 
 
     def from_dict(self, data, security_level=SecurityLevel.other_player):
+        super().from_dict(data)
 
         if security_level is SecurityLevel.engine:
             # properties that will only be populated by the engine,
