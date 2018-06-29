@@ -33,7 +33,7 @@ class ServerControl:
 
         self.game_tick_no = 0
         self.max_game_tick = 1e4
-        self.turn_data = None
+        self.turn_data = []
 
     def initialize(self):
         if self.verbose:
@@ -62,16 +62,17 @@ class ServerControl:
     def notify_client_connect(self, client_id):
         self._clients_connected += 1
         self._client_ids.append(client_id)
-        self.turn_data = None
+        self.turn_data = []
 
-    def notify_client_turn(self, turn_data):
-        self.turn_data = turn_data
+    def notify_client_turn(self, data, client_id):
+        data["client_id"] = client_id
+        self.turn_data.append(data)
 
     def pre_tick(self):
         if self.verbose: print("SERVER TICK: {}".format(self.game_tick_no))
         self.game_tick_no += 1
 
-        self.turn_data = None
+        self.turn_data = []
 
         self.pre_turn()
 
@@ -83,6 +84,7 @@ class ServerControl:
     def post_tick(self):
 
         # wait for turn data before handling post tick
+        # TODO refactor to check to see if we have the same number of responses as clients, and wait only so long before continuing
         if self.turn_data is None and self.wait_on_client:
             self.schedule(self.post_tick)
             return

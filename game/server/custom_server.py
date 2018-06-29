@@ -14,6 +14,8 @@ class CustomServer(ServerControl):
         self.started = False
         self.turn_log = None
 
+        self.teams = {} #client id to team data
+
 
     def pre_turn(self):
         self.print("#"*70)
@@ -22,7 +24,7 @@ class CustomServer(ServerControl):
         # reset turn result
         self.turn_log = { "events":[
                 {
-                    "type": Event.demo
+                    "type": LogEvent.demo
                 }
             ],
         }
@@ -37,12 +39,13 @@ class CustomServer(ServerControl):
         payload = {}
 
         for i in self._client_ids:
-            payload[i] = { "message_type": MessageType.null }
+            print(f"Pinging {i}")
+            payload[i] = { "message_type": MessageType.ping}
 
             if not self.started:
                 # request team registration info
                 payload[i] = {
-                        "message_type":  MessageType.demo
+                        "message_type":  MessageType.team_name
                 }
 
             else:
@@ -68,14 +71,23 @@ class CustomServer(ServerControl):
                 return # bad turn
 
             if not self.started:
-                if data["message_type"] == g.demo:
-                    # handle network message
-                    # this code block is reserved for registering team info
-                    # the game will not start until the client send a message
-                    # that gets to this code block
-                    self.started = True
+                if data["message_type"] == MessageType.team_name:
 
+                    client_id = data["client_id"]
+                    team_name = data["team_name"]
+
+                    self.teams[client_id] = {
+                        "team_name": team_name
+                    }
+
+                    # TODO refactor so we don't start till all teams have had a chance to give a name
+                    self.started = True
             else:
+                if data["message_type"] == MessageType.pong:
+                    # TODO refactor to include id of sender
+                    client_id = data["client_id"]
+                    team_name = self.teams[ client_id ]["team_name"]
+                    print(f"Pong from {team_name}({client_id})")
 
                 # queue action a player wants to take
                 #   deal damage if a player would be damaged

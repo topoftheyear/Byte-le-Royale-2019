@@ -29,7 +29,11 @@ class LogEvent:
 
 
 class MessageType:
+    null = 0
     demo = 0
+    ping = 1
+    pong = 2
+    team_name = 3
 
 
 class PlayerAction:

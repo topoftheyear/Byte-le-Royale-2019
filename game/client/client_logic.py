@@ -1,12 +1,8 @@
-import sys
 import os
-from game.common.enums import *
-from game.common.node_types import get_node
-from game.common.unit_classes import get_unit
-from game.common.monster_types import get_monster
-from game.common.trap_types import get_trap
-
 import sys
+
+from game.common.enums import *
+
 
 
 class ClientLogic:
@@ -60,40 +56,18 @@ class ClientLogic:
 
     def turn(self, turn_data):
 
-        if turn_data["message_type"] == MessageType.unit_choice:
+        if turn_data["message_type"] == MessageType.team_name:
             team_name = self.player_client.team_name()
-            choices = self.player_client.unit_choice()
             return {
-                "message_type": MessageType.unit_choice,
-                "team_name": team_name,
-                "units": choices
+                "message_type": MessageType.team_name,
+                "team_name": team_name
+            }
+        elif turn_data["message_type"] == MessageType.ping:
+            print("Pong")
+            return {
+                "message_type": MessageType.pong
             }
 
-        elif turn_data["message_type"] == MessageType.town:
-            units = turn_data["units"]
-            gold = turn_data["gold"]
-            store = ClientStorefront(turn_data)
-            self.player_client.town(units, gold, store)
-            return store.get_return_data()
-
-        elif turn_data["message_type"] == MessageType.room_choice:
-            units = turn_data["units"]
-            options = turn_data["options"]
-            options = { int(k):v for k, v in options.items() }
-            direction = self.player_client.room_choice(units, options)
-            return { "message_type": MessageType.room_choice, "choice": direction }
-
-        elif turn_data["message_type"] == MessageType.combat_round:
-            monster = turn_data["monster"]
-            units = turn_data["units"]
-            self.player_client.combat_round(monster, units)
-            return { "message_type": MessageType.combat_round, "units": units }
-
-        elif turn_data["message_type"] == MessageType.trap_round:
-            trap = turn_data["trap"]
-            units = turn_data["units"]
-            self.player_client.trap_round(trap, units)
-            return {"message_type": MessageType.trap_round, "units": units}
 
     def send(self, data):
         self._socket_client.send(data)
@@ -105,56 +79,13 @@ class ClientLogic:
 
     def deserialize(self, turn_data):
 
-        # load units
-        units = []
-        if "units" in turn_data:
-            for u in turn_data["units"]:
-                new_unit = get_unit(u["unit_class"])
-                new_unit.from_dict(u)
-                units.append(new_unit)
-
-        turn_data["units"] = units
-
-        # load message type specific data
-        if turn_data["message_type"] == MessageType.room_choice:
-            # deserialize rooms
-            for direction, room in turn_data["options"].items():
-               new_room = get_node(room["node_type"])
-               new_room.from_dict(room)
-               turn_data["options"][direction] = new_room
-
-        elif turn_data["message_type"] == MessageType.combat_round:
-            # deserialize monster
-            monster = get_monster(turn_data["monster"]["monster_type"])
-            monster.from_dict(turn_data["monster"])
-            turn_data["monster"] = monster
-
-        elif turn_data["message_type"] == MessageType.trap_round:
-            # deserialize trap
-            trap = get_trap(turn_data["trap"]["trap_type"])
-            trap.from_dict(turn_data["trap"])
-            turn_data["trap"] = trap
+        # deserialize any objects the client is going to need to work with and replace serialized copy with object
 
         return turn_data
 
     def serialize(self, turn_result):
 
-        if turn_result["message_type"] == MessageType.combat_round:
-            serialized_units = []
-
-            for u in turn_result["units"]:
-                serialized_units.append( u.to_dict() )
-
-            turn_result["units"] = serialized_units
-
-        elif turn_result["message_type"] == MessageType.trap_round:
-            serialized_units = []
-
-            for u in turn_result["units"]:
-                serialized_units.append( u.to_dict() )
-
-            turn_result["units"] = serialized_units
-
+        # serialize any objects the being sent to the server
 
         return turn_result
 

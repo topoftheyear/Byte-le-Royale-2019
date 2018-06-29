@@ -44,7 +44,7 @@ class BroadcastServerProtocol(WebSocketServerProtocol):
             self.factory.notify_client_connect_cb(obj["id"])
 
         elif obj["type"] == "client_turn":
-            self.factory.notify_client_turn_cb(obj["payload"])
+            self.factory.notify_client_turn_cb(obj["payload"], obj["id"])
 
 
     def connectionLost(self, reason):
