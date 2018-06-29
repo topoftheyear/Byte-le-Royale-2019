@@ -110,3 +110,4 @@ ENV/
 .idea/
 
 node_modules/
+merge_all.sh
