@@ -15,5 +15,9 @@ class CustomClient(UserClient):
 
         return "Herp Derp"
 
+    def take_turn(self):
+
+        pass
+
 
 

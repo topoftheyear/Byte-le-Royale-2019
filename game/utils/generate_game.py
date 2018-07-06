@@ -1,5 +1,12 @@
 import json
 
+from game.common.ship import Ship
+from game.common.enums import *
+
+## Config
+
+NPCS_TO_GENERATE = 20
+
 
 def save(universe):
 
@@ -7,9 +14,8 @@ def save(universe):
     serialized_universe = []
 
     for obj in universe:
-        #TODO refactor later to serialize all objects
-        #serialized_universe.append()
-        pass
+        d = obj.to_dict(security_level=SecurityLevel.engine)
+        serialized_universe.append(d)
 
 
     with open("game_data.json", "w") as f:
@@ -20,9 +26,20 @@ def load():
     with open("game_data.json", "r") as f:
         data = json.load(f)["universe"]
 
+    deserialized_univerze = []
     for serialized_obj in data:
-        # TODO refactor later to deserialize all objects according to their object_type property
-        pass
+        obj_type = serialized_obj["object_type"]
+
+        obj = None
+
+        if obj_type == ObjectType.ship:
+            obj = Ship()
+            obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+
+        if obj is not None:
+            deserialized_univerze.append(obj)
+
+    return deserialized_univerze
 
 
 def generate():
@@ -36,6 +53,12 @@ def generate():
 
     # Generate miscellaneous (spawn, black market, police station(?)...)
     # etc
+
+    for i in range(NPCS_TO_GENERATE):
+        new_npc_ship = Ship()
+        new_npc_ship.init("~AI", is_npc=True)
+
+        universe.append(new_npc_ship)
 
 
     save(universe)

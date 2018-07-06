@@ -12,17 +12,23 @@ class Ship(GameObject):
         self.initialized = False
 
 
-    def init(self, player_name):
-        super(self).init(ObjectType.ship)
+    def init(self, player_name, is_npc=False):
+        GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
         self.id = str(uuid4())
+
+        # used to match NPC client instances to npc ships
+        self.is_npc = is_npc
 
         # allows players to track ships by random id
         #   could be changed to be more readable.
         self.public_id = str(uuid4())
 
-        self.player_name = player_name
+        if self.is_npc:
+            self.player_name = player_name + f" ({self.id})"
+        else:
+            self.player_name = player_name
 
         self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
         self.current_hull = self.max_hull
@@ -53,7 +59,7 @@ class Ship(GameObject):
 
 
     def to_dict(self, security_level=SecurityLevel.other_player):
-        data = super(self).to_dict()
+        data = GameObject.to_dict(self)
 
         if security_level is SecurityLevel.engine:
             # fields that only the engine (server, visualizer, logs) should
@@ -64,7 +70,7 @@ class Ship(GameObject):
             }
 
 
-            data = { *data, *engine }
+            data = { **data, **engine }
 
         if security_level <= SecurityLevel.player_owned:
             # fields that the player who owns the object can view
@@ -83,13 +89,14 @@ class Ship(GameObject):
                 "player_action": self.player_action
             }
 
-            data = { *data, *player_owned }
+            data = { **data, **player_owned }
 
         if security_level <= SecurityLevel.other_player:
             # fields that other players can view on this object
 
             other_player = {
                 "public_id": self.public_id,
+                "is_npc": self.is_npc,
                 "max_hull": self.max_hull,
                 "current_hull": self.current_hull,
                 "cargo_space": self.cargo_space,
@@ -98,14 +105,14 @@ class Ship(GameObject):
             }
 
 
-            data = { *data, *other_player }
+            data = { **data, **other_player }
 
 
         return data
 
 
     def from_dict(self, data, security_level=SecurityLevel.other_player):
-        super().from_dict(data)
+        GameObject.from_dict(self, data)
 
         if security_level is SecurityLevel.engine:
             # properties that will only be populated by the engine,
@@ -130,6 +137,8 @@ class Ship(GameObject):
 
             self.position = data["position"]
 
+            self.is_npc = data["is_npc"]
+
 
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update
@@ -142,3 +151,7 @@ class Ship(GameObject):
         if security_level <= SecurityLevel.other_player:
             pass
 
+
+
+    def is_alive(self):
+        return self.current_hull > 0

@@ -16,7 +16,7 @@ class UpgradeType:
     weapon_damage = 2
     cargo_space = 3
     mining_yield = 4
-    scanner_range = 5
+    sensor_range = 5
 
 class UpgradeLevel:
     base = 0
@@ -34,6 +34,7 @@ class MessageType:
     ping = 1
     pong = 2
     team_name = 3
+    take_turn = 4
 
 
 class PlayerAction:
