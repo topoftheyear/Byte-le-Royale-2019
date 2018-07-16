@@ -111,3 +111,4 @@ ENV/
 
 node_modules/
 merge_all.sh
+*.pyz
