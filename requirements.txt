@@ -3,3 +3,4 @@ pygame
 click
 pygame
 numpy
+tqdm
