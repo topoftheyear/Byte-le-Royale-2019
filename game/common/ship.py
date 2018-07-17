@@ -52,7 +52,7 @@ class Ship(GameObject):
         # ideally a dictionary of ItemType enums mapped to a count of the number of that item
         self.inventory = {}
 
-        self.position = (0,0)
+        self.position = (640,360)
 
         self.player_move_action = (0,0)
         self.player_action = PlayerAction.none

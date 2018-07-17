@@ -33,7 +33,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
     for obj in universe:
         if obj.object_type == ObjectType.ship:
-            ship_sprite = ShipSprite(*obj.position, obj.id)
+            ship_sprite = NeutralShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
 
 

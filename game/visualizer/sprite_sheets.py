@@ -7,7 +7,7 @@ from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
 
 class ShipSpriteSheet(pygame.sprite.Sprite):
-    def __init__(self, sprite_sheet_data, x, y, ship_id):
+    def __init__(self, sprite_sheet_data, x, y, ship_id, color):
         super().__init__()
 
         sprite_sheet = SpriteSheet("game/visualizer/assets/simple_ship.png")
@@ -18,7 +18,37 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
                                             sprite_sheet_data[3])
 
         self.image_cache = self.image
-        self.rect = self.image.get_rect()
+
+        # Colorizing ship
+        self.color = pygame.Color(
+            color.r,
+            color.g,
+            color.b,
+            255
+        )
+
+        d = 60
+        self.color_2 = pygame.Color(
+            self.color.r if self.color.r-d < 0 else self.color.r-d,
+            self.color.g if self.color.g-d < 0 else self.color.g-d,
+            self.color.b if self.color.b-d < 0 else self.color.b-d,
+            255
+        )
+
+        d = 100
+        self.color_3 = pygame.Color(
+            self.color.r if self.color.r-d < 0 else self.color.r-d,
+            self.color.g if self.color.g-d < 0 else self.color.g-d,
+            self.color.b if self.color.b-d < 0 else self.color.b-d,
+            255
+        )
+
+        pa = pygame.PixelArray(self.image)
+        pa.replace(pygame.Color("#ffffff"), self.color)
+        pa.replace(pygame.Color("#a5a5a5"), self.color_2)
+        pa.replace(pygame.Color("#3c3c3c"), self.color_3)
+        del pa
+
 
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -42,8 +72,6 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         if self.first:
             self.first = False
             self.rect.center = ship.position
-
-        # TODO refactoring to use target angle
 
         if intermediate == 0:
             self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
@@ -91,18 +119,32 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
 
 
     def rotate(self, angle):
-        rot_sprite = pygame.transform.rotozoom(self.image_cache, angle, 0.75)
+        rot_sprite = pygame.transform.rotozoom(self.image_cache, angle, 0.6)
         self.image = rot_sprite
         self.rect = self.image.get_rect(center=self.rect.center)
 
 
-class ShipSprite(ShipSpriteSheet):
+class PlayerShipSprite(ShipSpriteSheet):
     def __init__(self, x, y, ship_id):
         ShipSpriteSheet.__init__(self, [
             0, 0,
             32, 32
-        ], x, y, ship_id)
+        ], x, y, ship_id, pygame.Color(255, 255, 255))
 
+
+class NeutralShipSprite(ShipSpriteSheet):
+    def __init__(self, x, y, ship_id):
+        ShipSpriteSheet.__init__(self, [
+            0, 0,
+            32, 32
+        ], x, y, ship_id, pygame.Color(0, 255, 0))
+
+class EnemyShipSprite(ShipSpriteSheet):
+    def __init__(self, x, y, ship_id):
+        ShipSpriteSheet.__init__(self, [
+            0, 0,
+            32, 32
+        ], x, y, ship_id, pygame.Color(0, 0, 255))
 
 
 

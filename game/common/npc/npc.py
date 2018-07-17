@@ -19,7 +19,7 @@ class NPC(UserClient):
 
         # wander between random waypoints
         if self.heading is None:
-            self.heading = ( random.randint(0, 500), random.randint(0, 500))
+            self.heading = ( random.randint(0, 1280), random.randint(0, 720))
 
         self.move(*self.heading)
 
