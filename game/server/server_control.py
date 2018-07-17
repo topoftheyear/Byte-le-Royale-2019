@@ -32,7 +32,7 @@ class ServerControl:
             self.turn_time = 0.01
 
         self.game_tick_no = 0
-        self.max_game_tick = 100
+        self.max_game_tick = 1000
         self.turn_data = []
 
     def initialize(self):

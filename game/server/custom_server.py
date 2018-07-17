@@ -261,7 +261,8 @@ class CustomServer(ServerControl):
                 self.turn_log["events"].append({
                     "type": LogEvent.ship_move,
                     "ship_id": ship.id,
-                    "pos": ship.position
+                    "pos": ship.position,
+                    "target_pos": data["move_action"]
                 })
 
                 print(f"New pos: {ship.position}")

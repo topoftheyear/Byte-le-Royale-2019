@@ -19,36 +19,38 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
 
         self.image_cache = self.image
         self.rect = self.image.get_rect()
-        self.rotate(-90)
-        self.image_cache = self.image
+
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
-        self.angle = 0
         self.ship_id = ship_id
         self.current_vec = None
         self.new_vec = None
 
+        self.first = False
+
 
     def update(self, universe, events, intermediate=0):
 
-        if intermediate == 0:
-            ship = self.find_self(universe)
+        ship = self.find_self(universe)
+        if ship is None:
+            return
 
-            if ship is None:
-                return
+        if self.first:
+            self.first = False
+            self.rect.center = ship.position
+
+        # TODO refactoring to use target angle
+
+        if intermediate == 0:
 
             self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
             self.new_vec = pygame.math.Vector2(ship.position)
 
             # update rotation
-            angle_to = math.degrees(self.current_vec.angle_to(self.new_vec))
-            if angle_to != 0:
-                print(angle_to)
-                print(self.current_vec)
-                print(self.new_vec)
-                print(self.angle + angle_to)
-
+            angle_to = math.degrees(math.atan2(
+                self.rect.y-ship.position[0],
+                self.rect.x-ship.position[1]))
 
             self.rotate(angle_to)
 
@@ -65,11 +67,18 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
                 return obj
         return None
 
-    def rotate(self, angle):
-        loc = self.rect.center
-        rot_sprite = pygame.transform.rotate(self.image_cache, angle)
-        self.image = rot_sprite
+    def get_pertinent_events(self, events):
+        my_events = []
+        for e in events:
+            if "ship_id" in e and e["ship_id"] == self.ship_id:
+                my_events.append(e)
+        return e
 
+
+    def rotate(self, angle):
+        rot_sprite = pygame.transform.rotozoom(self.image_cache, angle, 0.75)
+        self.image = rot_sprite
+        self.rect = self.image.get_rect(center=self.rect.center)
 
 
 class ShipSprite(ShipSpriteSheet):
