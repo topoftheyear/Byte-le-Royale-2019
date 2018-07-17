@@ -61,7 +61,7 @@ class NeutralStationSprite(StationSpriteSheet):
             32, 32
         ], x, y, station_id, pygame.Color(0, 255, 0))
 
-class CentralStationSprite(StationSpriteSheet):
+class SecureStationSprite(StationSpriteSheet):
     def __init__(self, x, y, station_id):
         StationSpriteSheet.__init__(self, [
             0, 0,

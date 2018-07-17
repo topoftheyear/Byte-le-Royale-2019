@@ -50,8 +50,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
 
 
         self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
+        self.rect.center = (x, y)
         self.ship_id = ship_id
         self.current_vec = None
         self.new_vec = None
@@ -73,7 +72,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
             self.rect.center = ship.position
 
         if intermediate == 0:
-            self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
+            self.current_vec = pygame.math.Vector2(self.rect.center[0], self.rect.center[1])
             self.new_vec = pygame.math.Vector2(ship.position)
 
             move_event = self.get_event_type(events, LogEvent.ship_move, one=True)
@@ -84,14 +83,14 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         if self.move_target != None:
             # update rotation
             angle_to = math.degrees(math.atan2(
-                self.rect.x-self.move_target[0],
-                self.rect.y-self.move_target[1]))
+                self.rect.center[0]-self.move_target[0],
+                self.rect.center[1]-self.move_target[1]))
 
             self.rotate(angle_to)
 
         # lerp
         lerp = self.current_vec.lerp(self.new_vec, intermediate)
-        self.rect.x, self.rect.y = lerp[0], lerp[1]
+        self.rect.center = lerp
 
 
     def find_self(self, universe):

@@ -232,9 +232,6 @@ class CustomServer(ServerControl):
 
         for team, data in { **self.teams, **self.npc_teams}.items():
 
-            print(team)
-            print(data)
-
             if "move_action" in data and data["move_action"] is not None:
                 ship = data["ship"]
 
@@ -250,9 +247,6 @@ class CustomServer(ServerControl):
                 x_move = min(ship.engine_speed, x_magnitude)
                 y_move = min(ship.engine_speed, y_magnitude)
 
-                print(f"Ship: {ship.id} moving")
-                print(f"Original pos: {ship.position}")
-
                 ship.position = (
                     x_direction*x_move + ship.position[0],
                     y_direction*y_move + ship.position[1]
@@ -265,7 +259,6 @@ class CustomServer(ServerControl):
                     "target_pos": data["move_action"]
                 })
 
-                print(f"New pos: {ship.position}")
 
     def serialize_universe(self, security_level):
         serialized_universe = []

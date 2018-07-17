@@ -6,8 +6,8 @@ from game.common.material_types import *
 
 class Station(GameObject):
 
-    def init(self, name, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5, ):
-        GameObject.init(self, ObjectType.station)
+    def init(self, name, station_type=ObjectType.station, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5):
+        GameObject.init(self, station_type)
 
         self.id = str(uuid4())
         self.name = name
@@ -89,3 +89,12 @@ class Station(GameObject):
 
         if security_level <= SecurityLevel.other_player:
             pass
+
+class BlackMarketStation(Station):
+    def init(self, name, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5, object_type=ObjectType.station):
+        Station.init(self, name, position=position, consumption_material=consumption_material, consumption_rate=consumption_rate, production_material=production_material, production_rate=production_rate, current_cargo=0, accessibility_radius=5, station_type=ObjectType.black_market_station)
+
+
+class SecureStation(Station):
+    def init(self, name, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5, object_type=ObjectType.station):
+        Station.init(self, name, position=position, consumption_material=consumption_material, consumption_rate=consumption_rate, production_material=production_material, production_rate=production_rate, current_cargo=0, accessibility_radius=5, station_type=ObjectType.secure_station)

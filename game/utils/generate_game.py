@@ -1,7 +1,7 @@
 import json
 
 from game.common.ship import Ship
-from game.common.station import Station
+from game.common.station import *
 from game.common.enums import *
 
 ## Config
@@ -41,6 +41,14 @@ def load():
             obj = Station()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
 
+        elif obj_type == ObjectType.black_market_station:
+            obj = BlackMarketStation()
+            obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+
+        elif obj_type == ObjectType.secure_station:
+            obj = SecureStation()
+            obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+
         if obj is not None:
             deserialized_univerze.append(obj)
 
@@ -54,15 +62,27 @@ def generate():
     # ey add those non-existent stations in main man right in here append it to that map
     station_data = [
         {
-            "coords": [ 100, 100]
+            "type": ObjectType.station,
+            "coords": [100, 100]
         },
         {
-            "coords": [ 200, 100]
+            "type": ObjectType.black_market_station,
+            "coords": [200, 100]
+        },
+        {
+            "type": ObjectType.secure_station,
+            "coords": [640, 360]
         }
     ]
 
     for i, data in enumerate(station_data):
-        station = Station()
+        if data["type"] == ObjectType.station:
+            station = Station()
+        elif data["type"] == ObjectType.black_market_station:
+            station = BlackMarketStation()
+        elif data["type"] == ObjectType.secure_station:
+            station = SecureStation()
+
         station.init(
                 name="Station {0}".format(i),
                 position=data["coords"])

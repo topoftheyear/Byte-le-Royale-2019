@@ -67,7 +67,10 @@ class ClientLogic:
             return {
                 "message_type": MessageType.pong
             }
-
+        else:
+            return{
+                "message_type": MessageType.null
+            }
 
     def send(self, data):
         self._socket_client.send(data)

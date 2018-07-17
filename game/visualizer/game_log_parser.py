@@ -3,7 +3,7 @@ import os
 
 from game.common.enums import *
 from game.common.ship import Ship
-from game.common.station import Station
+from game.common.station import *
 
 class GameLogParser:
     def __init__(self, log_dir):
@@ -62,6 +62,16 @@ class GameLogParser:
 
             elif serialized_obj["object_type"] == ObjectType.station:
                 obj = Station()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+            elif serialized_obj["object_type"] == ObjectType.black_market_station:
+                obj = BlackMarketStation()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+            elif serialized_obj["object_type"] == ObjectType.secure_station:
+                obj = SecureStation()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 

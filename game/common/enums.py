@@ -49,6 +49,9 @@ class SecurityLevel:
 class ObjectType:
     ship = 0
     station = 1
+    black_market_station = 2
+    secure_station = 3
+
 
 class MaterialType:
     ironium = 0

@@ -40,8 +40,15 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             ship_group.add(ship_sprite)
 
         elif obj.object_type == ObjectType.station:
-            print(obj)
             station_sprite = NeutralStationSprite(*obj.position, obj.id)
+            station_group.add(station_sprite)
+
+        elif obj.object_type == ObjectType.black_market_station:
+            station_sprite = BlackMarketStationSprite(*obj.position, obj.id)
+            station_group.add(station_sprite)
+
+        elif obj.object_type == ObjectType.secure_station:
+            station_sprite = SecureStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)
 
 
