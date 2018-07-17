@@ -33,9 +33,6 @@ class CustomServer(ServerControl):
 
         # reset turn result
         self.turn_log = { "events":[
-                {
-                    "type": LogEvent.demo
-                }
             ],
         }
 
@@ -261,6 +258,12 @@ class CustomServer(ServerControl):
                     x_direction*x_move + ship.position[0],
                     y_direction*y_move + ship.position[1]
                 )
+
+                self.turn_log["events"].append({
+                    "event": LogEvent.ship_move,
+                    "ship_id": ship.id,
+                    "pos": ship.position
+                })
 
                 print(f"New pos: {ship.position}")
 

@@ -29,16 +29,28 @@ def server(server_verbose, port, no_wait):
 @click.option("--client-verbose", is_flag=True)
 @click.option("--script", default="custom_client")
 @click.option("--port", default=8080)
-def client(client_verbose, client, port):
+def client(client_verbose, script, port):
+    import importlib
+
     from game.client import start
     from game.client.client_logic import ClientLogic
 
     if client_verbose:
         print("Client Verbosity: ON")
 
-    mod = importlib.import_module(client)
+    import importlib.util
+    import os
 
-    start(ClientLogic(client_verbose, mod.CustomClient()), client_verbose, port)
+    script = os.getcwd() + "/" + script + ".py"
+
+    spec = importlib.util.spec_from_file_location("custom_client", script)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    #mod = importlib.import_module(script)
+
+
+    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port)
 
 
 @cli.command()
@@ -119,6 +131,66 @@ def version():
     import version
     print("Current version is: v{0}".format(version.v))
 
+@cli.command()
+@click.option("--client-verbose", is_flag=True)
+@click.option("--server-verbose", is_flag=True)
+@click.option("--client-script", default="custom_client")
+@click.option("--port", default=8080)
+def run(client_verbose, server_verbose, client_script, port):
+    import subprocess
+
+    import signal
+    import sys
+    import time
+    import functools
+
+
+    # Prep server args
+    server_args = ["./br_launcher.pyz", "server"]
+
+    if server_verbose:
+        server_args.append("--server-verbose")
+    server_args.extend(["--port", str(port)])
+
+
+    # Prep client args
+    client_args = ["./br_launcher.pyz", "client"]
+
+    if client_verbose:
+        client_args.append("--client-verbose")
+    client_args.extend(["--script", client_script])
+    client_args.extend(["--port", str(port)])
+
+    # Ctrl + C (sigint) handler
+    def signal_handler(server_proc, client_proc, sig, frame):
+        print('\nCtrl+C - Exiting!')
+
+        try:
+            server_proc.kill()
+        except:
+            pass
+
+        try:
+            client_proc.kill()
+        except:
+            pass
+
+        sys.exit(0)
+
+    # start server
+    server_proc = subprocess.Popen(server_args)
+
+    time.sleep(1)
+
+    # start client
+    client_proc = subprocess.Popen(client_args)
+
+    # build sigint handler, and register
+    signal_handler = functools.partial(signal_handler, server_proc, client_proc)
+    signal.signal(signal.SIGINT, signal_handler)
+
+    client_proc.wait()
+    server_proc.wait()
 
 
 

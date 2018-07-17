@@ -25,7 +25,8 @@ class UpgradeLevel:
     three = 3
 
 class LogEvent:
-    demo = 0
+    null = 0
+    ship_move = 1
 
 
 class MessageType:
