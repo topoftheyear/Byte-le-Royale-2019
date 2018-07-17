@@ -41,10 +41,16 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
             self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
             self.new_vec = pygame.math.Vector2(ship.position)
 
-        # update rotation
-        angle_to = math.degrees(self.current_vec.angle_to(self.new_vec))
-        self.angle += angle_to
-        self.rotate(self.angle)
+            # update rotation
+            angle_to = math.degrees(self.current_vec.angle_to(self.new_vec))
+            if angle_to != 0:
+                print(angle_to)
+                print(self.current_vec)
+                print(self.new_vec)
+                print(self.angle + angle_to)
+
+
+            self.rotate(angle_to)
 
         # lerp
         lerp = self.current_vec.lerp(self.new_vec, intermediate)
