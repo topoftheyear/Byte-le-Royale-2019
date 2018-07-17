@@ -1,0 +1,5 @@
+## Config
+
+NPCS_TO_GENERATE = 20
+
+WORLD_BOUNDS = (12800, 7200)

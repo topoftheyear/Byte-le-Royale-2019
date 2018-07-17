@@ -1,12 +1,10 @@
 import json
+import math
 
+from game.config import *
 from game.common.ship import Ship
 from game.common.station import *
 from game.common.enums import *
-
-## Config
-
-NPCS_TO_GENERATE = 20
 
 
 def save(universe):
@@ -71,7 +69,7 @@ def generate():
         },
         {
             "type": ObjectType.secure_station,
-            "coords": [640, 360]
+            "coords": [ math.floor(WORLD_BOUNDS[0]/2.0), math.floor(WORLD_BOUNDS[1]/2.0)]
         }
     ]
 
