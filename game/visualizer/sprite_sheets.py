@@ -1,12 +1,12 @@
 import random, math
 
 import pygame
-import ptext
+import game.utils.ptext
 
 from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
 
-ShipSpriteSheet(pygame.sprite.Sprite):
+class ShipSpriteSheet(pygame.sprite.Sprite):
     def __init__(self, sprite_sheet_data, x, y):
         super().__init__()
 
@@ -23,11 +23,29 @@ ShipSpriteSheet(pygame.sprite.Sprite):
 
 
 class ShipSprite(ShipSpriteSheet):
-    def __init__(self, x, y):
-        UnitIconSprite.__init__(self, [
+    def __init__(self, x, y, ship_id):
+        ShipSpriteSheet.__init__(self, [
             0, 0,
             32, 32
         ], x, y)
+
+        self.ship_id = ship_id
+
+    def update(self, universe, events):
+        ship = self.find_self(universe)
+
+        if ship is None:
+            return
+
+        self.rect.x, self.rect.y = ship.position[0], ship.position[1]
+
+
+
+    def find_self(self, universe):
+        for obj in universe:
+            if obj.object_type == ObjectType.ship and obj.id == self.ship_id:
+                return obj
+        return None
 
 
 

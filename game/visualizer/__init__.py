@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
+from game.visualizer.sprite_sheets import *
 from game.common.enums import *
 
 import game.utils.ptext
@@ -11,7 +12,7 @@ import game.utils.ptext
 def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
     log_parser = GameLogParser(log_path)
-    events = log_parser.get_turn()
+    universe, events = log_parser.get_turn()
 
     # initialize pygame
     pygame.init()
@@ -28,7 +29,12 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     pygame.display.set_gamma(gamma)
 
     # Create Sprite groups
-    example_group = pygame.sprite.Group()
+    ship_group = pygame.sprite.Group()
+
+    for obj in universe:
+        if obj.object_type == ObjectType.ship:
+            ship_sprite = ShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
 
 
     # prepare for game loop
@@ -49,7 +55,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             # or should we wait for some animation to
             # finish
             if turn_wait_counter == 0:
-                events = log_parser.get_turn()
+                universe, events = log_parser.get_turn()
             else:
                 turn_wait_counter -= 1
 
@@ -83,7 +89,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
 
             # call update on groups
-            example_group.update()
+            ship_group.update(universe, events)
 
 
             #####
@@ -94,7 +100,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             global_surf.fill(pygame.Color(0,0,0))
 
             # draw groups to screan
-            example_group.draw(global_surf)
+            ship_group.draw(global_surf)
 
 
         #

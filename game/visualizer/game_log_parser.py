@@ -48,7 +48,7 @@ class GameLogParser:
             #    pass # Deserialize game objects as needed
 
 
-        return events
+        return universe, events
 
 
     def deserialize_universe(self, data):
