@@ -45,6 +45,8 @@ class CustomServer(ServerControl):
         self.print("SERVER SEND DATA")
         payload = {}
 
+        serialized_universe = self.serialize_universe()
+
         for i in self._client_ids:
             #print(f"Pinging {i}")
             #payload[i] = { "message_type": MessageType.ping}
@@ -59,7 +61,9 @@ class CustomServer(ServerControl):
                 # send game specific data in payload
                 pass
                 payload[i] = {
-                    "message_type": MessageType.take_turn
+                    "message_type": MessageType.take_turn,
+                    "ship": self.teams[i]["ship"].to_dict(),
+                    "universe": serialized_universe # TODO refactor to use serialize_visible_objects()
                 }
 
         # actually send the data to the client
@@ -113,13 +117,7 @@ class CustomServer(ServerControl):
                     self.started = True
             else:
 
-                if message_type == MessageType.pong:
-                    # TODO refactor to include id of sender
-                    client_id = data["client_id"]
-                    team_name = self.teams[ client_id ]["team_name"]
-                    print(f"Pong from {team_name}({client_id})")
-
-                elif message_type == MessageType.take_turn:
+                if message_type == MessageType.take_turn:
                     if "action_type" in data:
                         # get action
                         self.teams[client_id]["action_type"] = data["action_type"]
@@ -163,6 +161,7 @@ class CustomServer(ServerControl):
         # update station market / update BGS
 
         self.turn_data = []
+        self.turn_log["universe"] = self.serialize_universe()
 
 
 
@@ -267,3 +266,12 @@ class CustomServer(ServerControl):
 
                 print(f"New pos: {ship.position}")
 
+    def serialize_universe(self):
+        serialized_universe = []
+        for obj in self.universe:
+            serialized_obj = obj.to_dict()
+            serialized_universe.append(serialized_obj)
+        return serialized_universe
+
+    def serialize_visible_objects(self, pos, radius):
+        pass # serialize only objects in visible range of player ship

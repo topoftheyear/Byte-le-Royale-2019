@@ -10,6 +10,7 @@ class GameObject(Serializable):
 
         self.object_type = object_type
         self.id = str(uuid4())
+        self.inited = True
 
     def from_dict(self, d):
 
@@ -18,13 +19,18 @@ class GameObject(Serializable):
 
         self.object_type = d["object_type"]
         self.id = d["id"]
+        self.inited = d["inited"]
 
     def to_dict(self):
 
         if not issubclass(type(self), GameObject):
             raise Exception("Method must be called from subclass")
 
-        return { "object_type": self.object_type, "id": self.id }
+        return {
+            "object_type": self.object_type,
+            "id": self.id,
+            "inited": self.inited
+        }
 
 
 

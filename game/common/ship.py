@@ -9,7 +9,7 @@ from game.common.stats import GameStats
 class Ship(GameObject):
 
     def __init__(self):
-        self.initialized = False
+        pass
 
 
     def init(self, player_name, is_npc=False):
@@ -136,6 +136,8 @@ class Ship(GameObject):
             self.module_3 = data["module_3"]
 
             self.position = data["position"]
+
+            self.inventory = data["inventory"]
 
             self.is_npc = data["is_npc"]
 

@@ -48,3 +48,10 @@ class SecurityLevel:
 
 class ObjectType:
     ship = 0
+
+class MaterialType:
+    ironium = 0
+    food = 1
+    electrum = 2
+    circuitry = 3
+    weaponry = 4

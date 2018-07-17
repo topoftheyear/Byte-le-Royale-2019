@@ -46,16 +46,15 @@ class Station(Serializable):
         if security_level <= SecurityLevel.other_player:
             # fields other players can view
             other_player = {
-                "name": self.name
+                "name": self.name,
+                "position": self.position,
                 
-                "position": self.position
+                "consumption_material": self.consumption_material,
+                "consumption_rate": self.consumption_rate,
+                "production_material": self.production_material,
+                "production_rate": self.production_rate ,
                 
-                "consumption_material": self.consumption_material
-                "consumption_rate": self.consumption_rate
-                "production_material": self.production_material
-                "production_rate": self.production_rate 
-                
-                "current_cargo": self.current_cargo
+                "current_cargo": self.current_cargo,
                 
                 "accessibility_radius": self.accessibility_radius
             }
@@ -80,9 +79,9 @@ class Station(Serializable):
             self.production_material = data["production_material"]
             self.production_rate = data["production_rate"]
             
-            self.current_cargo = data
+            self.current_cargo = data["current_cargo"]
             
-            self.accessibility_radius = accessibility_radius
+            self.accessibility_radius = data["accessibility_radius"]
             
         if security_level <= SecurityLevel.player_owned:
             pass

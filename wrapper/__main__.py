@@ -136,7 +136,8 @@ def version():
 @click.option("--server-verbose", is_flag=True)
 @click.option("--client-script", default="custom_client")
 @click.option("--port", default=8080)
-def run(client_verbose, server_verbose, client_script, port):
+@click.option("--server-no-wait", is_flag=True)
+def run(client_verbose, server_verbose, client_script, port, server_no_wait):
     import subprocess
 
     import signal
@@ -150,6 +151,8 @@ def run(client_verbose, server_verbose, client_script, port):
 
     if server_verbose:
         server_args.append("--server-verbose")
+    if server_no_wait:
+        server_args.append("--no_wait")
     server_args.extend(["--port", str(port)])
 
 

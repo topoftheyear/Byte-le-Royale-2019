@@ -18,7 +18,7 @@ class ServerControl:
         self.wait_on_client = wait_on_client
 
         self._clients_connected = 0
-        self.connection_wait_timer = 10
+        self.connection_wait_timer = 3
 
         self._client_ids = []
         self._quit = False
@@ -32,7 +32,7 @@ class ServerControl:
             self.turn_time = 0.01
 
         self.game_tick_no = 0
-        self.max_game_tick = 1e4
+        self.max_game_tick = 100
         self.turn_data = []
 
     def initialize(self):

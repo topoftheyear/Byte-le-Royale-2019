@@ -2,6 +2,8 @@ import json
 import os
 
 from game.common.enums import *
+from game.common.ship import Ship
+from game.common.station import Station
 
 class GameLogParser:
     def __init__(self, log_dir):
@@ -36,6 +38,7 @@ class GameLogParser:
     def _parse_turn(self, turn):
 
         events = turn["turn_result"]["events"]
+        universe = self.deserialize_universe(turn["turn_result"]["universe"])
 
         for event in events:
             # mark that the event hasn't been handled
@@ -44,6 +47,17 @@ class GameLogParser:
             if event["type"] == LogEvent.demo:
                 pass # Deserialize game objects as needed
 
+
         return events
 
 
+    def deserialize_universe(self, data):
+        objs = []
+
+        for serialized_obj in data:
+            if serialized_obj["object_type"] == ObjectType.ship:
+                obj = Ship()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+        return objs
