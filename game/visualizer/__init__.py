@@ -6,7 +6,7 @@ from pygame.locals import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.common.enums import *
 
-import ptext
+import game.utils.ptext
 
 def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
@@ -57,15 +57,16 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             # read through the events and handle
             for event in events:
                 if not event["handled"]:
-                    if event["type"] == LogEvent.demo:
-                        # there should be data stored
-                        # on the event object pertaining to
-                        # the type of event
-                        print(event)
+                    pass
+                    #if event["type"] == LogEvent.demo:
+                    #    # there should be data stored
+                    #    # on the event object pertaining to
+                    #    # the type of event
+                    #    print(event)
 
-                        # Marks that we have handled this event
-                        # prevents us from attempting to handle this event again
-                        event["handled"] = True
+                    #    # Marks that we have handled this event
+                    #    # prevents us from attempting to handle this event again
+                    #    event["handled"] = True
 
 
 

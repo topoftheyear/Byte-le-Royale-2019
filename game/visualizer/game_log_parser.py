@@ -44,8 +44,8 @@ class GameLogParser:
             # mark that the event hasn't been handled
             event["handled"] = False
 
-            if event["type"] == LogEvent.demo:
-                pass # Deserialize game objects as needed
+            #if event["type"] == LogEvent.demo:
+            #    pass # Deserialize game objects as needed
 
 
         return events

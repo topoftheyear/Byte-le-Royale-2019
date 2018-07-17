@@ -45,7 +45,7 @@ class CustomServer(ServerControl):
         self.print("SERVER SEND DATA")
         payload = {}
 
-        serialized_universe = self.serialize_universe()
+        serialized_universe = self.serialize_universe(security_level=SecurityLevel.player_owned)
 
         for i in self._client_ids:
             #print(f"Pinging {i}")
@@ -161,7 +161,7 @@ class CustomServer(ServerControl):
         # update station market / update BGS
 
         self.turn_data = []
-        self.turn_log["universe"] = self.serialize_universe()
+        self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
 
 
 
@@ -259,17 +259,17 @@ class CustomServer(ServerControl):
                 )
 
                 self.turn_log["events"].append({
-                    "event": LogEvent.ship_move,
+                    "type": LogEvent.ship_move,
                     "ship_id": ship.id,
                     "pos": ship.position
                 })
 
                 print(f"New pos: {ship.position}")
 
-    def serialize_universe(self):
+    def serialize_universe(self, security_level):
         serialized_universe = []
         for obj in self.universe:
-            serialized_obj = obj.to_dict()
+            serialized_obj = obj.to_dict(security_level=security_level)
             serialized_universe.append(serialized_obj)
         return serialized_universe
 

@@ -12,7 +12,7 @@ class Ship(GameObject):
         pass
 
 
-    def init(self, player_name, is_npc=False):
+    def init(self, team_name, is_npc=False):
         GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
@@ -26,9 +26,9 @@ class Ship(GameObject):
         self.public_id = str(uuid4())
 
         if self.is_npc:
-            self.player_name = player_name + f" ({self.id})"
+            self.team_name = team_name + f" ({self.id})"
         else:
-            self.player_name = player_name
+            self.team_name = team_name
 
         self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
         self.current_hull = self.max_hull
@@ -66,7 +66,7 @@ class Ship(GameObject):
             #   be able to access
             engine = {
                 "id": self.id,
-                "player_name": self.player_name
+                "team_name": self.team_name
             }
 
 
@@ -120,7 +120,7 @@ class Ship(GameObject):
 
             self.id = data["id"]
             self.public_id = data["public_id"]
-            self.player_name = data["player_name"]
+            self.team_name = data["team_name"]
 
             self.max_hull = data["max_hull"]
             self.current_hull = data["current_hull"]
