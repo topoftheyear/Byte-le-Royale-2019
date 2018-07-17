@@ -48,6 +48,7 @@ class SecurityLevel:
 
 class ObjectType:
     ship = 0
+    station = 1
 
 class MaterialType:
     ironium = 0

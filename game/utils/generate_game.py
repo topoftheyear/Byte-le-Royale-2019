@@ -1,6 +1,7 @@
 import json
 
 from game.common.ship import Ship
+from game.common.station import Station
 from game.common.enums import *
 
 ## Config
@@ -36,6 +37,10 @@ def load():
             obj = Ship()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
 
+        elif obj_type == ObjectType.station:
+            obj = Station()
+            obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+
         if obj is not None:
             deserialized_univerze.append(obj)
 
@@ -47,6 +52,22 @@ def generate():
 
     # Generate stations
     # ey add those non-existent stations in main man right in here append it to that map
+    station_data = [
+        {
+            "coords": [ 100, 100]
+        },
+        {
+            "coords": [ 200, 100]
+        }
+    ]
+
+    for i, data in enumerate(station_data):
+        station = Station()
+        station.init(
+                name="Station {0}".format(i),
+                position=data["coords"])
+        universe.append(station)
+
 
     # Generate mining fields
     # same deal append them to the map

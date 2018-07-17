@@ -60,4 +60,9 @@ class GameLogParser:
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
+            elif serialized_obj["object_type"] == ObjectType.station:
+                obj = Station()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
         return objs

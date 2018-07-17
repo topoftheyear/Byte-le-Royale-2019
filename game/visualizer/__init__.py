@@ -4,7 +4,8 @@ import pygame
 from pygame.locals import *
 
 from game.visualizer.game_log_parser import GameLogParser
-from game.visualizer.sprite_sheets import *
+from game.visualizer.ship_sprites import *
+from game.visualizer.station_sprites import *
 from game.common.enums import *
 
 import game.utils.ptext
@@ -30,11 +31,18 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
     # Create Sprite groups
     ship_group = pygame.sprite.Group()
+    station_group = pygame.sprite.Group()
+
 
     for obj in universe:
         if obj.object_type == ObjectType.ship:
             ship_sprite = NeutralShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
+
+        elif obj.object_type == ObjectType.station:
+            print(obj)
+            station_sprite = NeutralStationSprite(*obj.position, obj.id)
+            station_group.add(station_sprite)
 
 
     # prepare for game loop
@@ -107,6 +115,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                 global_surf.fill(pygame.Color(0,0,0))
 
                 # draw groups to screan
+                station_group.draw(global_surf)
                 ship_group.draw(global_surf)
 
 
