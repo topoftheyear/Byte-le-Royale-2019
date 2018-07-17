@@ -26,6 +26,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         self.ship_id = ship_id
         self.current_vec = None
         self.new_vec = None
+        self.move_target = None
 
         self.first = False
 
@@ -36,6 +37,8 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         if ship is None:
             return
 
+        events = self.get_pertinent_events(events)
+
         if self.first:
             self.first = False
             self.rect.center = ship.position
@@ -43,22 +46,25 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         # TODO refactoring to use target angle
 
         if intermediate == 0:
-
             self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
             self.new_vec = pygame.math.Vector2(ship.position)
 
+            move_event = self.get_event_type(events, LogEvent.ship_move, one=True)
+            if move_event:
+                self.move_target = move_event["target_pos"]
+
+
+        if self.move_target != None:
             # update rotation
             angle_to = math.degrees(math.atan2(
-                self.rect.y-ship.position[0],
-                self.rect.x-ship.position[1]))
+                self.rect.x-self.move_target[0],
+                self.rect.y-self.move_target[1]))
 
             self.rotate(angle_to)
 
         # lerp
         lerp = self.current_vec.lerp(self.new_vec, intermediate)
         self.rect.x, self.rect.y = lerp[0], lerp[1]
-
-
 
 
     def find_self(self, universe):
@@ -72,7 +78,16 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         for e in events:
             if "ship_id" in e and e["ship_id"] == self.ship_id:
                 my_events.append(e)
-        return e
+        return my_events
+
+    def get_event_type(self, events, event_type, one=False):
+        selected = []
+        for e in events:
+            if e["type"] == event_type:
+                if one:
+                    return e
+                selected.append(e)
+        return selected if len(selected) else None
 
 
     def rotate(self, angle):
