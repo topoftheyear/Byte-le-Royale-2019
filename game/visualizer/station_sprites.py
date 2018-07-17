@@ -60,3 +60,17 @@ class NeutralStationSprite(StationSpriteSheet):
             0, 0,
             32, 32
         ], x, y, station_id, pygame.Color(0, 255, 0))
+
+class CentralStationSprite(StationSpriteSheet):
+    def __init__(self, x, y, station_id):
+        StationSpriteSheet.__init__(self, [
+            0, 0,
+            32, 32
+        ], x, y, station_id, pygame.Color(0, 0, 255))
+
+class BlackMarketStationSprite(StationSpriteSheet):
+    def __init__(self, x, y, station_id):
+        StationSpriteSheet.__init__(self, [
+            0, 0,
+            32, 32
+        ], x, y, station_id, pygame.Color(255, 0, 0))
