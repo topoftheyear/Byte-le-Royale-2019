@@ -41,6 +41,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     first_loop = True
     pause = False
     turn_wait_counter = 1
+    intermediate_frames = 3
 
     while True:
 
@@ -88,19 +89,25 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                 # after this
 
 
-            # call update on groups
-            ship_group.update(universe, events)
+            # intermediate loop
+            # -- allows for pretty lerping of ship movement
+
+            for i in range(intermediate_frames):
+                intermediate = i/float(intermediate_frames)
+
+                # call update on groups
+                ship_group.update(universe, events, intermediate)
 
 
-            #####
-            # Begin Drawing to screen
-            #####
+                #####
+                # Begin Drawing to screen
+                #####
 
-            # clear screen, fill with black
-            global_surf.fill(pygame.Color(0,0,0))
+                # clear screen, fill with black
+                global_surf.fill(pygame.Color(0,0,0))
 
-            # draw groups to screan
-            ship_group.draw(global_surf)
+                # draw groups to screan
+                ship_group.draw(global_surf)
 
 
         #

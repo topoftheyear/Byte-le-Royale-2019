@@ -21,6 +21,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         self.rect.x = x
         self.rect.y = y
         self.angle = 0
+        self.image_cache = self.image
 
 
 class ShipSprite(ShipSpriteSheet):
@@ -31,25 +32,30 @@ class ShipSprite(ShipSpriteSheet):
         ], x, y)
 
         self.ship_id = ship_id
+        self.current_vec = None
+        self.new_vec = None
 
-        self.image_cache = self.image
 
-    def update(self, universe, events):
-        ship = self.find_self(universe)
+    def update(self, universe, events, intermediate=0):
 
-        if ship is None:
-            return
+        if intermediate == 0:
+            ship = self.find_self(universe)
 
-        current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
-        new_vec = pygame.math.Vector2(ship.position)
+            if ship is None:
+                return
 
-        lerp = current_vec.lerp(new_vec, 0.5)
-        angle_to = math.degrees(current_vec.angle_to(new_vec))
+            self.current_vec = pygame.math.Vector2(self.rect.x, self.rect.y)
+            self.new_vec = pygame.math.Vector2(ship.position)
 
+            # update rotation
+            angle_to = math.degrees(self.current_vec.angle_to(self.new_vec))
+            self.angle = angle_to
+            self.rotate(self.angle)
+
+        # lerp
+        lerp = self.current_vec.lerp(self.new_vec, intermediate)
         self.rect.x, self.rect.y = lerp[0], lerp[1]
-        self.angle = angle_to
 
-        self.rotate(self.angle)
 
 
 
