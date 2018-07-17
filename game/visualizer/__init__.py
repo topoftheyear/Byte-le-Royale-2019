@@ -110,41 +110,42 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                 ship_group.draw(global_surf)
 
 
-        #
-        # Handle Events
-        #
-        for event in pygame.event.get():
 
-            # if the application has been exited by the user
-            if event.type == QUIT:
-                pygame.quit()
-                sys.exit()
+                #
+                # Handle Events
+                #
+                for event in pygame.event.get():
 
-            # get mouse position
-            elif event.type == MOUSEMOTION:
-                mousex, mousey = event.pos
+                    # if the application has been exited by the user
+                    if event.type == QUIT:
+                        pygame.quit()
+                        sys.exit()
 
-            # Handle clicks
-            elif event.type == MOUSEBUTTONUP:
-               if event.button == 1:
-                   pass # left mouse button clicked
+                    # get mouse position
+                    elif event.type == MOUSEMOTION:
+                        mousex, mousey = event.pos
 
-            # handle key up events
-            elif event.type == KEYUP:
-                if event.key == K_p:
-                    # if p is pressed, toggle pause
-                    pause = not pause
-                if event.key == K_f:
-                    # if f is pressed, toggle fullscreen
-                    # No guarentee it works for windows.
-                    pygame.display.toggle_fullscreen()
-                if event.key == K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
+                    # Handle clicks
+                    elif event.type == MOUSEBUTTONUP:
+                       if event.button == 1:
+                           pass # left mouse button clicked
+
+                    # handle key up events
+                    elif event.type == KEYUP:
+                        if event.key == K_p:
+                            # if p is pressed, toggle pause
+                            pause = not pause
+                        if event.key == K_f:
+                            # if f is pressed, toggle fullscreen
+                            # No guarentee it works for windows.
+                            pygame.display.toggle_fullscreen()
+                        if event.key == K_ESCAPE:
+                            pygame.quit()
+                            sys.exit()
 
 
-        # update the display
-        pygame.display.update()
-        fpsClock.tick(30)
+                # update the display
+                pygame.display.update()
+                fpsClock.tick(30)
 
 
