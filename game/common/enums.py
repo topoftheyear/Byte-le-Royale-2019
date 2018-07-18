@@ -51,6 +51,8 @@ class ObjectType:
     station = 1
     black_market_station = 2
     secure_station = 3
+    ironium_field = 4
+
 
 
 class MaterialType:

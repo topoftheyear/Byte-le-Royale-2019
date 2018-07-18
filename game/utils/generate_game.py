@@ -4,7 +4,9 @@ import math
 from game.config import *
 from game.common.ship import Ship
 from game.common.station import *
+from game.common.asteroid_field_types import create_asteroid_field, load_asteroid_field
 from game.common.enums import *
+
 
 
 def save(universe):
@@ -46,6 +48,9 @@ def load():
         elif obj_type == ObjectType.secure_station:
             obj = SecureStation()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+        elif obj_type in [ObjectType.ironium_field]:
+            obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
+
 
         if obj is not None:
             deserialized_univerze.append(obj)
@@ -57,7 +62,6 @@ def generate():
     universe = []
 
     # Generate stations
-    # ey add those non-existent stations in main man right in here append it to that map
     station_data = [
         {
             "type": ObjectType.station,
@@ -88,7 +92,17 @@ def generate():
 
 
     # Generate mining fields
-    # same deal append them to the map
+    asteroid_field_data = [
+        {
+            "type": ObjectType.ironium_field,
+            "coords": [ 300, 100 ]
+        }
+    ]
+
+    for i, data in enumerate(asteroid_field_data):
+        obj = create_asteroid_field(data["type"], data["coords"])
+        universe.append(obj)
+
 
     # Generate miscellaneous (spawn, black market, police station(?)...)
     # etc

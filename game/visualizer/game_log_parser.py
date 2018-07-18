@@ -4,6 +4,7 @@ import os
 from game.common.enums import *
 from game.common.ship import Ship
 from game.common.station import *
+from game.common.asteroid_field_types import load_asteroid_field
 
 class GameLogParser:
     def __init__(self, log_dir):
@@ -55,24 +56,29 @@ class GameLogParser:
         objs = []
 
         for serialized_obj in data:
-            if serialized_obj["object_type"] == ObjectType.ship:
+            obj_type = serialized_obj["object_type"]
+            if obj_type == ObjectType.ship:
                 obj = Ship()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
-            elif serialized_obj["object_type"] == ObjectType.station:
+            elif obj_type == ObjectType.station:
                 obj = Station()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
-            elif serialized_obj["object_type"] == ObjectType.black_market_station:
+            elif obj_type == ObjectType.black_market_station:
                 obj = BlackMarketStation()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
-            elif serialized_obj["object_type"] == ObjectType.secure_station:
+            elif obj_type == ObjectType.secure_station:
                 obj = SecureStation()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+            elif obj_type in [ObjectType.ironium_field]:
+                obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
         return objs
