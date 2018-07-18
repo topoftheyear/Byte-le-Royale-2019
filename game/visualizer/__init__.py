@@ -6,6 +6,7 @@ from pygame.locals import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.ship_sprites import *
 from game.visualizer.station_sprites import *
+from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
 
 import game.utils.ptext
@@ -32,6 +33,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     # Create Sprite groups
     ship_group = pygame.sprite.Group()
     station_group = pygame.sprite.Group()
+    asteroid_field_group = pygame.sprite.Group()
 
 
     for obj in universe:
@@ -50,6 +52,11 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
         elif obj.object_type == ObjectType.secure_station:
             station_sprite = SecureStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)
+
+        elif obj.object_type in [ObjectType.ironium_field]:
+            asteroid_field_sprite = get_asteroid_field_sprite(obj.object_type, *obj.position)
+            asteroid_field_group.add(asteroid_field_sprite)
+
 
 
     # prepare for game loop
@@ -123,6 +130,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
                 # draw groups to screan
                 station_group.draw(global_surf)
+                asteroid_field_group.draw(global_surf)
                 ship_group.draw(global_surf)
 
 
