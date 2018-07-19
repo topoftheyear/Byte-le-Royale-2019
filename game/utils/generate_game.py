@@ -80,6 +80,36 @@ def generate():
             "coords": percent_world(0.20, 0.55)
         },
         {
+            #s1
+            "type": ObjectType.station,
+            "coords": percent_world(0.52, 0.10)
+        },
+        {
+            #s6
+            "type": ObjectType.station,
+            "coords": percent_world(0.48, 0.76)
+        },
+        {
+            #s7
+            "type": ObjectType.station,
+            "coords": percent_world(0.95, 0.05)
+        },
+        {
+            #s2
+            "type": ObjectType.station,
+            "coords": percent_world(0.85, 0.42)
+        },
+        {
+            #s0
+            "type": ObjectType.station,
+            "coords": percent_world(0.60, 0.85)
+        },
+        {
+            #s3
+            "type": ObjectType.station,
+            "coords": percent_world(0.95, 0.95)
+        },
+        {
             # black market 2
             "type": ObjectType.black_market_station,
             "coords": percent_world(0.1, 0.8)

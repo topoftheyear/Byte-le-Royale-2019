@@ -86,8 +86,8 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         if self.move_target != None:
             # update rotation
             angle_to = math.degrees(math.atan2(
-                self.rect.center[0]-self.move_target[0],
-                self.rect.center[1]-self.move_target[1]))
+                self.rect.center[0]-self.new_vec[0],
+                self.rect.center[1]-self.new_vec[1]))
 
             self.rotate(angle_to)
 
