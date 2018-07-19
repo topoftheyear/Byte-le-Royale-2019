@@ -4,6 +4,7 @@ import pygame
 
 from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
+from game.utils.projection import *
 
 class ShipSpriteSheet(pygame.sprite.Sprite):
     def __init__(self, sprite_sheet_data, x, y, ship_id, color):
@@ -50,7 +51,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
 
 
         self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
+        self.rect.center = world_to_display(x, y)
         self.ship_id = ship_id
         self.current_vec = None
         self.new_vec = None
@@ -73,12 +74,14 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
 
         if intermediate == 0:
             self.current_vec = pygame.math.Vector2(self.rect.center[0], self.rect.center[1])
-            self.new_vec = pygame.math.Vector2(ship.position)
+            self.new_vec = pygame.math.Vector2(world_to_display(*ship.position))
 
-            move_event = self.get_event_type(events, LogEvent.ship_move, one=True)
-            if move_event:
-                self.move_target = move_event["target_pos"]
 
+        move_event = self.get_event_type(events, LogEvent.ship_move, one=True)
+        if move_event:
+            self.move_target = world_to_display(*move_event["target_pos"])
+        else:
+            self.move_target = None
 
         if self.move_target != None:
             # update rotation

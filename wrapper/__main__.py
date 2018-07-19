@@ -67,7 +67,6 @@ def generate():
 @click.option("--fullscreen", is_flag=True)
 def visualizer(verbose, log_path, gamma, dont_wait, fullscreen):
     from game.visualizer import start
-
     start(verbose, log_path, gamma, dont_wait, fullscreen)
 
 

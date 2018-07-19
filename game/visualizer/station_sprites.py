@@ -4,6 +4,7 @@ import pygame
 
 from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
+from game.utils.projection import *
 
 class StationSpriteSheet(pygame.sprite.Sprite):
     def __init__(self, sprite_sheet_data, x, y, station_id, color):
@@ -50,7 +51,7 @@ class StationSpriteSheet(pygame.sprite.Sprite):
 
 
         self.rect = self.image.get_rect()
-        self.rect.center = (x,y)
+        self.rect.center = world_to_display(x,y)
 
 
 

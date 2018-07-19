@@ -1,6 +1,7 @@
 import random
 
 from game.client.user_client import UserClient
+from game.config import *
 
 
 class NPC(UserClient):
@@ -19,7 +20,7 @@ class NPC(UserClient):
 
         # wander between random waypoints
         if self.heading is None:
-            self.heading = ( random.randint(0, 1280), random.randint(0, 720))
+            self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
 
         self.move(*self.heading)
 

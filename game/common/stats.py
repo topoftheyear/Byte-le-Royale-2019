@@ -7,7 +7,8 @@ class GameStats:
     hull_2 = 2000
     hull_3 = 2000
 
-    engine_speed_0 = 2
+    import random
+    engine_speed_0 = 3
     engine_speed_1 = 4
     engine_speed_2 = 6
     engine_speed_3 = 8

@@ -12,7 +12,7 @@ class Ship(GameObject):
         pass
 
 
-    def init(self, team_name, is_npc=False):
+    def init(self, team_name, is_npc=False, position=(0,0)):
         GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
@@ -34,7 +34,8 @@ class Ship(GameObject):
         self.current_hull = self.max_hull
 
 
-        self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
+        import random
+        self.engine_speed = random.randint(3,10)#GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
 
         self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
 
@@ -52,7 +53,7 @@ class Ship(GameObject):
         # ideally a dictionary of ItemType enums mapped to a count of the number of that item
         self.inventory = {}
 
-        self.position = (640,360)
+        self.position = position
 
         self.player_move_action = (0,0)
         self.player_action = PlayerAction.none

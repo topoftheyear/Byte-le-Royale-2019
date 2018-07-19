@@ -8,6 +8,7 @@ from game.visualizer.ship_sprites import *
 from game.visualizer.station_sprites import *
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
+from game.config import *
 
 import game.utils.ptext
 
@@ -22,9 +23,9 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
     # get global surface object and set window caption
     if fullscreen:
-        global_surf = pygame.display.set_mode((1280,720), flags=pygame.FULLSCREEN)
+        global_surf = pygame.display.set_mode(DISPLAY_SIZE, flags=pygame.FULLSCREEN)
     else:
-        global_surf = pygame.display.set_mode((1280,720))
+        global_surf = pygame.display.set_mode(DISPLAY_SIZE)
     pygame.display.set_caption('Byte-le Royale')
 
     # set gamma (i.e. sort of like brightness)
@@ -63,7 +64,6 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     first_loop = True
     pause = False
     turn_wait_counter = 1
-    intermediate_frames = 3
 
     while True:
 
@@ -114,8 +114,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             # intermediate loop
             # -- allows for pretty lerping of ship movement
 
-            for i in range(intermediate_frames):
-                intermediate = i/float(intermediate_frames)
+            for i in range(VIS_INTERMEDIATE_FRAMES):
+                intermediate = i/float(VIS_INTERMEDIATE_FRAMES)
 
                 # call update on groups
                 ship_group.update(universe, events, intermediate)
