@@ -34,9 +34,12 @@ class GameLogParser:
             self.turns.append(events)
 
     def get_turn(self):
-        turn = self.turns[self.tick]
-        self.tick += 1
-        return turn
+        if self.tick < self.max_ticks:
+            turn = self.turns[self.tick]
+            self.tick += 1
+            return turn
+        else:
+            return None, None
 
     def check_finished(self):
         return self.tick > self.max_ticks

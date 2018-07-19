@@ -79,6 +79,11 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             # finish
             if turn_wait_counter == 0:
                 universe, events = log_parser.get_turn()
+
+                if universe == None and events == None:
+                    # game is over, go to end screen
+                    pygame.quit()
+                    sys.exit()
             else:
                 turn_wait_counter -= 1
 
