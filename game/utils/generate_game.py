@@ -110,9 +110,19 @@ def generate():
             "coords": percent_world(0.95, 0.95)
         },
         {
+            #s6
+            "type": ObjectType.station,
+            "coords": percent_world(0.05, 0.9)
+        },
+        {
             # black market 2
             "type": ObjectType.black_market_station,
             "coords": percent_world(0.1, 0.8)
+        },
+        {
+            # black market 1
+            "type": ObjectType.black_market_station,
+            "coords": percent_world(0.88, 0.25)
         },
         {
             "type": ObjectType.secure_station,
@@ -139,6 +149,10 @@ def generate():
         {
             "type": ObjectType.ironium_field,
             "coords": percent_world(0.05, 0.05)
+        },
+        {
+            "type": ObjectType.ironium_field,
+            "coords": percent_world(0.85, 0.85)
         }
     ]
 

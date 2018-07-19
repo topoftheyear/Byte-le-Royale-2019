@@ -60,7 +60,7 @@ class IroniumFieldSprite(AsteroidFieldSpriteSheet):
     def __init__(self, x, y):
         AsteroidFieldSpriteSheet.__init__(self, [
             0, 0,
-            64,64
+            128,128
         ], x, y, pygame.Color(117, 111, 100))
 
 
