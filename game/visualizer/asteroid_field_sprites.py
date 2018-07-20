@@ -61,7 +61,7 @@ class IroniumFieldSprite(AsteroidFieldSpriteSheet):
         AsteroidFieldSpriteSheet.__init__(self, [
             0, 0,
             128,128
-        ], x, y, pygame.Color(117, 111, 100))
+        ], x, y, pygame.Color("#BDB4A4"))
 
 
 def get_asteroid_field_sprite(object_type, x, y):
