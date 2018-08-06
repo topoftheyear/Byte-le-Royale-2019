@@ -51,13 +51,26 @@ class ObjectType:
     station = 1
     black_market_station = 2
     secure_station = 3
-    ironium_field = 4
+    geothite_field = 4
+    cuperite_field = 5
+    gold_field = 6
 
+    material = 7
 
 
 class MaterialType:
-    ironium = 0
-    food = 1
-    electrum = 2
-    circuitry = 3
-    weaponry = 4
+    iron = 1
+    steel = 2
+    copper = 3
+    circuitry = 4
+    pylons = 5
+    weaponary = 6
+    machinery = 7
+    computers = 8
+    drones = 9
+    gold = 10
+    geothite = 11
+    cuperite = 12
+
+
+

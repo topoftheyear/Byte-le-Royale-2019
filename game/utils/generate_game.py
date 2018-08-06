@@ -49,7 +49,7 @@ def load():
         elif obj_type == ObjectType.secure_station:
             obj = SecureStation()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
-        elif obj_type in [ObjectType.ironium_field]:
+        elif obj_type in [ObjectType.geothite_field, ObjectType.gold_field, ObjectType.cuperite_field]:
             obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
 
 
@@ -64,51 +64,6 @@ def generate():
 
     # Generate stations
     station_data = [
-        {
-            #s5
-            "type": ObjectType.station,
-            "coords": percent_world(0.12, 0.25)
-        },
-        {
-            #s4
-            "type": ObjectType.station,
-            "coords": percent_world(0.05, 0.45)
-        },
-        {
-            #s9
-            "type": ObjectType.station,
-            "coords": percent_world(0.20, 0.55)
-        },
-        {
-            #s1
-            "type": ObjectType.station,
-            "coords": percent_world(0.52, 0.10)
-        },
-        {
-            #s6
-            "type": ObjectType.station,
-            "coords": percent_world(0.48, 0.76)
-        },
-        {
-            #s7
-            "type": ObjectType.station,
-            "coords": percent_world(0.95, 0.05)
-        },
-        {
-            #s2
-            "type": ObjectType.station,
-            "coords": percent_world(0.85, 0.42)
-        },
-        {
-            #s0
-            "type": ObjectType.station,
-            "coords": percent_world(0.60, 0.85)
-        },
-        {
-            #s3
-            "type": ObjectType.station,
-            "coords": percent_world(0.95, 0.95)
-        },
         {
             #s6
             "type": ObjectType.station,
@@ -147,12 +102,16 @@ def generate():
     # Generate mining fields
     asteroid_field_data = [
         {
-            "type": ObjectType.ironium_field,
+            "type": ObjectType.geothite_field,
             "coords": percent_world(0.05, 0.05)
         },
         {
-            "type": ObjectType.ironium_field,
+            "type": ObjectType.gold_field,
             "coords": percent_world(0.85, 0.85)
+        },
+        {
+            "type": ObjectType.cuperite_field,
+            "coords": percent_world(0.5, 0.85)
         }
     ]
 

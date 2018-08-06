@@ -54,7 +54,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             station_sprite = SecureStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)
 
-        elif obj.object_type in [ObjectType.ironium_field]:
+        elif obj.object_type in [ObjectType.geothite_field, ObjectType.cuperite_field, ObjectType.gold_field]:
             asteroid_field_sprite = get_asteroid_field_sprite(obj.object_type, *obj.position)
             asteroid_field_group.add(asteroid_field_sprite)
 

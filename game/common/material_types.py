@@ -5,53 +5,75 @@ from game.common.enums import *
 class Iron(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.iron)       #material_type
+            value,                      #value
+            MaterialType.iron)       #material_type
+
 class Steel(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.steel)       #material_type
+            value,                      #value
+            MaterialType.steel)       #material_type
+
 class Copper(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.copper)       #material_type
+            value,                      #value
+            MaterialType.copper)       #material_type
+
 class Circuitry(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.circuitry)       #material_type
+            value,                      #value
+            MaterialType.circuitry)       #material_type
+
 class Pylons(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.pylons)       #material_type
+            value,                      #value
+            MaterialType.pylons)       #material_type
+
 class Weaponry(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.weaponry)       #material_type
+            value,                      #value
+            MaterialType.weaponry)       #material_type
+
 class Machinery(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.machinery)       #material_type
+            value,                      #value
+            MaterialType.machinery)       #material_type
+
 class Computers(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.computers)       #material_type
+            value,                      #value
+            MaterialType.computers)       #material_type
+
 class Drones(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.drones)       #material_type
+            value,                      #value
+            MaterialType.drones)       #material_type
+
 class Gold(Material):
     def init(self, value=100):
         Material.init(self,
-                value,                      #value
-                MaterialType.gold)       #material_type
+            value,                      #value
+            MaterialType.gold)       #material_type
+
+class Cuperite(Material):
+    def init(self, value=100):
+        Material.init(self,
+            value,                      #value
+            MaterialType.cuperite)       #material_type
+
+class Geothite(Material):
+    def init(self, value=100):
+        Material.init(self,
+            value,                      #value
+            MaterialType.geothite)       #material_type
+
 
 
 def load_material(material_type, data):
@@ -75,6 +97,10 @@ def load_material(material_type, data):
         new_material = Drones()
     elif material_type == MaterialType.gold:
         new_material = Gold()
+    elif material_type == MaterialType.cuperite:
+        new_material = Cuperite()
+    elif material_type == MaterialType.geothite:
+        new_material = Geothite()
 
     else:
         raise Exception("Invalid material type: {0}".format(material_type))

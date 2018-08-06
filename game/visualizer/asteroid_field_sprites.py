@@ -56,14 +56,31 @@ class AsteroidFieldSpriteSheet(pygame.sprite.Sprite):
 
 
 
-class IroniumFieldSprite(AsteroidFieldSpriteSheet):
+class CuperiteFieldSprite(AsteroidFieldSpriteSheet):
     def __init__(self, x, y):
         AsteroidFieldSpriteSheet.__init__(self, [
             0, 0,
             128,128
         ], x, y, pygame.Color("#BDB4A4"))
 
+class GeothiteFieldSprite(AsteroidFieldSpriteSheet):
+    def __init__(self, x, y):
+        AsteroidFieldSpriteSheet.__init__(self, [
+            0, 0,
+            128,128
+        ], x, y, pygame.Color("#BDB4A4"))
+
+class GoldFieldSprite(AsteroidFieldSpriteSheet):
+    def __init__(self, x, y):
+        AsteroidFieldSpriteSheet.__init__(self, [
+            0, 0,
+            128,128
+        ], x, y, pygame.Color("#BDB4A4"))
 
 def get_asteroid_field_sprite(object_type, x, y):
-    if object_type == ObjectType.ironium_field:
-        return IroniumFieldSprite(x, y)
+    if object_type == ObjectType.cuperite_field:
+        return CuperiteFieldSprite(x, y)
+    elif object_type == ObjectType.gold_field:
+        return GoldFieldSprite(x, y)
+    elif object_type == ObjectType.geothite_field:
+        return GeothiteFieldSprite(x, y)
