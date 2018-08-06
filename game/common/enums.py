@@ -59,18 +59,20 @@ class ObjectType:
 
 
 class MaterialType:
+    null = -1
     iron = 1
     steel = 2
     copper = 3
     circuitry = 4
     pylons = 5
-    weaponary = 6
+    weaponry = 6
     machinery = 7
     computers = 8
     drones = 9
     gold = 10
     geothite = 11
     cuperite = 12
+    wire = 13
 
 
 

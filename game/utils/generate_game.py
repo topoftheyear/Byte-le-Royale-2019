@@ -49,6 +49,7 @@ def load():
         elif obj_type == ObjectType.secure_station:
             obj = SecureStation()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+
         elif obj_type in [ObjectType.geothite_field, ObjectType.gold_field, ObjectType.cuperite_field]:
             obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
 
@@ -67,7 +68,142 @@ def generate():
         {
             #s6
             "type": ObjectType.station,
-            "coords": percent_world(0.05, 0.9)
+            "coords": percent_world(0.05, 0.9),
+
+            "primary_import": MaterialType.cuperite,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.drones,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.copper,
+            "production_rate": 1
+        },
+        {
+            #s4
+            "type": ObjectType.station,
+            "coords": percent_world(0.025, 0.6),
+
+            "primary_import": MaterialType.circuitry,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.null,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.pylons,
+            "production_rate": 1
+        },
+        {
+            #s9
+            "type": ObjectType.station,
+            "coords": percent_world(0.15, 0.58),
+
+            "primary_import": MaterialType.computers,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.null,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.weaponry,
+            "production_rate": 1
+        },
+        {
+            #s5
+            "type": ObjectType.station,
+            "coords": percent_world(0.085, 0.40),
+
+            "primary_import": MaterialType.steel,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.pylons,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.machinery,
+            "production_rate": 1
+        },
+        {
+            #s0
+            "type": ObjectType.station,
+            "coords": percent_world(0.4, 0.10),
+
+            "primary_import": MaterialType.copper,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.null,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.wire,
+            "production_rate": 1
+        },
+        {
+            #s8
+            "type": ObjectType.station,
+            "coords": percent_world(0.6, 0.80),
+
+            "primary_import": MaterialType.geothite,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.machinery,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.iron,
+            "production_rate": 1
+        },
+        {
+            #s1
+            "type": ObjectType.station,
+            "coords": percent_world(0.63, 0.08),
+
+            "primary_import": MaterialType.geothite,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.machinery,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.iron,
+            "production_rate": 1
+        },
+        {
+            #s2
+            "type": ObjectType.station,
+            "coords": percent_world(0.90, 0.38),
+
+            "primary_import": MaterialType.gold,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.wire,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.circuitry,
+            "production_rate": 1
+        },
+        {
+            #s3
+            "type": ObjectType.station,
+            "coords": percent_world(0.96, 0.95),
+
+            "primary_import": MaterialType.weaponry,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.null,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.drones,
+            "production_rate": 1
+        },
+        {
+            #s7
+            "type": ObjectType.station,
+            "coords": percent_world(0.92, 0.03),
+
+            "primary_import": MaterialType.iron,
+            "primary_consumption_rate": 1,
+
+            "secondary_import": MaterialType.drones,
+            "secondary_consumption_rate": 1,
+
+            "production_material": MaterialType.steel,
+            "production_rate": 1
         },
         {
             # black market 2
@@ -88,14 +224,31 @@ def generate():
     for i, data in enumerate(station_data):
         if data["type"] == ObjectType.station:
             station = Station()
+            station.init(
+                name="Station {0}".format(i),
+                position=data["coords"],
+                primary_import = data["primary_import"],
+                primary_consumption_rate= data["primary_consumption_rate"],
+
+                secondary_import = data["secondary_import"],
+                secondary_consumption_rate= data["secondary_consumption_rate"],
+
+                production_material = data["production_material"],
+                production_rate = data["production_rate"]
+            )
+
         elif data["type"] == ObjectType.black_market_station:
             station = BlackMarketStation()
+            station.init(
+                    name="Station {0}".format(i),
+                    position=data["coords"])
+
         elif data["type"] == ObjectType.secure_station:
             station = SecureStation()
+            station.init(
+                    name="Station {0}".format(i),
+                    position=data["coords"])
 
-        station.init(
-                name="Station {0}".format(i),
-                position=data["coords"])
         universe.append(station)
 
 

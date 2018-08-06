@@ -6,7 +6,18 @@ from game.common.material_types import *
 
 class Station(GameObject):
 
-    def init(self, name, station_type=ObjectType.station, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5):
+    def init(self,
+            name,
+            station_type=ObjectType.station,
+            position=(0,0),
+            primary_import=None,
+            primary_consumption_rate=1,
+            secondary_import=None,
+            secondary_consumption_rate=1,
+            production_material=None,
+            production_rate=1,
+            current_cargo=0,
+            accessibility_radius=5):
         GameObject.init(self, station_type)
 
         self.id = str(uuid4())
@@ -14,8 +25,11 @@ class Station(GameObject):
 
         self.position = position
 
-        self.consumption_material = consumption_material
-        self.consumption_rate = consumption_rate
+        self.primary_import = primary_import
+        self.primary_consumption_rate = primary_consumption_rate
+        self.secondary_consumption_rate = secondary_consumption_rate
+        self.secondary_import = secondary_import
+
         self.production_material = production_material
         self.production_rate = production_rate
 
@@ -47,8 +61,12 @@ class Station(GameObject):
                 "name": self.name,
                 "position": self.position,
 
-                "consumption_material": self.consumption_material,
-                "consumption_rate": self.consumption_rate,
+                "primary_import": self.primary_import,
+                "primary_consumption_rate": self.primary_consumption_rate,
+
+                "secondary_import": self.secondary_import,
+                "secondary_consumption_rate": self.secondary_consumption_rate,
+
                 "production_material": self.production_material,
                 "production_rate": self.production_rate ,
 
@@ -75,8 +93,12 @@ class Station(GameObject):
 
             self.position = data["position"]
 
-            self.consumption_material = data["consumption_material"]
-            self.consumption_rate = data["consumption_rate"]
+            self.primary_import = data["primary_import"]
+            self.primary_consumption_rate = data["primary_consumption_rate"]
+
+            self.secondary_import = data["secondary_import"]
+            self.secondary_consumption_rate = data["secondary_consumption_rate"]
+
             self.production_material = data["production_material"]
             self.production_rate = data["production_rate"]
 
@@ -91,10 +113,50 @@ class Station(GameObject):
             pass
 
 class BlackMarketStation(Station):
-    def init(self, name, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5, object_type=ObjectType.station):
-        Station.init(self, name, position=position, consumption_material=consumption_material, consumption_rate=consumption_rate, production_material=production_material, production_rate=production_rate, current_cargo=0, accessibility_radius=5, station_type=ObjectType.black_market_station)
+    def init(self,
+            name,
+            position=(0,0),
+            primary_import=None,
+            primary_consumption_rate=1,
+            production_material=None,
+            production_rate=1,
+            current_cargo=0,
+            accessibility_radius=5,
+            object_type=ObjectType.station):
+
+        Station.init(self,
+                name,
+                position=position,
+                primary_import=primary_import,
+                primary_consumption_rate=primary_consumption_rate,
+                production_material=production_material,
+                production_rate=production_rate,
+                current_cargo=0,
+                accessibility_radius=5,
+                station_type=ObjectType.black_market_station)
 
 
 class SecureStation(Station):
-    def init(self, name, position=(0,0), consumption_material=None, consumption_rate=1, production_material=None, production_rate=1, current_cargo=0, accessibility_radius=5, object_type=ObjectType.station):
-        Station.init(self, name, position=position, consumption_material=consumption_material, consumption_rate=consumption_rate, production_material=production_material, production_rate=production_rate, current_cargo=0, accessibility_radius=5, station_type=ObjectType.secure_station)
+    def init(self,
+            name,
+            position=(0,0),
+            primary_import=None,
+            primary_consumption_rate=1,
+            production_material=None,
+            production_rate=1,
+            current_cargo=0,
+            accessibility_radius=5,
+            object_type=ObjectType.station):
+
+        Station.init(self,
+                name,
+                position=position,
+                primary_import=primary_import,
+                primary_consumption_rate=primary_consumption_rate,
+                production_material=production_material,
+                production_rate=production_rate,
+                current_cargo=0,
+                accessibility_radius=5,
+                station_type=ObjectType.secure_station)
+
+
