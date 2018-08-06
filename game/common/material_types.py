@@ -66,13 +66,13 @@ class Cuperite(Material):
     def init(self, value=100):
         Material.init(self,
             value,                      #value
-            MaterialType.cuperite)       #material_type
+            MaterialType.cuprite)       #material_type
 
 class Geothite(Material):
     def init(self, value=100):
         Material.init(self,
             value,                      #value
-            MaterialType.geothite)       #material_type
+            MaterialType.goethite)       #material_type
 
 class Wire(Material):
     def init(self, value=100):
@@ -103,9 +103,9 @@ def load_material(material_type, data):
         new_material = Drones()
     elif material_type == MaterialType.gold:
         new_material = Gold()
-    elif material_type == MaterialType.cuperite:
+    elif material_type == MaterialType.cuprite:
         new_material = Cuperite()
-    elif material_type == MaterialType.geothite:
+    elif material_type == MaterialType.goethite:
         new_material = Geothite()
     elif material_type == MaterialType.wire:
         new_material = Wire()

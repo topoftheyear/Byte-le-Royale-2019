@@ -5,9 +5,9 @@ from game.common.enums import *
 def load_asteroid_field(asteroid_field_type, data, security_level=SecurityLevel.player_owned):
     if asteroid_field_type == ObjectType.gold_field:
         new_asteroid_field = GoldField()
-    elif asteroid_field_type == ObjectType.geothite_field:
+    elif asteroid_field_type == ObjectType.goethite_field:
         new_asteroid_field = GeothiteField()
-    elif asteroid_field_type == ObjectType.cuperite_field:
+    elif asteroid_field_type == ObjectType.cuprite_field:
         new_asteroid_field = CuperiteField()
     else:
         raise Exception("Invalid asteroid field type: {0}".format(asteroid_field_type))
@@ -18,9 +18,9 @@ def load_asteroid_field(asteroid_field_type, data, security_level=SecurityLevel.
 def create_asteroid_field(field_type, position):
     if field_type == ObjectType.gold_field:
         obj = GoldField()
-    elif field_type == ObjectType.geothite_field:
+    elif field_type == ObjectType.goethite_field:
         obj = GeothiteField()
-    elif field_type == ObjectType.cuperite_field:
+    elif field_type == ObjectType.cuprite_field:
         obj = CuperiteField()
     else:
         raise Exception("Invalid asteroid field type: {0}".format(field_type))
@@ -40,15 +40,15 @@ class GoldField(AsteroidField):
 class GeothiteField(AsteroidField):
     def init(self, position):
         AsteroidField.init(self,
-                field_type=ObjectType.geothite_field,
+                field_type=ObjectType.goethite_field,
                 name="Geothite Field",
                 position=position,
-                material_type=MaterialType.geothite)
+                material_type=MaterialType.goethite)
 
 class CuperiteField(AsteroidField):
     def init(self, position):
         AsteroidField.init(self,
-                field_type=ObjectType.cuperite_field,
+                field_type=ObjectType.cuprite_field,
                 name="Cuperite Field",
                 position=position,
-                material_type=MaterialType.cuperite)
+                material_type=MaterialType.cuprite)

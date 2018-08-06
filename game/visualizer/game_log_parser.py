@@ -86,7 +86,7 @@ class GameLogParser:
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
-            elif obj_type in [ObjectType.cuperite_field]:
+            elif obj_type in [ObjectType.cuprite_field]:
                 obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
@@ -94,7 +94,7 @@ class GameLogParser:
                 obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
-            elif obj_type in [ObjectType.geothite_field]:
+            elif obj_type in [ObjectType.goethite_field]:
                 obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 

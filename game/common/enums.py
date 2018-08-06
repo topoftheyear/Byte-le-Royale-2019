@@ -51,8 +51,8 @@ class ObjectType:
     station = 1
     black_market_station = 2
     secure_station = 3
-    geothite_field = 4
-    cuperite_field = 5
+    goethite_field = 4
+    cuprite_field = 5
     gold_field = 6
 
     material = 7
@@ -70,8 +70,8 @@ class MaterialType:
     computers = 8
     drones = 9
     gold = 10
-    geothite = 11
-    cuperite = 12
+    goethite = 11
+    cuprite = 12
     wire = 13
 
 

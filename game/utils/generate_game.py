@@ -50,7 +50,7 @@ def load():
             obj = SecureStation()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
 
-        elif obj_type in [ObjectType.geothite_field, ObjectType.gold_field, ObjectType.cuperite_field]:
+        elif obj_type in [ObjectType.goethite_field, ObjectType.gold_field, ObjectType.cuprite_field]:
             obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
 
 
@@ -70,7 +70,7 @@ def generate():
             "type": ObjectType.station,
             "coords": percent_world(0.05, 0.9),
 
-            "primary_import": MaterialType.cuperite,
+            "primary_import": MaterialType.cuprite,
             "primary_consumption_rate": 1,
 
             "secondary_import": MaterialType.drones,
@@ -140,7 +140,7 @@ def generate():
             "type": ObjectType.station,
             "coords": percent_world(0.6, 0.80),
 
-            "primary_import": MaterialType.geothite,
+            "primary_import": MaterialType.goethite,
             "primary_consumption_rate": 1,
 
             "secondary_import": MaterialType.machinery,
@@ -154,7 +154,7 @@ def generate():
             "type": ObjectType.station,
             "coords": percent_world(0.63, 0.08),
 
-            "primary_import": MaterialType.geothite,
+            "primary_import": MaterialType.goethite,
             "primary_consumption_rate": 1,
 
             "secondary_import": MaterialType.machinery,
@@ -255,7 +255,7 @@ def generate():
     # Generate mining fields
     asteroid_field_data = [
         {
-            "type": ObjectType.geothite_field,
+            "type": ObjectType.goethite_field,
             "coords": percent_world(0.05, 0.05)
         },
         {
@@ -263,7 +263,7 @@ def generate():
             "coords": percent_world(0.85, 0.85)
         },
         {
-            "type": ObjectType.cuperite_field,
+            "type": ObjectType.cuprite_field,
             "coords": percent_world(0.5, 0.85)
         }
     ]

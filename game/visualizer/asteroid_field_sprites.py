@@ -78,9 +78,9 @@ class GoldFieldSprite(AsteroidFieldSpriteSheet):
         ], x, y, pygame.Color("#FCB100"))
 
 def get_asteroid_field_sprite(object_type, x, y):
-    if object_type == ObjectType.cuperite_field:
+    if object_type == ObjectType.cuprite_field:
         return CuperiteFieldSprite(x, y)
     elif object_type == ObjectType.gold_field:
         return GoldFieldSprite(x, y)
-    elif object_type == ObjectType.geothite_field:
+    elif object_type == ObjectType.goethite_field:
         return GeothiteFieldSprite(x, y)
