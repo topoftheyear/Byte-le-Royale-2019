@@ -66,7 +66,7 @@ def generate():
     # Generate stations
     station_data = [
         {
-            #s6
+            #s6 Copper
             "type": ObjectType.station,
             "coords": percent_world(0.05, 0.9),
 
@@ -80,7 +80,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s4
+            #s4 Pylons
             "type": ObjectType.station,
             "coords": percent_world(0.025, 0.6),
 
@@ -94,7 +94,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s9
+            #s9 Weaponry
             "type": ObjectType.station,
             "coords": percent_world(0.15, 0.58),
 
@@ -108,7 +108,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s5
+            #s5 Machinery
             "type": ObjectType.station,
             "coords": percent_world(0.085, 0.40),
 
@@ -122,7 +122,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s0
+            #s0 Wire
             "type": ObjectType.station,
             "coords": percent_world(0.4, 0.10),
 
@@ -136,7 +136,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s8
+            #s8 Iron
             "type": ObjectType.station,
             "coords": percent_world(0.6, 0.80),
 
@@ -150,21 +150,21 @@ def generate():
             "production_rate": 1
         },
         {
-            #s1
+            #s1 Computers
             "type": ObjectType.station,
             "coords": percent_world(0.63, 0.08),
 
-            "primary_import": MaterialType.goethite,
+            "primary_import": MaterialType.circuitry,
             "primary_consumption_rate": 1,
 
-            "secondary_import": MaterialType.machinery,
+            "secondary_import": MaterialType.null,
             "secondary_consumption_rate": 1,
 
-            "production_material": MaterialType.iron,
+            "production_material": MaterialType.computers,
             "production_rate": 1
         },
         {
-            #s2
+            #s2 Circuitry
             "type": ObjectType.station,
             "coords": percent_world(0.90, 0.38),
 
@@ -178,7 +178,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s3
+            #s3 Drones
             "type": ObjectType.station,
             "coords": percent_world(0.96, 0.95),
 
@@ -192,7 +192,7 @@ def generate():
             "production_rate": 1
         },
         {
-            #s7
+            #s7 Steel
             "type": ObjectType.station,
             "coords": percent_world(0.92, 0.03),
 
