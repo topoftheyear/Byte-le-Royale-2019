@@ -10,13 +10,21 @@ class Station(GameObject):
             name,
             station_type=ObjectType.station,
             position=(0,0),
+
             primary_import=None,
-            primary_consumption_rate=1,
+            primary_consumption_qty=1,
+            primary_max = 200,
+
             secondary_import=None,
-            secondary_consumption_rate=1,
+            secondary_consumption_qty=1,
+            secondary_max = 50,
+
+            production_frequency=5,
             production_material=None,
-            production_rate=1,
-            current_cargo=0,
+            production_qty=1,
+            production_max = 200,
+
+            cargo=None,
             accessibility_radius=5):
         GameObject.init(self, station_type)
 
@@ -25,15 +33,27 @@ class Station(GameObject):
 
         self.position = position
 
-        self.primary_import = primary_import
-        self.primary_consumption_rate = primary_consumption_rate
-        self.secondary_consumption_rate = secondary_consumption_rate
+        self.primary_import = primary_import # primary import material
+        self.primary_consumption_qty = primary_consumption_qty # qty to consume in one shot
+        self.primary_max = primary_max
+
         self.secondary_import = secondary_import
+        self.secondary_consumption_qty = secondary_consumption_qty
+        self.secondary_max = secondary_max
 
+        self.production_frequency = production_frequency # how often to consume inputs to create output
         self.production_material = production_material
-        self.production_rate = production_rate
+        self.production_qty = production_qty
+        self.production_max = production_max
 
-        self.current_cargo = current_cargo
+        self.sell_price = 0
+        self.primary_buy_price = 0
+        self.secondary_buy_price = 0
+
+        if cargo is None:
+            self.cargo = {}
+        else:
+            self.cargo = cargo
 
         self.accessibility_radius = accessibility_radius
 
@@ -62,17 +82,25 @@ class Station(GameObject):
                 "position": self.position,
 
                 "primary_import": self.primary_import,
-                "primary_consumption_rate": self.primary_consumption_rate,
+                "primary_consumption_qty": self.primary_consumption_qty,
+                "primary_max": self.primary_max,
 
                 "secondary_import": self.secondary_import,
-                "secondary_consumption_rate": self.secondary_consumption_rate,
+                "secondary_consumption_qty": self.secondary_consumption_qty,
+                "secondary_max": self.secondary_max,
 
+                "production_frequency": self.production_frequency,
                 "production_material": self.production_material,
-                "production_rate": self.production_rate ,
+                "production_qty": self.production_qty,
+                "production_max": self.production_max,
 
-                "current_cargo": self.current_cargo,
+                "cargo": self.cargo,
 
-                "accessibility_radius": self.accessibility_radius
+                "accessibility_radius": self.accessibility_radius,
+
+                "sell_price": self.sell_price,
+                "primary_buy_price": self.primary_buy_price,
+                "secondary_buy_price": self.secondary_buy_price
             }
 
 
@@ -94,17 +122,25 @@ class Station(GameObject):
             self.position = data["position"]
 
             self.primary_import = data["primary_import"]
-            self.primary_consumption_rate = data["primary_consumption_rate"]
+            self.primary_consumption_qty = data["primary_consumption_qty"]
+            self.primary_max = data["primary_max"]
 
             self.secondary_import = data["secondary_import"]
-            self.secondary_consumption_rate = data["secondary_consumption_rate"]
+            self.secondary_consumption_qty = data["secondary_consumption_qty"]
+            self.secondary_max = data["secondary_max"]
 
+            self.production_frequency = data["production_frequency"]
             self.production_material = data["production_material"]
-            self.production_rate = data["production_rate"]
+            self.production_qty = data["production_qty"]
+            self.production_max = data["production_max"]
 
-            self.current_cargo = data["current_cargo"]
+            self.cargo = { int(k): v for k, v in data["cargo"].items() }
 
             self.accessibility_radius = data["accessibility_radius"]
+
+            self.sell_price = data["sell_price"]
+            self.primary_buy_price = data["primary_buy_price"]
+            self.secondary_buy_price = data["primary_buy_price"]
 
         if security_level <= SecurityLevel.player_owned:
             pass
@@ -112,15 +148,20 @@ class Station(GameObject):
         if security_level <= SecurityLevel.other_player:
             pass
 
+
 class BlackMarketStation(Station):
     def init(self,
             name,
             position=(0,0),
+
             primary_import=None,
-            primary_consumption_rate=1,
+            primary_consumption_qty=1,
+
+            production_frequency=1,
             production_material=None,
-            production_rate=1,
-            current_cargo=0,
+            production_qty=1,
+
+            cargo=None,
             accessibility_radius=5,
             object_type=ObjectType.station):
 
@@ -128,10 +169,11 @@ class BlackMarketStation(Station):
                 name,
                 position=position,
                 primary_import=primary_import,
-                primary_consumption_rate=primary_consumption_rate,
+                primary_consumption_qty=primary_consumption_qty,
+                production_frequency=production_frequency,
                 production_material=production_material,
-                production_rate=production_rate,
-                current_cargo=0,
+                production_qty=production_qty,
+                cargo=None,
                 accessibility_radius=5,
                 station_type=ObjectType.black_market_station)
 
@@ -140,11 +182,15 @@ class SecureStation(Station):
     def init(self,
             name,
             position=(0,0),
+
             primary_import=None,
-            primary_consumption_rate=1,
+            primary_consumption_qty=1,
+
+            production_frequency=1,
             production_material=None,
-            production_rate=1,
-            current_cargo=0,
+            production_qty=1,
+
+            cargo=None,
             accessibility_radius=5,
             object_type=ObjectType.station):
 
@@ -152,10 +198,11 @@ class SecureStation(Station):
                 name,
                 position=position,
                 primary_import=primary_import,
-                primary_consumption_rate=primary_consumption_rate,
+                primary_consumption_qty=primary_consumption_qty,
+                production_frequency=production_frequency,
                 production_material=production_material,
-                production_rate=production_rate,
-                current_cargo=0,
+                production_qty=production_qty,
+                cargo=None,
                 accessibility_radius=5,
                 station_type=ObjectType.secure_station)
 
