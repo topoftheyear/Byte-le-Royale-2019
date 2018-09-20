@@ -36,6 +36,8 @@ def show_stats_display(stats, window_surf, clock):
 
     initial_screen = window_surf.copy()
 
+    window_surf.fill(pygame.Color(0,0,0))
+
     colors = [
         pygame.Color(0,255,0),
         pygame.Color(255,0,0),
@@ -82,9 +84,12 @@ def show_stats_display(stats, window_surf, clock):
                 sys.exit()
 
             if event.type == KEYUP:
-                if event.key == K_ESCAPE:
+                if event.key == K_s:
                     close = True
                     break
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
 
                 for i in range(num_plots):
                     if event.key == eval(f"pygame.K_{i+1}"):

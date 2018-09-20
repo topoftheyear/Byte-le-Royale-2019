@@ -13,6 +13,7 @@ class GameLogParser:
             raise Exception("Invalid log directory: {}".format(log_dir))
 
         self.log_dir = log_dir
+        self.stats = []
 
         # parse manifest
         with open("{}/manifest.json".format(log_dir), "r") as f:
@@ -21,7 +22,6 @@ class GameLogParser:
 
         self.turns = []
 
-        self.stats = []
 
         self.tick = 1
 
@@ -59,7 +59,7 @@ class GameLogParser:
             #if event["type"] == LogEvent.demo:
             #    pass # Deserialize game objects as needed
 
-        self.stats.append(turn["stats"])
+        self.stats.append(turn["turn_result"]["stats"])
 
         return universe, events
 

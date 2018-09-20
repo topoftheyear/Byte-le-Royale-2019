@@ -9,6 +9,7 @@ from game.visualizer.station_sprites import *
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
 from game.config import *
+from game.visualizer.stats_display import show_stats_display
 
 import game.utils.ptext
 
@@ -171,6 +172,19 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                         if event.key == K_ESCAPE:
                             pygame.quit()
                             sys.exit()
+                        if event.key == K_s:
+                            n = 3000
+                            show_stats_display({
+                                "a": [math.sin(i/100)+1 for i in range(n)],
+                                "b": [math.cos(i/100)+1 for i in range(n)],
+                                "c": [math.cos(i/100 + math.pi)+1 for i in range(n)],
+                                "d": [math.sin(i/100 + math.pi)+1 for i in range(n)],
+                                "e": [math.pow(i/1000, 1/2)+1 for i in range(n)],
+                                "f": [math.pow(1/2, i/100)+1 for i in range(n)],
+                                "g": [(i/n)*2 for i in range(n)],
+                                "h": [(1-(i/n))*2 for i in range(n)],
+                            }, global_surf, fpsClock)
+
 
 
                 # update the display
