@@ -8,7 +8,7 @@ STATION_DEFINITIONS = [
     {
         #s6 Copper
         "type": ObjectType.station,
-        "coords": percent_world(0.05, 0.9),
+        "position": percent_world(0.05, 0.9),
 
         "primary_import": MaterialType.cuprite,
         "primary_consumption_qty": 1,
@@ -23,6 +23,15 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 10,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
+
         "cargo": {
             MaterialType.cuprite: 20,
             MaterialType.drones: 10
@@ -31,7 +40,7 @@ STATION_DEFINITIONS = [
     {
         #s4 Pylons
         "type": ObjectType.station,
-        "coords": percent_world(0.025, 0.6),
+        "position": percent_world(0.025, 0.6),
 
         "primary_import": MaterialType.circuitry,
         "primary_consumption_qty": 1,
@@ -46,6 +55,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -53,7 +70,7 @@ STATION_DEFINITIONS = [
     {
         #s9 Weaponry
         "type": ObjectType.station,
-        "coords": percent_world(0.15, 0.58),
+        "position": percent_world(0.15, 0.58),
 
         "primary_import": MaterialType.computers,
         "primary_consumption_qty": 1,
@@ -68,6 +85,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -75,7 +100,7 @@ STATION_DEFINITIONS = [
     {
         #s5 Machinery
         "type": ObjectType.station,
-        "coords": percent_world(0.085, 0.40),
+        "position": percent_world(0.085, 0.40),
 
         "primary_import": MaterialType.steel,
         "primary_consumption_qty": 1,
@@ -90,6 +115,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -97,7 +130,7 @@ STATION_DEFINITIONS = [
     {
         #s0 Wire
         "type": ObjectType.station,
-        "coords": percent_world(0.4, 0.10),
+        "position": percent_world(0.4, 0.10),
 
         "primary_import": MaterialType.copper,
         "primary_consumption_qty": 1,
@@ -112,6 +145,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -119,7 +160,7 @@ STATION_DEFINITIONS = [
     {
         #s8 Iron
         "type": ObjectType.station,
-        "coords": percent_world(0.6, 0.80),
+        "position": percent_world(0.6, 0.80),
 
         "primary_import": MaterialType.goethite,
         "primary_consumption_qty": 1,
@@ -134,6 +175,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -141,7 +190,7 @@ STATION_DEFINITIONS = [
     {
         #s1 Computers
         "type": ObjectType.station,
-        "coords": percent_world(0.63, 0.08),
+        "position": percent_world(0.63, 0.08),
 
         "primary_import": MaterialType.circuitry,
         "primary_consumption_qty": 1,
@@ -156,6 +205,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -163,7 +220,7 @@ STATION_DEFINITIONS = [
     {
         #s2 Circuitry
         "type": ObjectType.station,
-        "coords": percent_world(0.90, 0.38),
+        "position": percent_world(0.90, 0.38),
 
         "primary_import": MaterialType.gold,
         "primary_consumption_qty": 1,
@@ -178,6 +235,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -185,7 +250,7 @@ STATION_DEFINITIONS = [
     {
         #s3 Drones
         "type": ObjectType.station,
-        "coords": percent_world(0.96, 0.95),
+        "position": percent_world(0.96, 0.95),
 
         "primary_import": MaterialType.weaponry,
         "primary_consumption_qty": 1,
@@ -200,6 +265,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -207,7 +280,7 @@ STATION_DEFINITIONS = [
     {
         #s7 Steel
         "type": ObjectType.station,
-        "coords": percent_world(0.92, 0.03),
+        "position": percent_world(0.92, 0.03),
 
         "primary_import": MaterialType.iron,
         "primary_consumption_qty": 1,
@@ -222,6 +295,14 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 100,
 
+        "sell_price": 100,
+        "primary_buy_price": 100,
+        "secondary_buy_price": 100,
+
+        "base_sell_price": 100,
+        "base_primary_buy_price": 100,
+        "base_secondary_buy_price": 100,
+
         "cargo": {
 
         }
@@ -229,30 +310,30 @@ STATION_DEFINITIONS = [
     {
         # black market 2
         "type": ObjectType.black_market_station,
-        "coords": percent_world(0.1, 0.8)
+        "position": percent_world(0.1, 0.8)
     },
     {
         # black market 1
         "type": ObjectType.black_market_station,
-        "coords": percent_world(0.88, 0.25)
+        "position": percent_world(0.88, 0.25)
     },
     {
         "type": ObjectType.secure_station,
-        "coords": percent_world(0.5, 0.5)
+        "position": percent_world(0.5, 0.5)
     }
 ]
 
 ASTEROID_FIELD_DEFINITIONS = [
     {
         "type": ObjectType.goethite_field,
-        "coords": percent_world(0.05, 0.05)
+        "position": percent_world(0.05, 0.05)
     },
     {
         "type": ObjectType.gold_field,
-        "coords": percent_world(0.85, 0.85)
+        "position": percent_world(0.85, 0.85)
     },
     {
         "type": ObjectType.cuprite_field,
-        "coords": percent_world(0.5, 0.85)
+        "position": percent_world(0.5, 0.85)
     }
 ]

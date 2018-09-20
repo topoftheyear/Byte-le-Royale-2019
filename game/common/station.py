@@ -24,6 +24,14 @@ class Station(GameObject):
             production_qty=1,
             production_max = 200,
 
+            sell_price=0,
+            primary_buy_price=0,
+            secondary_buy_price=0,
+
+            base_sell_price=0,
+            base_primary_buy_price=0,
+            base_secondary_buy_price=0,
+
             cargo=None,
             accessibility_radius=5):
         GameObject.init(self, station_type)
@@ -46,9 +54,13 @@ class Station(GameObject):
         self.production_qty = production_qty
         self.production_max = production_max
 
-        self.sell_price = 0
-        self.primary_buy_price = 0
-        self.secondary_buy_price = 0
+        self.sell_price = sell_price
+        self.primary_buy_price = primary_buy_price
+        self.secondary_buy_price = secondary_buy_price
+
+        self.base_sell_price = base_sell_price
+        self.base_primary_buy_price = base_primary_buy_price
+        self.base_secondary_buy_price = base_secondary_buy_price
 
         if cargo is None:
             self.cargo = {}
@@ -100,7 +112,11 @@ class Station(GameObject):
 
                 "sell_price": self.sell_price,
                 "primary_buy_price": self.primary_buy_price,
-                "secondary_buy_price": self.secondary_buy_price
+                "secondary_buy_price": self.secondary_buy_price,
+
+                "base_sell_price": self.base_sell_price,
+                "base_primary_buy_price": self.base_primary_buy_price,
+                "base_secondary_buy_price": self.base_secondary_buy_price
             }
 
 
@@ -141,6 +157,10 @@ class Station(GameObject):
             self.sell_price = data["sell_price"]
             self.primary_buy_price = data["primary_buy_price"]
             self.secondary_buy_price = data["primary_buy_price"]
+
+            self.base_sell_price = data["base_sell_price"]
+            self.base_primary_buy_price = data["base_primary_buy_price"]
+            self.base_secondary_buy_price = data["base_primary_buy_price"]
 
         if security_level <= SecurityLevel.player_owned:
             pass

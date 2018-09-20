@@ -39,8 +39,9 @@ class CustomServer(ServerControl):
         self.print("SERVER PRE TURN")
 
         # reset turn result
-        self.turn_log = { "events":[
-            ],
+        self.turn_log = {
+            "events":[],
+            "stats": {}
         }
 
         if not self.started:
@@ -167,7 +168,9 @@ class CustomServer(ServerControl):
 
         # update station market / update BGS
         self.station_controller.tick(
-                self.filter_universe(ObjectType.station))
+            self.filter_universe(ObjectType.station))
+
+        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)

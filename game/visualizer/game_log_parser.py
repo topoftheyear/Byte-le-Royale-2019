@@ -21,6 +21,8 @@ class GameLogParser:
 
         self.turns = []
 
+        self.stats = []
+
         self.tick = 1
 
         self.load_turns()
@@ -57,8 +59,12 @@ class GameLogParser:
             #if event["type"] == LogEvent.demo:
             #    pass # Deserialize game objects as needed
 
+        self.stats.append(turn["stats"])
 
         return universe, events
+
+    def get_stats(self):
+        return self.stats
 
 
     def deserialize_universe(self, data):

@@ -70,43 +70,34 @@ def generate():
     for i, data in enumerate(STATION_DEFINITIONS):
         if data["type"] == ObjectType.station:
             station = Station()
+            del data["type"]
             station.init(
                 name="Station {0}".format(i),
-                position=data["coords"],
-                primary_import = data["primary_import"],
-                primary_consumption_qty= data["primary_consumption_qty"],
-                primary_max=data["primary_max"],
-
-                secondary_import = data["secondary_import"],
-                secondary_consumption_qty= data["secondary_consumption_qty"],
-                secondary_max=data["secondary_max"],
-
-                production_material = data["production_material"],
-                production_frequency = data["production_frequency"],
-                production_max=data["production_max"],
-                production_qty = data["production_qty"],
-
-                cargo = data["cargo"]
+                **data
             )
 
         elif data["type"] == ObjectType.black_market_station:
+            del data["type"]
             station = BlackMarketStation()
             station.init(
                     name="Station {0}".format(i),
-                    position=data["coords"])
+                    **data
+                )
 
         elif data["type"] == ObjectType.secure_station:
+            del data["type"]
             station = SecureStation()
             station.init(
                     name="Station {0}".format(i),
-                    position=data["coords"])
+                    **data
+                )
 
         universe.append(station)
 
 
     # Generate mining fields
     for i, data in enumerate(ASTEROID_FIELD_DEFINITIONS):
-        obj = create_asteroid_field(data["type"], data["coords"])
+        obj = create_asteroid_field(data["type"], data["position"])
         universe.append(obj)
 
 

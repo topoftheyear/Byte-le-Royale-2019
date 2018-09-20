@@ -1,4 +1,5 @@
 import math
+import random
 import sys
 
 from game.common.enums import *
@@ -17,7 +18,7 @@ class StationController:
                 "production_counter": 0
             }
 
-        self.log = []
+        self.stats = []
         self.initialized = False
 
         self.debug = False
@@ -88,7 +89,7 @@ class StationController:
                     else:
                         station.cargo[station.production_material] += station.production_qty * 2
 
-                    print(f"Created x{station.production_qty}*2 material {station.production_material}")
+                    self.print(f"Created x{station.production_qty}*2 material {station.production_material}")
 
                 else:
 
@@ -97,7 +98,7 @@ class StationController:
                     else:
                         station.cargo[station.production_material] += station.production_qty
 
-                    print(f"Created x{station.production_qty} material {station.production_material}")
+                    self.print(f"Created x{station.production_qty} material {station.production_material}")
 
                 data["production_counter"] = 0
 
@@ -105,16 +106,57 @@ class StationController:
                 # increment counter if we have enough in cargo to do work, but havn't reached the counter
                 data["production_counter"] += 1
 
+        # update prices
+        jitter = 1
+        jitter_thresh = 15
+
+        for station in stations:
+            if self.debug and  station.primary_import is not MaterialType.cuprite:
+                continue
+
+            if station.primary_import in station.cargo:
+                percentage_primary = station.cargo[station.primary_import] / (station.primary_max)
+            else:
+                percentage_primary = 0.0
+            station.primary_buy_price = math.floor(max(0,
+                    (1.0-percentage_primary) * station.base_primary_buy_price
+                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+                ))
+
+            if station.secondary_import in station.cargo:
+                percentage_secondary = station.cargo[station.secondary_import] / (station.secondary_max)
+            else:
+                percentage_secondary = 0.0
+            station.secondary_buy_price = math.floor(max(0,
+                    (1.0-percentage_secondary) * station.base_secondary_buy_price
+                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+                ))
+
+            if station.production_material in station.cargo:
+                percentage_production = station.cargo[station.production_material] / (station.production_max)
+            else:
+                percentage_production = 0.0
+            station.sell_price = math.floor((2.0-percentage_production) * station.base_sell_price) \
+                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+
+            # for debugging
+            self.print(f"Primary Buy: {station.primary_buy_price} Secondary Buy: {station.secondary_buy_price} Production Sell: {station.sell_price}")
+
+            self.stats.append({
+                "station_id": station.id,
+                "primary_buy_price": station.primary_buy_price,
+                "secondary_buy_price": station.secondary_buy_price,
+                "sell_price": station.sell_price
+            })
 
 
+    def get_stats(self):
+        """Return and purge stats"""
+        stats = self.stats
 
-    def get_log(self):
-        """Return and purge log"""
-        log = self.log
+        self.stats = []
 
-        self.log = []
-
-        return log
+        return stats
 
     def print(self, msg):
         if self.debug:
