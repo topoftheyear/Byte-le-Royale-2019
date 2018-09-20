@@ -10,6 +10,7 @@ from game.config import *
 def test():
 
     pygame.init()
+    pygame.font.init()
     fpsClock = pygame.time.Clock()
 
     global_surf = pygame.display.set_mode(DISPLAY_SIZE)
@@ -76,6 +77,10 @@ def show_stats_display(stats, window_surf, clock):
         # Handle Events
         #
         for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
             if event.type == KEYUP:
                 if event.key == K_ESCAPE:
                     close = True
@@ -126,14 +131,46 @@ class Histogram(pygame.sprite.Sprite):
         self.image.fill(pygame.Color(0,100,100), (self.canvas_rect.x-2, self.canvas_rect.y-2, self.canvas_rect.w+4, self.canvas_rect.h+4))
         self.image.fill(pygame.Color(0,0,0), (self.canvas_rect.x, self.canvas_rect.y, self.canvas_rect.w, self.canvas_rect.h))
 
+
+        font_name = pygame.font.get_default_font()
+        font = pygame.font.Font(font_name, 14)
+
         if len(points) == 0:
             return
 
+        if len(points) == 0:
+            max_y = 10
+            max_x = 10
+        else:
+            max_y = float(max( max(point_set) for point_set in points ))
+            max_x = float(max( len(point_set) for point_set in points ))
+
+        # draw ticks
+        ## horizontal ticks
+        offset = self.rect.w * horiz_margin
+        for y_pos in [(self.canvas_rect.h/10)*i for i in  range(0, 11)]:
+
+            # Draw label
+            percent_y = 1.0 - y_pos / self.canvas_rect.h
+            text_surf = font.render("{0:.2f}".format(percent_y*max_y), True, pygame.Color(0, 100, 100))
+            self.image.blit(text_surf, (0, y_pos))
+
+            # Draw tick
+            pygame.draw.line(self.image, pygame.Color(0, 50, 50), (offset, y_pos), (self.canvas_rect.x+self.canvas_rect.w, y_pos), 1)
+
+
+        ## vertical ticks
+        for x_pos in [(self.canvas_rect.w/10)*i for i in  range(0, 10)]:
+            # Draw label
+            percent_x =  x_pos / self.canvas_rect.h
+            text_surf = font.render("{0:.2f}".format(percent_x*max_x), True, pygame.Color(0, 100, 100))
+            self.image.blit(text_surf, (x_pos+offset-6, self.canvas_rect.h+15))
+
+            x_pos += self.rect.w * horiz_margin
+            pygame.draw.line(self.image, pygame.Color(0, 50, 50), (x_pos, 0), (x_pos, self.canvas_rect.y+self.canvas_rect.h), 1)
+
+
         # draw points
-        max_y = float(max( max(point_set) for point_set in points ))
-        max_x = float(max( len(point_set) for point_set in points ))
-
-
         for color_id, point_set in enumerate(points):
             for idx, pt in enumerate(point_set):
                 ## project point to graph coordinates
