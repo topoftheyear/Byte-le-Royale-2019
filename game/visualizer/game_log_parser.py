@@ -64,7 +64,7 @@ class GameLogParser:
         return universe, events
 
     def get_stats(self):
-        return self.stats
+        return self.stats[0:self.tick]
 
 
     def deserialize_universe(self, data):

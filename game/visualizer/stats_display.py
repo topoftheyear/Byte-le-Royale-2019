@@ -34,6 +34,7 @@ def test():
 
 def show_stats_display(stats, window_surf, clock):
 
+
     initial_screen = window_surf.copy()
 
     window_surf.fill(pygame.Color(0,0,0))
@@ -84,7 +85,7 @@ def show_stats_display(stats, window_surf, clock):
                 sys.exit()
 
             if event.type == KEYUP:
-                if event.key == K_s:
+                if event.key == K_q:
                     close = True
                     break
                 if event.key == K_ESCAPE:
@@ -142,6 +143,8 @@ class Histogram(pygame.sprite.Sprite):
 
         if len(points) == 0:
             return
+        if len(points[0]) == 0:
+            return
 
         if len(points) == 0:
             max_y = 10
@@ -157,7 +160,7 @@ class Histogram(pygame.sprite.Sprite):
 
             # Draw label
             percent_y = 1.0 - y_pos / self.canvas_rect.h
-            text_surf = font.render("{0:.2f}".format(percent_y*max_y), True, pygame.Color(0, 100, 100))
+            text_surf = font.render("{0:02d}".format(math.floor(percent_y*max_y)), True, pygame.Color(0, 100, 100))
             self.image.blit(text_surf, (0, y_pos))
 
             # Draw tick
@@ -168,7 +171,7 @@ class Histogram(pygame.sprite.Sprite):
         for x_pos in [(self.canvas_rect.w/10)*i for i in  range(0, 10)]:
             # Draw label
             percent_x =  x_pos / self.canvas_rect.h
-            text_surf = font.render("{0:.2f}".format(percent_x*max_x), True, pygame.Color(0, 100, 100))
+            text_surf = font.render("{0:02d}".format(math.floor(percent_x*max_x)), True, pygame.Color(0, 100, 100))
             self.image.blit(text_surf, (x_pos+offset-6, self.canvas_rect.h+15))
 
             x_pos += self.rect.w * horiz_margin
@@ -185,7 +188,7 @@ class Histogram(pygame.sprite.Sprite):
                 x = math.floor(self.canvas_rect.w * percent_x) + (self.rect.w * horiz_margin)
                 y = self.canvas_rect.h - math.floor((self.canvas_rect.h) * percent_y)
 
-                self.image.fill(colors[color_id], (x+1, y+1, 1, 1) )
+                self.image.fill(colors[color_id], (x+1, y+1, 2, 2) )
 
 
 

@@ -41,7 +41,6 @@ def load():
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
 
         elif obj_type == ObjectType.station:
-            print(serialized_obj["name"])
             obj = Station()
             obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
 
@@ -72,7 +71,6 @@ def generate():
             station = Station()
             del data["type"]
             station.init(
-                name="Station {0}".format(i),
                 **data
             )
 
@@ -80,7 +78,6 @@ def generate():
             del data["type"]
             station = BlackMarketStation()
             station.init(
-                    name="Station {0}".format(i),
                     **data
                 )
 
@@ -88,7 +85,6 @@ def generate():
             del data["type"]
             station = SecureStation()
             station.init(
-                    name="Station {0}".format(i),
                     **data
                 )
 

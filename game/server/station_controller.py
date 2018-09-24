@@ -108,7 +108,7 @@ class StationController:
 
         # update prices
         jitter = 1
-        jitter_thresh = 15
+        jitter_thresh = 3
 
         for station in stations:
             if self.debug and  station.primary_import is not MaterialType.cuprite:
@@ -144,6 +144,7 @@ class StationController:
 
             self.stats.append({
                 "station_id": station.id,
+                "station_name": station.name,
                 "primary_buy_price": station.primary_buy_price,
                 "secondary_buy_price": station.secondary_buy_price,
                 "sell_price": station.sell_price
