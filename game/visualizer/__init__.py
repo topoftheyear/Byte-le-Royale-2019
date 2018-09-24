@@ -9,7 +9,7 @@ from game.visualizer.station_sprites import *
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
 from game.config import *
-from game.visualizer.stats_display import show_stats_display
+from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
@@ -204,7 +204,7 @@ def handle_events():
                 sys.exit()
             if event.key == K_s:
                 n = 3000
-                show_stats_display({
+                show_station_stats_display({
                     "a": [math.sin(i/100)+1 for i in range(n)],
                     "b": [math.cos(i/100)+1 for i in range(n)],
                     "c": [math.cos(i/100 + math.pi)+1 for i in range(n)],
@@ -226,4 +226,4 @@ def handle_events():
             stats = log_parser.get_stats()
             compiled = stat_utils.compile_stats("market", stats, ["station_id", "station_name"])
 
-            show_stats_display( compiled[station_name], global_surf, fpsClock)
+            show_station_stats_display( compiled[station_name], global_surf, fpsClock)

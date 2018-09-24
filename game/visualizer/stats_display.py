@@ -18,7 +18,7 @@ def test():
     global_surf.fill(pygame.Color(0,0,0))
 
     n = 3000
-    show_stats_display({
+    show_station_stats_display({
         "a": [math.sin(i/100)+1 for i in range(n)],
         "b": [math.cos(i/100)+1 for i in range(n)],
         "c": [math.cos(i/100 + math.pi)+1 for i in range(n)],
@@ -32,30 +32,19 @@ def test():
     sys.exit()
 
 
-def show_stats_display(stats, window_surf, clock):
+def show_station_stats_display(stats, window_surf, clock):
 
 
     initial_screen = window_surf.copy()
 
     window_surf.fill(pygame.Color(0,0,0))
 
-    colors = [
-        pygame.Color(0,255,0),
-        pygame.Color(255,0,0),
-        pygame.Color(155,155,0),
-        pygame.Color(155,0,155),
-        pygame.Color("#D4A190"),
-        pygame.Color("#C390D4"),
-        pygame.Color("#FFAE00"),
-        pygame.Color("#A34400"),
-    ]
 
     num_plots = len(list(stats.keys()))
     plots_labels  = { k for k in stats.keys() }
-    enabled_plots = [ True for k in stats.keys() ]
 
 
-    hist = Histogram(500, 802, 50, 50)
+    hist = Histogram(1000, 500, 50, 50, stats)
 
     graphs = pygame.sprite.Group()
     graphs.add(hist)
@@ -65,16 +54,8 @@ def show_stats_display(stats, window_surf, clock):
     close = False
     while not close:
 
-
-        if graph_dirty:
-            plots_to_draw = [ plot for plot, enabled in zip(stats.values(), enabled_plots) if enabled ]
-            colors_to_use = [ color for color, enabled in zip(colors, enabled_plots) if enabled ]
-
-            graphs.update(plots_to_draw, colors_to_use)
-            graph_dirty = False
-
+        graphs.update()
         graphs.draw(window_surf)
-
 
         #
         # Handle Events
@@ -92,10 +73,8 @@ def show_stats_display(stats, window_surf, clock):
                     pygame.quit()
                     sys.exit()
 
-                for i in range(num_plots):
-                    if event.key == eval(f"pygame.K_{i+1}"):
-                        enabled_plots[i-1] = not enabled_plots[i-1]
-                        graph_dirty = True
+                hist.keydown_listener(event)
+
 
         pygame.display.update()
         clock.tick(30)
@@ -110,33 +89,58 @@ def show_stats_display(stats, window_surf, clock):
 
 class Histogram(pygame.sprite.Sprite):
 
-    def __init__(self, height, width, x, y):
+    def __init__(self, height, width, x, y, stats):
         super().__init__()
 
-
-        self.image = pygame.Surface((width, height))
+        self.image = pygame.Surface((height, width))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.stats = stats
 
-    def update(self, points, colors):
+        self.enabled_plots = [ True for k in stats.keys() ]
+
+        self.names = sorted(self.stats.keys())
+
+
+        self.colors = [
+            pygame.Color(0,255,0),
+            pygame.Color(255,0,0),
+            pygame.Color(155,155,0),
+            pygame.Color(155,0,155),
+            pygame.Color("#D4A190"),
+            pygame.Color("#C390D4"),
+            pygame.Color("#FFAE00"),
+            pygame.Color("#A34400"),
+        ]
+
+        self.dirty = True
+
+    def update(self):
+
+        if not self.dirty: return
+        else:
+            self.dirty = False
+
+        points = [ self.stats[name] for name, enabled in zip(self.names, self.enabled_plots) if enabled ]
+        colors = [ color for color, enabled in zip(self.colors, self.enabled_plots) if enabled ]
 
         # draw boundaries of graph
         self.image.fill(pygame.Color(0,0,0))
 
-        horiz_margin = 0.05
+        left_margin = 0.05
+        right_margin = 0.3
         vert_margin = 0.05
 
         self.canvas_rect = pygame.Rect(
-            self.rect.w * horiz_margin + 2,
+            (self.rect.w * left_margin) + 2,
             2,
-            self.rect.w - math.ceil(self.rect.w * horiz_margin) - 3,
+            self.rect.w - math.ceil(self.rect.w * right_margin) - 3,
             self.rect.h - math.ceil(self.rect.h * vert_margin) - 3,
         )
 
         self.image.fill(pygame.Color(0,100,100), (self.canvas_rect.x-2, self.canvas_rect.y-2, self.canvas_rect.w+4, self.canvas_rect.h+4))
         self.image.fill(pygame.Color(0,0,0), (self.canvas_rect.x, self.canvas_rect.y, self.canvas_rect.w, self.canvas_rect.h))
-
 
         font_name = pygame.font.get_default_font()
         font = pygame.font.Font(font_name, 14)
@@ -155,7 +159,7 @@ class Histogram(pygame.sprite.Sprite):
 
         # draw ticks
         ## horizontal ticks
-        offset = self.rect.w * horiz_margin
+        offset = self.rect.w * left_margin
         for y_pos in [(self.canvas_rect.h/10)*i for i in  range(0, 11)]:
 
             # Draw label
@@ -174,7 +178,7 @@ class Histogram(pygame.sprite.Sprite):
             text_surf = font.render("{0:02d}".format(math.floor(percent_x*max_x)), True, pygame.Color(0, 100, 100))
             self.image.blit(text_surf, (x_pos+offset-6, self.canvas_rect.h+15))
 
-            x_pos += self.rect.w * horiz_margin
+            x_pos += self.rect.w * left_margin
             pygame.draw.line(self.image, pygame.Color(0, 50, 50), (x_pos, 0), (x_pos, self.canvas_rect.y+self.canvas_rect.h), 1)
 
 
@@ -185,12 +189,35 @@ class Histogram(pygame.sprite.Sprite):
                 percent_x = (idx+1) / (max_x+1)
                 percent_y = pt / (max_y)
 
-                x = math.floor(self.canvas_rect.w * percent_x) + (self.rect.w * horiz_margin)
+                x = math.floor(self.canvas_rect.w * percent_x) + (self.rect.w * left_margin)
                 y = self.canvas_rect.h - math.floor((self.canvas_rect.h) * percent_y)
 
                 self.image.fill(colors[color_id], (x+1, y+1, 2, 2) )
 
+        # draw lables
+        y_offset = 20
 
+
+        for i, name, color, enabled in zip(range(0, len(self.names)), self.names, self.colors, self.enabled_plots):
+            text = f"{i+1}) {name.replace('_', ' ')}"
+            text_surf = font.render(text, True, color)
+
+            if not enabled:
+                middle = text_surf.get_rect().h/2
+                text_w = text_surf.get_rect().w
+                pygame.draw.line(text_surf, color, (0, middle), (text_w, middle))
+
+            text_pos = ( (self.rect.w * left_margin) + self.canvas_rect.w + 20, y_offset * i)
+
+            self.image.blit(text_surf, text_pos)
+
+
+    def keydown_listener(self, event):
+        num_plots = len(list(self.stats.keys()))
+        for i in range(num_plots):
+            if event.key == eval(f"pygame.K_{i+1}"):
+                self.enabled_plots[i] = not self.enabled_plots[i]
+                self.dirty = True
 
 
 
