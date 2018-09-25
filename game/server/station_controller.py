@@ -108,7 +108,7 @@ class StationController:
 
         # update prices
         jitter = 1
-        jitter_thresh = 2
+        jitter_thresh = 1
 
         for station in stations:
             if self.debug and  station.primary_import is not MaterialType.cuprite:

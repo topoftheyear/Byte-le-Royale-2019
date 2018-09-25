@@ -32,7 +32,7 @@ def test():
     sys.exit()
 
 
-def show_station_stats_display(stats, window_surf, clock):
+def show_station_stats_display(plot_name, stats, window_surf, clock):
     initial_screen = window_surf.copy()
     window_surf.fill(pygame.Color(0,0,0))
 
@@ -42,6 +42,10 @@ def show_station_stats_display(stats, window_surf, clock):
 
     font_name = pygame.font.get_default_font()
     font = pygame.font.Font(font_name, 16)
+
+    plot_name_surf = font.render(plot_name, True, pygame.Color(0, 155, 0))
+    window_surf.blit(plot_name_surf, (20,20))
+
     go_back_surf = font.render(f"Esc to go back", True, pygame.Color(0, 155, 0))
     window_surf.blit(go_back_surf, (550, 700))
 
@@ -73,13 +77,19 @@ def show_station_stats_display(stats, window_surf, clock):
     clock.tick(30)
 
 
-def show_material_stats_display(stats, window_surf, clock):
+def show_material_stats_display(plot_name, stats, window_surf, clock):
     initial_screen = window_surf.copy()
     window_surf.fill(pygame.Color(0,0,0))
 
     hist = Histogram(1000, 500, 50, 50, stats)
     graphs = pygame.sprite.Group()
     graphs.add(hist)
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 16)
+
+    plot_name_surf = font.render(plot_name, True, pygame.Color(0, 155, 0))
+    window_surf.blit(plot_name_surf, (20,20))
 
     font_name = pygame.font.get_default_font()
     font = pygame.font.Font(font_name, 20)
@@ -160,7 +170,7 @@ def material_stats_selection_screen(stats, window_surf, clock):
                 for k in char_lut.keys():
                     if event.key == eval(f"K_{k}"):
                         material = char_lut[k]
-                        show_material_stats_display(stats[material], window_surf, clock)
+                        show_material_stats_display(f"{material} Buy vs Sell", stats[material], window_surf, clock)
 
         pygame.display.update()
         clock.tick(30)
@@ -279,7 +289,7 @@ class Histogram(pygame.sprite.Sprite):
             for idx, pt in enumerate(point_set):
                 ## project point to graph coordinates
                 percent_x = (idx+1) / (max_x+1)
-                percent_y = pt / (max_y)
+                percent_y = pt / max(max_y, 1)
 
                 x = math.floor(self.canvas_rect.w * percent_x) + (self.rect.w * left_margin)
                 y = self.canvas_rect.h - math.floor((self.canvas_rect.h) * percent_y)

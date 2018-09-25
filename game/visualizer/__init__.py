@@ -29,6 +29,8 @@ ship_group = pygame.sprite.Group()
 station_group = pygame.sprite.Group()
 asteroid_field_group = pygame.sprite.Group()
 
+_VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
+_FPS = FPS
 
 def log(msg):
     if debug:
@@ -140,19 +142,18 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
             # intermediate loop
             # -- allows for pretty lerping of ship movement
-
-            if VIS_INTERMEDIATE_FRAMES <= 0:
+            if _VIS_INTERMEDIATE_FRAMES <= 0:
                 update_groups(-1)
                 draw_screen()
                 handle_events()
 
                 # update the display
                 pygame.display.update()
-                fpsClock.tick(FPS)
+                fpsClock.tick(_FPS)
             else:
-                for i in range(0,VIS_INTERMEDIATE_FRAMES):
-                    if VIS_INTERMEDIATE_FRAMES >= 0:
-                        intermediate = i/float(VIS_INTERMEDIATE_FRAMES)
+                for i in range(0,_VIS_INTERMEDIATE_FRAMES):
+                    if _VIS_INTERMEDIATE_FRAMES >= 0:
+                        intermediate = i/float(_VIS_INTERMEDIATE_FRAMES)
                     else:
                         intermediate = -1
 
@@ -224,19 +225,19 @@ def handle_events():
                 stats = log_parser.get_stats()
                 compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.primary_material_buy_by_station)
 
-                show_station_stats_display( compiled, global_surf, fpsClock)
+                show_station_stats_display("Primary Material Buy Price by Station", compiled, global_surf, fpsClock)
 
             if event.key == K_2:
                 stats = log_parser.get_stats()
                 compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.secondary_material_buy_by_station)
 
-                show_station_stats_display( compiled, global_surf, fpsClock)
+                show_station_stats_display("Secondary Material Buy Price by Station", compiled, global_surf, fpsClock)
 
             if event.key == K_3:
                 stats = log_parser.get_stats()
                 compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.material_sell_by_station)
 
-                show_station_stats_display( compiled, global_surf, fpsClock)
+                show_station_stats_display("Material Sell Price by Station",  compiled, global_surf, fpsClock)
 
             if event.key == K_4:
                 stats = log_parser.get_stats()
@@ -251,6 +252,15 @@ def handle_events():
                 if debug:
                     log("Logging Enabled")
 
+            global _VIS_INTERMEDIATE_FRAMES
+            global _FPS
+            if event.key == K_UP and pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                _FPS = 30
+                _VIS_INTERMEDIATE_FRAMES = -1
+
+            if event.key == K_DOWN and pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                _FPS = 200
+                _VIS_INTERMEDIATE_FRAMES = 4
 
         elif event.type == MOUSEBUTTONUP:
             pos = event.pos
@@ -263,4 +273,6 @@ def handle_events():
             stats = log_parser.get_stats()
             compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.station_stats)
 
-            show_station_stats_display( compiled[station_name], global_surf, fpsClock)
+            show_station_stats_display(f"{station_name} Statistics", compiled[station_name], global_surf, fpsClock)
+
+

@@ -12,25 +12,25 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.05, 0.9),
 
         "primary_import": MaterialType.cuprite,
-        "primary_consumption_qty": 1,
-        "primary_max": 20,
+        "primary_consumption_qty": 3,
+        "primary_max": 75,
 
         "secondary_import": MaterialType.drones,
         "secondary_consumption_qty": 1,
-        "secondary_max": 10,
+        "secondary_max": 5,
 
         "production_material": MaterialType.copper,
         "production_frequency": 1,
-        "production_qty": 1,
-        "production_max": 10,
+        "production_qty": 2,
+        "production_max": 150,
 
-        "sell_price": 100,
-        "primary_buy_price": 100,
-        "secondary_buy_price": 100,
+        "sell_price": 73,
+        "primary_buy_price": 53,
+        "secondary_buy_price": 59,
 
-        "base_sell_price": 100,
-        "base_primary_buy_price": 100,
-        "base_secondary_buy_price": 100,
+        "base_sell_price": 67,
+        "base_primary_buy_price": 15,
+        "base_secondary_buy_price": 45,
 
 
         "cargo": {
@@ -46,24 +46,24 @@ STATION_DEFINITIONS = [
 
         "primary_import": MaterialType.circuitry,
         "primary_consumption_qty": 1,
-        "primary_max": 20,
+        "primary_max": 35,
 
         "secondary_import": MaterialType.null,
-        "secondary_consumption_qty": 1,
-        "secondary_max": 10,
+        "secondary_consumption_qty": 0,
+        "secondary_max": 0,
 
         "production_material": MaterialType.pylons,
-        "production_frequency": 1,
-        "production_qty": 1,
-        "production_max": 100,
+        "production_frequency": 10,
+        "production_qty": 5,
+        "production_max": 45,
 
-        "sell_price": 100,
-        "primary_buy_price": 100,
-        "secondary_buy_price": 100,
+        "sell_price": 350,
+        "primary_buy_price": 406,
+        "secondary_buy_price": 0,
 
-        "base_sell_price": 100,
-        "base_primary_buy_price": 100,
-        "base_secondary_buy_price": 100,
+        "base_sell_price": 423,
+        "base_primary_buy_price": 367,
+        "base_secondary_buy_price": 0,
 
         "cargo": {
             MaterialType.circuitry: 100,
@@ -77,25 +77,25 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.15, 0.58),
 
         "primary_import": MaterialType.computers,
-        "primary_consumption_qty": 1,
-        "primary_max": 20,
+        "primary_consumption_qty": 4,
+        "primary_max": 5,
 
         "secondary_import": MaterialType.null,
-        "secondary_consumption_qty": 1,
-        "secondary_max": 10,
+        "secondary_consumption_qty": 0,
+        "secondary_max": 0,
 
         "production_material": MaterialType.weaponry,
-        "production_frequency": 1,
+        "production_frequency": 3,
         "production_qty": 1,
-        "production_max": 100,
+        "production_max": 55,
 
-        "sell_price": 100,
-        "primary_buy_price": 100,
+        "sell_price": 590,
+        "primary_buy_price": 540,
         "secondary_buy_price": 100,
 
-        "base_sell_price": 100,
-        "base_primary_buy_price": 100,
-        "base_secondary_buy_price": 100,
+        "base_sell_price": 540,
+        "base_primary_buy_price": 590,
+        "base_secondary_buy_price": 0,
 
         "cargo": {
             MaterialType.computers: 50,
@@ -109,25 +109,25 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.085, 0.40),
 
         "primary_import": MaterialType.steel,
-        "primary_consumption_qty": 1,
-        "primary_max": 20,
+        "primary_consumption_qty": 8,
+        "primary_max": 120,
 
         "secondary_import": MaterialType.pylons,
         "secondary_consumption_qty": 1,
         "secondary_max": 10,
 
         "production_material": MaterialType.machinery,
-        "production_frequency": 1,
-        "production_qty": 1,
+        "production_frequency": 2,
+        "production_qty": 3,
         "production_max": 100,
 
-        "sell_price": 100,
-        "primary_buy_price": 100,
-        "secondary_buy_price": 100,
+        "sell_price": 45,
+        "primary_buy_price": 20,
+        "secondary_buy_price": 370,
 
-        "base_sell_price": 100,
-        "base_primary_buy_price": 100,
-        "base_secondary_buy_price": 100,
+        "base_sell_price": 45,
+        "base_primary_buy_price": 20,
+        "base_secondary_buy_price": 370,
 
         "cargo": {
             MaterialType.steel: 56,
@@ -173,24 +173,24 @@ STATION_DEFINITIONS = [
 
         "primary_import": MaterialType.goethite,
         "primary_consumption_qty": 1,
-        "primary_max": 20,
+        "primary_max": 175,
 
         "secondary_import": MaterialType.machinery,
         "secondary_consumption_qty": 1,
-        "secondary_max": 10,
+        "secondary_max": 14,
 
         "production_material": MaterialType.iron,
         "production_frequency": 1,
-        "production_qty": 1,
-        "production_max": 100,
+        "production_qty": 6,
+        "production_max": 150,
 
-        "sell_price": 100,
-        "primary_buy_price": 100,
-        "secondary_buy_price": 100,
+        "sell_price": 25,
+        "primary_buy_price": 13,
+        "secondary_buy_price": 30,
 
-        "base_sell_price": 100,
-        "base_primary_buy_price": 100,
-        "base_secondary_buy_price": 100,
+        "base_sell_price": 25,
+        "base_primary_buy_price": 13,
+        "base_secondary_buy_price": 30,
 
         "cargo": {
             MaterialType.goethite: 75,
@@ -255,7 +255,8 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.gold: 75,
+            MaterialType.wire: 75,
         }
     },
     {
@@ -286,7 +287,7 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.weaponry: 15,
         }
     },
     {
@@ -317,7 +318,8 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.iron: 100,
+            MaterialType.drones: 5,
         }
     },
     {
