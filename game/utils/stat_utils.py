@@ -156,6 +156,11 @@ def compile_material_buy_vs_sell(stats):
         drones_avg.append( sum(compiled["Drones"]["secondary_buy_price"][i:i+1])/2 )
     compiled["Drones"]["secondary_buy_price"] = drones_avg
 
+    # Fix for circuitry since they arent a secondary but 2 primaries
+    circ_avg = []
+    for i in range(0, math.floor(len(compiled["Circuitry"]["primary_buy_price"])), 2):
+        circ_avg.append( sum(compiled["Circuitry"]["primary_buy_price"][i:i+1])/2 )
+    compiled["Circuitry"]["primary_buy_price"] = circ_avg
 
     return compiled
 

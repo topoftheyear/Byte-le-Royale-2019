@@ -66,7 +66,8 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.circuitry: 100,
+            MaterialType.pylons: 10
         }
     },
     {
@@ -97,7 +98,8 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.computers: 50,
+            MaterialType.weaponry: 0
         }
     },
     {
@@ -128,7 +130,8 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.steel: 56,
+            MaterialType.pylons: 100
         }
     },
     {
@@ -159,7 +162,7 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.copper: 23,
         }
     },
     {
@@ -190,7 +193,7 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.goethite: 75,
         }
     },
     {
@@ -221,7 +224,7 @@ STATION_DEFINITIONS = [
         "base_secondary_buy_price": 100,
 
         "cargo": {
-
+            MaterialType.circuitry: 75,
         }
     },
     {
