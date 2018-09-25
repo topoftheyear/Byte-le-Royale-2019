@@ -60,7 +60,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         self.first = False
 
 
-    def update(self, universe, events, intermediate=0):
+    def update(self, universe, events, intermediate=-1):
 
         ship = self.find_self(universe)
         if ship is None:
@@ -72,7 +72,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
             self.first = False
             self.rect.center = ship.position
 
-        if intermediate == 0:
+        if intermediate <= 0:
             self.current_vec = pygame.math.Vector2(self.rect.center[0], self.rect.center[1])
             self.new_vec = pygame.math.Vector2(world_to_display(*ship.position))
 
@@ -92,7 +92,7 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
             self.rotate(angle_to)
 
         # lerp
-        lerp = self.current_vec.lerp(self.new_vec, intermediate)
+        lerp = self.current_vec.lerp(self.new_vec, intermediate if intermediate >= 0 else 1.0)
         self.rect.center = lerp
 
 

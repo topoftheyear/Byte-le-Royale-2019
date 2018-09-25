@@ -8,6 +8,8 @@ from game.common.asteroid_field_types import create_asteroid_field, load_asteroi
 from game.common.enums import *
 from game.utils.projection import *
 
+from game.universe_config import *
+
 
 
 def save(universe):
@@ -64,212 +66,34 @@ def generate():
     universe = []
 
     # Generate stations
-    station_data = [
-        {
-            #s6 Copper
-            "type": ObjectType.station,
-            "coords": percent_world(0.05, 0.9),
-
-            "primary_import": MaterialType.cuprite,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.drones,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.copper,
-            "production_rate": 1
-        },
-        {
-            #s4 Pylons
-            "type": ObjectType.station,
-            "coords": percent_world(0.025, 0.6),
-
-            "primary_import": MaterialType.circuitry,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.null,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.pylons,
-            "production_rate": 1
-        },
-        {
-            #s9 Weaponry
-            "type": ObjectType.station,
-            "coords": percent_world(0.15, 0.58),
-
-            "primary_import": MaterialType.computers,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.null,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.weaponry,
-            "production_rate": 1
-        },
-        {
-            #s5 Machinery
-            "type": ObjectType.station,
-            "coords": percent_world(0.085, 0.40),
-
-            "primary_import": MaterialType.steel,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.pylons,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.machinery,
-            "production_rate": 1
-        },
-        {
-            #s0 Wire
-            "type": ObjectType.station,
-            "coords": percent_world(0.4, 0.10),
-
-            "primary_import": MaterialType.copper,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.null,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.wire,
-            "production_rate": 1
-        },
-        {
-            #s8 Iron
-            "type": ObjectType.station,
-            "coords": percent_world(0.6, 0.80),
-
-            "primary_import": MaterialType.goethite,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.machinery,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.iron,
-            "production_rate": 1
-        },
-        {
-            #s1 Computers
-            "type": ObjectType.station,
-            "coords": percent_world(0.63, 0.08),
-
-            "primary_import": MaterialType.circuitry,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.null,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.computers,
-            "production_rate": 1
-        },
-        {
-            #s2 Circuitry
-            "type": ObjectType.station,
-            "coords": percent_world(0.90, 0.38),
-
-            "primary_import": MaterialType.gold,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.wire,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.circuitry,
-            "production_rate": 1
-        },
-        {
-            #s3 Drones
-            "type": ObjectType.station,
-            "coords": percent_world(0.96, 0.95),
-
-            "primary_import": MaterialType.weaponry,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.null,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.drones,
-            "production_rate": 1
-        },
-        {
-            #s7 Steel
-            "type": ObjectType.station,
-            "coords": percent_world(0.92, 0.03),
-
-            "primary_import": MaterialType.iron,
-            "primary_consumption_rate": 1,
-
-            "secondary_import": MaterialType.drones,
-            "secondary_consumption_rate": 1,
-
-            "production_material": MaterialType.steel,
-            "production_rate": 1
-        },
-        {
-            # black market 2
-            "type": ObjectType.black_market_station,
-            "coords": percent_world(0.1, 0.8)
-        },
-        {
-            # black market 1
-            "type": ObjectType.black_market_station,
-            "coords": percent_world(0.88, 0.25)
-        },
-        {
-            "type": ObjectType.secure_station,
-            "coords": percent_world(0.5, 0.5)
-        }
-    ]
-
-    for i, data in enumerate(station_data):
+    for i, data in enumerate(STATION_DEFINITIONS):
         if data["type"] == ObjectType.station:
             station = Station()
+            del data["type"]
             station.init(
-                name="Station {0}".format(i),
-                position=data["coords"],
-                primary_import = data["primary_import"],
-                primary_consumption_rate= data["primary_consumption_rate"],
-
-                secondary_import = data["secondary_import"],
-                secondary_consumption_rate= data["secondary_consumption_rate"],
-
-                production_material = data["production_material"],
-                production_rate = data["production_rate"]
+                **data
             )
 
         elif data["type"] == ObjectType.black_market_station:
+            del data["type"]
             station = BlackMarketStation()
             station.init(
-                    name="Station {0}".format(i),
-                    position=data["coords"])
+                    **data
+                )
 
         elif data["type"] == ObjectType.secure_station:
+            del data["type"]
             station = SecureStation()
             station.init(
-                    name="Station {0}".format(i),
-                    position=data["coords"])
+                    **data
+                )
 
         universe.append(station)
 
 
     # Generate mining fields
-    asteroid_field_data = [
-        {
-            "type": ObjectType.goethite_field,
-            "coords": percent_world(0.05, 0.05)
-        },
-        {
-            "type": ObjectType.gold_field,
-            "coords": percent_world(0.85, 0.85)
-        },
-        {
-            "type": ObjectType.cuprite_field,
-            "coords": percent_world(0.5, 0.85)
-        }
-    ]
-
-    for i, data in enumerate(asteroid_field_data):
-        obj = create_asteroid_field(data["type"], data["coords"])
+    for i, data in enumerate(ASTEROID_FIELD_DEFINITIONS):
+        obj = create_asteroid_field(data["type"], data["position"])
         universe.append(obj)
 
 

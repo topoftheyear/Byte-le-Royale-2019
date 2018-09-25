@@ -27,6 +27,7 @@ class UpgradeLevel:
 class LogEvent:
     null = 0
     ship_move = 1
+    market_update = 2
 
 
 class MessageType:

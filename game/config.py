@@ -6,4 +6,11 @@ WORLD_BOUNDS = (1000, 700)
 
 DISPLAY_SIZE = (1280, 720)
 
+
+# High Performance Render Mode
 VIS_INTERMEDIATE_FRAMES = 4
+FPS = 120
+
+# Low Performance Render Mode
+#VIS_INTERMEDIATE_FRAMES = -1
+#FPS = 10

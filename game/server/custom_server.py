@@ -6,6 +6,8 @@ from game.common.npc.npc import NPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
+from game.server.station_controller import StationController
+
 
 class CustomServer(ServerControl):
 
@@ -22,6 +24,11 @@ class CustomServer(ServerControl):
 
         self.universe = load()
         self.ships = [s for s in self.universe if s.object_type == ObjectType.ship]
+
+        stations = self.filter_universe(ObjectType.station)
+        self.station_controller = StationController(stations)
+        self.station_controller.init(stations)
+
         self.claim_npcs()
 
 
@@ -32,8 +39,9 @@ class CustomServer(ServerControl):
         self.print("SERVER PRE TURN")
 
         # reset turn result
-        self.turn_log = { "events":[
-            ],
+        self.turn_log = {
+            "events":[],
+            "stats": {}
         }
 
         if not self.started:
@@ -159,6 +167,10 @@ class CustomServer(ServerControl):
         self.process_move_actions()
 
         # update station market / update BGS
+        self.station_controller.tick(
+            self.filter_universe(ObjectType.station))
+
+        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
@@ -269,3 +281,9 @@ class CustomServer(ServerControl):
 
     def serialize_visible_objects(self, pos, radius):
         pass # serialize only objects in visible range of player ship
+
+    def filter_universe(self, object_type):
+
+        return list(filter(lambda obj: obj.object_type==object_type, self.universe))
+
+
