@@ -22,12 +22,17 @@ fpsClock = None
 universe = None
 events = None
 
+debug = False
 
 # Create Sprite groups
 ship_group = pygame.sprite.Group()
 station_group = pygame.sprite.Group()
 asteroid_field_group = pygame.sprite.Group()
 
+
+def log(msg):
+    if debug:
+        print(str(msg))
 
 
 def start(verbose, log_path, gamma, dont_wait, fullscreen):
@@ -214,16 +219,48 @@ def handle_events():
                     "g": [(i/n)*2 for i in range(n)],
                     "h": [(1-(i/n))*2 for i in range(n)],
                 }, global_surf, fpsClock)
+
+            if event.key == K_1 :
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.primary_material_buy_by_station)
+
+                show_station_stats_display( compiled, global_surf, fpsClock)
+
+            if event.key == K_2:
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.secondary_material_buy_by_station)
+
+                show_station_stats_display( compiled, global_surf, fpsClock)
+
+            if event.key == K_3:
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.material_sell_by_station)
+
+                show_station_stats_display( compiled, global_surf, fpsClock)
+
+            if event.key == K_4:
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.material_buy_vs_sell)
+
+                material_stats_selection_screen(compiled, global_surf, fpsClock)
+
+            if event.key == K_o and pygame.key.get_mods() & pygame.KMOD_SHIFT:
+                global debug
+                debug = not debug
+
+                if debug:
+                    log("Logging Enabled")
+
+
         elif event.type == MOUSEBUTTONUP:
             pos = event.pos
 
             station = click_utils.get_static_obj_near_pos(pos, first=True, obj_type=ObjectType.station)
             if station is None:
                 continue
-
             station_name = station["name"]
 
             stats = log_parser.get_stats()
-            compiled = stat_utils.compile_stats("market", stats, ["station_id", "station_name"])
+            compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.station_stats)
 
             show_station_stats_display( compiled[station_name], global_surf, fpsClock)

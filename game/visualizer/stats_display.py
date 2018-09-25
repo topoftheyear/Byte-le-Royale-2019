@@ -33,48 +33,35 @@ def test():
 
 
 def show_station_stats_display(stats, window_surf, clock):
-
-
     initial_screen = window_surf.copy()
-
     window_surf.fill(pygame.Color(0,0,0))
 
-
-    num_plots = len(list(stats.keys()))
-    plots_labels  = { k for k in stats.keys() }
-
-
     hist = Histogram(1000, 500, 50, 50, stats)
-
     graphs = pygame.sprite.Group()
     graphs.add(hist)
 
-    graph_dirty = True
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 16)
+    go_back_surf = font.render(f"Esc to go back", True, pygame.Color(0, 155, 0))
+    window_surf.blit(go_back_surf, (550, 700))
 
     close = False
     while not close:
-
         graphs.update()
         graphs.draw(window_surf)
 
-        #
         # Handle Events
-        #
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 sys.exit()
 
             if event.type == KEYUP:
-                if event.key == K_q:
+                if event.key == K_ESCAPE:
                     close = True
                     break
-                if event.key == K_ESCAPE:
-                    pygame.quit()
-                    sys.exit()
 
                 hist.keydown_listener(event)
-
 
         pygame.display.update()
         clock.tick(30)
@@ -85,6 +72,103 @@ def show_station_stats_display(stats, window_surf, clock):
     pygame.display.update()
     clock.tick(30)
 
+
+def show_material_stats_display(stats, window_surf, clock):
+    initial_screen = window_surf.copy()
+    window_surf.fill(pygame.Color(0,0,0))
+
+    hist = Histogram(1000, 500, 50, 50, stats)
+    graphs = pygame.sprite.Group()
+    graphs.add(hist)
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 20)
+    go_back_surf = font.render(f"Esc to go back", True, pygame.Color(0, 155, 0))
+    window_surf.blit(go_back_surf, (550, 700))
+
+    close = False
+    while not close:
+        graphs.update()
+        graphs.draw(window_surf)
+
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    close = True
+                    break
+
+                hist.keydown_listener(event)
+
+        pygame.display.update()
+        clock.tick(30)
+
+
+    # show initial screen to transition back to game
+    window_surf.blit(initial_screen, (0,0))
+    pygame.display.update()
+    clock.tick(30)
+
+
+def material_stats_selection_screen(stats, window_surf, clock):
+    initial_screen = window_surf.copy()
+    window_surf.fill(pygame.Color(0,0,0))
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 20)
+
+    y_offset = 25
+    y_margin = 150
+    x_margin = 525
+    char_lut = {}
+
+
+    text_surf = font.render(f"Select a material to view statistics on.", True, pygame.Color(0, 155, 0))
+    window_surf.blit(text_surf, (x_margin-100, y_margin+(-2*y_offset)))
+
+    for i, material in enumerate(stats.keys()):
+
+        char = chr(97+i)
+        char_lut[char] = material
+
+        text_surf = font.render(f"{char}) {material}", True, pygame.Color(0, 155, 0))
+        window_surf.blit(text_surf, (x_margin, y_margin+(i*y_offset)))
+
+    text_surf = font.render(f"Esc to go back", True, pygame.Color(0, 155, 0))
+    window_surf.blit(text_surf, (550, 700))
+
+    close = False
+    while not close:
+        # draw here
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    close = True
+                    break
+
+                for k in char_lut.keys():
+                    if event.key == eval(f"K_{k}"):
+                        material = char_lut[k]
+                        show_material_stats_display(stats[material], window_surf, clock)
+
+        pygame.display.update()
+        clock.tick(30)
+
+    # show initial screen to transition back to game
+    window_surf.blit(initial_screen, (0,0))
+    pygame.display.update()
+    clock.tick(30)
 
 
 class Histogram(pygame.sprite.Sprite):
@@ -112,6 +196,9 @@ class Histogram(pygame.sprite.Sprite):
             pygame.Color("#C390D4"),
             pygame.Color("#FFAE00"),
             pygame.Color("#A34400"),
+            pygame.Color("#FF00C3"),
+            pygame.Color("#C3FF00"),
+            pygame.Color("#00FFBC"),
         ]
 
         self.dirty = True
@@ -122,8 +209,13 @@ class Histogram(pygame.sprite.Sprite):
         else:
             self.dirty = False
 
+        self.enabled_plots = [ (enabled and len(self.stats[name]) > 0)  for name, enabled in zip(self.names, self.enabled_plots) ]
+
         points = [ self.stats[name] for name, enabled in zip(self.names, self.enabled_plots) if enabled ]
         colors = [ color for color, enabled in zip(self.colors, self.enabled_plots) if enabled ]
+
+        # disable plots without points
+
 
         # draw boundaries of graph
         self.image.fill(pygame.Color(0,0,0))
@@ -199,7 +291,11 @@ class Histogram(pygame.sprite.Sprite):
 
 
         for i, name, color, enabled in zip(range(0, len(self.names)), self.names, self.colors, self.enabled_plots):
-            text = f"{i+1}) {name.replace('_', ' ')}"
+            if len(self.names) >= 10:
+                text = f"{chr(i+97)}) {name.replace('_', ' ')}"
+            else:
+                text = f"{i+1}) {name.replace('_', ' ')}"
+
             text_surf = font.render(text, True, color)
 
             if not enabled:
@@ -214,8 +310,16 @@ class Histogram(pygame.sprite.Sprite):
 
     def keydown_listener(self, event):
         num_plots = len(list(self.stats.keys()))
+
         for i in range(num_plots):
-            if event.key == eval(f"pygame.K_{i+1}"):
+            enable = False
+            if num_plots >= 10:
+                if event.key == eval(f"pygame.K_{chr(i+97)}"):
+                    enable = True
+            else:
+                if event.key == eval(f"pygame.K_{i+1}"):
+                    enable = True
+            if enable:
                 self.enabled_plots[i] = not self.enabled_plots[i]
                 self.dirty = True
 
