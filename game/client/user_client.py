@@ -22,4 +22,8 @@ class UserClient:
 
         self._move_action = (x, y)
 
+    def mine(self):
+
+        self._action = PlayerAction.mine
+
 

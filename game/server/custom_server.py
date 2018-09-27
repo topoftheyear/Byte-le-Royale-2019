@@ -7,6 +7,7 @@ from game.common.ship import Ship
 from game.utils.generate_game import load
 
 from game.server.station_controller import StationController
+from game.server.mining_controller import MiningController
 
 
 class CustomServer(ServerControl):
@@ -236,6 +237,11 @@ class CustomServer(ServerControl):
         living_ships = filter(lambda e: e.is_alive(), self.ships)
 
         # apply the results of any actions a player took if player still alive
+        # mining
+        MiningController.handle_actions(living_ships, self.universe)
+
+
+
 
 
     def process_move_actions(self):
