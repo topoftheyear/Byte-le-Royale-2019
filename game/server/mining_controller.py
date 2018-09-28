@@ -11,7 +11,7 @@ class MiningController:
             if PlayerAction.mine in data["action_type"] and data["action_type"] is not None:
                 for thing in universe:
                     # Check for all asteroid fields in the universe
-                    if type(thing) is AsteroidField:
+                    if thing.object_type in [ObjectType.cuprite_field, ObjectType.goethite_field, ObjectType.gold_field]:
                         as_x = thing.position[0]
                         as_y = thing.position[1]
                         radius = thing.radius
@@ -20,5 +20,5 @@ class MiningController:
                         sh_y = ship.position[1]
 
                         # Check if ship is within the asteroid field
-                        if 2**(sh_x - as_x) + 2**(sh_y - as_y) < 2**radius:
+                        if (sh_x - as_x)**2 + (sh_y - as_y)**2 < radius**2:
                             pass
