@@ -238,7 +238,8 @@ class CustomServer(ServerControl):
 
         # apply the results of any actions a player took if player still alive
         # mining
-        MiningController.handle_actions(living_ships, self.universe)
+        self.mining_controller = MiningController()
+        self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
 
 
