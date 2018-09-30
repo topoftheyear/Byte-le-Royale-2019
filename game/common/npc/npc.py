@@ -19,13 +19,16 @@ class NPC(UserClient):
     def take_turn(self, universe):
 
         # wander between random waypoints
-        if self.heading is None:
-            self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
+        if len(self.ship.inventory) == 0:
+            if self.heading is None:
+                self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
 
-        self.move(*self.heading)
+            self.move(*self.heading)
 
-        if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-            self.heading = None
+            if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
+                self.heading = None
+
+        self.mine()
 
         return self.action_digest()
 
