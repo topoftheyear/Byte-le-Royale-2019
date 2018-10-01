@@ -30,6 +30,8 @@ class CustomServer(ServerControl):
         self.station_controller = StationController(stations)
         self.station_controller.init(stations)
 
+        self.mining_controller = MiningController()
+
         self.claim_npcs()
 
 
@@ -163,6 +165,7 @@ class CustomServer(ServerControl):
 
                 self.npc_teams[npc]["move_action"] = result["move_action"]
 
+
         self.process_actions()
 
         self.process_move_actions()
@@ -238,8 +241,11 @@ class CustomServer(ServerControl):
 
         # apply the results of any actions a player took if player still alive
         # mining
-        self.mining_controller = MiningController()
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+
+        # log events and stats
+        self.turn_log["events"].extend( self.mining_controller.get_events() )
+        self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
 
 
 

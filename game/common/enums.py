@@ -1,11 +1,5 @@
 # Enumeration Values used for serialization/deserialization of objects
-# As well as indicating different thins
-#
-# e.g.
-# class UnitType:
-#   knight = 0
-#   brawler = 1
-#   pikeman = 2
+# As well as indicating different things
 #
 
 class UpgradeType:
@@ -28,6 +22,7 @@ class LogEvent:
     null = 0
     ship_move = 1
     market_update = 2
+    ship_mine = 3
 
 
 class MessageType:

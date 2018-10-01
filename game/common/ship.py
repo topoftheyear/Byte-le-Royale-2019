@@ -55,9 +55,6 @@ class Ship(GameObject):
 
         self.position = position
 
-        self.player_move_action = (0,0)
-        self.player_action = PlayerAction.none
-
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -85,9 +82,6 @@ class Ship(GameObject):
                 "module_1": self.module_1,
                 "module_2": self.module_2,
                 "module_3": self.module_3,
-
-                "player_move_action": self.player_move_action,
-                "player_action": self.player_action
             }
 
             data = { **data, **player_owned }
@@ -146,9 +140,7 @@ class Ship(GameObject):
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update
             #   prevents other players from tampering with our ship
-
-            self.player_move_action = data["player_move_action"]
-            self.player_action = data["player_action"]
+            pass
 
 
         if security_level <= SecurityLevel.other_player:

@@ -1,3 +1,5 @@
+
+# log events and stats
 import sys
 import math
 
@@ -7,9 +9,27 @@ from game.common.ship import Ship
 
 class MiningController:
 
+    def __init__(self):
+
+        self.debug = True
+        self.events = []
+        self.stats = []
+
     def print(self, msg):
-        print(str(msg))
-        sys.stdout.flush()
+        if self.debug:
+            print(str(msg))
+            sys.stdout.flush()
+
+    def get_events(self):
+        e = self.events
+        self.events = []
+        return e
+
+    def get_stats(self):
+        s = self.stats
+        self.stats = []
+        return s
+
 
     def handle_actions(self, living_ships, universe, teams, npc_teams):
         for team, data in { **teams, **npc_teams}.items():
@@ -37,6 +57,19 @@ class MiningController:
                             material = current_field.material_type
                             amount = math.floor(current_field.mining_rate * ship.mining_yield)
 
+                            self.print("Logging events")
+                            self.events.append({
+                                "type": LogEvent.ship_mine,
+                                "ship_id": ship.id,
+                            })
+
+                            self.stats.append({
+                                "ship_id": ship.id,
+                                "material": material,
+                                "yield": amount
+                            })
+
+                            self.print(f"Adding {amount} of material {material} to ship {ship.team_name}'s cargo")
                             # Add the gathered materials to the inventory
                             if material not in ship.inventory:
                                 ship.inventory[material] = 0
