@@ -52,8 +52,9 @@ class MiningController:
                         sh_y = ship.position[1]
 
                         # Check if ship is within the asteroid field
-                        result = (sh_x - as_x)**2 + (sh_y - as_y)**2
-                        if result < radius**2:
+                        left_result = (sh_x - as_x)**2 + (sh_y - as_y)**2
+                        right_result = radius**2
+                        if left_result < right_result:
                             # Get material, multiply rate at which the field can be mined by the rate the ship can mine
                             material = current_field.material_type
                             amount = math.floor(current_field.mining_rate * ship.mining_yield)

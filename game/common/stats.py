@@ -18,14 +18,14 @@ class GameStats:
     weapon_damage_2 = 2000
     weapon_damage_3 = 2000
 
-    cargo_space_0 = 1000
-    cargo_space_1 = 2000
-    cargo_space_2 = 2000
-    cargo_space_3 = 2000
+    cargo_space_0 = 10000
+    cargo_space_1 = 20000
+    cargo_space_2 = 20000
+    cargo_space_3 = 20000
 
     mining_yield_0 = 1000
-    mining_yield_1 = 2000
-    mining_yield_2 = 2000
+    mining_yield_1 = 1350
+    mining_yield_2 = 1700
     mining_yield_3 = 2000
 
     sensor_range_0 = 1000
