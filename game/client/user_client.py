@@ -1,4 +1,5 @@
 from game.common.enums import  *
+from game.common.game_object import GameObject
 
 class UserClient:
 
@@ -23,7 +24,16 @@ class UserClient:
         self._move_action = (x, y)
 
     def mine(self):
+        self.reset_actions()
 
         self._action = PlayerAction.mine
 
 
+    def attack(self, target):
+        self.reset_actions()
+
+        if not isinstance(target, GameObject) and target.object_type is not ObjectType.ship:
+            return
+
+        self._action = PlayerAction.attack
+        self._action_param_1 = target.id

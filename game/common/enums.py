@@ -38,6 +38,7 @@ class MessageType:
 class PlayerAction:
     none = 0
     mine = 1
+    attack = 2
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
