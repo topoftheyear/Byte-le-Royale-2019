@@ -146,24 +146,22 @@ class CustomServer(ServerControl):
         if self.started:
             # reset team actions to prevent accidental repeat actions
             for k in self.npc_teams.keys():
-                self.npc_teams[k]["action"] = PlayerAction.none
-                self.npc_teams[k]["action_param_1"] = None
-                self.npc_teams[k]["action_param_2"] = None
-                self.npc_teams[k]["action_param_3"] = None
+                self.npc_teams[k]["ship"].action = PlayerAction.none
+                self.npc_teams[k]["ship"].action_param_1 = None
+                self.npc_teams[k]["ship"].action_param_2 = None
+                self.npc_teams[k]["ship"].action_param_3 = None
 
-                self.npc_teams[k]["move_action"] = None
+                self.npc_teams[k]["ship"].move_action = None
 
             for npc in self.npc_teams.keys():
                 result = self.npc_teams[npc]["controller"].take_turn(self.universe)
 
-                self.npc_teams[npc]["action"] = result["action_type"]
+                self.npc_teams[npc]["ship"].action = result["action_type"]
+                self.npc_teams[npc]["ship"].action_param_1 = result["action_param_1"]
+                self.npc_teams[npc]["ship"].action_param_2 = result["action_param_2"]
+                self.npc_teams[npc]["ship"].action_param_3 = result["action_param_3"]
 
-                # get action params
-                for i in range(1, 4):
-                    param = f"action_param_{i}"
-                    self.npc_teams[npc][param] = result[param]
-
-                self.npc_teams[npc]["move_action"] = result["move_action"]
+                self.npc_teams[npc]["ship"].move_action = result["move_action"]
 
 
         self.process_actions()
@@ -256,12 +254,12 @@ class CustomServer(ServerControl):
 
 
         for team, data in { **self.teams, **self.npc_teams}.items():
+            ship = data["ship"]
 
-            if "move_action" in data and data["move_action"] is not None:
-                ship = data["ship"]
+            if ship.move_action is not None:
 
-                target_x_difference  = data["move_action"][0] - ship.position[0]
-                target_y_difference  = data["move_action"][1] - ship.position[1]
+                target_x_difference  = ship.move_action[0] - ship.position[0]
+                target_y_difference  = ship.move_action[1] - ship.position[1]
 
                 x_direction = -1 if target_x_difference < 0 else 1
                 x_magnitude = abs(target_x_difference)
@@ -281,7 +279,7 @@ class CustomServer(ServerControl):
                     "type": LogEvent.ship_move,
                     "ship_id": ship.id,
                     "pos": ship.position,
-                    "target_pos": data["move_action"]
+                    "target_pos": ship.move_action
                 })
 
 

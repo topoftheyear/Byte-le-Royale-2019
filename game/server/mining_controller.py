@@ -4,6 +4,7 @@ import sys
 import math
 
 from game.common.enums import *
+from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 
@@ -36,7 +37,7 @@ class MiningController:
             ship = data["ship"]
 
             # Check for ships that are performing the mining action
-            if "action" in data and data["action"] is not None and data["action"] is PlayerAction.mine:
+            if ship.action is PlayerAction.mine:
                 for thing in universe:
 
                     # Check for all asteroid fields in the universe
@@ -69,7 +70,7 @@ class MiningController:
                                 "yield": amount
                             })
 
-                            self.print(f"Adding {amount} of material {material} to ship {ship.team_name}'s cargo")
+                            self.print(f"Adding {amount} of material {get_material_name(material)} to ship {ship.team_name}'s cargo")
                             # Add the gathered materials to the inventory
                             if material not in ship.inventory:
                                 ship.inventory[material] = 0

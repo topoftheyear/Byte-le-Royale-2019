@@ -50,6 +50,12 @@ class Ship(GameObject):
         self.module_2 = UpgradeType.locked
         self.module_3 = UpgradeType.locked
 
+        self.action = PlayerAction.none
+        self.action_param_1 = None
+        self.action_param_2 = None
+        self.action_param_3 = None
+        self.move_action = None
+
         # ideally a dictionary of ItemType enums mapped to a count of the number of that item
         self.inventory = {}
 
@@ -82,6 +88,12 @@ class Ship(GameObject):
                 "module_1": self.module_1,
                 "module_2": self.module_2,
                 "module_3": self.module_3,
+
+                "action": self.action,
+                "action_param_1": self.action_param_1,
+                "action_param_2": self.action_param_2,
+                "action_param_3": self.action_param_3,
+                "move_action": self.move_action,
             }
 
             data = { **data, **player_owned }
@@ -140,7 +152,12 @@ class Ship(GameObject):
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update
             #   prevents other players from tampering with our ship
-            pass
+
+            self.action = data["action"]
+            self.move_action = data["move_action"]
+            self.action_param_1 = data["action_param_1"]
+            self.action_param_2 = data["action_param_2"]
+            self.action_param_3 = data["action_param_3"]
 
 
         if security_level <= SecurityLevel.other_player:
