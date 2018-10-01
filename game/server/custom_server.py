@@ -8,6 +8,7 @@ from game.utils.generate_game import load
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
+from game.server.notoriety_controller import NotorietyController
 
 
 class CustomServer(ServerControl):
@@ -26,15 +27,18 @@ class CustomServer(ServerControl):
         self.universe = load()
         self.ships = [s for s in self.universe if s.object_type == ObjectType.ship]
 
+
+        # Set up controllers
         stations = self.filter_universe(ObjectType.station)
         self.station_controller = StationController(stations)
         self.station_controller.init(stations)
 
         self.mining_controller = MiningController()
 
+        self.notoriety_controller = NotorietyController.get_instance()
+
+        # prep NPCs
         self.claim_npcs()
-
-
 
 
     def pre_turn(self):

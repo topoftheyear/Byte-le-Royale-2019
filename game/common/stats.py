@@ -95,4 +95,14 @@ class GameStats:
             elif upgrade_level == UpgradeLevel.three:
                 return GameStats.sensor_range_3
 
+    # notoriety stats
+    destroy_civilian = 2
+    destroy_bounty_hunter = 3
+    destroy_police = 4
+    destroy_enforcer = 5
+    carrying_illegal_module = 1
+
+    destroy_pirate = -2
+    pay_off_bounty = -1
+
 

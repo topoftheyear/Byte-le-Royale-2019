@@ -33,9 +33,7 @@ class Ship(GameObject):
         self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
         self.current_hull = self.max_hull
 
-
-        import random
-        self.engine_speed = random.randint(3,10)#GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
+        self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
 
         self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
 
@@ -60,6 +58,9 @@ class Ship(GameObject):
         self.inventory = {}
 
         self.position = position
+
+        self.notoriety = 0
+        self.legal_standing = LegalStanding.citizen
 
 
     def to_dict(self, security_level=SecurityLevel.other_player):
@@ -108,7 +109,10 @@ class Ship(GameObject):
                 "current_hull": self.current_hull,
                 "cargo_space": self.cargo_space,
                 "position": self.position,
-                "inventory": self.inventory
+                "inventory": self.inventory,
+
+                "notoriety": self.notoriety,
+                "legal_standing": self.legal_standing,
             }
 
 
@@ -148,6 +152,9 @@ class Ship(GameObject):
 
             self.is_npc = data["is_npc"]
 
+            self.notoriety = data["notoriety"]
+            self.legal_standing = data["legal_standing"]
+
 
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update
@@ -167,3 +174,4 @@ class Ship(GameObject):
 
     def is_alive(self):
         return self.current_hull > 0
+

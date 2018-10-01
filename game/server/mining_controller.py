@@ -1,5 +1,3 @@
-
-# log events and stats
 import sys
 import math
 
