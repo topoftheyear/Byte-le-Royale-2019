@@ -24,6 +24,9 @@ class LogEvent:
     market_update = 2
     ship_mine = 3
     notoriety_change = 4
+    ship_attack = 5
+    ship_destroyed = 6
+    ship_respawned = 7
 
 
 class MessageType:

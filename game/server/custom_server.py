@@ -9,6 +9,8 @@ from game.utils.generate_game import load
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
 from game.server.notoriety_controller import NotorietyController
+from game.server.combat_controller import CombatController
+from game.server.death_controller import DeathController
 
 
 class CustomServer(ServerControl):
@@ -34,8 +36,10 @@ class CustomServer(ServerControl):
         self.station_controller.init(stations)
 
         self.mining_controller = MiningController()
-
         self.notoriety_controller = NotorietyController.get_instance()
+        self.combat_controller = CombatController()
+        self.death_controller = DeathController()
+
 
         # prep NPCs
         self.claim_npcs()
@@ -244,11 +248,17 @@ class CustomServer(ServerControl):
         # apply the results of any actions a player took if player still alive
         # mining
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+        self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+
+
+        dead_ships = filter(lambda e: not e.is_alive(), self.ships)
+        self.death_controller.handle_actions(dead_ships)
 
         # log events and stats
         self.turn_log["events"].extend( self.mining_controller.get_events() )
         self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
 
+        self.turn_log["events"].extend( self.combat_controller.get_events() )
 
 
 

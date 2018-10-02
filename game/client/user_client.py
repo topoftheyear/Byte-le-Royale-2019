@@ -37,3 +37,17 @@ class UserClient:
 
         self._action = PlayerAction.attack
         self._action_param_1 = target.id
+
+    def get_ships(self, universe):
+        return [ obj for obj in universe if obj.object_type == ObjectType.ship ]
+
+    def get_stations(self, universe):
+        return [ obj for obj in universe if obj.object_type == ObjectType.stations ]
+
+    def get_asteroid_fields(self, universe):
+        return [ obj
+                for obj in universe
+                if obj.object_type in [
+                    ObjectType.cuprite_field,
+                    ObjectType.goethite_field,
+                    ObjectType.gold_field] ]

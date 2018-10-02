@@ -13,10 +13,10 @@ class GameStats:
     engine_speed_2 = 6
     engine_speed_3 = 8
 
-    weapon_damage_0 = 1000
-    weapon_damage_1 = 2000
-    weapon_damage_2 = 2000
-    weapon_damage_3 = 2000
+    weapon_damage_0 = 10
+    weapon_damage_1 = 20
+    weapon_damage_2 = 20
+    weapon_damage_3 = 20
 
     cargo_space_0 = 1000
     cargo_space_1 = 2000

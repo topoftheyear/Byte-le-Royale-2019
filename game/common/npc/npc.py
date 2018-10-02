@@ -28,7 +28,10 @@ class NPC(UserClient):
             if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
                 self.heading = None
 
-        self.mine()
+        ships = self.get_ships(universe)
+
+        self.attack(ships[0])
+
 
         return self.action_digest()
 

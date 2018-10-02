@@ -62,6 +62,8 @@ class Ship(GameObject):
         self.notoriety = 0
         self.legal_standing = LegalStanding.citizen
 
+        self.respawn_counter = -1
+
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -84,6 +86,7 @@ class Ship(GameObject):
                 "weapon_damage": self.weapon_damage,
                 "cargo_space": self.cargo_space,
                 "mining_yield": self.mining_yield,
+                "sensor_range": self.sensor_range,
 
                 "module_0": self.module_0,
                 "module_1": self.module_1,
@@ -95,6 +98,8 @@ class Ship(GameObject):
                 "action_param_2": self.action_param_2,
                 "action_param_3": self.action_param_3,
                 "move_action": self.move_action,
+
+                "respawn_counter": self.respawn_counter,
             }
 
             data = { **data, **player_owned }
@@ -140,6 +145,7 @@ class Ship(GameObject):
             self.weapon_damage = data["weapon_damage"]
             self.cargo_space = data["cargo_space"]
             self.mining_yield = data["mining_yield"]
+            self.sensor_range = data["sensor_range"]
 
             self.module_0 = data["module_0"]
             self.module_1 = data["module_1"]
@@ -154,6 +160,8 @@ class Ship(GameObject):
 
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]
+
+            self.respawn_counter = data["respawn_counter"]
 
 
         if security_level <= SecurityLevel.player_owned:
