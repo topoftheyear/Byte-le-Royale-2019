@@ -33,11 +33,10 @@ class Ship(GameObject):
         self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
         self.current_hull = self.max_hull
 
-
-        import random
-        self.engine_speed = random.randint(3,10)#GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
+        self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
 
         self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
+        self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
 
         self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
 
@@ -61,6 +60,11 @@ class Ship(GameObject):
 
         self.position = position
 
+        self.notoriety = 0
+        self.legal_standing = LegalStanding.citizen
+
+        self.respawn_counter = -1
+
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -81,8 +85,10 @@ class Ship(GameObject):
             player_owned = {
                 "engine_speed": self.engine_speed,
                 "weapon_damage": self.weapon_damage,
+                "weapon_range": self.weapon_range,
                 "cargo_space": self.cargo_space,
                 "mining_yield": self.mining_yield,
+                "sensor_range": self.sensor_range,
 
                 "module_0": self.module_0,
                 "module_1": self.module_1,
@@ -94,6 +100,8 @@ class Ship(GameObject):
                 "action_param_2": self.action_param_2,
                 "action_param_3": self.action_param_3,
                 "move_action": self.move_action,
+
+                "respawn_counter": self.respawn_counter,
             }
 
             data = { **data, **player_owned }
@@ -108,7 +116,10 @@ class Ship(GameObject):
                 "current_hull": self.current_hull,
                 "cargo_space": self.cargo_space,
                 "position": self.position,
-                "inventory": self.inventory
+                "inventory": self.inventory,
+
+                "notoriety": self.notoriety,
+                "legal_standing": self.legal_standing,
             }
 
 
@@ -134,8 +145,10 @@ class Ship(GameObject):
 
             self.engine_speed = data["engine_speed"]
             self.weapon_damage = data["weapon_damage"]
+            self.weapon_range = data["weapon_range"]
             self.cargo_space = data["cargo_space"]
             self.mining_yield = data["mining_yield"]
+            self.sensor_range = data["sensor_range"]
 
             self.module_0 = data["module_0"]
             self.module_1 = data["module_1"]
@@ -147,6 +160,11 @@ class Ship(GameObject):
             self.inventory = data["inventory"]
 
             self.is_npc = data["is_npc"]
+
+            self.notoriety = data["notoriety"]
+            self.legal_standing = data["legal_standing"]
+
+            self.respawn_counter = data["respawn_counter"]
 
 
         if security_level <= SecurityLevel.player_owned:
@@ -167,3 +185,4 @@ class Ship(GameObject):
 
     def is_alive(self):
         return self.current_hull > 0
+

@@ -1,5 +1,3 @@
-
-# log events and stats
 import sys
 import math
 
@@ -12,7 +10,7 @@ class MiningController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 

@@ -25,7 +25,7 @@ events = None
 debug = False
 
 # Create Sprite groups
-ship_group = pygame.sprite.Group()
+ship_group = pygame.sprite.RenderUpdates()
 station_group = pygame.sprite.Group()
 asteroid_field_group = pygame.sprite.Group()
 
@@ -145,6 +145,9 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             if _VIS_INTERMEDIATE_FRAMES <= 0:
                 update_groups(-1)
                 draw_screen()
+
+                draw_lasers(ship_group, events)
+
                 handle_events()
 
                 # update the display
@@ -161,6 +164,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
                     draw_screen()
 
+                    draw_lasers(ship_group, events)
+
                     handle_events()
 
                     # update the display
@@ -174,6 +179,42 @@ def update_groups(intermediate):
 
     # call update on groups
     ship_group.update(universe, events, intermediate)
+
+def draw_lasers(ship_group, events):
+    attacks = get_events_of_type(LogEvent.ship_attack, events)
+
+    for attack in attacks:
+        if not attack["attacker"].is_alive():
+            attacker = world_to_display(*attack["attacker_position"])
+        else:
+            attacker = next(filter(lambda e: e.ship_id == attack["attacker"].id, ship_group), None).rect.center
+
+        if not attack["target"].is_alive():
+            target = world_to_display(*attack["target_position"])
+        else:
+            target = next(filter(lambda e: e.ship_id == attack["target"].id, ship_group), None).rect.center
+
+        pygame.draw.circle(global_surf, pygame.Color(155, 0, 0), attacker, 2)
+        pygame.draw.aaline(global_surf, pygame.Color(255, 0, 0), attacker, target)
+
+        spread = 8
+
+        for _ in range(random.randint(2,4)):
+            global_surf.fill(
+
+                random.choice([
+                    pygame.Color(155, 0, 0),
+                    pygame.Color(255, 0, 0),
+                    pygame.Color(255, 238, 0),
+                    pygame.Color(255, 191, 0),
+                    pygame.Color(255, 132, 0),
+
+                ]), (
+                random.randint(-spread,spread)+target[0],
+                random.randint(-spread,spread)+target[1],
+                2, 2,))
+
+
 
 def draw_screen():
 
@@ -276,3 +317,6 @@ def handle_events():
             show_station_stats_display(f"{station_name} Statistics", compiled[station_name], global_surf, fpsClock)
 
 
+
+def get_events_of_type(event_type, events):
+    return [ event for event in events if event["type"] == event_type ]

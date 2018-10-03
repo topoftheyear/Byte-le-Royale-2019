@@ -14,3 +14,5 @@ FPS = 120
 # Low Performance Render Mode
 #VIS_INTERMEDIATE_FRAMES = -1
 #FPS = 10
+
+RESPAWN_TIME = 10

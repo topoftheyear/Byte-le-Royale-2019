@@ -11,6 +11,7 @@ class UpgradeType:
     cargo_space = 3
     mining_yield = 4
     sensor_range = 5
+    weapon_range = 6
 
 class UpgradeLevel:
     base = 0
@@ -23,6 +24,10 @@ class LogEvent:
     ship_move = 1
     market_update = 2
     ship_mine = 3
+    notoriety_change = 4
+    ship_attack = 5
+    ship_destroyed = 6
+    ship_respawned = 7
 
 
 class MessageType:
@@ -37,6 +42,7 @@ class MessageType:
 class PlayerAction:
     none = 0
     mine = 1
+    attack = 2
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
@@ -70,6 +76,25 @@ class MaterialType:
     goethite = 11
     cuprite = 12
     wire = 13
+
+
+class LegalStanding:
+    citizen = 0
+    pirate = 5
+    bounty_hunter = -5
+
+
+class NotorietyChangeReason:
+    # increase notoriety
+    destroy_civilian = 0
+    destroy_bounty_hunter = 1
+    destroy_police = 2
+    destroy_enforcer = 3
+    carrying_illegal_module = 4
+
+    # decrease notoriety
+    destroy_pirate = 5
+    pay_off_bounty = 6 # possibly
 
 
 

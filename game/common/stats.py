@@ -8,15 +8,20 @@ class GameStats:
     hull_3 = 2000
 
     import random
-    engine_speed_0 = 3
-    engine_speed_1 = 4
-    engine_speed_2 = 6
-    engine_speed_3 = 8
+    engine_speed_0 = 6
+    engine_speed_1 = 7
+    engine_speed_2 = 9
+    engine_speed_3 = 11
 
-    weapon_damage_0 = 1000
-    weapon_damage_1 = 2000
-    weapon_damage_2 = 2000
-    weapon_damage_3 = 2000
+    weapon_damage_0 = 10
+    weapon_damage_1 = 20
+    weapon_damage_2 = 20
+    weapon_damage_3 = 20
+
+    weapon_range_0 = 50
+    weapon_range_1 = 75
+    weapon_range_2 = 100
+    weapon_range_3 = 125
 
     cargo_space_0 = 10000
     cargo_space_1 = 20000
@@ -28,10 +33,10 @@ class GameStats:
     mining_yield_2 = 1700
     mining_yield_3 = 2000
 
-    sensor_range_0 = 1000
-    sensor_range_1 = 2000
-    sensor_range_2 = 2000
-    sensor_range_3 = 2000
+    sensor_range_0 = 75
+    sensor_range_1 = 100
+    sensor_range_2 = 125
+    sensor_range_3 = 150
 
     def get_ship_stat(upgrade_type, upgrade_level):
 
@@ -94,5 +99,25 @@ class GameStats:
                 return GameStats.sensor_range_2
             elif upgrade_level == UpgradeLevel.three:
                 return GameStats.sensor_range_3
+
+        if upgrade_type == UpgradeType.weapon_range:
+            if upgrade_level == UpgradeLevel.base:
+                return GameStats.weapon_range_0
+            elif upgrade_level == UpgradeLevel.one:
+                return GameStats.weapon_range_1
+            elif upgrade_level == UpgradeLevel.two:
+                return GameStats.weapon_range_2
+            elif upgrade_level == UpgradeLevel.three:
+                return GameStats.weapon_range_3
+
+    # notoriety stats
+    destroy_civilian = 2
+    destroy_bounty_hunter = 3
+    destroy_police = 4
+    destroy_enforcer = 5
+    carrying_illegal_module = 1
+
+    destroy_pirate = -2
+    pay_off_bounty = -1
 
 
