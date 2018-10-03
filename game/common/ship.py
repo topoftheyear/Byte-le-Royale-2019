@@ -36,6 +36,7 @@ class Ship(GameObject):
         self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
 
         self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
+        self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
 
         self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
 
@@ -84,6 +85,7 @@ class Ship(GameObject):
             player_owned = {
                 "engine_speed": self.engine_speed,
                 "weapon_damage": self.weapon_damage,
+                "weapon_range": self.weapon_range,
                 "cargo_space": self.cargo_space,
                 "mining_yield": self.mining_yield,
                 "sensor_range": self.sensor_range,
@@ -143,6 +145,7 @@ class Ship(GameObject):
 
             self.engine_speed = data["engine_speed"]
             self.weapon_damage = data["weapon_damage"]
+            self.weapon_range = data["weapon_range"]
             self.cargo_space = data["cargo_space"]
             self.mining_yield = data["mining_yield"]
             self.sensor_range = data["sensor_range"]

@@ -176,6 +176,7 @@ class CustomServer(ServerControl):
 
         self.process_move_actions()
 
+
         # update station market / update BGS
         self.station_controller.tick(
             self.filter_universe(ObjectType.station))
@@ -260,6 +261,9 @@ class CustomServer(ServerControl):
 
         self.turn_log["events"].extend( self.combat_controller.get_events() )
 
+        self.turn_log["events"].extend( self.death_controller.get_events() )
+
+        self.turn_log["events"].extend( self.notoriety_controller.get_events() )
 
 
 

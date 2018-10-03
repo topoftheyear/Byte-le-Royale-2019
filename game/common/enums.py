@@ -11,6 +11,7 @@ class UpgradeType:
     cargo_space = 3
     mining_yield = 4
     sensor_range = 5
+    weapon_range = 6
 
 class UpgradeLevel:
     base = 0

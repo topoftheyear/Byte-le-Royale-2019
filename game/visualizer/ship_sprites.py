@@ -6,24 +6,42 @@ from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
 from game.utils.projection import *
 
-class ShipSpriteSheet(pygame.sprite.Sprite):
+class ShipSpriteSheet(pygame.sprite.DirtySprite):
     def __init__(self, sprite_sheet_data, x, y, ship_id, color):
         super().__init__()
 
+        self.sprite_sheet_data = sprite_sheet_data
+        self.raw_color = color
+
+        self.load_sprite()
+        self.rect = self.image.get_rect()
+        self.rect.center = world_to_display(x, y)
+
+        self.ship_id = ship_id
+        self.current_vec = None
+        self.new_vec = None
+        self.move_target = None
+
+        self.first = False
+
+        self.dirty = 2
+
+
+    def load_sprite(self):
         sprite_sheet = SpriteSheet("game/visualizer/assets/simple_ship.png")
 
-        self.image = sprite_sheet.get_image(sprite_sheet_data[0],
-                                            sprite_sheet_data[1],
-                                            sprite_sheet_data[2],
-                                            sprite_sheet_data[3])
+        self.image = sprite_sheet.get_image(self.sprite_sheet_data[0],
+                                            self.sprite_sheet_data[1],
+                                            self.sprite_sheet_data[2],
+                                            self.sprite_sheet_data[3])
 
         self.image_cache = self.image
 
         # Colorizing ship
         self.color = pygame.Color(
-            color.r,
-            color.g,
-            color.b,
+            self.raw_color.r,
+            self.raw_color.g,
+            self.raw_color.b,
             255
         )
 
@@ -50,20 +68,16 @@ class ShipSpriteSheet(pygame.sprite.Sprite):
         del pa
 
 
-        self.rect = self.image.get_rect()
-        self.rect.center = world_to_display(x, y)
-        self.ship_id = ship_id
-        self.current_vec = None
-        self.new_vec = None
-        self.move_target = None
-
-        self.first = False
-
 
     def update(self, universe, events, intermediate=-1):
 
         ship = self.find_self(universe)
         if ship is None:
+            return
+
+        if not ship.is_alive():
+            self.rect.center = percent_display(0.5, 0.5)
+            self.visible = 0
             return
 
         events = self.get_pertinent_events(events)

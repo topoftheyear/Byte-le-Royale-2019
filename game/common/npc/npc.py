@@ -1,5 +1,6 @@
 import random
 
+from game.common.enums import *
 from game.client.user_client import UserClient
 from game.config import *
 
@@ -21,17 +22,18 @@ class NPC(UserClient):
         # wander between random waypoints
         if len(self.ship.inventory) == 0:
             if self.heading is None:
-                self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
+                #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
+                self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
 
             self.move(*self.heading)
 
             if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
                 self.heading = None
 
-        ships = self.get_ships(universe)
-
-        self.attack(ships[0])
-
+        ships = self.ships_in_attack_range(universe)
+        ship_to_attack = next(iter(ships), None)
+        if ship_to_attack:
+            self.attack(ship_to_attack)
 
         return self.action_digest()
 
@@ -44,6 +46,8 @@ class NPC(UserClient):
             "action_param_3": self._action_param_3,
             "move_action": self._move_action
         }
+
+
 
 
 

@@ -7,13 +7,17 @@ from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.config import *
 
+from game.server.notoriety_controller import NotorietyController
+
 class CombatController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
+
+        self.notoriety_controller = NotorietyController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -58,20 +62,42 @@ class CombatController:
                 "type": LogEvent.ship_attack,
                 "attacker": ship.id,
                 "target": target.id,
-                "damage": ship.weapon_damage
+                "damage": ship.weapon_damage,
+                "attacker_position": ship.position,
+                "target_position": target.position,
             })
 
             if target.current_hull == 0:
                 self.print("Target destroyed, hiding ship.")
-                exit()
+
                 self.events.append({
                     "type": LogEvent.ship_destroyed,
                     "ship": target.id,
                 })
 
-                # move them off the map
-                target.position = (-100, -100)
                 target.respawn_counter = RESPAWN_TIME + 1 #+1 to account for this turn
+
+                self.notoriety_controller.update_standing(ship)
+                self.notoriety_controller.update_standing(target)
+
+                # TODO when police and enforcers are implemented,
+                #   add checks here to see if the target is one of the abovee
+                #   and attrobute appropriately
+                if target.legal_standing == LegalStanding.citizen:
+                    self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_civilian)
+
+                elif target.legal_standing == LegalStanding.pirate:
+
+                    if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
+                        self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
+
+                elif target.legal_standing == LegalStanding.bounty_hunter:
+                    self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
+
+
+
+
+
 
 
 

@@ -18,7 +18,7 @@ class GameLogParser:
         # parse manifest
         with open("{}/manifest.json".format(log_dir), "r") as f:
             manifest = json.load(f)
-            self.max_ticks = manifest["ticks"]
+            self.max_ticks = manifest["ticks"] - 1
 
         self.turns = []
 
@@ -56,8 +56,9 @@ class GameLogParser:
             # mark that the event hasn't been handled
             event["handled"] = False
 
-            #if event["type"] == LogEvent.demo:
-            #    pass # Deserialize game objects as needed
+            if event["type"] == LogEvent.ship_attack:
+                event["attacker"] = self.get_ship(event["attacker"], universe)
+                event["target"] = self.get_ship(event["target"], universe)
 
         self.stats.append(turn["turn_result"]["stats"])
 
@@ -105,3 +106,10 @@ class GameLogParser:
                 objs.append(obj)
 
         return objs
+
+    def get_ship(self, ship_id, universe):
+        for obj in universe:
+            if obj.object_type == ObjectType.ship and obj.id == ship_id:
+                return obj
+        return None
+

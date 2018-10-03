@@ -16,6 +16,13 @@ class UserClient:
 
         self._move_action = None
 
+    def reset_player_action(self):
+        self._action = PlayerAction.none
+        self._action_param_1 = None
+        self._action_param_2 = None
+        self._action_param_3 = None
+
+
     def team_name(self):
         return "ForgotToSetAName"
 
@@ -24,13 +31,13 @@ class UserClient:
         self._move_action = (x, y)
 
     def mine(self):
-        self.reset_actions()
+        self.reset_player_action()
 
         self._action = PlayerAction.mine
 
 
     def attack(self, target):
-        self.reset_actions()
+        self.reset_player_action()
 
         if not isinstance(target, GameObject) and target.object_type is not ObjectType.ship:
             return
@@ -38,8 +45,18 @@ class UserClient:
         self._action = PlayerAction.attack
         self._action_param_1 = target.id
 
-    def get_ships(self, universe):
-        return [ obj for obj in universe if obj.object_type == ObjectType.ship ]
+    def get_ships(self, universe, callback=None):
+        if callback != None:
+            return [ obj
+                    for obj in universe
+                    if obj.object_type == ObjectType.ship
+                    and obj.is_alive()
+                    and callback(obj)]
+
+        return [ obj
+                for obj in universe
+                if obj.object_type == ObjectType.ship
+                and obj.is_alive()]
 
     def get_stations(self, universe):
         return [ obj for obj in universe if obj.object_type == ObjectType.stations ]
@@ -51,3 +68,14 @@ class UserClient:
                     ObjectType.cuprite_field,
                     ObjectType.goethite_field,
                     ObjectType.gold_field] ]
+
+
+    def ships_in_attack_range(self, universe):
+        def is_ship_visible_wrapper(ship):
+            def is_ship_visible(target):
+                result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
+                in_range = result < ship.weapon_range**2
+                return in_range  and ship.id != target.id
+            return is_ship_visible
+
+        return self.get_ships(universe, is_ship_visible_wrapper(self.ship))

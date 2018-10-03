@@ -29,6 +29,17 @@ class NotorietyController:
             NotorietyController()
         return NotorietyController.__instance
 
+    def get_events(self):
+        e = self.events
+        self.events = []
+        return e
+
+    def get_stats(self):
+        s = self.stats
+        self.stats = []
+        return s
+
+
     def print(self, msg):
         if self.debug:
             print(str(msg))
@@ -57,16 +68,23 @@ class NotorietyController:
         #elif change_reason is NotorietyChangeReason.pay_off_bounty:
         #    ship.notoriety += GameStats.pay_off_bounty
 
+        self.events.append({
+            "type": LogEvent.notoriety_change,
+            "reason": change_reason,
+            "ship_id": ship.id,
+        })
 
 
-    def update_standing(self, universe):
+    def update_standing_universe(self, universe):
         for obj in universe:
             if obj.object_type is not ObjectType.ship: continue
+            self.update_standing(obj)
 
-            ship = obj
-            if ship.notoriety >= LegalStanding.pirate:
-                ship.legal_standing = LegalStanding.pirate
-            elif LegalStanding.bounty_hunter <= ship.notoriety:
-                ship.legal_standing = LegalStanding.bounty_hunter
-            else:
-                ship.legal_standing = LegalStanding.citizen
+
+    def update_standing(self, ship):
+        if ship.notoriety >= LegalStanding.pirate:
+            ship.legal_standing = LegalStanding.pirate
+        elif LegalStanding.bounty_hunter <= ship.notoriety:
+            ship.legal_standing = LegalStanding.bounty_hunter
+        else:
+            ship.legal_standing = LegalStanding.citizen

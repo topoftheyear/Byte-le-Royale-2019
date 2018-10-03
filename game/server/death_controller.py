@@ -34,7 +34,7 @@ class DeathController:
     def handle_actions(self, dead_ships):
 
         for ship in dead_ships:
-
+            ship.position = [-100, -100]
             ship.respawn_counter -= 1
 
             if ship.respawn_counter == 0:
