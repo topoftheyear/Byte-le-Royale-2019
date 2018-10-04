@@ -162,6 +162,7 @@ class CustomServer(ServerControl):
                 self.npc_teams[k]["ship"].move_action = None
 
             for npc in self.npc_teams.keys():
+                result = self.npc_teams[npc]["controller"].reset_actions()
                 result = self.npc_teams[npc]["controller"].take_turn(self.universe)
 
                 self.npc_teams[npc]["ship"].action = result["action_type"]

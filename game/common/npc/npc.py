@@ -19,17 +19,20 @@ class NPC(UserClient):
 
     def take_turn(self, universe):
 
-        # wander between random waypoints
-        if len(self.ship.inventory) == 0:
-            if self.heading is None:
-                #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-                self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+        # choose a new heading if we don't have one
+        if self.heading is None:
+            #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
+            self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
 
-            self.move(*self.heading)
+        # move towards heading
+        self.move(*self.heading)
 
-            if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-                self.heading = None
+        # if at heading, clear heading
+        if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
+            self.heading = None
 
+
+        # attack ships in range
         ships = self.ships_in_attack_range(universe)
         ship_to_attack = next(iter(ships), None)
         if ship_to_attack:
