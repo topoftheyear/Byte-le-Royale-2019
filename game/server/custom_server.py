@@ -1,8 +1,9 @@
 import json
+import random
 
 from game.server.server_control import ServerControl
 from game.common.enums import *
-from game.common.npc.npc import NPC
+from game.common.npc.npc import *
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -234,7 +235,8 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            new_npc_controller = NPC(ship)
+            npc_type = random.choice([NPC, MiningNPC])
+            new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
                 "controller": new_npc_controller,
