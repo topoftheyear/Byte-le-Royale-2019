@@ -23,15 +23,15 @@ class GameStats:
     weapon_range_2 = 100
     weapon_range_3 = 125
 
-    cargo_space_0 = 10000
-    cargo_space_1 = 20000
-    cargo_space_2 = 20000
-    cargo_space_3 = 20000
+    cargo_space_0 = 500000
+    cargo_space_1 = 650000
+    cargo_space_2 = 800000
+    cargo_space_3 = 1000000
 
-    mining_yield_0 = 1000
-    mining_yield_1 = 1350
-    mining_yield_2 = 1700
-    mining_yield_3 = 2000
+    mining_yield_0 = 50000
+    mining_yield_1 = 65000
+    mining_yield_2 = 80000
+    mining_yield_3 = 100000
 
     sensor_range_0 = 75
     sensor_range_1 = 100
