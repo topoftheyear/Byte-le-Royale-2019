@@ -45,6 +45,10 @@ class UserClient:
         self._action = PlayerAction.attack
         self._action_param_1 = target.id
 
+    def buy_module(self, module, upgrade_level, ship_slot):
+        # add functionality here
+        pass
+
     def get_ships(self, universe, callback=None):
         if callback != None:
             return [ obj

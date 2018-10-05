@@ -43,6 +43,7 @@ class PlayerAction:
     none = 0
     mine = 1
     attack = 2
+    buy_module = 3
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
