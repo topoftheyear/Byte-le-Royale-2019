@@ -46,8 +46,25 @@ class UserClient:
         self._action_param_1 = target.id
 
     def buy_module(self, module, upgrade_level, ship_slot):
-        # add functionality here
-        pass
+        self.reset_player_action()
+
+        # module checking, UpgradeType type
+        if not isinstance(module, UpgradeType) or module in [UpgradeType.locked, UpgradeType.empty]:
+            return
+
+        # upgrade_level checking, UpgradeLevel type
+        if not isinstance(upgrade_level, UpgradeLevel) or upgrade_level in [UpgradeLevel.base]:
+            return
+
+        # ship_slot checking
+        if ship_slot not in [0, 1, 2, 3]:
+            return
+
+        self._action = PlayerAction.buy_module
+        self._action_param_1 = module
+        self._action_param_2 = upgrade_level
+        self._action_param_3 = ship_slot
+
 
     def get_ships(self, universe, callback=None):
         if callback != None:

@@ -18,6 +18,7 @@ class UpgradeLevel:
     one = 1
     two = 2
     three = 3
+    illegal = 4
 
 class LogEvent:
     null = 0
