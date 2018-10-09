@@ -49,6 +49,11 @@ class Ship(GameObject):
         self.module_2 = UpgradeType.locked
         self.module_3 = UpgradeType.locked
 
+        self.module_0_level = UpgradeLevel.base
+        self.module_1_level = UpgradeLevel.base
+        self.module_2_level = UpgradeLevel.base
+        self.module_3_level = UpgradeLevel.base
+
         self.action = PlayerAction.none
         self.action_param_1 = None
         self.action_param_2 = None
@@ -94,6 +99,11 @@ class Ship(GameObject):
                 "module_1": self.module_1,
                 "module_2": self.module_2,
                 "module_3": self.module_3,
+
+                "module_0_level": self.module_0_level,
+                "module_1_level": self.module_1_level,
+                "module_2_level": self.module_2_level,
+                "module_3_level": self.module_3_level,
 
                 "action": self.action,
                 "action_param_1": self.action_param_1,
@@ -154,6 +164,11 @@ class Ship(GameObject):
             self.module_1 = data["module_1"]
             self.module_2 = data["module_2"]
             self.module_3 = data["module_3"]
+
+            self.module_0_level = data["module_0_level"]
+            self.module_1_level = data["module_1_level"]
+            self.module_2_level = data["module_2_level"]
+            self.module_3_level = data["module_3_level"]
 
             self.position = data["position"]
 

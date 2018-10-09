@@ -49,11 +49,11 @@ class UserClient:
         self.reset_player_action()
 
         # module checking, UpgradeType type
-        if not isinstance(module, UpgradeType) or module in [UpgradeType.locked, UpgradeType.empty]:
+        if module in [UpgradeType.locked, UpgradeType.empty]:
             return
 
         # upgrade_level checking, UpgradeLevel type
-        if not isinstance(upgrade_level, UpgradeLevel) or upgrade_level in [UpgradeLevel.base]:
+        if upgrade_level in [UpgradeLevel.base]:
             return
 
         # ship_slot checking
