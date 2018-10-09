@@ -1,10 +1,10 @@
-#Station
+# Stations
 
 Stations are the places where you will buy, sell, and trade resources.
 
-##API:
+## API:
 
-##Stats (Subject to Change)
+## Stats (Subject to Change)
 
 Listed below is the stations' stats:
 ```eval_rst
