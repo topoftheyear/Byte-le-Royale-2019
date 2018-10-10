@@ -61,6 +61,9 @@ class ObjectType:
 
     material = 7
 
+    police = 8
+    enforcer = 9
+
 
 class MaterialType:
     null = -1

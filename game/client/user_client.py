@@ -1,5 +1,6 @@
 from game.common.enums import  *
 from game.common.game_object import GameObject
+from game.utils.helpers import *
 
 class UserClient:
 
@@ -50,36 +51,14 @@ class UserClient:
         pass
 
     def get_ships(self, universe, callback=None):
-        if callback != None:
-            return [ obj
-                    for obj in universe
-                    if obj.object_type == ObjectType.ship
-                    and obj.is_alive()
-                    and callback(obj)]
-
-        return [ obj
-                for obj in universe
-                if obj.object_type == ObjectType.ship
-                and obj.is_alive()]
+        return get_ships(universe, callback)
 
     def get_stations(self, universe):
-        return [ obj for obj in universe if obj.object_type == ObjectType.stations ]
+        return get_stations(universe)
 
     def get_asteroid_fields(self, universe):
-        return [ obj
-                for obj in universe
-                if obj.object_type in [
-                    ObjectType.cuprite_field,
-                    ObjectType.goethite_field,
-                    ObjectType.gold_field] ]
+        return get_asteroid_fields(universe)
 
 
     def ships_in_attack_range(self, universe):
-        def is_ship_visible_wrapper(ship):
-            def is_ship_visible(target):
-                result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
-                in_range = result < ship.weapon_range**2
-                return in_range  and ship.id != target.id
-            return is_ship_visible
-
-        return self.get_ships(universe, is_ship_visible_wrapper(self.ship))
+        return ships_in_attack_range(universe, self.ship)

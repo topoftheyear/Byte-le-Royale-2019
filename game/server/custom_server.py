@@ -13,6 +13,7 @@ from game.server.mining_controller import MiningController
 from game.server.notoriety_controller import NotorietyController
 from game.server.combat_controller import CombatController
 from game.server.death_controller import DeathController
+from game.server.police_controller import PoliceController
 
 
 class CustomServer(ServerControl):
@@ -41,10 +42,15 @@ class CustomServer(ServerControl):
         self.notoriety_controller = NotorietyController.get_instance()
         self.combat_controller = CombatController()
         self.death_controller = DeathController()
+        self.police_controller = PoliceController()
 
 
         # prep NPCs
         self.claim_npcs()
+
+        # prep police
+        self.police = self.police_controller.setup_police(self.universe)
+
 
 
     def pre_turn(self):
@@ -173,6 +179,10 @@ class CustomServer(ServerControl):
                 self.npc_teams[npc]["ship"].action_param_3 = result["action_param_3"]
 
                 self.npc_teams[npc]["ship"].move_action = result["move_action"]
+
+
+            for police in self.police:
+                self.police_controller.take_turn(police, self.universe)
 
 
         self.process_actions()
