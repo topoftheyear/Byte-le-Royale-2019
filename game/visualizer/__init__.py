@@ -67,6 +67,14 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             ship_sprite = NeutralShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
 
+        elif obj.object_type == ObjectType.police:
+            ship_sprite = PoliceShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
+
+        elif obj.object_type == ObjectType.enforcer:
+            ship_sprite = EnforcerShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
+
         elif obj.object_type == ObjectType.station:
             station_sprite = NeutralStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)

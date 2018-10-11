@@ -30,7 +30,6 @@ class CustomServer(ServerControl):
         self.npc_teams = {}
 
         self.universe = load()
-        self.ships = [s for s in self.universe if s.object_type == ObjectType.ship]
 
 
         # Set up controllers
@@ -45,11 +44,11 @@ class CustomServer(ServerControl):
         self.police_controller = PoliceController()
 
 
-        # prep NPCs
-        self.claim_npcs()
 
         # prep police
         self.police = self.police_controller.setup_police(self.universe)
+
+        self.ships = [s for s in self.universe if s.object_type in [ ObjectType.ship, ObjectType.police, ObjectType.enforcer ]]
 
 
 
@@ -284,35 +283,37 @@ class CustomServer(ServerControl):
     def process_move_actions(self):
         living_ships = filter(lambda e: e.is_alive(), self.ships)
 
+        for ship in living_ships:
+            self.move_ship(ship)
 
-        for team, data in { **self.teams, **self.npc_teams}.items():
-            ship = data["ship"]
 
-            if ship.move_action is not None:
+    def move_ship(self, ship):
 
-                target_x_difference  = ship.move_action[0] - ship.position[0]
-                target_y_difference  = ship.move_action[1] - ship.position[1]
+        if ship.move_action is not None:
 
-                x_direction = -1 if target_x_difference < 0 else 1
-                x_magnitude = abs(target_x_difference)
+            target_x_difference  = ship.move_action[0] - ship.position[0]
+            target_y_difference  = ship.move_action[1] - ship.position[1]
 
-                y_direction = -1 if target_y_difference < 0 else 1
-                y_magnitude = abs(target_y_difference)
+            x_direction = -1 if target_x_difference < 0 else 1
+            x_magnitude = abs(target_x_difference)
 
-                x_move = min(ship.engine_speed, x_magnitude)
-                y_move = min(ship.engine_speed, y_magnitude)
+            y_direction = -1 if target_y_difference < 0 else 1
+            y_magnitude = abs(target_y_difference)
 
-                ship.position = (
-                    x_direction*x_move + ship.position[0],
-                    y_direction*y_move + ship.position[1]
-                )
+            x_move = min(ship.engine_speed, x_magnitude)
+            y_move = min(ship.engine_speed, y_magnitude)
 
-                self.turn_log["events"].append({
-                    "type": LogEvent.ship_move,
-                    "ship_id": ship.id,
-                    "pos": ship.position,
-                    "target_pos": ship.move_action
-                })
+            ship.position = (
+                x_direction*x_move + ship.position[0],
+                y_direction*y_move + ship.position[1]
+            )
+
+            self.turn_log["events"].append({
+                "type": LogEvent.ship_move,
+                "ship_id": ship.id,
+                "pos": ship.position,
+                "target_pos": ship.move_action
+            })
 
 
     def serialize_universe(self, security_level):

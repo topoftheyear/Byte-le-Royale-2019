@@ -3,6 +3,7 @@ import os
 
 from game.common.enums import *
 from game.common.ship import Ship
+from game.common.police_ship import PoliceShip
 from game.common.station import *
 from game.common.asteroid_field_types import load_asteroid_field
 
@@ -78,6 +79,16 @@ class GameLogParser:
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
+            elif obj_type == ObjectType.police:
+                obj = PoliceShip()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+            elif obj_type == ObjectType.police:
+                obj = PoliceShip()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
             elif obj_type == ObjectType.station:
                 obj = Station()
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
@@ -109,7 +120,7 @@ class GameLogParser:
 
     def get_ship(self, ship_id, universe):
         for obj in universe:
-            if obj.object_type == ObjectType.ship and obj.id == ship_id:
+            if obj.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer] and obj.id == ship_id:
                 return obj
         return None
 

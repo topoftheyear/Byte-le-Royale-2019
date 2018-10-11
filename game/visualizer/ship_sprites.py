@@ -154,11 +154,19 @@ class NeutralShipSprite(ShipSpriteSheet):
             32, 32
         ], x, y, ship_id, pygame.Color(0, 255, 0))
 
-class EnemyShipSprite(ShipSpriteSheet):
+class EnforcerShipSprite(ShipSpriteSheet):
     def __init__(self, x, y, ship_id):
         ShipSpriteSheet.__init__(self, [
             0, 0,
             32, 32
         ], x, y, ship_id, pygame.Color(0, 0, 255))
+
+
+class PoliceShipSprite(ShipSpriteSheet):
+    def __init__(self, x, y, ship_id):
+        ShipSpriteSheet.__init__(self, [
+            0, 0,
+            32, 32
+        ], x, y, ship_id, pygame.Color(255, 0, 0))
 
 
