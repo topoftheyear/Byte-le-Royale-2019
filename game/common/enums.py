@@ -29,6 +29,7 @@ class LogEvent:
     ship_attack = 5
     ship_destroyed = 6
     ship_respawned = 7
+    module_purchased = 8
 
 
 class MessageType:

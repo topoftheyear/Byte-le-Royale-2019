@@ -30,18 +30,17 @@ class ModuleController:
         return s
 
     def handle_actions(self, living_ships, universe, teams, npc_teams):
+        self.print('fuck')
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
-
             # Check for ships that are performing the buy module action
             if ship.action is PlayerAction.buy_module:
-                self.print('wow')
                 for thing in universe:
 
                     # Check for all stations in the universe
                     if thing.object_type in [ObjectType.secure_station, ObjectType.black_market_station]:
                         current_station = thing
-
+                        self.print('here1')
                         # Check if ship is within range of a / the station
                         st_x = current_station.position[0]
                         st_y = current_station.position[1]
@@ -53,29 +52,25 @@ class ModuleController:
                         # Check if ship is within the asteroid field
                         left_result = (sh_x - st_x) ** 2 + (sh_y - st_y) ** 2
                         right_result = radius ** 2
-                        self.print('here1')
                         if left_result >= right_result:
                             continue
                         self.print('here2')
-
                         module = ship.action_param_1
                         upgrade_level = ship.action_param_2
                         ship_slot = ship.action_param_3
 
                         # Check is the slot is available
-                        if ship_slot == UpgradeLevel.locked:
+                        if ship_slot == UpgradeType.locked:
                             continue
                         self.print('here3')
-
                         # Check if the module requested is illegal
                         if upgrade_level == UpgradeLevel.illegal and current_station not in [ObjectType.black_market_station]:
                             continue
-                        self.print('here4')
 
-                        # Check if ship has the funds
+                        # Check if ship has the funds and reduce them
                         if not True:
                             continue
-
+                        self.print('here4')
                         # Do the thing
                         if ship_slot == 0:
                             ship.module_0 = module
@@ -90,7 +85,11 @@ class ModuleController:
                             ship.module_3 = module
                             ship.module_3_level = upgrade_level
 
-                        # Reduce funds here
-
                         # Logging
-                        
+                        self.events.append({
+                            "type": LogEvent.module_purchased,
+                            "ship_id": ship.id,
+                            "module": module,
+                            "level": upgrade_level,
+                            "slot": ship_slot
+                        })
