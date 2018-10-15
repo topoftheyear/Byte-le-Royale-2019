@@ -95,6 +95,7 @@ class NotorietyChangeReason:
     destroy_police = 2
     destroy_enforcer = 3
     carrying_illegal_module = 4
+    attack_police = 7
 
     # decrease notoriety
     destroy_pirate = 5

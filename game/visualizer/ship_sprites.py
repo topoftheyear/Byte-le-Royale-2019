@@ -1,4 +1,5 @@
 import math
+import random
 
 import pygame
 
@@ -154,6 +155,31 @@ class NeutralShipSprite(ShipSpriteSheet):
             32, 32
         ], x, y, ship_id, pygame.Color(0, 255, 0))
 
+        self.legal_standing = LegalStanding.citizen
+
+    def update(self, universe, events, intermediate=-1):
+
+        ship = self.find_self(universe)
+        if ship is None:
+            return
+
+        # check if legal standing has changed
+        if ship.legal_standing != self.legal_standing:
+            self.legal_standing = ship.legal_standing
+
+
+            if self.legal_standing == LegalStanding.citizen:
+                self.raw_color = pygame.Color(0, 255, 0)
+            elif self.legal_standing == LegalStanding.bounty_hunter:
+                self.raw_color = pygame.Color(0, 238, 255)
+            elif self.legal_standing == LegalStanding.pirate:
+                self.raw_color = pygame.Color(255, 240, 145)
+            self.load_sprite()
+
+        super().update(universe, events, intermediate)
+
+
+
 class EnforcerShipSprite(ShipSpriteSheet):
     def __init__(self, x, y, ship_id):
         ShipSpriteSheet.__init__(self, [
@@ -168,5 +194,24 @@ class PoliceShipSprite(ShipSpriteSheet):
             0, 0,
             32, 32
         ], x, y, ship_id, pygame.Color(255, 0, 0))
+
+        self.color_bit = True
+        self.color_counter_max = 10
+        self.color_counter = random.randint(0, self.color_counter_max)
+
+    def update(self, universe, events, intermediate=-1):
+        self.color_counter += 1
+        if self.color_counter >= self.color_counter_max:
+            self.color_bit = not self.color_bit
+            self.color_counter = 0
+
+            if self.color_bit:
+                self.raw_color = pygame.Color(255,0,0)
+            else:
+                self.raw_color = pygame.Color(0,0,255)
+            self.load_sprite()
+
+        super().update(universe, events, intermediate)
+
 
 

@@ -81,7 +81,6 @@ class GameLogParser:
 
             elif obj_type == ObjectType.police:
                 obj = PoliceShip()
-                print(serialized_obj)
                 obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 

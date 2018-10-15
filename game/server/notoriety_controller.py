@@ -59,6 +59,8 @@ class NotorietyController:
             ship.notoriety += GameStats.destroy_enforcer
         elif change_reason is NotorietyChangeReason.carrying_illegal_module:
             ship.notoriety += GameStats.carrying_illegal_module
+        elif change_reason is NotorietyChangeReason.attack_police:
+            ship.notoriety += GameStats.attack_police
 
         # good deeds
         elif change_reason is NotorietyChangeReason.destroy_pirate:
@@ -75,8 +77,8 @@ class NotorietyController:
         })
 
 
-    def update_standing_universe(self, universe):
-        for obj in universe:
+    def update_standing_universe(self, ships):
+        for obj in ships:
             if obj.object_type is not ObjectType.ship: continue
             self.update_standing(obj)
 
@@ -84,7 +86,7 @@ class NotorietyController:
     def update_standing(self, ship):
         if ship.notoriety >= LegalStanding.pirate:
             ship.legal_standing = LegalStanding.pirate
-        elif LegalStanding.bounty_hunter <= ship.notoriety:
+        elif ship.notoriety <= LegalStanding.bounty_hunter:
             ship.legal_standing = LegalStanding.bounty_hunter
         else:
             ship.legal_standing = LegalStanding.citizen

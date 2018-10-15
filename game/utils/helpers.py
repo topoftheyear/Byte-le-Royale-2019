@@ -1,3 +1,5 @@
+import types
+
 from game.common.enums import *
 
 def get_ships(universe, callback=None):
@@ -33,3 +35,29 @@ def get_asteroid_fields(universe):
                 ObjectType.cuprite_field,
                 ObjectType.goethite_field,
                 ObjectType.gold_field] ]
+
+def in_radius(source, target, radius, acessor, target_acessor=None):
+    """
+    Params:
+    - source: the source object that you want to search a radius around
+    - target: the target object you wish to see if it lies in a radius around the source
+    - radius: either an integer, float or acessor function that takes the source and the target and returns an integer or float.
+    - acessor: an acessor method used to get the position of the source. If target_acessor is None, this will also be applied to the target.
+    - target_acessor: an acessor method used to get the position of the target. Default: None.
+    """
+    source_pos = acessor(source)
+    if target_acessor:
+        target_pos = target_acessor(target)
+    else:
+        target_pos = acessor(target)
+
+    result = (source_pos[0] - target_pos[0])**2 + (source_pos[1] - target_pos[1])**2
+
+    if isinstance(radius, types.FunctionType):
+        radius = radius(source, target)
+
+    in_range = result < radius**2
+
+    return in_range  and source.id != target.id
+
+

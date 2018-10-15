@@ -275,6 +275,8 @@ class CustomServer(ServerControl):
         dead_ships = filter(lambda e: not e.is_alive(), self.ships)
         self.death_controller.handle_actions(dead_ships)
 
+        self.notoriety_controller.update_standing_universe(self.ships)
+
         # log events and stats
         self.turn_log["events"].extend( self.mining_controller.get_events() )
         self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()

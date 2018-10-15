@@ -113,6 +113,7 @@ class GameStats:
     # notoriety stats
     destroy_civilian = 2
     destroy_bounty_hunter = 3
+    attack_police = 1
     destroy_police = 4
     destroy_enforcer = 5
     carrying_illegal_module = 1

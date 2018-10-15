@@ -67,6 +67,12 @@ class CombatController:
                 "target_position": target.position,
             })
 
+            # if target was a police or enforcer give notoriety
+            if target.object_type is ObjectType.police:
+                self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.attack_police)
+            elif target.object_type is ObjectType.enforcer:
+                self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.attack_police)
+
             if target.current_hull == 0:
                 self.print("Target destroyed, hiding ship.")
 
@@ -80,19 +86,26 @@ class CombatController:
                 self.notoriety_controller.update_standing(ship)
                 self.notoriety_controller.update_standing(target)
 
-                # TODO when police and enforcers are implemented,
-                #   add checks here to see if the target is one of the abovee
-                #   and attrobute appropriately
-                if target.legal_standing == LegalStanding.citizen:
-                    self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_civilian)
+                if ship.object_type is ObjectType.ship:
+                    # don't attribute notoriety to police or enforcers
 
-                elif target.legal_standing == LegalStanding.pirate:
+                    if target.object_type is ObjectType.ship:
+                        if target.legal_standing == LegalStanding.citizen:
+                            self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_civilian)
 
-                    if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
-                        self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
+                        elif target.legal_standing == LegalStanding.pirate:
 
-                elif target.legal_standing == LegalStanding.bounty_hunter:
-                    self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
+                            if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
+                                self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
+
+                        elif target.legal_standing == LegalStanding.bounty_hunter:
+                            self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
+
+                    elif target.object_type is ObjectType.police:
+                        self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_police)
+
+                    elif target.object_type is ObjectType.enforcer:
+                        self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_enforcer)
 
 
 

@@ -18,9 +18,9 @@ class PoliceController:
         self.states = {}
 
 
-    def print(self, msg):
+    def print(self, *args):
         if self.debug:
-            print(str(msg))
+            print(' '.join(str(msg) for msg in args) )
             sys.stdout.flush()
 
     def get_events(self):
@@ -73,15 +73,31 @@ class PoliceController:
         action_param_2 = None
         action_param_3 = None
 
-        # if at heading, clear heading
-        if(state.get("heading", None) is not None
-                and state["heading"] == ship.position[0]
-                and state["heading"] == ship.position[1]):
-            self.heading = None
 
-        # pick new location if at location
-        if state.get("heading", None) is None:
-            state["heading"] = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+        # pick target
+        if "target" not in state:
+            target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+            state["target"] = target.id
+            state["heading"] = target.position
+        else:
+
+            if state["target"] is None:
+                target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+                state["target"] = target.id
+
+            target = next(filter(lambda e:e.object_type == ObjectType.ship and e.id == state["target"], universe), None)
+
+            if target is not None:
+
+                if in_radius(ship, target, 10, lambda e:e.position):
+                    # we are within a certain radius of a ship, choose a new target
+                    target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+                    state["target"] = target.id
+
+                # update heading
+                state["heading"] = target.position
+            else:
+                state["heading"] = None
 
         # attack ships in range
         ships = ships_in_attack_range(universe, ship)
@@ -101,36 +117,8 @@ class PoliceController:
 
 
     def enforcer_take_turn(self, ship, state, universe):
-        action = None
-        action_param_1 = None
-        action_param_2 = None
-        action_param_3 = None
-
-        # if at heading, clear heading
-        if("heading" in state and state["heading"] is not None
-                and state["heading"] == ship.position[0]
-                and state["heading"] == ship.position[1]):
-            self.heading = None
-
-        # pick new location if at location
-        if state.get("heading", None) is None:
-            state["heading"] = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
-
-        # attack ships in range
-        ships = ships_in_attack_range(universe, ship)
-        ships = filter(lambda e: e.object_type == ObjectType.ship, ships)
-        ship_to_attack = next(ships, None)
-        if ship_to_attack:
-            action = PlayerAction.attack
-            action_param_1 = ship_to_attack.id
-
-        return {
-            "move_action": state["heading"],
-            "action": action,
-            "action_param_1": action_param_1,
-            "action_param_2": action_param_2,
-            "action_param_3": action_param_3,
-        }
+        # TODO: update later
+        return self.police_take_turn(ship, state, universe)
 
 
     def reset_actions(self, ship):
