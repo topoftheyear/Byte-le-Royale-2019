@@ -3,6 +3,7 @@ import random
 from game.common.enums import *
 from game.common.npc.npc import NPC
 from game.config import *
+from game.utils.helpers import *
 
 class ModuleNPC(NPC):
 
@@ -27,26 +28,27 @@ class ModuleNPC(NPC):
             for thing in universe:
 
                 # Check for all stations in the universe
-                if thing.object_type in [ObjectType.secure_station, ObjectType.black_market_station]:
-                    current_station = thing
-                    # Check if ship is within range of a / the station
-                    st_x = current_station.position[0]
-                    st_y = current_station.position[1]
-                    radius = current_station.accessibility_radius
+                if thing.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
+                    continue
 
-                    sh_x = self.ship.position[0]
-                    sh_y = self.ship.position[1]
 
-                    # Check if ship is within the asteroid field
-                    left_result = (sh_x - st_x) ** 2 + (sh_y - st_y) ** 2
-                    right_result = radius ** 2
-                    if left_result >= right_result:
-                        continue
-                    self.buy_module(random.choice([UpgradeType.engine_speed, UpgradeType.weapon_damage, UpgradeType.weapon_range]),
-                                    random.choice([UpgradeLevel.one, UpgradeLevel.two, UpgradeLevel.three]),
-                                    0)
+                current_station = thing
+                # Check if ship is within range of a / the station
+                ship_in_radius = in_radius(
+                        current_station,
+                        self.ship,
+                        lambda s,t:s.accessibility_radius,
+                        lambda e:e.position)
 
-                    print(self.ship.module_0)
+                # skip if not in range
+                if not ship_in_radius: continue
+
+                # Buy module
+                self.buy_module(
+                            UpgradeType.engine_speed,
+                            UpgradeLevel.three,
+                            ShipSlot.zero)
+
 
         return self.action_digest()
 

@@ -9,9 +9,9 @@ class GameStats:
 
     import random
     engine_speed_0 = 6
-    engine_speed_1 = 7
-    engine_speed_2 = 9
-    engine_speed_3 = 11
+    engine_speed_1 = 101
+    engine_speed_2 = 201
+    engine_speed_3 = 301
 
     weapon_damage_0 = 10
     weapon_damage_1 = 20

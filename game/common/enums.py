@@ -106,5 +106,10 @@ class NotorietyChangeReason:
     destroy_pirate = 5
     pay_off_bounty = 6 # possibly
 
+class ShipSlot:
+    zero = 0
+    one = 1
+    two = 2
+    three = 3
 
 

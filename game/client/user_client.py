@@ -58,7 +58,11 @@ class UserClient:
             return
 
         # ship_slot checking
-        if ship_slot not in [0, 1, 2, 3]:
+        if ship_slot not in [
+                ShipSlot.zero,
+                ShipSlot.one,
+                ShipSlot.two,
+                ShipSlot.three]:
             return
 
         self._action = PlayerAction.buy_module
