@@ -1,3 +1,4 @@
+import platform
 ## Config
 
 NPCS_TO_GENERATE = 20
@@ -10,8 +11,14 @@ DISPLAY_SIZE = (1280, 720)
 
 
 # High Performance Render Mode
-VIS_INTERMEDIATE_FRAMES = 4
-FPS = 120
+if platform.system() == 'Linux':
+    VIS_INTERMEDIATE_FRAMES = 10
+    FPS = 60
+    LOW_FPS = 30
+else:
+    VIS_INTERMEDIATE_FRAMES = 4
+    FPS = 120
+    LOW_FPS = 30
 
 # Low Performance Render Mode
 #VIS_INTERMEDIATE_FRAMES = -1
