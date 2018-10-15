@@ -75,14 +75,15 @@ class PoliceController:
 
 
         # pick target
+        pick_target = lambda universe: random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
         if "target" not in state:
-            target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+            target = pick_target(universe)
             state["target"] = target.id
             state["heading"] = target.position
         else:
 
             if state["target"] is None:
-                target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+                target = pick_target(universe)
                 state["target"] = target.id
 
             target = next(filter(lambda e:e.object_type == ObjectType.ship and e.id == state["target"], universe), None)
@@ -91,7 +92,7 @@ class PoliceController:
 
                 if in_radius(ship, target, 10, lambda e:e.position):
                     # we are within a certain radius of a ship, choose a new target
-                    target = random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+                    target = pick_target(universe)
                     state["target"] = target.id
 
                 # update heading
@@ -101,11 +102,15 @@ class PoliceController:
 
         # attack ships in range
         ships = ships_in_attack_range(universe, ship)
-        ships = filter(lambda e: e.object_type == ObjectType.ship, ships)
+        ships = filter(lambda e: e.object_type == ObjectType.ship and e.legal_standing == LegalStanding.pirate, ships)
         ship_to_attack = next(ships, None)
         if ship_to_attack:
             action = PlayerAction.attack
             action_param_1 = ship_to_attack.id
+
+            # also overwrite target and begin persuing
+            state["target"] = ship_to_attack.id
+            state["heading"] = ship_to_attack.position
 
         return {
             "move_action": state["heading"],
