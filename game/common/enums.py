@@ -28,6 +28,9 @@ class LogEvent:
     ship_attack = 5
     ship_destroyed = 6
     ship_respawned = 7
+    police_removed = 8
+    police_spawned = 9
+    enforcer_spawned = 10
 
 
 class MessageType:

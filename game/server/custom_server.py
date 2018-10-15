@@ -68,6 +68,18 @@ class CustomServer(ServerControl):
             # first turn, ask for client config, e.g. team name
             return # purposefully short circuit to get to send data
 
+        # update police state
+        new_police, police_to_remove = self.police_controller.assess_universe(self.universe)
+
+        self.universe = [ obj for obj in self.universe if obj not in police_to_remove ]
+        self.universe.extend(new_police)
+
+        self.ships = [ obj for obj in self.ships if obj not in police_to_remove ]
+        self.ships.extend(new_police)
+
+        self.police = [ obj for obj in self.police if obj not in police_to_remove ]
+        self.police.extend(new_police)
+
     def send_turn_data(self):
         # send turn data to clients
         self.print("SERVER SEND DATA")
@@ -284,6 +296,8 @@ class CustomServer(ServerControl):
         self.turn_log["events"].extend( self.combat_controller.get_events() )
 
         self.turn_log["events"].extend( self.death_controller.get_events() )
+
+        self.turn_log["events"].extend( self.police_controller.get_events() )
 
         self.turn_log["events"].extend( self.notoriety_controller.get_events() )
 

@@ -6,6 +6,7 @@ from game.common.enums import *
 from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
 from game.utils.helpers import *
+from game.utils.projection import *
 
 class PoliceController:
 
@@ -16,6 +17,9 @@ class PoliceController:
         self.stats = []
 
         self.states = {}
+
+        self.police_spawn_counter = 0
+        self.police_spawn_timeout = 5
 
 
     def print(self, *args):
@@ -51,7 +55,45 @@ class PoliceController:
 
     def assess_universe(self, universe):
         # decide if to spawn new ships, etc.
-        pass
+        new_police = []
+        to_remove = []
+
+        living_police = 0
+
+        for obj in universe:
+            if obj.object_type is ObjectType.police:
+                if obj.is_alive():
+                    living_police += 1
+                else:
+                    to_remove.append(obj)
+
+                    self.events.append({
+                        "type": LogEvent.police_removed,
+                        "ship_id": obj.id
+                    })
+
+
+        living_police = len(list(filter(
+            lambda e: e.object_type is ObjectType.police and e.is_alive(),
+            universe
+            )))
+
+        if living_police < NUM_POLICE:
+            self.police_spawn_counter += 1
+
+            if self.police_spawn_counter >= self.police_spawn_timeout:
+                new_ship = PoliceShip()
+                new_ship.init(level=1, position=percent_world(0.5, 0.5))
+
+                new_police.append(new_ship)
+                self.police_spawn_counter = 0
+
+                self.events.append({
+                    "type": LogEvent.police_spawned,
+                    "ship_id": new_ship.id
+                })
+
+        return new_police, to_remove
 
 
     def take_turn(self, police_ship, universe):

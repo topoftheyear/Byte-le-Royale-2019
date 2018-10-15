@@ -134,6 +134,15 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                     #    # prevents us from attempting to handle this event again
                     #    event["handled"] = True
 
+                    if event["type"] is LogEvent.police_spawned:
+                        new_ship = PoliceShipSprite(*event["ship"].position, event["ship"].id)
+                        ship_group.add(new_ship)
+                    elif event["type"] is LogEvent.police_removed:
+                        for ship_sprite in ship_group.sprites():
+                            if ship_sprite.ship_id == event["ship_id"]:
+                                ship_group.remove(ship_sprite)
+
+
 
 
             #####
