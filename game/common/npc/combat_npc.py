@@ -24,7 +24,6 @@ class CombatNPC(NPC):
         self.move(*self.heading)
 
 
-
         # attack ships in range
         ships = self.ships_in_attack_range(universe)
         ship_to_attack = next(iter(ships), None)

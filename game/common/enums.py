@@ -18,6 +18,7 @@ class UpgradeLevel:
     one = 1
     two = 2
     three = 3
+    illegal = 4
 
 class LogEvent:
     null = 0
@@ -31,6 +32,7 @@ class LogEvent:
     police_removed = 8
     police_spawned = 9
     enforcer_spawned = 10
+    module_purchased = 11
 
 
 class MessageType:
