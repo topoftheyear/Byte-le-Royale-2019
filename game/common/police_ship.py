@@ -22,36 +22,31 @@ class PoliceShip(Ship):
             self.object_type = ObjectType.police
 
         # explicitly set ship stats
-        if level == 1:
-            self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
-            self.current_hull = self.max_hull
-            self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
-            self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
-            self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
-            self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
-            self.mining_yield = GameStats.get_ship_stat(UpgradeType.mining_yield, UpgradeLevel.base)
-            self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.base)
+        #if level == 1:
+        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
+        #    self.current_hull = self.max_hull
+        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
+        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
+        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
+        #    self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
+        #    self.mining_yield = GameStats.get_ship_stat(UpgradeType.mining_yield, UpgradeLevel.base)
+        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.base)
 
-        elif level == 2:
-            self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
-            self.current_hull = self.max_hull
-            self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
-            self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
-            self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
-            self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
+        #elif level == 2:
+        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
+        #    self.current_hull = self.max_hull
+        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
+        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
+        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
+        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
 
-        elif level == 2:
-            self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
-            self.current_hull = self.max_hull
-            self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
-            self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
-            self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
-            self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
+        #elif level == 2:
+        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
+        #    self.current_hull = self.max_hull
+        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
+        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
+        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
+        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
 
 
-    def to_dict(self, security_level=SecurityLevel.other_player):
-        return super().to_dict(security_level)
-
-    def from_dict(self, d, security_level=SecurityLevel.other_player):
-        super().from_dict(d, security_level)
 

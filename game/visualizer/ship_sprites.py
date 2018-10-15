@@ -112,7 +112,7 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
 
     def find_self(self, universe):
         for obj in universe:
-            if obj.object_type == ObjectType.ship and obj.id == self.ship_id:
+            if obj.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer] and obj.id == self.ship_id:
                 return obj
         return None
 

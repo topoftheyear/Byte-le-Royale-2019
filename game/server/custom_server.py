@@ -47,8 +47,10 @@ class CustomServer(ServerControl):
 
         # prep police
         self.police = self.police_controller.setup_police(self.universe)
-
         self.ships = [s for s in self.universe if s.object_type in [ ObjectType.ship, ObjectType.police, ObjectType.enforcer ]]
+
+        self.claim_npcs()
+
 
 
 
@@ -181,7 +183,12 @@ class CustomServer(ServerControl):
 
 
             for police in self.police:
-                self.police_controller.take_turn(police, self.universe)
+                actions = self.police_controller.take_turn(police, self.universe)
+                police.move_action = actions["move_action"]
+                police.action = actions["action"]
+                police.action_param_1 = actions["action_param_1"]
+                police.action_param_2 = actions["action_param_2"]
+                police.action_param_3 = actions["action_param_3"]
 
 
         self.process_actions()
@@ -281,9 +288,16 @@ class CustomServer(ServerControl):
 
 
     def process_move_actions(self):
-        living_ships = filter(lambda e: e.is_alive(), self.ships)
 
-        for ship in living_ships:
+        for team, data in { **self.teams, **self.npc_teams}.items():
+            ship = data["ship"]
+
+            if ship.is_alive():
+                if "move_action" in data:
+                    ship.move_action = data["move_action"]
+                self.move_ship(ship)
+
+        for ship in self.police:
             self.move_ship(ship)
 
 

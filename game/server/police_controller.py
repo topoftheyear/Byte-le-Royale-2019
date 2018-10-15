@@ -1,4 +1,5 @@
 import random
+import sys
 
 from game.config import NUM_POLICE, WORLD_BOUNDS
 from game.common.enums import *
@@ -10,7 +11,7 @@ class PoliceController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -62,11 +63,15 @@ class PoliceController:
         self.reset_actions(police_ship)
 
         if police_ship.object_type == ObjectType.police:
-            self.police_take_turn(police_ship, ship_state, universe)
+            return self.police_take_turn(police_ship, ship_state, universe)
         elif police_ship.object_type == ObjectType.enforcer:
-            self.enforcer_take_turn(police_ship, ship_state, universe)
+            return self.enforcer_take_turn(police_ship, ship_state, universe)
 
     def police_take_turn(self, ship, state, universe):
+        action = None
+        action_param_1 = None
+        action_param_2 = None
+        action_param_3 = None
 
         # if at heading, clear heading
         if(state.get("heading", None) is not None
@@ -78,21 +83,31 @@ class PoliceController:
         if state.get("heading", None) is None:
             state["heading"] = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
 
-        # move
-        ship.move_action = state["heading"]
-
         # attack ships in range
         ships = ships_in_attack_range(universe, ship)
         ships = filter(lambda e: e.object_type == ObjectType.ship, ships)
         ship_to_attack = next(ships, None)
         if ship_to_attack:
-            self._action = PlayerAction.attack
-            self._action_param_1 = ship_to_attack.id
+            action = PlayerAction.attack
+            action_param_1 = ship_to_attack.id
+
+        return {
+            "move_action": state["heading"],
+            "action": action,
+            "action_param_1": action_param_1,
+            "action_param_2": action_param_2,
+            "action_param_3": action_param_3,
+        }
 
 
     def enforcer_take_turn(self, ship, state, universe):
+        action = None
+        action_param_1 = None
+        action_param_2 = None
+        action_param_3 = None
+
         # if at heading, clear heading
-        if(state.get("heading", None) is not None
+        if("heading" in state and state["heading"] is not None
                 and state["heading"] == ship.position[0]
                 and state["heading"] == ship.position[1]):
             self.heading = None
@@ -101,16 +116,21 @@ class PoliceController:
         if state.get("heading", None) is None:
             state["heading"] = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
 
-        # move
-        ship.move_action = state["heading"]
-
         # attack ships in range
         ships = ships_in_attack_range(universe, ship)
         ships = filter(lambda e: e.object_type == ObjectType.ship, ships)
         ship_to_attack = next(ships, None)
         if ship_to_attack:
-            self._action = PlayerAction.attack
-            self._action_param_1 = ship_to_attack.id
+            action = PlayerAction.attack
+            action_param_1 = ship_to_attack.id
+
+        return {
+            "move_action": state["heading"],
+            "action": action,
+            "action_param_1": action_param_1,
+            "action_param_2": action_param_2,
+            "action_param_3": action_param_3,
+        }
 
 
     def reset_actions(self, ship):
