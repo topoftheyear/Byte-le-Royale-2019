@@ -114,6 +114,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
                 if universe == None and events == None:
                     # game is over, go to end screen
+                    print("Finished playback!")
+
                     pygame.quit()
                     sys.exit()
             else:
