@@ -36,20 +36,20 @@ def get_asteroid_fields(universe):
                 ObjectType.goethite_field,
                 ObjectType.gold_field] ]
 
-def in_radius(source, target, radius, acessor, target_acessor=None):
+def in_radius(source, target, radius, accessor, target_accessor=None):
     """
     Params:
     - source: the source object that you want to search a radius around
     - target: the target object you wish to see if it lies in a radius around the source
-    - radius: either an integer, float or acessor function that takes the source and the target and returns an integer or float.
-    - acessor: an acessor method used to get the position of the source. If target_acessor is None, this will also be applied to the target.
-    - target_acessor: an acessor method used to get the position of the target. Default: None.
+    - radius: either an integer, float or accessor function that takes the source and the target and returns an integer or float.
+    - accessor: an accessor method used to get the position of the source. If target_accessor is None, this will also be applied to the target.
+    - target_accessor: an accessor method used to get the position of the target. Default: None.
     """
-    source_pos = acessor(source)
-    if target_acessor:
-        target_pos = target_acessor(target)
+    source_pos = accessor(source)
+    if target_accessor:
+        target_pos = target_accessor(target)
     else:
-        target_pos = acessor(target)
+        target_pos = accessor(target)
 
     result = (source_pos[0] - target_pos[0])**2 + (source_pos[1] - target_pos[1])**2
 
