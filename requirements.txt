@@ -1,6 +1,0 @@
-autobahn
-pygame
-click
-numpy
-tqdm
-requests
