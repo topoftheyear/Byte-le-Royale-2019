@@ -5,6 +5,7 @@ from game.common.enums import *
 from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
+from game.utils.helpers import *
 
 class MiningController:
 
@@ -42,17 +43,13 @@ class MiningController:
                     if thing.object_type in [ObjectType.cuprite_field, ObjectType.goethite_field, ObjectType.gold_field]:
                         current_field = thing
 
-                        as_x = current_field.position[0]
-                        as_y = current_field.position[1]
-                        radius = current_field.accessibility_radius
+                        ship_in_radius = in_radius(
+                            current_field,
+                            ship,
+                            lambda s, t: s.accessibility_radius,
+                            lambda e: e.position)
 
-                        sh_x = ship.position[0]
-                        sh_y = ship.position[1]
-
-                        # Check if ship is within the asteroid field
-                        left_result = (sh_x - as_x)**2 + (sh_y - as_y)**2
-                        right_result = radius**2
-                        if left_result < right_result:
+                        if ship_in_radius:
                             # Get material, multiply rate at which the field can be mined by the rate the ship can mine
                             material = current_field.material_type
                             amount = math.floor(current_field.mining_rate * ship.mining_yield)

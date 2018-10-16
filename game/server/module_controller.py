@@ -12,13 +12,13 @@ class ModuleController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
     def print(self, msg):
         if self.debug:
-            print(str(msg))
+            print("Module Controller: " + str(msg))
             sys.stdout.flush()
 
     def get_events(self):
@@ -43,12 +43,17 @@ class ModuleController:
                     continue
 
                 for thing in universe:
-                    # Check for all stations in the universe
-                    if thing.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
+                    # Check for all applicable stations in the universe
+                    if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
                         continue
 
                     current_station = thing
-                    self.print('ModuleController: found a ship trying to purchase module')
+                    self.print('Found a ship trying to purchase module')
+
+                    if thing.object_type is ObjectType.secure_station:
+                        self.print('Secure Station found')
+                    if thing.object_type is ObjectType.black_market_station:
+                        self.print('Black Market found')
 
                     # Check if ship is within range of a / the station
                     ship_in_radius = in_radius(
@@ -60,7 +65,7 @@ class ModuleController:
                     if not ship_in_radius:
                         continue
 
-                    self.print('ModuleController: Ship in range of a station')
+                    self.print('Ship in range of a station')
                     module = ship.action_param_1
                     upgrade_level = ship.action_param_2
                     ship_slot = ship.action_param_3
@@ -68,11 +73,11 @@ class ModuleController:
                     # Check is the slot is available
                     if ship_slot == ModuleType.locked:
                         continue
-                    self.print('ModuleController: Ship module slot is unlocked')
+                    self.print('Ship module slot is unlocked')
 
 
                     # Check if the module requested is illegal
-                    if upgrade_level == ModuleLevel.illegal and current_station not in [ObjectType.black_market_station]:
+                    if upgrade_level == ModuleLevel.illegal and current_station is ObjectType.black_market_station:
                         continue
 
                     # TODO verify that ship doesn't already have module
@@ -81,7 +86,7 @@ class ModuleController:
                     # TODO Implement fund checking
                     if not True:
                         continue
-                    self.print('ModuleController: Ship has fund for module')
+                    self.print('Ship has fund for module')
 
                     # Apply purchase to ship
                     if ship_slot == ShipSlot.zero:
@@ -105,7 +110,7 @@ class ModuleController:
                     self.apply_modules(ship)
 
                     # Logging
-                    self.print('ModuleController: Logging purchase')
+                    self.print('Logging purchase')
                     self.events.append({
                         "type": LogEvent.module_purchased,
                         "ship_id": ship.id,

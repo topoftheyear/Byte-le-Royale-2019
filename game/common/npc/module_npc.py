@@ -23,7 +23,7 @@ class ModuleNPC(NPC):
         # move towards heading
         self.move(*self.heading)
 
-        # buy random module if we don't have one and in range of station
+        # buy random module if we don't have one and are in range of a station
         if self.ship.module_0 == ModuleType.empty:
             for thing in universe:
 

@@ -4,24 +4,24 @@ class GameStats:
 
     hull_0 = 1000
     hull_1 = 2000
-    hull_2 = 2000
-    hull_3 = 2000
+    hull_2 = 3000
+    hull_3 = 8000
 
     import random
-    engine_speed_0 = 6
-    engine_speed_1 = 101
-    engine_speed_2 = 201
-    engine_speed_3 = 301
+    engine_speed_0 = 5
+    engine_speed_1 = 7
+    engine_speed_2 = 9
+    engine_speed_3 = 200
 
     weapon_damage_0 = 10
     weapon_damage_1 = 20
-    weapon_damage_2 = 20
-    weapon_damage_3 = 20
+    weapon_damage_2 = 30
+    weapon_damage_3 = 200
 
     weapon_range_0 = 50
     weapon_range_1 = 75
     weapon_range_2 = 100
-    weapon_range_3 = 125
+    weapon_range_3 = 200
 
     cargo_space_0 = 500000
     cargo_space_1 = 650000
