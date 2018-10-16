@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+autobahn = "*"
+click = "*"
+numpy = "*"
+tqdm = "*"
+requests = "*"
+Pygame = "*"
+
+[dev-packages]
+sphinx = "*"
+recommonmark = "*"
+sphinx_rtd_theme = "*"
+
+[requires]
+python_version = "3.7"
