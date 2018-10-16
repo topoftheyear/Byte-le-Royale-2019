@@ -315,12 +315,12 @@ def handle_events():
             global _VIS_INTERMEDIATE_FRAMES
             global _FPS
             if event.key == K_UP and pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                _FPS = 30
+                _FPS = LOW_FPS
                 _VIS_INTERMEDIATE_FRAMES = -1
 
             if event.key == K_DOWN and pygame.key.get_mods() & pygame.KMOD_SHIFT:
-                _FPS = 200
-                _VIS_INTERMEDIATE_FRAMES = 4
+                _FPS = FPS
+                _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 
         elif event.type == MOUSEBUTTONUP:
             pos = event.pos

@@ -30,29 +30,29 @@ class Ship(GameObject):
         else:
             self.team_name = team_name
 
-        self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
+        self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.base)
         self.current_hull = self.max_hull
 
-        self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
+        self.engine_speed = GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.base)
 
-        self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
-        self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
+        self.weapon_damage = GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.base)
+        self.weapon_range = GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.base)
 
-        self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
+        self.cargo_space = GameStats.get_ship_stat(ShipStat.cargo_space, ModuleLevel.base)
 
-        self.mining_yield = GameStats.get_ship_stat(UpgradeType.mining_yield, UpgradeLevel.base)
+        self.mining_yield = GameStats.get_ship_stat(ShipStat.mining_yield, ModuleLevel.base)
 
-        self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.base)
+        self.sensor_range = GameStats.get_ship_stat(ShipStat.sensor_range, ModuleLevel.base)
 
-        self.module_0 = UpgradeType.empty
-        self.module_1 = UpgradeType.locked
-        self.module_2 = UpgradeType.locked
-        self.module_3 = UpgradeType.locked
+        self.module_0 = ModuleType.empty
+        self.module_1 = ModuleType.locked
+        self.module_2 = ModuleType.locked
+        self.module_3 = ModuleType.locked
 
-        self.module_0_level = UpgradeLevel.base
-        self.module_1_level = UpgradeLevel.base
-        self.module_2_level = UpgradeLevel.base
-        self.module_3_level = UpgradeLevel.base
+        self.module_0_level = ModuleLevel.base
+        self.module_1_level = ModuleLevel.base
+        self.module_2_level = ModuleLevel.base
+        self.module_3_level = ModuleLevel.base
 
         self.action = PlayerAction.none
         self.action_param_1 = None

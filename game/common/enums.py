@@ -2,9 +2,16 @@
 # As well as indicating different things
 #
 
-class UpgradeType:
+class ModuleType:
     locked = -2
     empty = -1
+    hull = 0
+    engine_speed = 1
+    weapons = 2
+    cargo_and_mining = 3
+    sensors = 4
+
+class ShipStat:
     hull = 0
     engine_speed = 1
     weapon_damage = 2
@@ -13,7 +20,7 @@ class UpgradeType:
     sensor_range = 5
     weapon_range = 6
 
-class UpgradeLevel:
+class ModuleLevel:
     base = 0
     one = 1
     two = 2
