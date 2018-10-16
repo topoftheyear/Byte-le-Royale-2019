@@ -24,7 +24,7 @@ class ModuleNPC(NPC):
         self.move(*self.heading)
 
         # buy random module if we don't have one and in range of station
-        if self.ship.module_0 == UpgradeType.empty:
+        if self.ship.module_0 == ModuleType.empty:
             for thing in universe:
 
                 # Check for all stations in the universe
@@ -45,8 +45,8 @@ class ModuleNPC(NPC):
 
                 # Buy module
                 self.buy_module(
-                            UpgradeType.engine_speed,
-                            UpgradeLevel.three,
+                            ModuleType.engine_speed,
+                            ModuleLevel.three,
                             ShipSlot.zero)
 
 

@@ -49,12 +49,12 @@ class UserClient:
     def buy_module(self, module, upgrade_level, ship_slot):
         self.reset_player_action()
 
-        # module checking, UpgradeType type
-        if module in [UpgradeType.locked, UpgradeType.empty]:
+        # module checking, ModuleType type
+        if module in [ModuleType.locked, ModuleType.empty]:
             return
 
-        # upgrade_level checking, UpgradeLevel type
-        if upgrade_level in [UpgradeLevel.base]:
+        # upgrade_level checking, ModuleLevel type
+        if upgrade_level in [ModuleLevel.base]:
             return
 
         # ship_slot checking

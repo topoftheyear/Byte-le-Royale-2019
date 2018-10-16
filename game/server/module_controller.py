@@ -66,14 +66,16 @@ class ModuleController:
                     ship_slot = ship.action_param_3
 
                     # Check is the slot is available
-                    if ship_slot == UpgradeType.locked:
+                    if ship_slot == ModuleType.locked:
                         continue
                     self.print('ModuleController: Ship module slot is unlocked')
 
 
                     # Check if the module requested is illegal
-                    if upgrade_level == UpgradeLevel.illegal and current_station not in [ObjectType.black_market_station]:
+                    if upgrade_level == ModuleLevel.illegal and current_station not in [ObjectType.black_market_station]:
                         continue
+
+                    # TODO verify that ship doesn't already have module
 
                     # Check if ship has the funds and reduce them
                     # TODO Implement fund checking
@@ -100,55 +102,7 @@ class ModuleController:
 
 
                     #update ship stats
-                    ship_mod = [
-                            ship.module_0,
-                            ship.module_1,
-                            ship.module_2,
-                            ship.module_3
-                            ]
-                    ship_mod_lvl = [
-                            ship.module_0_level,
-                            ship.module_1_level,
-                            ship.module_2_level,
-                            ship.module_3_level
-                            ]
-                    for module, level in zip(ship_mod, ship_mod_lvl):
-                        if ship_mod == UpgradeType.engine_speed:
-                            self.engine_speed = GameStats.get_ship_stat(
-                                    UpgradeType.engine_speed,
-                                    level)
-                        elif ship_mod == UpgradeType.weapon_damage or ship_mod == UpgradeType.weapon_range:
-                            # NOTE: fix this oddity - separate module types and ship stat types
-                            self.weapon_damage = GameStats.get_ship_stat(
-                                    UpgradeType.weapon_damage,
-                                    level)
-                            self.weapon_range = GameStats.get_ship_stat(
-                                    UpgradeType.weapon_range,
-                                    level)
-
-                        elif ship_mod == UpgradeType.cargo_space:
-                            self.cargo_space = GameStats.get_ship_stat(
-                                    UpgradeType.cargo_space,
-                                    level)
-
-                            self.mining_yield = GameStats.get_ship_stat(
-                                    UpgradeType.mining_yield,
-                                    level)
-
-                        elif ship_mod == UpgradeType.hull:
-                            original_hull = self.max_hull
-                            self.max_hull = GameStats.get_ship_stat(
-                                    UpgradeType.hull,
-                                    level)
-                            # TODO: Verify this does not cause problems when downgrading and low on health
-                            # add the differenct between the two to current hull.
-                            self.current_hull += self.max_hull - original_hull
-
-                        elif ship_mod == UpgradeType.sensor_range:
-                            self.sensor_range = GameStats.get_ship_stat(
-                                    UpgradeType.sensor_range,
-                                    level)
-
+                    self.apply_modules(ship)
 
                     # Logging
                     self.print('ModuleController: Logging purchase')
@@ -159,3 +113,72 @@ class ModuleController:
                         "level": upgrade_level,
                         "slot": ship_slot
                     })
+
+    def apply_modules(self, ship):
+        ship_mod = [
+                ship.module_0,
+                ship.module_1,
+                ship.module_2,
+                ship.module_3
+                ]
+
+        ship_mod_lvl = [
+                ship.module_0_level,
+                ship.module_1_level,
+                ship.module_2_level,
+                ship.module_3_level
+                ]
+
+
+        # reset all stats
+        ship.max_hull = GameStats.get_ship_stat(ModuleType.hull, ModuleLevel.base)
+        ship.current_hull = ship.max_hull
+
+        ship.engine_speed = GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.base)
+
+        ship.weapon_damage = GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.base)
+        ship.weapon_range = GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.base)
+
+        ship.cargo_space = GameStats.get_ship_stat(ShipStat.cargo_space, ModuleLevel.base)
+
+        ship.mining_yield = GameStats.get_ship_stat(ShipStat.mining_yield, ModuleLevel.base)
+
+        ship.sensor_range = GameStats.get_ship_stat(ShipStat.sensor_range, ModuleLevel.base)
+
+
+        # apply modules
+        for module, level in zip(ship_mod, ship_mod_lvl):
+            if module is ModuleType.engine_speed:
+                ship.engine_speed = GameStats.get_ship_stat(
+                        ShipStat.engine_speed,
+                        level)
+
+            elif module is ModuleType.weapons:
+                ship.weapon_damage = GameStats.get_ship_stat(
+                        ShipStat.weapon_damage,
+                        level)
+                ship.weapon_range = GameStats.get_ship_stat(
+                        ShipStat.weapon_range,
+                        level)
+
+            elif module is ModuleType.cargo_and_mining:
+                ship.cargo_space = GameStats.get_ship_stat(
+                        ModuleLevel.cargo_space,
+                        level)
+
+                ship.mining_yield = GameStats.get_ship_stat(
+                        ModuleLevel.mining_yield,
+                        level)
+
+            elif module is ModuleType.hull:
+                ship.max_hull = GameStats.get_ship_stat(
+                        ModuleLevel.hull,
+                        level)
+                ship.current_hull = ship.max_hull
+
+            elif module is ModuleType.sensors:
+                ship.sensor_range = GameStats.get_ship_stat(
+                        ModuleLevel.sensor_range,
+                        level)
+
+
