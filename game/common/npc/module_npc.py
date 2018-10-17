@@ -46,7 +46,7 @@ class ModuleNPC(NPC):
                 # Buy module
                 self.buy_module(
                             ModuleType.engine_speed,
-                            ModuleLevel.three,
+                            random.choice([ModuleLevel.one, ModuleLevel.two, ModuleLevel.three, ModuleLevel.illegal]),
                             ShipSlot.zero)
 
 

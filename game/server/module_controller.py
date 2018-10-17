@@ -42,17 +42,18 @@ class ModuleController:
                 if not ship.is_alive():
                     continue
 
+                self.print('Found a ship trying to purchase a module: ' + str(ship.team_name))
+
                 for thing in universe:
                     # Check for all applicable stations in the universe
                     if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
                         continue
 
                     current_station = thing
-                    self.print('Found a ship trying to purchase module')
 
                     if thing.object_type is ObjectType.secure_station:
                         self.print('Secure Station found')
-                    if thing.object_type is ObjectType.black_market_station:
+                    elif thing.object_type is ObjectType.black_market_station:
                         self.print('Black Market found')
 
                     # Check if ship is within range of a / the station
@@ -72,21 +73,25 @@ class ModuleController:
 
                     # Check is the slot is available
                     if ship_slot == ModuleType.locked:
+                        self.print('Module slot selected is locked')
                         continue
                     self.print('Ship module slot is unlocked')
 
-
                     # Check if the module requested is illegal
-                    if upgrade_level == ModuleLevel.illegal and current_station is ObjectType.black_market_station:
+                    if upgrade_level is ModuleLevel.illegal and current_station.object_type is not ObjectType.black_market_station:
+                        self.print('Attempt to purchase illegal module from non black market station')
                         continue
 
                     # TODO verify that ship doesn't already have module
 
                     # Check if ship has the funds and reduce them
-                    # TODO Implement fund checking
-                    if not True:
+                    cost = 100 * (upgrade_level ** 2)  # TODO replace temp formula with actual ship costs (or formula)
+                    if ship.credits < cost:
+                        self.print('Ship does not have adequate funds (have: ' + ship.credits + ', need: ' + cost + ')')
                         continue
-                    self.print('Ship has fund for module')
+                    self.print('Ship has funds for the module')
+                    self.print(str(ship.credits) + ' - ' + str(cost) + ' = ' + str(ship.credits - cost))
+                    ship.credits -= cost
 
                     # Apply purchase to ship
                     if ship_slot == ShipSlot.zero:
@@ -116,7 +121,9 @@ class ModuleController:
                         "ship_id": ship.id,
                         "module": module,
                         "level": upgrade_level,
-                        "slot": ship_slot
+                        "slot": ship_slot,
+                        "cost": cost,
+                        "credits": ship.credits
                     })
 
     def apply_modules(self, ship):
