@@ -12,6 +12,8 @@
 # Game Topics:
 * [Stations](stations.md)
 * [Asteroid Fields And Mining](asteroid_fields_and_mining.md)
+* [Combat](combat.md)
+* [Ships](ships.md)
 
 ## Helpful Links
 
