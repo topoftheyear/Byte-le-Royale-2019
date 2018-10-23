@@ -23,7 +23,7 @@ Note: you will need to enter the virtual environment for each new shell session 
 ```shell
 ./build.sh
 ```
-### Run
+### Run:
 ```shell
 ./br_launcher.pyz [ script to run ] [ options ] 
 ```
@@ -32,8 +32,10 @@ Note: you will need to enter the virtual environment for each new shell session 
 ### Build:
 Run build_WIN.bat
 
-### Run
-./br_launcher.pyz [ script to run ] [ options ]
+### Run:
+```shell
+python ./br_launcher.pyz [ script to run ] [ options ]
+```
 
 # Launcher Scripts
 Run `./br_launcher.pyz --help` to view availiable scripts
