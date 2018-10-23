@@ -285,7 +285,7 @@ class CustomServer(ServerControl):
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-
+        self.buy_sell_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = filter(lambda e: not e.is_alive(), self.ships)
         self.death_controller.handle_actions(dead_ships)
@@ -295,6 +295,9 @@ class CustomServer(ServerControl):
         # log events and stats
         self.turn_log["events"].extend( self.mining_controller.get_events() )
         self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
+
+        self.turn_log["events"].extend(self.buy_sell_controller.get_events())
+        self.turn_log["stats"]["buying/selling"] = self.buy_sell_controller.get_stats()
 
         self.turn_log["events"].extend( self.combat_controller.get_events() )
 
