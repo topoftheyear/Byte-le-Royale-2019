@@ -82,7 +82,16 @@ class ModuleController:
                         self.print('Attempt to purchase illegal module from non black market station')
                         continue
 
-                    # TODO verify that ship doesn't already have module
+                    # Check if requested module is already equipped on the ship
+                    # TODO needs testing still after module slot purchasing functionality is added
+                    if ship_slot == 0 and module in [ship.module_1, ship.module_2, ship.module_3]\
+                            or ship_slot == 1 and module in [ship.module_0, ship.module_2, ship.module_3]\
+                            or ship_slot == 2 and module in [ship.module_0, ship.module_1, ship.module_3]\
+                            or ship_slot == 3 and module in [ship.module_0, ship.module_1, ship.module_2]:
+
+                        self.print('Module already exists in another slot')
+                        continue
+
 
                     # Check if ship has the funds and reduce them
                     cost = 100 * (upgrade_level ** 2)  # TODO replace temp formula with actual ship costs (or formula)
