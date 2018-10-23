@@ -14,6 +14,7 @@
 * [Asteroid Fields And Mining](asteroid_fields_and_mining.md)
 * [Combat](combat.md)
 * [Ships](ships.md)
+* [Ship Upgrades](ship_upgrades.md)
 
 ## Helpful Links
 
