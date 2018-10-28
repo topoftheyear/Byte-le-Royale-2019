@@ -4,7 +4,8 @@ Stations are the places where you will buy, sell, and trade resources.
 
 ## API:
 
-## Stats (Subject to Change)
+
+## Stats
 
 Listed below is the stations' stats:
 ```eval_rst
@@ -38,3 +39,7 @@ Listed below is the stations' stats:
 | s# | Station Authority       | 500, 350       | None                 | None      |
 +----+-------------------------+----------------+----------------------+-----------+
 ```
+
+## Related Links:
+* [Ships](ships.md)
+* [Mining](asteroid_fields_and_mining.md)

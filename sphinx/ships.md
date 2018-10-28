@@ -47,3 +47,6 @@ To add in future.
 ```
 
 ## Related Pages
+* [Mining](asteroid_fields_and_mining.md)
+* [Combat](combat.md)
+* [Ship Upgrades](ship_upgrades.md)

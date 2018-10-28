@@ -13,3 +13,5 @@ Combat is a common occurrence in space, whether you initiate it or get attacked.
 
 ## Related Links
 
+[Ships](ships.md)
+[Notoriety](notoriety.md) #CHANGE THIS LINE

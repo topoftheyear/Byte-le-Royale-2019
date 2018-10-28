@@ -15,6 +15,7 @@
 * [Combat](combat.md)
 * [Ships](ships.md)
 * [Ship Upgrades](ship_upgrades.md)
+* [Trading](trading.md)
 
 ## Helpful Links
 
