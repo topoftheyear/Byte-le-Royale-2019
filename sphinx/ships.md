@@ -1,5 +1,7 @@
 # Ships
 
+The ship is the basis for all actions taken in the game. Each player's AI controls a ship that you command.
+
 ## Ship Interactions
 
 Every turn, each ship gets 2 actions to do; a movement action, and a non-movement action
@@ -7,6 +9,8 @@ Every turn, each ship gets 2 actions to do; a movement action, and a non-movemen
   - `Combat`
   - `Mining`
   - `Buy module`
+  - `Buy material`
+  - `Sell material`
 - Movement
 
 ## Ship Attributes
@@ -47,6 +51,8 @@ To add in future.
 ```
 
 ## Related Pages
-* [Mining](asteroid_fields_and_mining.md)
+* [Bounty Hunting / Piracy](bounty_hunting_lawfulness_and_piracy.md)
 * [Combat](combat.md)
+* [Mining](asteroid_fields_and_mining.md)
 * [Ship Upgrades](ship_upgrades.md)
+* [Trading](trading.md)

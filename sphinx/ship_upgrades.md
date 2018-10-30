@@ -41,3 +41,4 @@ For any upgrade, you must purchase an additional slot for the upgrade from the s
 ## Related Links
 * [Ships](ships.md)
 * [Combat](combat.md)
+* [Stations](stations.md)
