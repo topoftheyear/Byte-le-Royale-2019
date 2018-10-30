@@ -12,6 +12,7 @@
 # Game Topics:
 * [Stations](stations.md)
 * [Asteroid Fields And Mining](asteroid_fields_and_mining.md)
+* [Piracy, Bounty Hunting, Police, and Lawfulness](bounty_hunting_lawfulness_and_piracy)
 
 ## Helpful Links
 
