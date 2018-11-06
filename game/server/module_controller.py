@@ -119,6 +119,62 @@ class ModuleController:
                         "slot": ship_slot
                     })
 
+            if ship.action == PlayerAction.unlock_module:
+                if not ship.is_alive():
+                    continue
+
+                for thing in universe:
+                    if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
+                        continue
+
+                    current_station = thing
+                    self.print('Found a ship trying to unlock a module')
+
+                    ship_in_radius = in_radius(
+                        current_station,
+                        ship,
+                        lambda s, t: s.accessibility_radius,
+                        lambda e: e.position)
+
+                    if not ship_in_radius:
+                        continue
+
+                    self.print('Ship in range of a station')
+
+                    # Check if ship has the funds and reduce them
+                    # TODO Implement fund checking
+
+                    # Determine module to unlock
+                    if ship.module_0 == ModuleType.locked:
+                        ship.module_0 = ModuleType.empty
+                        ship_slot = ShipSlot.zero
+                    elif ship.module_1 == ModuleType.locked:
+                        ship.module_1 = ModuleType.empty
+                        ship_slot = ShipSlot.one
+                    elif ship.module_2 == ModuleType.locked:
+                        ship.module_2 = ModuleType.empty
+                        ship_slot = ShipSlot.two
+                    elif ship.module_3 == ModuleType.locked:
+                        ship.module_3 = ModuleType.empty
+                        ship_slot = ShipSlot.three
+                    else:  # All already unlocked
+                        continue
+
+                    self.print('Ship successfully purchased a module slot')
+
+                    # Update
+                    self.apply_modules(ship)
+
+                    # Logging
+                    self.print('Logging unlock')
+                    self.print('Unlocked slot: ' + str(ship_slot))
+                    self.events.append({
+                        "type": LogEvent.module_purchased,
+                        "ship_id": ship.id,
+                        "slot": ship_slot
+                    })
+
+
     def apply_modules(self, ship):
         ship_mod = [
                 ship.module_0,
