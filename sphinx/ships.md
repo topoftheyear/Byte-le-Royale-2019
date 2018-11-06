@@ -3,15 +3,16 @@
 The ship is the basis for all actions taken in the game. Each player's AI controls a ship. The ship can
 move around to the various points, 
 
+[](_static/simple_ship.png)
 ## Ship Interactions
 
 Every turn, each ship gets 2 actions to do; a movement action, and a non-movement action
 - Non-movement
-  - `Combat`
-  - `Mining`
-  - `Buy module`
+  - `Combat` (more info [Here](combat.md))
+  - `Mining` (more info [Here](asteroid_fields_and_mining.md))
+  - `Buy module` (more info [Here](ship_upgrades.md))
   - `Buy material`
-  - `Sell material`
+  - `Sell material` (more on buying and selling [Here](trading.md))
 - Movement
 
 ## Ship Attributes
@@ -47,15 +48,22 @@ Every turn, each ship gets 2 actions to do; a movement action, and a non-movemen
   
 ## Ship API
 
-* attack (self, target) - Set ship action to target
-* buy_material(self, material, amount) - buy `amount` of `material` to the station in range
-* buy_module (self, module, upgrade_level, ship_slot) - buy module `module` at level `upgrade_level` in slot `ship_slot`
-* mine(self) - Set's action to mine
-* sell_material(self, material, amount) - sell `amount` of `material` to the station in range
-
-## Related Pages
-* [Bounty Hunting / Piracy](bounty_hunting_lawfulness_and_piracy.md)
-* [Combat](combat.md)
-* [Mining](asteroid_fields_and_mining.md)
-* [Ship Upgrades](ship_upgrades.md)
-* [Trading](trading.md)
+Listed below are the ship API components that are accessible:
+- Note, this list is the same as the properties of your ship
+  - **Ship stats:**
+  - `engine_speed` - speed of the ship
+  - `weapon_damage` - strength of ship's weapon
+  - `weapon_range` - range of attack from weapon
+  - `cargo_space` - amount of storage ship has
+  - `mining_yield` - mining capability
+  - `sensor_range` - range sensors can pick up
+  - **Module stats:**
+  - `module_(0,1,2,3)` - component in module 0, 1, 2, or 3
+  - `module_(0,1,2,3)_level` - level of corresponding module
+  - **Actions:**
+  - `action` - action to be taken
+  - `action_param_(1,2,3)` - parameter of action if needed
+  - `move_action` - movement to be taken
+  - **Other:**
+  - `respawn_counter` - time until respawn
+  - `credits` - total number of credits possessed

@@ -16,12 +16,12 @@ To initialize each component, run br_launcher.pyz in CMD with the corresponding 
 3. Once the client has completed, run `br_launcher.pyz visualizer` to watch the match.
 
 ## Visualizer
+
 `br_launcher.pyz visualizer`
 Once the client has finished, the visualizer can be run. The visualizer takes the log of the game session
 and presents it in a visual format. This is useful for seeing where the AI's weaknesses and strengths are.
 
 
 ## Related Links
-* [Getting Started](getting_started.md)
-* [Writing Your AI](writing_your_ai.md)
-* [Using the Visualizer](using_the_visualizer.md)
+
+* [Running the Game](running_the_game.md)

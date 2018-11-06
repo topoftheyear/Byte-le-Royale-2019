@@ -1,14 +1,40 @@
 # Stations
 
-Stations are the places where you will buy, sell, and trade resources.
+Stations are the places where you will buy, sell, and trade resources. When you get in range, you can 
+use your action for the turn to [trade](trading.md) with the station.
+The stations will take the primary imports and use them to produce the stated output.
+In addition, the amount of secondary product will help speed up the production.
 
-## API:
+[](_static/simple_station.png)
+## Station API
 
+```
+name - name of station
+position - x,y of station
+
+[primary/secondary]_import - the stations primary and (if applicable) secondary imports
+[primary/secondary]_consumption_qty - quantity that is consumed in one tick
+[primary/secondary]_max - total amount station can store
+
+production_frequency - how often to consume inputs for creating output
+production_material - what is produced
+production_qty - how much is stored
+production_max - max amount of produced stuff to store
+
+base_sell_price - initial sell price
+base_primary_price - initial primary resource buying price
+base_secondary_price - initial secondary resource buying price
+
+sell_price - current sell price
+primary_price - current primary resource buying price
+secondary_price - current secondary resource buying price
+
+```
 
 ## Stats
 
-Listed below is the stations' stats:
-```eval_rst
+Listed below is the stats for each station.
+```
 +----+-------------------------+----------------+----------------------+-----------+
 | ID | Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
 +====+=========================+================+======================+===========+
@@ -32,14 +58,10 @@ Listed below is the stations' stats:
 +----+-------------------------+----------------+----------------------+-----------+
 | s9 | Weaponry Station        | 150, 406       | Computers (N/A)      | Weaponry  | 
 +----+-------------------------+----------------+----------------------+-----------+
-| s! | `***** ****** !`        | **), !&%       | `8Wo`                | ()$()     | 
+| s! | `***** ****** !`        | **0, !&%       | `8Wo`                | ()$()     | 
 +----+-------------------------+----------------+----------------------+-----------+
-| s@ | `***** ****** @`        | !)), %^)       | `@&@`                | ()$()     | 
+| s@ | `***** ****** @`        | !00, %^0       | `@&@`                | ()$()     | 
 +----+-------------------------+----------------+----------------------+-----------+
 | s# | Station Authority       | 500, 350       | None                 | None      |
 +----+-------------------------+----------------+----------------------+-----------+
 ```
-
-## Related Links:
-* [Ships](ships.md)
-* [Mining](asteroid_fields_and_mining.md)

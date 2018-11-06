@@ -6,9 +6,13 @@ The visualizer takes the log generated from the server after the client is run a
 The visualizer is invoked by running `br_launcher.pyz visualizer`.
 
 ## Keyboard shortcuts
-
-
-## Related Links
-* [Running the Game](running_the_game.md)
-* [Writing Your AI](writing_your_ai.md)
-* [Getting Started](getting_started.md)
+``` 
+p - pause the visualizer
+f - fullscreen mode (Windows quirks may prevent consistently working)
+escape - quit the visualizer
+s - stats screen
+1 - Lists primary material buy price by station
+2 - Lists secondary material buy price by station
+3 - Material sell price by station
+*Click on station* - Station statistics
+```

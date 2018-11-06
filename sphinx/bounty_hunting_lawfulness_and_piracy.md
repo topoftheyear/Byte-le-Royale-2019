@@ -2,38 +2,44 @@
 
 ## Introduction
 
-Space can be a lawless wasteland, where anything and everything goes. However, around here, we have the police to protect from pirates, pirates who wish to take what they can, bounty hunters to stop the pirates, and a notoriety system to keep track of it all.
+In the violent galaxy, people work hard and fight for their pay. Some of these jobs are more legal than others. This page describes the legality of certain jobs, and how it pertains to your chances at living. 
 
 ## Bounty Hunting
 
-Bounty hunters are the lawless law officers. They will go outside the law to stop pirates.
+Bounty hunters are the lawless law officers. They will go outside the law to stop pirates and be seen as 'the good guys'.
 
-## Pirates
+A bounty hunter is defined as a ship that has a notoriety rating of -5 or lower.
 
-Pirates are the ships that decide to take what they want from other ships by destroying civilian and pirate ships.
+## Lawfulness
+
+Lawfulness is measured by the Notoriety statistic, showing how good or evil a player is. A higher notoriety means a player is less lawful and more aggressive.
+
+If notoriety increases, police ships will chase the player when nearby the central station. Should it become too high, bounty hunters may start hunting the player for reward, and enforcers may be sent out to deal with the player.
+
+&nbsp; 
+
+| Action | Notoriety |
+|-----------------------------------|-----------|
+| Destroying civilian ship | +2 |
+| Destroying bounty hunter ship | +3 |
+| Attacking police ship | +1 |
+| Destroying police ship | +4 |
+| Destroying enforcer ship | +5 |
+| Caught carrying an illegal module | +1 |
+| Destroying pirate ship | -2 |
+| Paying off bounty | -1 |
+
+## Piracy
+
+Piracy is a simple way of getting monetary gains at the expense of others. Pirates not only get the benefit of ill-begotten goods sellable at black market stations, but they also can buy extremely powerful illicit upgrades from the same stations.
+
+A pirate is defined as a ship that has a notoriety rating of 5 or higher. 
 
 ## Police
 
-The police are AI ships that will slowly ramp up in strength depending on the target. If your notoriety is above a certain threshold, the police will begin to attack if in range.
-
-## Notoriety
-
-Your notoriety can change depending on the following circumstances:
-
-* Ways to increase notoriety:
-  * Destroy Civilians -- +0
-  * Destroy Bounty Hunters -- +1
-  * Destroy Police -- +2
-  * Destroy Enforcer -- +3
-  * Carry Illegal Modules -- +4
-  * Attack Police -- +7
-  
-* Ways to decrease notoriety:
-  * Destroy Pirates -- -5
-  
-  
+The police are AI ships that are sent to take out pirates and other notorious vehicles. If your notoriety is above a certain threshold, the police will begin to attack if in range of the central station or a scout / patrol ship.
+In addition, if your notoriety goes too high, enforcers will be sent out to destroy you. They are even more powerful police ships, and will give chase until you or themselves are destroyed.
   
 ## Related Links
 
 [Combat](combat.md)
-[Ships](ships.md)

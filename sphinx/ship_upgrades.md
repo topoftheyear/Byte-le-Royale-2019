@@ -1,6 +1,12 @@
 # Ship Upgrades
 
+Your ship has the potential to gain upgrades through modules. These modules can upgrade different facets of the ship
+and can help your ship perform to the best of its capabilities.
+
+Your ship will only have access to 4 total slots, and the unlock cost will increase per slot, so choose your modules wisely.
+
 ## List of Upgrades
+
 There are 7 different upgrades a ship can have:
 * `Hull Strength` - How much damage you can take
 * `Engine Speed` - How fast your ship moves in one action
@@ -11,13 +17,15 @@ There are 7 different upgrades a ship can have:
 * `Sensor Range` - How far your ship's sensors can detect ships
 
 ## How To Upgrade
+
 To purchase upgrades, go to the center station and use the `buy_module` function.
-For any upgrade, you must purchase an additional slot for the upgrade from the selling stations.
-- For upgrade levels 1 and 2, these are purchasable at the `Station Authority` station.
-- For upgrade levels 3, these are purchasable at the `***** ****** [!/@]` stations.
+For any upgrade, you must purchase an additional slot for the upgrade from the selling [Stations](stations.md).
+- For upgrade levels 1 and 2, these are purchasable at the `Station Authority` [Station](stations.md).
+- For upgrade levels 3, these are purchasable at the `***** ****** [!/@]` [Stations](stations.md).
   - Be warned, these are the illegal modules. They are lost on death and will cost you notoriety.
 
 ## Upgrade Table
+
 ```eval_rst
 +---------------+---------+---------+---------+---------+
 | Upgrade Name  | Level 0 | Level 1 | Level 2 | Level 3 |
@@ -39,6 +47,5 @@ For any upgrade, you must purchase an additional slot for the upgrade from the s
 ```
 
 ## Related Links
-* [Ships](ships.md)
+
 * [Combat](combat.md)
-* [Stations](stations.md)
