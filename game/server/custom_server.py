@@ -6,6 +6,7 @@ from game.common.enums import *
 from game.common.npc.mining_npc import MiningNPC
 from game.common.npc.combat_npc import CombatNPC
 from game.common.npc.module_npc import ModuleNPC
+from game.common.npc.buy_sell_npc import BuySellNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -16,6 +17,7 @@ from game.server.combat_controller import CombatController
 from game.server.death_controller import DeathController
 from game.server.police_controller import PoliceController
 from game.server.module_controller import ModuleController
+from game.server.buy_sell_controller import BuySellController
 
 
 class CustomServer(ServerControl):
@@ -45,6 +47,7 @@ class CustomServer(ServerControl):
         self.death_controller = DeathController()
         self.police_controller = PoliceController()
         self.module_controller = ModuleController()
+        self.buy_sell_controller = BuySellController()
 
 
 
