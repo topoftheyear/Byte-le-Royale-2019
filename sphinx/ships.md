@@ -1,6 +1,7 @@
 # Ships
 
-The ship is the basis for all actions taken in the game. Each player's AI controls a ship that you command.
+The ship is the basis for all actions taken in the game. Each player's AI controls a ship. The ship can
+move around to the various points, 
 
 ## Ship Interactions
 
@@ -45,10 +46,12 @@ Every turn, each ship gets 2 actions to do; a movement action, and a non-movemen
   - `legal_standing` - Legal standing of the ship
   
 ## Ship API
-  
-```
-To add in future.
-```
+
+* attack (self, target) - Set ship action to target
+* buy_material(self, material, amount) - buy `amount` of `material` to the station in range
+* buy_module (self, module, upgrade_level, ship_slot) - buy module `module` at level `upgrade_level` in slot `ship_slot`
+* mine(self) - Set's action to mine
+* sell_material(self, material, amount) - sell `amount` of `material` to the station in range
 
 ## Related Pages
 * [Bounty Hunting / Piracy](bounty_hunting_lawfulness_and_piracy.md)
