@@ -102,7 +102,6 @@ class CustomServer(ServerControl):
 
             else:
                 # send game specific data in payload
-                pass
                 payload[i] = {
                     "message_type": MessageType.take_turn,
                     "ship": self.teams[i]["ship"].to_dict(),
@@ -155,9 +154,6 @@ class CustomServer(ServerControl):
                         "team_name": team_name,
                         "ship": ship
                     }
-
-                    # TODO refactor so we don't start till all teams have had a chance to give a name
-                    self.started = True
             else:
 
                 if message_type == MessageType.take_turn:
@@ -206,20 +202,23 @@ class CustomServer(ServerControl):
                 police.action_param_3 = actions["action_param_3"]
 
 
-        self.process_actions()
+            self.process_actions()
 
-        self.process_move_actions()
+            self.process_move_actions()
 
 
-        # update station market / update BGS
-        self.station_controller.tick(
-            self.filter_universe(ObjectType.station))
+            # update station market / update BGS
+            self.station_controller.tick(
+                self.filter_universe(ObjectType.station))
 
-        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+            self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+
+
+        # set to started
+        self.started = True
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
-
 
 
 
