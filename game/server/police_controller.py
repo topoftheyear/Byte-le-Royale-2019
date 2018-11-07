@@ -8,6 +8,12 @@ from game.common.police_ship import PoliceShip
 from game.utils.helpers import *
 from game.utils.projection import *
 
+class PoliceVariant:
+    free_roaming = 0
+    flitting = 1
+    patroling = 3
+    guarding = 4
+
 class PoliceController:
 
     def __init__(self):
@@ -110,6 +116,32 @@ class PoliceController:
             return self.enforcer_take_turn(police_ship, ship_state, universe)
 
     def police_take_turn(self, ship, state, universe):
+
+        if "variation" not in state:
+            state["variation"] = random.choices([
+                PoliceVariation.free_roaming,
+                PoliceVariation.flitting,
+                PoliceVariation.patroling,
+                PoliceVariation.guarding,
+                ],
+                [
+                    0.15, # free roam
+                    0.10, # flitting
+                    0.25, # patroling
+                    0.50, # guarding
+                ])
+
+        if state["variation"] is PoliceVariation.free_roaming:
+            return self.free_roaming_police(ship, state, universe)
+        elif state["variation"] is PoliceVariation.flitting:
+            return self.flitting_police(ship, state, universe)
+        elif state["variation"] is PoliceVariation.patroling:
+            return self.patroling_police(ship, state, universe)
+        elif state["variation"] is PoliceVariation.guarding:
+            return self.guarding_police(ship,state, universe)
+
+
+    def free_roaming_police(self, ship, state, universe):
         action = None
         action_param_1 = None
         action_param_2 = None
@@ -117,7 +149,9 @@ class PoliceController:
 
 
         # pick target
-        pick_target = lambda universe: random.choice(list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+        pick_target = lambda universe: random.choice(
+                list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+
         if "target" not in state:
             target = pick_target(universe)
             state["target"] = target.id
@@ -128,7 +162,10 @@ class PoliceController:
                 target = pick_target(universe)
                 state["target"] = target.id
 
-            target = next(filter(lambda e:e.object_type == ObjectType.ship and e.id == state["target"], universe), None)
+            target = next(
+                    filter(
+                        lambda e:e.object_type == ObjectType.ship
+                        and e.id == state["target"], universe), None)
 
             if target is not None:
 
@@ -144,7 +181,189 @@ class PoliceController:
 
         # attack ships in range
         ships = ships_in_attack_range(universe, ship)
-        ships = filter(lambda e: e.object_type == ObjectType.ship and e.legal_standing == LegalStanding.pirate, ships)
+        ships = filter(
+                lambda e: e.object_type == ObjectType.ship
+                and e.legal_standing == LegalStanding.pirate, ships)
+        ship_to_attack = next(ships, None)
+        if ship_to_attack:
+            action = PlayerAction.attack
+            action_param_1 = ship_to_attack.id
+
+            # also overwrite target and begin persuing
+            state["target"] = ship_to_attack.id
+            state["heading"] = ship_to_attack.position
+
+        return {
+            "move_action": state["heading"],
+            "action": action,
+            "action_param_1": action_param_1,
+            "action_param_2": action_param_2,
+            "action_param_3": action_param_3,
+        }
+
+    def flitting_police(self, ship, state, universe):
+        action = None
+        action_param_1 = None
+        action_param_2 = None
+        action_param_3 = None
+
+
+        # pick target
+        pick_target = lambda universe: random.choice(
+                list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+
+        if "target" not in state:
+            target = pick_target(universe)
+            state["target"] = target.id
+            state["heading"] = target.position
+        else:
+
+            if state["target"] is None:
+                target = pick_target(universe)
+                state["target"] = target.id
+
+            target = next(
+                    filter(
+                        lambda e:e.object_type == ObjectType.ship
+                        and e.id == state["target"], universe), None)
+
+            if target is not None:
+
+                if in_radius(ship, target, 10, lambda e:e.position):
+                    # we are within a certain radius of a ship, choose a new target
+                    target = pick_target(universe)
+                    state["target"] = target.id
+
+                # update heading
+                state["heading"] = target.position
+            else:
+                state["heading"] = None
+
+        # attack ships in range
+        ships = ships_in_attack_range(universe, ship)
+        ships = filter(
+                lambda e: e.object_type == ObjectType.ship
+                and e.legal_standing == LegalStanding.pirate, ships)
+        ship_to_attack = next(ships, None)
+        if ship_to_attack:
+            action = PlayerAction.attack
+            action_param_1 = ship_to_attack.id
+
+            # also overwrite target and begin persuing
+            state["target"] = ship_to_attack.id
+            state["heading"] = ship_to_attack.position
+
+        return {
+            "move_action": state["heading"],
+            "action": action,
+            "action_param_1": action_param_1,
+            "action_param_2": action_param_2,
+            "action_param_3": action_param_3,
+        }
+
+    def patroling_police(self, ship, state, universe):
+        action = None
+        action_param_1 = None
+        action_param_2 = None
+        action_param_3 = None
+
+
+        # pick target
+        pick_target = lambda universe: random.choice(
+                list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+
+        if "target" not in state:
+            target = pick_target(universe)
+            state["target"] = target.id
+            state["heading"] = target.position
+        else:
+
+            if state["target"] is None:
+                target = pick_target(universe)
+                state["target"] = target.id
+
+            target = next(
+                    filter(
+                        lambda e:e.object_type == ObjectType.ship
+                        and e.id == state["target"], universe), None)
+
+            if target is not None:
+
+                if in_radius(ship, target, 10, lambda e:e.position):
+                    # we are within a certain radius of a ship, choose a new target
+                    target = pick_target(universe)
+                    state["target"] = target.id
+
+                # update heading
+                state["heading"] = target.position
+            else:
+                state["heading"] = None
+
+        # attack ships in range
+        ships = ships_in_attack_range(universe, ship)
+        ships = filter(
+                lambda e: e.object_type == ObjectType.ship
+                and e.legal_standing == LegalStanding.pirate, ships)
+        ship_to_attack = next(ships, None)
+        if ship_to_attack:
+            action = PlayerAction.attack
+            action_param_1 = ship_to_attack.id
+
+            # also overwrite target and begin persuing
+            state["target"] = ship_to_attack.id
+            state["heading"] = ship_to_attack.position
+
+        return {
+            "move_action": state["heading"],
+            "action": action,
+            "action_param_1": action_param_1,
+            "action_param_2": action_param_2,
+            "action_param_3": action_param_3,
+        }
+
+    def guarding_police(self, ship, state, universe):
+        action = None
+        action_param_1 = None
+        action_param_2 = None
+        action_param_3 = None
+
+
+        # pick target
+        pick_target = lambda universe: random.choice(
+                list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
+
+        if "target" not in state:
+            target = pick_target(universe)
+            state["target"] = target.id
+            state["heading"] = target.position
+        else:
+
+            if state["target"] is None:
+                target = pick_target(universe)
+                state["target"] = target.id
+
+            target = next(
+                    filter(
+                        lambda e:e.object_type == ObjectType.ship
+                        and e.id == state["target"], universe), None)
+
+            if target is not None:
+
+                if in_radius(ship, target, 10, lambda e:e.position):
+                    # we are within a certain radius of a ship, choose a new target
+                    target = pick_target(universe)
+                    state["target"] = target.id
+
+                # update heading
+                state["heading"] = target.position
+            else:
+                state["heading"] = None
+
+        # attack ships in range
+        ships = ships_in_attack_range(universe, ship)
+        ships = filter(
+                lambda e: e.object_type == ObjectType.ship
+                and e.legal_standing == LegalStanding.pirate, ships)
         ship_to_attack = next(ships, None)
         if ship_to_attack:
             action = PlayerAction.attack

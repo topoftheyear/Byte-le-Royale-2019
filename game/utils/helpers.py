@@ -60,4 +60,19 @@ def in_radius(source, target, radius, accessor, target_accessor=None):
 
     return in_range  and source.id != target.id
 
+def in_secure_zone(target, target_acessor):
+    """
+    Params:
+    - The object you wish to check if it's position is within the save zone
+
+    """
+
+    center_of_world = (
+        WORLD_BOUNDS[0]/2.0,
+        WORLD_BOUNDS[1]/2.0
+    )
+
+    return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, acessor, lambda e: e)
+
+
 
