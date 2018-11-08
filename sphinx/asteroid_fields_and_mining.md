@@ -17,13 +17,4 @@ The following shows what [Stations](stations.md) these fields resources can be u
 * Gold
     * S2: makes Circuitry, secondary is Wire
  
-To mine from an asteroid field, approach the field and `mine()` for the resource.
-
-
-
-
-
-
-
-
-
+To mine from an asteroid field, approach the field and call `self.mine()` in the client to obtain the resources.
