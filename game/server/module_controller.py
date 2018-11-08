@@ -86,7 +86,7 @@ class ModuleController:
                     # TODO Implement fund checking
                     if not True:
                         continue
-                    self.print('Ship has fund for module')
+                    self.print('Ship has funds for module')
 
                     # Apply purchase to ship
                     if ship_slot == ShipSlot.zero:
