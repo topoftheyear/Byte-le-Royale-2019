@@ -1,13 +1,13 @@
 # Ship Upgrades
 
-Your ship has the potential to gain upgrades through modules. These modules can upgrade different facets of the ship
+Your ship has ability to improve through modules. These modules can enhance different facets of the ship
 and can help your ship perform to the best of its capabilities.
 
 Your ship will only have access to 4 total slots, and the unlock cost will increase per slot, so choose your modules wisely.
 
-## List of Upgrades
+## List of Modules
 
-There are 7 different upgrades a ship can have:
+There are 7 different modules a ship can have:
 * `Hull Strength` - How much damage you can take
 * `Engine Speed` - How fast your ship moves in one action
 * `Weapon Damage` - How powerful the weapon is
@@ -18,17 +18,21 @@ There are 7 different upgrades a ship can have:
 
 ## How To Upgrade
 
-To purchase upgrades, go to the center station and use the `buy_module` function.
-For any upgrade, you must purchase an additional slot for the upgrade from the selling [Stations](stations.md).
-- For upgrade levels 1 and 2, these are purchasable at the `Station Authority` [Station](stations.md).
-- For upgrade levels 3, these are purchasable at the `***** ****** [!/@]` [Stations](stations.md).
+In order to purchase a module you must specify the module slot to install it to.
+The first module slot is free, however additional module slots must be purchased for additional modules to be installed.
+
+
+To purchase modules, go to the center station and use the `buy_module` function.
+For any modules, you must purchase an additional slot for the module from the selling [Stations](stations.md).
+- For module levels 1 and 2, these are purchasable at the `Station Authority` [Station](stations.md).
+- For module levels 3, these are purchasable at the `*Black Market 1/2` [Stations](stations.md).
   - Be warned, these are the illegal modules. They are lost on death and will cost you notoriety.
 
-## Upgrade Table
+## Module Table
 
 ```eval_rst
 +---------------+---------+---------+---------+---------+
-| Upgrade Name  | Level 0 | Level 1 | Level 2 | Level 3 |
+| Module  Name  | Level 0 | Level 1 | Level 2 | Level 3 |
 +===============+=========+=========+=========+=========+
 | Hull Strength | 1000    | 2000    | 3000    | 8000    |
 +---------------+---------+---------+---------+---------+

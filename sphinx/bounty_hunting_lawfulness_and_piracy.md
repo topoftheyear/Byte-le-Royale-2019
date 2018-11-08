@@ -49,7 +49,7 @@ If notoriety increases, police ships will chase the player when nearby the centr
 
 ## Piracy
 
-Piracy is a simple way of getting monetary gains at the expense of others. Pirates not only get the benefit of ill-begotten goods sellable at black market stations, but they also can buy extremely powerful illicit upgrades from the same stations.
+Piracy is a simple way of getting monetary gains at the expense of others. Pirates not only get the benefit of ill-begotten goods sellable at black market stations, but they also can buy extremely powerful illicit modules from the same stations.
 
 ## Police
 
