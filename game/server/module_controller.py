@@ -123,12 +123,14 @@ class ModuleController:
                 if not ship.is_alive():
                     continue
 
+                self.print('Found a ship trying to unlock a module')
+
                 for thing in universe:
                     if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
                         continue
 
                     current_station = thing
-                    self.print('Found a ship trying to unlock a module')
+
 
                     ship_in_radius = in_radius(
                         current_station,
@@ -142,7 +144,8 @@ class ModuleController:
                     self.print('Ship in range of a station')
 
                     # Check if ship has the funds and reduce them
-                    # TODO Implement fund checking
+                    if ship.credits < 1000:  # Insufficient funds
+                        continue
 
                     # Determine module to unlock
                     if ship.module_0 == ModuleType.locked:
@@ -160,14 +163,11 @@ class ModuleController:
                     else:  # All already unlocked
                         continue
 
-                    self.print('Ship successfully purchased a module slot')
-
-                    # Update
-                    self.apply_modules(ship)
+                    # Purchase made
+                    ship.credits -= 1000
+                    self.print('Ship successfully purchased module slot ' + str(ship_slot))
 
                     # Logging
-                    self.print('Logging unlock')
-                    self.print('Unlocked slot: ' + str(ship_slot))
                     self.events.append({
                         "type": LogEvent.module_purchased,
                         "ship_id": ship.id,
