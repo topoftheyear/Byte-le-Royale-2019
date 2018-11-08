@@ -26,7 +26,7 @@ def ships_in_attack_range(universe, ship):
     return get_ships(universe, is_ship_visible_wrapper(ship))
 
 def get_stations(universe):
-    return [ obj for obj in universe if obj.object_type == ObjectType.stations ]
+    return [ obj for obj in universe if obj.object_type == ObjectType.station ]
 
 def get_asteroid_fields(universe):
     return [ obj
@@ -35,6 +35,27 @@ def get_asteroid_fields(universe):
                 ObjectType.cuprite_field,
                 ObjectType.goethite_field,
                 ObjectType.gold_field] ]
+
+def distance_to(source, target, accessor, target_accessor=None):
+    """
+    Params:
+    - source: the source object that you wish to start from
+    - target: the target you wish to determine the distance to
+    - accessor: an accessor method used to get the position of the source. if target_accessor is None, this will be applied to the target.
+    - target_accessor: an accessor method used to get the position of the target. Default: None.
+    """
+
+    source_pos = accessor(source)
+    if target_accessor:
+        target_pos = target_accessor(target)
+    else:
+        target_pos = accessor(target)
+
+    return (
+        source_pos[0] - target_pos[0],
+        source_pos[1] - target_pos[1]
+    )
+
 
 def in_radius(source, target, radius, accessor, target_accessor=None):
     """
@@ -60,7 +81,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None):
 
     return in_range  and source.id != target.id
 
-def in_secure_zone(target, target_acessor):
+def in_secure_zone(target, target_accessor):
     """
     Params:
     - The object you wish to check if it's position is within the save zone
@@ -72,7 +93,7 @@ def in_secure_zone(target, target_acessor):
         WORLD_BOUNDS[1]/2.0
     )
 
-    return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, acessor, lambda e: e)
+    return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, accessor, lambda e: e)
 
 
 

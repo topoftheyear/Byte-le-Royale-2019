@@ -194,7 +194,14 @@ class CustomServer(ServerControl):
 
 
             for police in self.police:
+                police.move_action = None
+                police.action = None
+                police.action_param_1 = None
+                police.action_param_2 = None
+                police.action_param_3 = None
+
                 actions = self.police_controller.take_turn(police, self.universe)
+
                 police.move_action = actions["move_action"]
                 police.action = actions["action"]
                 police.action_param_1 = actions["action_param_1"]
