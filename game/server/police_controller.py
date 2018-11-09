@@ -282,6 +282,7 @@ class PoliceController:
 
 
             state["waypoint"] = state["patrol_route"][0]
+            state["patroling"] = True
 
 
         # check ships nearby to verify no pirates
@@ -329,13 +330,12 @@ class PoliceController:
 
         if state.get("patroling"):
             # if we get here, continue moving to waypoint
-
             distance = distance_to(
                     ship,
                     state["waypoint"],
                     lambda s: s.position)
 
-            if not (distance[0] is 0 and distance[1] is 0):
+            if not ( -5 < distance[0] < 5 and -5 < distance[1] < 5):
                 # we are not at waypoint, continue moving towards
                 state["heading"] = state["waypoint"].position
 
@@ -347,8 +347,21 @@ class PoliceController:
 
                 state["heading"] = state["waypoint"].position
 
+
+            # work around to fix bug where some police would reach their waypoint
+            # but not move on to the next
+            if "last_pos" in state:
+                if(ship.position[0] == state["last_pos"][0] and
+                    ship.position[1] == state["last_pos"][1] and
+                    state["waypoint"].position[0] == ship.position[0] and
+                    state["waypoint"].position[1] == ship.position[1]):
+
+                    state["waypoint"] = random.choice(state["patrol_route"])
+                    state["heading"] = state["waypoint"].position
+        state["last_pos"] = ship.position
+
         return {
-            "move_action": state.get("heading") or ship.position,
+            "move_action": state.get("heading"),
             "action": action,
             "action_param_1": action_param_1,
             "action_param_2": action_param_2,
