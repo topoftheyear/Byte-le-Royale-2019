@@ -1,4 +1,5 @@
 import random
+import math
 import sys
 import functools
 
@@ -10,7 +11,6 @@ from game.utils.helpers import *
 from game.utils.projection import *
 
 class PoliceVariant:
-    free_roaming = 0
     waiting = 1
     patrolling = 3
     guarding = 4
@@ -54,10 +54,33 @@ class PoliceController:
             new_police = PoliceShip()
             new_police.init(level=1, position=pos)
 
+            self.create_state(new_police)
+
             universe.append(new_police)
             p.append(new_police)
 
         return p
+
+
+    def create_state(self, ship):
+        self.states[ship.id] = {
+            "variation":  random.choices([
+                PoliceVariant.waiting,
+                PoliceVariant.patrolling,
+                PoliceVariant.guarding,
+            ],
+                [
+                    0.50, # waiting
+                    0.25, # patrolling
+                    0.25 # guarding
+                ]
+            )[0]
+
+        }
+
+        if self.states[ship.id]["variation"] == PoliceVariant.guarding:
+            # make sure they spawn in the center
+            ship.position = percent_world(0.5, 0.5)
 
 
     def assess_universe(self, universe):
@@ -91,9 +114,11 @@ class PoliceController:
             if self.police_spawn_counter >= self.police_spawn_timeout:
                 new_ship = PoliceShip()
                 new_ship.init(level=1, position=percent_world(0.5, 0.5))
+                self.create_state(new_ship)
 
                 new_police.append(new_ship)
                 self.police_spawn_counter = 0
+
 
                 self.events.append({
                     "type": LogEvent.police_spawned,
@@ -105,8 +130,6 @@ class PoliceController:
 
     def take_turn(self, police_ship, universe):
 
-        if police_ship.id not in self.states:
-            self.states[police_ship.id] = {}
         ship_state = self.states[police_ship.id]
 
         self.reset_actions(police_ship)
@@ -118,91 +141,15 @@ class PoliceController:
 
     def police_take_turn(self, ship, state, universe):
 
-        if "variation" not in state:
-            state["variation"] = random.choices([
-                #PoliceVariant.free_roaming,
-                PoliceVariant.waiting,
-                #PoliceVariant.patrolling,
-                #PoliceVariant.guarding,
-                ],
-                #[
-                #    0.15, # free roam
-                #    0.10, # waiting
-                #    0.25, # patrolling
-                #    0.50, # guarding
-                #])
-                )[0]
 
 
-        if state["variation"] is PoliceVariant.free_roaming:
-            return self.free_roaming_police(ship, state, universe)
-        elif state["variation"] is PoliceVariant.waiting:
+        if state["variation"] is PoliceVariant.waiting:
             return self.waiting_police(ship, state, universe)
         elif state["variation"] is PoliceVariant.patrolling:
             return self.patrolling_police(ship, state, universe)
         elif state["variation"] is PoliceVariant.guarding:
             return self.guarding_police(ship,state, universe)
 
-
-    def free_roaming_police(self, ship, state, universe):
-        action = None
-        action_param_1 = None
-        action_param_2 = None
-        action_param_3 = None
-
-
-        # pick target
-        pick_target = lambda universe: random.choice(
-                list(filter(lambda e:e.object_type == ObjectType.ship, universe)))
-
-        if "target" not in state:
-            target = pick_target(universe)
-            state["target"] = target.id
-            state["heading"] = target.position
-        else:
-
-            if state["target"] is None:
-                target = pick_target(universe)
-                state["target"] = target.id
-
-            target = next(
-                    filter(
-                        lambda e:e.object_type == ObjectType.ship
-                        and e.id == state["target"], universe), None)
-
-            if target is not None:
-
-                if in_radius(ship, target, 10, lambda e:e.position):
-                    # we are within a certain radius of a ship, choose a new target
-                    target = pick_target(universe)
-                    state["target"] = target.id
-
-                # update heading
-                state["heading"] = target.position
-            else:
-                state["heading"] = None
-
-        # attack ships in range
-        ships = ships_in_attack_range(universe, ship)
-        ships = filter(
-                lambda e: e.object_type == ObjectType.ship
-                and e.legal_standing == LegalStanding.pirate, ships)
-        ship_to_attack = next(ships, None)
-        if ship_to_attack:
-            action = PlayerAction.attack
-            action_param_1 = ship_to_attack.id
-
-            # also overwrite target and begin persuing
-            state["target"] = ship_to_attack.id
-            state["heading"] = ship_to_attack.position
-
-        return {
-            "move_action": state["heading"],
-            "action": action,
-            "action_param_1": action_param_1,
-            "action_param_2": action_param_2,
-            "action_param_3": action_param_3,
-        }
 
     def waiting_police(self, ship, state, universe):
         action = None
@@ -365,6 +312,71 @@ class PoliceController:
         action_param_3 = None
 
 
+        if not state.get("target"):
+            # if we need a target...
+            target = self.closest_pirate(ship, universe)
+
+            if target is not None:
+                state["target"] = target
+                state["heading"] = target.position
+
+            else:
+                state["heading"] = None
+                state["target"] = None
+        else:
+            # if we have a target...
+
+            # update target location
+            target_ships = get_ships(universe, lambda s:s.id==state["target"].id)
+            if len(target_ships) > 0:
+                state["target"] = target_ships[0]
+
+            else:
+                # target is out of range, pick a new one
+                if not (in_radius(ship, state["target"], ship.sensor_range, lambda s:s.position)
+                        and state["target"].is_alive(),
+                        not self.in_safe_zone(state["target"])  # target not in sz
+                        ):
+                    target = self.closest_pirate(ship, universe)
+                else:
+                    target = None
+
+                state["target"] = target
+
+
+
+        if state.get("target"):
+            # if we have a target move toward it and attack
+
+            if not state["target"].is_alive():
+                # don't go toward dead target
+                state["target"] = None
+                state["heading"] = None
+
+            else:
+                # advance and attack living target
+                action = PlayerAction.attack
+                action_param_1 = state["target"].id
+
+                # also overwrite target and begin persuing if in safe zone
+                if self.in_safe_zone(state["target"]):
+                    state["heading"] = state["target"].position
+                else:
+                    state["target"] = None
+                    state["heaing"] = None
+
+
+        # verify current heading does not place us out of the safe zone
+        if not (state.get("heading") and self.in_safe_zone(state["heading"], lambda e:e)):
+            state["heading"] = None
+
+        if  not state.get("heading"):
+            if not state.get("waypoint"):
+                state["waypoint"] = self.get_point_in_safe_zone()
+            elif state["waypoint"] == ship.position:  # we are at waypoint
+                state["waypoint"] = self.get_point_in_safe_zone()
+
+            state["heading"] = state["waypoint"]
 
         return {
             "move_action": state["heading"],
@@ -405,3 +417,26 @@ class PoliceController:
         else:
             return None
 
+    def random_point_in_circle(self, radius):
+        r = radius * (random.random()**2)
+        theta = random.random() * 2 * math.pi
+        return (
+            r * math.cos(theta),
+            r * math.sin(theta)
+        )
+
+    def in_safe_zone(self, ship, accessor=None):
+        sz = percent_world(0.5, 0.5)
+
+        if not accessor: accessor = lambda e:e.position
+        return in_radius(sz, ship, SECURE_ZONE_RADIUS, lambda e:e, accessor, verify_instance=False)
+
+
+    def get_point_in_safe_zone(self):
+        center = percent_world(0.5, 0.5)
+        pt = self.random_point_in_circle(SECURE_ZONE_RADIUS)
+        pt = (
+            center[0]+pt[0],
+            center[1]+pt[1]
+        )
+        return pt

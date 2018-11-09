@@ -57,7 +57,7 @@ def distance_to(source, target, accessor, target_accessor=None):
     )
 
 
-def in_radius(source, target, radius, accessor, target_accessor=None):
+def in_radius(source, target, radius, accessor, target_accessor=None, verify_instance=True):
     """
     Params:
     - source: the source object that you want to search a radius around
@@ -65,6 +65,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None):
     - radius: either an integer, float or accessor function that takes the source and the target and returns an integer or float.
     - accessor: an accessor method used to get the position of the source. If target_accessor is None, this will also be applied to the target.
     - target_accessor: an accessor method used to get the position of the target. Default: None.
+    - verify_instance: Verify that source and target do not have the same id.
     """
     source_pos = accessor(source)
     if target_accessor:
@@ -79,7 +80,10 @@ def in_radius(source, target, radius, accessor, target_accessor=None):
 
     in_range = result < radius**2
 
-    return in_range  and source.id != target.id
+    if verify_instance:
+        return in_range  and source.id != target.id
+    else:
+        return in_range
 
 def in_secure_zone(target, target_accessor):
     """
