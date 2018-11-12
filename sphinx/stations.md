@@ -8,13 +8,15 @@ In addition, the amount of secondary product will help speed up the production.
 [](_static/simple_station.png)
 ## Station API
 
-```
-name - name of station
-position - x,y of station
+- name - name of station
+- position - x,y of station
 
-[primary/secondary]_import - the stations primary and (if applicable) secondary imports
-[primary/secondary]_consumption_qty - quantity that is consumed in one tick
-[primary/secondary]_max - total amount station can store
+primary_import - the stations primary import
+secondary_import - the stations secondary import
+primary_consumption_qty - quantity of primary import that is consumed in one tick
+secondary_consumption_qty - quantity of secondary import that is consumed in one tick
+primary_max - total amount of primary import station can store
+secondary_max - total amount of secondary import station can store
 
 production_frequency - how often to consume inputs for creating output
 production_material - what is produced
@@ -29,39 +31,37 @@ sell_price - current sell price
 primary_price - current primary resource buying price
 secondary_price - current secondary resource buying price
 
-```
-
 ## Stats
 
 Listed below is the stats for each station.
 ```
-+----+-------------------------+----------------+----------------------+-----------+
-| ID | Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
-+====+=========================+================+======================+===========+
-| s0 | Wire Station            | 400, 70        | Copper (N/A)         | Wire      | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s1 | Computers Station       | 630, 56        | Circuitry (N/A)      | Computers | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s2 | Circuitry Station       | 900, 266       | Gold (Wire)          | Circuitry | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s3 | Drones Station          | 960, 665       | Weaponry (N/A)       | Drones    |
-+----+-------------------------+----------------+----------------------+-----------+
-| s4 | Pylon Station           | 25, 420        | Circuitry (N/A)      | Pylons    | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s5 | Machinery Station       | 85, 280        | Steel (Pylons)       | Machinery | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s6 | Copper Station          | 50, 630        | Cuprite (Drones)     | Copper    |
-+----+-------------------------+----------------+----------------------+-----------+
-| s7 | Steel Station           | 920, 21        | Iron (Drones)        | Steel     |
-+----+-------------------------+----------------+----------------------+-----------+
-| s8 | Iron Station            | 600, 560       | Goethite (Machinery) | Iron      | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s9 | Weaponry Station        | 150, 406       | Computers (N/A)      | Weaponry  | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s! | `Black Market 1`        | 880, 175       | None                 | ()$()     | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s@ | `Black Market 2`        | 100, 560       | None                 | ()$()     | 
-+----+-------------------------+----------------+----------------------+-----------+
-| s# | Station Authority       | 500, 350       | None                 | None      |
-+----+-------------------------+----------------+----------------------+-----------+
++-------------------------+----------------+----------------------+-----------+
+| Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
++=========================+================+======================+===========+
+| Wire Station            | 400, 70        | Copper (N/A)         | Wire      |
++-------------------------+----------------+----------------------+-----------+
+| Computers Station       | 630, 56        | Circuitry (N/A)      | Computers | 
++-------------------------+----------------+----------------------+-----------+
+| Circuitry Station       | 900, 266       | Gold (Wire)          | Circuitry | 
++-------------------------+----------------+----------------------+-----------+
+| Drones Station          | 960, 665       | Weaponry (N/A)       | Drones    |
++-------------------------+----------------+----------------------+-----------+
+| Pylon Station           | 25, 420        | Circuitry (N/A)      | Pylons    | 
++-------------------------+----------------+----------------------+-----------+
+| Machinery Station       | 85, 280        | Steel (Pylons)       | Machinery | 
++-------------------------+----------------+----------------------+-----------+
+| Copper Station          | 50, 630        | Cuprite (Drones)     | Copper    |
++-------------------------+----------------+----------------------+-----------+
+| Steel Station           | 920, 21        | Iron (Drones)        | Steel     |
++-------------------------+----------------+----------------------+-----------+
+| Iron Station            | 600, 560       | Goethite (Machinery) | Iron      | 
++-------------------------+----------------+----------------------+-----------+
+| Weaponry Station        | 150, 406       | Computers (N/A)      | Weaponry  | 
++-------------------------+----------------+----------------------+-----------+
+| `Black Market 1`        | 880, 175       | None                 | ()$()     | 
++-------------------------+----------------+----------------------+-----------+
+| `Black Market 2`        | 100, 560       | None                 | ()$()     | 
++-------------------------+----------------+----------------------+-----------+
+| Station Authority       | 500, 350       | None                 | None      |
++-------------------------+----------------+----------------------+-----------+
 ```
