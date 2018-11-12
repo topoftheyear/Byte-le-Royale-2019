@@ -2,16 +2,18 @@
 
 There is no inherently right or wrong way to write your AI. There are however a few things to take note of:
 
-* Except for the built-in libraries, no imports.
+* Except for imports that exist in the base client, no additional import statements are allowed and will disqualify your client from running.
 * Do not attempt to collect information on your opponent's ship that can't be directly observed.
 * Avoid processes and procedures that will take an abnormally long time per turn. If the time to take a turn becomes too long, your ship will automatically take a turn.
 
+There is a base AI that will have a structure of how the AI should work. 
+ 
 ## Functions to Use
 
 Functions that can be utilized by the ship:
 
-* `move(x, y)` - Move to position (x,y)
-* `mine()` - Set's action to mine
+* `self.move(x, y)` - Move to position (x,y)
+* `self.mine()` - Set's action to mine
 * `attack (target)` - Set ship action to target
 * `buy_module (module, upgrade_level, ship_slot)` - buy module `module` at level `upgrade_level` in slot `ship_slot`
 * `get_ships (universe, callback)` - get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer)
