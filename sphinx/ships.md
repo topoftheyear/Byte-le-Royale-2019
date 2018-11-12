@@ -6,8 +6,8 @@ move around to the various points,
 [](_static/simple_ship.png)
 ## Ship Interactions
 
-Every turn, each ship gets 2 actions to do; a movement action, and a non-movement action
-- Non-movement
+Every turn, each ship will first use their action, then they will move.
+- Actions
   - `Combat` (more info [Here](combat.md))
   - `Mining` (more info [Here](asteroid_fields_and_mining.md))
   - `Buy module` (more info [Here](ship_upgrades.md))
@@ -26,8 +26,15 @@ Every turn, each ship gets 2 actions to do; a movement action, and a non-movemen
     - `mining_yield` - mining capability
     - `sensor_range` - range sensors can pick up
   - **Module stats:**
-    - `module_(0,1,2,3)` - component in module 0, 1, 2, or 3
-    - `module_(0,1,2,3)_level` - level of corresponding module
+    - `module_(0)` - component in module 0
+    - `module_(1)` - component in module 1
+    - `module_(2)` - component in module 2
+    - `module_(3)` - component in module 3
+    
+    - `module_(0)_level` - level of component in module 0
+    - `module_(1)_level` - level of component in module 1
+    - `module_(2)_level` - level of component in module 2
+    - `module_(3)_level` - level of component in module 3
   - **Actions:**
     - `action` - action to be taken
     - `action_param_(1,2,3)` - parameter of action if needed
