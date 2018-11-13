@@ -1,11 +1,5 @@
 # Writing Your AI
 
-There is no inherently right or wrong way to write your AI. There are however a few things to take note of:
-
-* Except for imports that exist in the base client, no additional import statements are allowed and will disqualify your client from running.
-* Do not attempt to collect information on your opponent's ship that can't be directly observed.
-* Avoid processes and procedures that will take an abnormally long time per turn. If the time to take a turn becomes too long, your ship will automatically take a turn.
-
 There is a base AI that will have a structure of how the AI should work. 
  
 ## Functions to Use
@@ -23,6 +17,8 @@ Functions that can be utilized by the ship:
 * `sell_material(material, amount)` - sell `amount` of `material` to the station in range
 * `buy_material(material, amount)` - buy `amount` of `material` to the station in range
 * `unlock_module()` - unlock the module slot
+
+There are some [rules that your AI must follow](rules.md).
 
 ## Related Links
 * [Using the Visualizer](using_the_visualizer.md)
