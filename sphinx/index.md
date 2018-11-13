@@ -9,6 +9,7 @@
 * [Running The Game](running_the_game.md)
 * [Using the Visualizer](using_the_visualizer.md)
 * [Writing Your AI](writing_your_ai.md)
+* [Rules](rules.md)
 * [Helpful Links](helpful_links.md)
 
 

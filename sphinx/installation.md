@@ -1,8 +1,10 @@
 # Installing
 
+[This will be the link to the actual download URL](INSERT THE LINK HERE)##################
+
 ## Introduction
 
-The installation process has been streamlined from previous years. The application
+The installation process has been streamlined from last year. The application
 has the bonuses of update notification, an enclosed runtime environment, and a help
 function to assist in starting up the components.
 
