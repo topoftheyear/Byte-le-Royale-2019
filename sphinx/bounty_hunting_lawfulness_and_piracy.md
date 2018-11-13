@@ -6,13 +6,20 @@ In the violent galaxy, people work hard and fight for their pay. Some of these j
 
 ## Bounty Hunting
 
-Bounty hunters are the lawless law officers. They will go outside the law to stop pirates and be seen as 'the good guys'.
+Bounty hunters are the lawless law officers. They will go outside the law to stop pirates and are on the good side of the Notoriety Scale.
 
 ## Lawfulness
 
-Lawfulness is measured by the Notoriety statistic, showing how good or evil a player is. A higher notoriety means a player is less lawful and more aggressive.
+Lawfulness is measured by the `ship.notoriety` statistic, showing how good or evil a player is. A higher notoriety means a player is less lawful and more aggressive.
 
-If notoriety increases, police ships will chase the player when nearby the central station. Should it become too high, bounty hunters may start hunting the player for reward, and enforcers may be sent out to deal with the player.
+If notoriety increases, police ships will chase the player when nearby the central station.
+If your notoriety goes too high, you will be labeled a pirate.
+Pirates are forbidden to access the Secure Station and a radius around the secure station.
+Any pirates within the Secure Zone, will be fired upon by the police.
+Additionally, citizens and bounty hunters are free to hunt down pirates without fear of reprisal from law enforcement.
+If private citizens, bounty hunters and police are unable to curb an especially menacing pirate, Enforcers may be sent out in waves to bring the pirate ship down.
+
+
 ```
 +-----------------------------------+-----------+
 | Action                            | Notoriety |
@@ -49,7 +56,7 @@ If notoriety increases, police ships will chase the player when nearby the centr
 
 ## Piracy
 
-Piracy is a simple way of getting monetary gains at the expense of others. Pirates not only get the benefit of ill-begotten goods sellable at black market stations, but they also can buy extremely powerful illicit modules from the same stations.
+Piracy is a simple way of getting money at the expense of others. Pirates not only get the benefit of ill-begotten goods sellable at black market stations, but they also can buy extremely powerful illicit modules from the same stations.
 
 ## Police
 
