@@ -47,7 +47,6 @@ Every turn, each ship will first use their action, then they will move.
     
 - Stats you get from **OTHER AND YOUR** ships:
   - `public_id` - Ship's Public ID
-  - `is_npc` - Is the ship an NPC?
   - `max_hull` - Ship's max hull
   - `current_hull` - Ship's current hull
   - `cargo_space` - Ship's cargo space

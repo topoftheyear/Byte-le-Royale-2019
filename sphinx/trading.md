@@ -1,6 +1,6 @@
 # Trading
 
-Trading is the most common peaceful way to make money. By buying and selling resources for profit, you will make a name for yourself and be a master of your trade.
+Trading is the most common way to make money. By buying and selling resources for profit, you will make a name for yourself and be a master of your trade.
 
 ## How to Trade
 
