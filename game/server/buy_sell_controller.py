@@ -9,17 +9,6 @@ from game.utils.helpers import *
 from game.common.stats import *
 
 class BuySellController:
-    #arrays to track buy changes
-    s0 = [] # wire
-    s1 = [] # computers
-    s2 = [] # circuits
-    s3 = [] # drones
-    s4 = [] # pylon
-    s5 = [] # machinery
-    s6 = [] # copper
-    s7 = [] # steel
-    s8 = [] # iron
-    s9 = [] # weaponry
 
 
     def __init__(self):
@@ -27,6 +16,7 @@ class BuySellController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.station_bids = {}
 
     def print(self, msg):
         if self.debug:
@@ -43,85 +33,54 @@ class BuySellController:
         self.stats = []
         return s
 
-    def add_to_buy_arrays(self, amount, material, ship, station):
-        name = station.name
-        if name == "Wire Station":
-            self.s0.append([amount, material, ship, station])
-        elif name == "Computers Station":
-            self.s1.append([amount, material, ship, station])
-        elif name == "Circuitry Station":
-            self.s2.append([amount, material, ship, station])
-        elif name == "Drones Station":
-            self.s3.append([amount, material, ship, station])
-        elif name == "Pylon Station":
-            self.s4.append([amount, material, ship, station])
-        elif name == "Machinery Station":
-            self.s5.append([amount, material, ship, station])
-        elif name == "Copper Station":
-            self.s6.append([amount, material, ship, station])
-        elif name == "Steel Station":
-            self.s7.append([amount, material, ship, station])
-        elif name == "Iron Station":
-            self.s8.append([amount, material, ship, station])
-        elif name == "Weaponry Station":
-            self.s9.append([amount, material, ship, station])
+    def add_to_bids(self, amount, material, ship, station):
+        if not station in self.station_bids:
+            self.station_bids[station] = []
+        self.station_bids[station].append([amount, material, ship])
 
     def do_changes(self):
-        self.calculate(self.s0)
-        self.s0 = []
-        self.calculate(self.s1)
-        self.s1 = []
-        self.calculate(self.s2)
-        self.s2 = []
-        self.calculate(self.s3)
-        self.s3 = []
-        self.calculate(self.s4)
-        self.s4 = []
-        self.calculate(self.s5)
-        self.s5 = []
-        self.calculate(self.s6)
-        self.s6 = []
-        self.calculate(self.s7)
-        self.s7 = []
-        self.calculate(self.s8)
-        self.s8 = []
-        self.calculate(self.s9)
-        self.s9 = []
+        for station, bids in self.station_bids.items():
+            self.calculate(station, bids)
+        self.station_bids = {}
 
-    def calculate(self, array):
-        if len(array) == 0:
+    def calculate(self, station, bids):
+        if len(bids) == 0:
             return
 
         totalbuy = 0
         ships = []
         amounts = []
-        station = array[0][3]
-        material = array[0][1]
+        end_amounts = [] #used to keep track of values for logging
+        material = bids[0][1]
         buyprice = station.base_sell_price
 
 
-        for entry in array:
+        for entry in bids:
             amount = entry[0]
             totalbuy += amount
             ships.append(entry[2])
             amounts.append(amount)
 
-        self.print(str(station.cargo[material]) + "   " + str(totalbuy))
+        end_amounts = amounts.copy()
+
+        self.print(str(station.cargo[material]) + " <--amount in station : Total wanted -->  " + str(totalbuy))
         if station.cargo[material] >= totalbuy:
             for ship, amount in zip(ships, amounts):
                 ship.inventory[material] += amount
                 ship.credits += (amount * buyprice)
                 station.cargo[material] -= amount
         else:
+            #case of a more demand than amount left in station, will evenly split resources among people
             while len(ships) != 0 and not station.cargo[material] == 0:
-                remove = []
                 for idx in range(len(ships)):
                     if amounts[idx] == 0:
-                        remove.append(idx)
                         continue
 
+                    # check if station is out of material and if so modify end_amounts to be correct
                     if station.cargo[material] == 0:
-                        self.print("broke out of buying")
+                        self.print("station out of material")
+                        for idx2 in range(len(amounts)):
+                            end_amounts[idx2] -= amounts[idx2]
                         break
                     ships[idx].inventory[material] += 1
                     ships[idx].credits += (buyprice)
@@ -129,9 +88,21 @@ class BuySellController:
                     station.cargo[material] -= 1
 
                     self.print("bought stuff")
-                for idx in remove:
-                    del ships[idx]
-                    del amounts[idx]
+        for idx in range(len(ships)):
+            ship = ships[idx]
+            amount_bought = end_amounts[idx]
+            price = amount_bought * buyprice
+
+            #logging purchasees
+            self.print('Logging purchase ' + str(price) + '     ' + str(amount_bought) + str(ship.id))
+            self.events.append({
+                "type": LogEvent.material_purchased,
+                "station_id": station.id,
+                "ship_id": ship.id,
+                "material": material,
+                "amount": amount_bought,
+                "total_price": price
+            })
 
 
 
@@ -156,9 +127,6 @@ class BuySellController:
 
                     current_station = thing
                     # self.print('Found a ship trying to sell material')
-                    #
-                    # if thing.object_type is ObjectType.station:
-                    #     self.print('Station found')
 
                     # Check if ship is within range of a / the station
                     ship_in_radius = in_radius(
@@ -170,7 +138,7 @@ class BuySellController:
                     if not ship_in_radius:
                         continue
 
-                    self.print('Ship in range of a station to sell')
+                    #self.print('Ship in range of a station to sell')
                     material = ship.action_param_1
                     amount = ship.action_param_2
 
@@ -185,17 +153,29 @@ class BuySellController:
                         self.print('Improper material type for station')
                         continue
 
-                    # add to ships funds and subtract from inventory amount
-                    ship.inventory[material] -= amount
+                    # check if it is primary or secondary import and modify inventory and credits
                     if material == current_station.primary_import:
-                        ship.credits += amount * current_station.primary_buy_price
+                        ship.inventory[material] -= amount
+                        ship.credits += (amount * current_station.primary_buy_price)
+                        self.print('Ship has received primary payment of ' + str(amount * current_station.primary_buy_price))
+
+                        station_max = current_station.primary_max
+                        current_amount = current_station.cargo[material]
+                        if station_max + current_amount > station_max:
+                            current_station.cargo[material] = station_max
+                        else:
+                            current_station.cargo[material] += amount
                     elif material == current_station.secondary_import:
+                        ship.inventory[material] -= amount
                         ship.credits += amount * current_station.secondary_buy_price
-                    self.print('Ship has received payment of ' + str(amount * current_station.primary_buy_price))
+                        self.print('Ship has received secondary payment of ' + str(amount * current_station.secondary_buy_price))
 
-
-                    #station stuff
-                    current_station.cargo[material] += amount
+                        station_max = current_station.secondary_max
+                        current_amount = current_station.cargo[material]
+                        if station_max + current_amount > station_max:
+                            current_station.cargo[material] = station_max
+                        else:
+                            current_station.cargo[material] += amount
 
 
                     # Logging
@@ -256,19 +236,11 @@ class BuySellController:
 
                     #making sure material entry is in inventory
                     if material in ship.inventory:
-                        self.add_to_buy_arrays(amount, material, ship, current_station)
+                        self.add_to_bids(amount, material, ship, current_station)
                     else:
                         ship.inventory[material] = 0
-                        self.add_to_buy_arrays(amount, material, ship, current_station)
+                        self.add_to_bids(amount, material, ship, current_station)
 
 
-                    # Logging
-                    # self.print('Logging purchase')
-                    self.events.append({
-                        "type": LogEvent.material_purchased,
-                        "station_id": current_station.id,
-                        "ship_id": ship.id,
-                        "material": material,
-                        "amount": amount
-                    })
+
         self.do_changes()

@@ -45,9 +45,9 @@ class BuySellNPC(NPC):
                 if self.ship.inventory[current_station.primary_import] > 0:
                     self.sell_material(current_station.primary_import, 1)
                 else:
-                    self.buy_material(1)
+                    self.buy_material(10)
             else:
-                self.buy_material(1)
+                self.buy_material(10)
 
 
         return self.action_digest()
