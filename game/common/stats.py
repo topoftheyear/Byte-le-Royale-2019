@@ -121,4 +121,8 @@ class GameStats:
     destroy_pirate = -2
     pay_off_bounty = -1
 
-
+    # module unlock prices
+    unlock_slot_cost_0 = 500
+    unlock_slot_cost_1 = 1000
+    unlock_slot_cost_2 = 2000
+    unlock_slot_cost_3 = 3000

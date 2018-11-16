@@ -131,11 +131,10 @@ class ModuleController:
 
                     current_station = thing
 
-
                     ship_in_radius = in_radius(
                         current_station,
                         ship,
-                        lambda s, t: s.accessibility_radius,
+                        current_station.accessibility_radius,
                         lambda e: e.position)
 
                     if not ship_in_radius:
@@ -143,29 +142,47 @@ class ModuleController:
 
                     self.print('Ship in range of a station')
 
-                    # Check if ship has the funds and reduce them
-                    if ship.credits < 1000:  # Insufficient funds
-                        continue
-
                     # Determine module to unlock
                     if ship.module_0 == ModuleType.locked:
-                        ship.module_0 = ModuleType.empty
                         ship_slot = ShipSlot.zero
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_0:
+                            continue
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_0
+                        ship.module_0 = ModuleType.empty
                     elif ship.module_1 == ModuleType.locked:
-                        ship.module_1 = ModuleType.empty
                         ship_slot = ShipSlot.one
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_1:
+                            continue
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_1
+                        ship.module_1 = ModuleType.empty
                     elif ship.module_2 == ModuleType.locked:
-                        ship.module_2 = ModuleType.empty
                         ship_slot = ShipSlot.two
+
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_2:
+                            continue
+
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_2
+                        ship.module_2 = ModuleType.empty
                     elif ship.module_3 == ModuleType.locked:
-                        ship.module_3 = ModuleType.empty
                         ship_slot = ShipSlot.three
+
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_3:
+                            continue
+
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_3
+                        ship.module_3 = ModuleType.empty
                     else:  # All already unlocked
                         continue
 
-                    # Purchase made
-                    ship.credits -= 1000
-                    self.print('Ship successfully purchased module slot ' + str(ship_slot))
+                    self.print('Ship successfully purchased module slot '+str(ship_slot))
 
                     # Logging
                     self.events.append({
@@ -173,7 +190,6 @@ class ModuleController:
                         "ship_id": ship.id,
                         "slot": ship_slot
                     })
-
 
     def apply_modules(self, ship):
         ship_mod = [
