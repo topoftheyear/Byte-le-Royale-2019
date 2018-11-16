@@ -8,11 +8,9 @@ from game.common.stats import GameStats
 
 class Scrap(GameObject):
 
-    def init(self, name, position=(0,0), mining_rate=1, accessibility_radius=20,
-             material_remaining=10, turns_remaining=20):
+    def init(self, position=(0,0), material_remaining=10, turns_remaining=20, mining_rate=1, accessibility_radius=20):
         GameObject.init(self, ObjectType.scrap)
 
-        self.name = name
         self.position = position
 
         self.material_type = MaterialType.salvage
@@ -42,7 +40,6 @@ class Scrap(GameObject):
         if security_level <= SecurityLevel.other_player:
             # fields other players can view
             other_player = {
-                "name": self.name,
                 "position": self.position,
 
                 "material_type": self.material_type,
@@ -65,7 +62,6 @@ class Scrap(GameObject):
             # properties that will only be populated by the engine,
             #   prevents user tampering with variables
 
-            self.name = data["name"]
             self.position = data["position"]
             self.material_type = data["material_type"]
             self.mining_rate = data["mining_rate"]

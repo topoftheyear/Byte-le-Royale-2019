@@ -82,7 +82,6 @@ class UserClient:
         if amount < 10:
             return
 
-        #TODO: Create drop cargo controller
         self._action = PlayerAction.drop_cargo
         self._action_param_1 = amount
 
