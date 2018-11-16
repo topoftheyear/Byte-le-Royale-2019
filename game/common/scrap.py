@@ -8,7 +8,8 @@ from game.common.stats import GameStats
 
 class Scrap(GameObject):
 
-    def init(self, name, position=(0,0), mining_rate=1, accessibility_radius=20):
+    def init(self, name, position=(0,0), mining_rate=1, accessibility_radius=20,
+             material_remaining=10, turns_remaining=20):
         GameObject.init(self, ObjectType.scrap)
 
         self.name = name
@@ -18,6 +19,9 @@ class Scrap(GameObject):
         self.mining_rate = mining_rate
 
         self.accessibility_radius = accessibility_radius
+
+        self.material_remaining = material_remaining
+        self.turns_remaining = turns_remaining
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -45,6 +49,9 @@ class Scrap(GameObject):
                 "mining_rate": self.mining_rate,
 
                 "accessibility_radius": self.accessibility_radius,
+
+                "material_remaining": self.material_remaining,
+                "turns_remaining": self.turns_remaining
             }
 
             data = { **data, **other_player }
@@ -62,6 +69,11 @@ class Scrap(GameObject):
             self.position = data["position"]
             self.material_type = data["material_type"]
             self.mining_rate = data["mining_rate"]
+
+            self.accessibility_radius = data["accessibility_radius"]
+
+            self.material_remaining = data["material_remaining"]
+            self.turns_remaining = data["turns_remaining"]
 
         if security_level <= SecurityLevel.player_owned:
             pass
