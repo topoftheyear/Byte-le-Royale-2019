@@ -59,8 +59,8 @@ class ModuleController:
                     ship_in_radius = in_radius(
                             current_station,
                             ship,
-                            lambda s,t:s.accessibility_radius,
-                            lambda e:e.position)
+                            current_station.accessibility_radius,
+                            lambda e: e.position)
 
                     if not ship_in_radius:
                         continue
@@ -75,12 +75,19 @@ class ModuleController:
                         continue
                     self.print('Ship module slot is unlocked')
 
-
                     # Check if the module requested is illegal
-                    if upgrade_level == ModuleLevel.illegal and current_station is ObjectType.black_market_station:
+                    if upgrade_level == ModuleLevel.illegal and current_station is not ObjectType.black_market_station:
                         continue
 
-                    # TODO verify that ship doesn't already have module
+                    # Verify ship does not have module, and the module is not of a higher or equal level
+                    if ship.module_0 == module and (ship_slot != ShipSlot.zero or ship.module_0_level >= upgrade_level):
+                        continue
+                    if ship.module_1 == module and (ship_slot != ShipSlot.one or ship.module_1_level >= upgrade_level):
+                        continue
+                    if ship.module_2 == module and (ship_slot != ShipSlot.two or ship.module_2_level >= upgrade_level):
+                        continue
+                    if ship.module_3 == module and (ship_slot != ShipSlot.three or ship.module_3_level >= upgrade_level):
+                        continue
 
                     # Check if ship has the funds and reduce them
                     # TODO Implement fund checking
