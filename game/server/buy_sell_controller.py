@@ -154,25 +154,28 @@ class BuySellController:
                         continue
 
                     # check if it is primary or secondary import and modify inventory and credits
+                    credits_made = 0
                     if material == current_station.primary_import:
+                        credits_made = (amount * current_station.primary_buy_price)
                         ship.inventory[material] -= amount
                         ship.credits += (amount * current_station.primary_buy_price)
                         self.print('Ship has received primary payment of ' + str(amount * current_station.primary_buy_price))
 
                         station_max = current_station.primary_max
                         current_amount = current_station.cargo[material]
-                        if station_max + current_amount > station_max:
+                        if amount + current_amount > station_max:
                             current_station.cargo[material] = station_max
                         else:
                             current_station.cargo[material] += amount
                     elif material == current_station.secondary_import:
+                        credits_made = (amount * current_station.secondary_buy_price)
                         ship.inventory[material] -= amount
                         ship.credits += amount * current_station.secondary_buy_price
                         self.print('Ship has received secondary payment of ' + str(amount * current_station.secondary_buy_price))
 
                         station_max = current_station.secondary_max
                         current_amount = current_station.cargo[material]
-                        if station_max + current_amount > station_max:
+                        if amount + current_amount > station_max:
                             current_station.cargo[material] = station_max
                         else:
                             current_station.cargo[material] += amount
@@ -185,7 +188,8 @@ class BuySellController:
                         "station_id": current_station.id,
                         "ship_id": ship.id,
                         "material": material,
-                        "amount": amount
+                        "amount": amount,
+                        "total_sale": credits_made
                     })
 
 
