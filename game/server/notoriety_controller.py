@@ -48,6 +48,9 @@ class NotorietyController:
     def attribute_notoriety(self, ship, change_reason):
         change = 0
 
+        if ship.object_type == ObjectType.police or ship.object_type == ObjectType.enforcer:
+            return
+
         # evil deeds
         if change_reason is NotorietyChangeReason.destroy_civilian:
             ship.notoriety += GameStats.destroy_civilian
