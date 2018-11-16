@@ -38,9 +38,16 @@ class ScrapController:
                 if not ship.is_alive():
                     continue
 
-                amount = ship.action_param_1
+                material_type = ship.action_param_1
+                amount = ship.action_param_2
 
-                #TODO: Determine if ship has enough cargo
+                if material_type not in ship.inventory:
+                    continue
+
+                if ship.inventory[material_type] < amount:
+                    continue
+
+                ship.inventory[material_type] -= amount
 
                 # Create scrap object
                 Scrap.init(ship.position, math.floor(amount/100))
