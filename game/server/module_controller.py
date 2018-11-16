@@ -86,7 +86,7 @@ class ModuleController:
                     # TODO Implement fund checking
                     if not True:
                         continue
-                    self.print('Ship has fund for module')
+                    self.print('Ship has funds for module')
 
                     # Apply purchase to ship
                     if ship_slot == ShipSlot.zero:
@@ -116,6 +116,78 @@ class ModuleController:
                         "ship_id": ship.id,
                         "module": module,
                         "level": upgrade_level,
+                        "slot": ship_slot
+                    })
+
+            if ship.action == PlayerAction.unlock_module:
+                if not ship.is_alive():
+                    continue
+
+                self.print('Found a ship trying to unlock a module')
+
+                for thing in universe:
+                    if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
+                        continue
+
+                    current_station = thing
+
+                    ship_in_radius = in_radius(
+                        current_station,
+                        ship,
+                        current_station.accessibility_radius,
+                        lambda e: e.position)
+
+                    if not ship_in_radius:
+                        continue
+
+                    self.print('Ship in range of a station')
+
+                    # Determine module to unlock
+                    if ship.module_0 == ModuleType.locked:
+                        ship_slot = ShipSlot.zero
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_0:
+                            continue
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_0
+                        ship.module_0 = ModuleType.empty
+                    elif ship.module_1 == ModuleType.locked:
+                        ship_slot = ShipSlot.one
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_1:
+                            continue
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_1
+                        ship.module_1 = ModuleType.empty
+                    elif ship.module_2 == ModuleType.locked:
+                        ship_slot = ShipSlot.two
+
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_2:
+                            continue
+
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_2
+                        ship.module_2 = ModuleType.empty
+                    elif ship.module_3 == ModuleType.locked:
+                        ship_slot = ShipSlot.three
+
+                        # Check if ship has the funds
+                        if ship.credits < GameStats.unlock_slot_cost_3:
+                            continue
+
+                        # Make purchase
+                        ship.credits -= GameStats.unlock_slot_cost_3
+                        ship.module_3 = ModuleType.empty
+                    else:  # All already unlocked
+                        continue
+
+                    self.print('Ship successfully purchased module slot '+str(ship_slot))
+
+                    # Logging
+                    self.events.append({
+                        "type": LogEvent.module_purchased,
+                        "ship_id": ship.id,
                         "slot": ship_slot
                     })
 

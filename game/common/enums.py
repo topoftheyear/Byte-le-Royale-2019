@@ -40,7 +40,7 @@ class LogEvent:
     police_spawned = 9
     enforcer_spawned = 10
     module_purchased = 11
-
+    module_unlocked = 12
 
 class MessageType:
     null = 0
@@ -56,6 +56,7 @@ class PlayerAction:
     mine = 1
     attack = 2
     buy_module = 3
+    unlock_module = 4
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
