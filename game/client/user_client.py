@@ -75,15 +75,20 @@ class UserClient:
 
         self._action = PlayerAction.unlock_module
 
-    def drop_cargo(self, amount):
+    def drop_cargo(self, material_type, amount):
         self.reset_player_action()
+
+        # Make sure material actually exists
+        if material_type not in [MaterialType]:
+            return
 
         # Minimum cargo drop requirement
         if amount < 10:
             return
 
         self._action = PlayerAction.drop_cargo
-        self._action_param_1 = amount
+        self._action_param_1 = material_type
+        self._action_param_2 = amount
 
     def get_ships(self, universe, callback=None):
         return get_ships(universe, callback)
