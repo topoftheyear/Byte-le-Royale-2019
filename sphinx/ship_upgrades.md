@@ -16,15 +16,14 @@ There are 5 groupings of modules for the ship:
 
 ## How To Upgrade
 
-Your ship starts at level 0 for all categories. In order to purchase a module you must specify the module slot to install it to. 
-The first module slot is free, however additional module slots must be purchased for additional modules to be installed, up to a maximum of 4.
+Your ship starts at level 0 for all categories. In order to purchase a module you must specify which module slot to place the module in.
 
-For any modules, you must purchase an additional slot for the module from the selling Stations.
 To purchase modules, go to the center station and use the `buy_module` function. If you already have the module of the type you wish to upgrade, 
-it will upgrade the module in that slot. If you do not already own that module type, you will need to purchase the 
+it will upgrade that module in the slot. If you do not already own that module type, you will need to purchase the module itself and the module slot.
+Keep in mind, only 4 total slots for modules can be obtained (1 of which is provided for you), so choose your modules wisely.
 For any modules, you must purchase an additional slot for the module from the selling [Stations](stations.md).
-- For module levels 1 and 2, these are purchasable at the `Station Authority` and `Black Market 1 & 2` [Station](stations.md).
-- For module levels 3, these are purchasable at the `Black Market 1 & 2` [Stations](stations.md).
+- For module levels 1, 2, and 3, these are purchasable at the `Station Authority` and `Black Market 1 & 2` [Station](stations.md).
+- For the Illegal Module Level, these are purchasable at the `Black Market 1 & 2` [Stations](stations.md).
   - Be warned, these are the illegal modules. They are lost on death and will cost you notoriety.
 
 ## Module Table (Revise Illegal Numbers When Completed)
