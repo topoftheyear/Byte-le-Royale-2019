@@ -79,6 +79,7 @@ class ObjectType:
     police = 8
     enforcer = 9
 
+    scrap = 10
 
 class MaterialType:
     null = -1
@@ -95,7 +96,7 @@ class MaterialType:
     goethite = 11
     cuprite = 12
     wire = 13
-
+    salvage = 14
 
 class LegalStanding:
     citizen = 0
