@@ -80,7 +80,8 @@ class Ship(GameObject):
             #   be able to access
             engine = {
                 "id": self.id,
-                "team_name": self.team_name
+                "team_name": self.team_name,
+                "is_npc": self.is_npc,
             }
 
 
@@ -124,7 +125,6 @@ class Ship(GameObject):
 
             other_player = {
                 "public_id": self.public_id,
-                "is_npc": self.is_npc,
                 "max_hull": self.max_hull,
                 "current_hull": self.current_hull,
                 "cargo_space": self.cargo_space,
