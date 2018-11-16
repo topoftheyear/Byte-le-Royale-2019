@@ -12,7 +12,7 @@ class ModuleController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 
@@ -51,11 +51,6 @@ class ModuleController:
 
                     current_station = thing
 
-                    if thing.object_type is ObjectType.secure_station:
-                        self.print('Secure Station found')
-                    elif thing.object_type is ObjectType.black_market_station:
-                        self.print('Black Market found')
-
                     # Check if ship is within range of a / the station
                     ship_in_radius = in_radius(
                             current_station,
@@ -83,7 +78,6 @@ class ModuleController:
                         continue
 
                     # Check if requested module is already equipped on the ship
-                    # TODO needs testing still after module slot purchasing functionality is added
                     if ship_slot == 0 and module in [ship.module_1, ship.module_2, ship.module_3]\
                             or ship_slot == 1 and module in [ship.module_0, ship.module_2, ship.module_3]\
                             or ship_slot == 2 and module in [ship.module_0, ship.module_1, ship.module_3]\
@@ -96,7 +90,7 @@ class ModuleController:
                     # Check if ship has the funds and reduce them
                     cost = 100 * (upgrade_level ** 2)  # TODO replace temp formula with actual ship costs (or formula)
                     if ship.credits < cost:
-                        self.print('Ship does not have adequate funds (have: ' + ship.credits + ', need: ' + cost + ')')
+                        self.print('Ship does not have adequate funds (have: ' + str(ship.credits) + ', need: ' + str(cost) + ')')
                         continue
 
                     self.print('Ship has funds for the module')

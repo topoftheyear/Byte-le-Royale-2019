@@ -6,6 +6,7 @@ from game.common.enums import *
 from game.common.npc.mining_npc import MiningNPC
 from game.common.npc.combat_npc import CombatNPC
 from game.common.npc.module_npc import ModuleNPC
+from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
@@ -274,7 +275,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, UnlockNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
