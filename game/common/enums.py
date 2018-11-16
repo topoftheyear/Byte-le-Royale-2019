@@ -41,6 +41,7 @@ class LogEvent:
     enforcer_spawned = 10
     module_purchased = 11
     module_unlocked = 12
+    cargo_dropped = 13
 
 class MessageType:
     null = 0
@@ -57,6 +58,7 @@ class PlayerAction:
     attack = 2
     buy_module = 3
     unlock_module = 4
+    drop_cargo = 5
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer

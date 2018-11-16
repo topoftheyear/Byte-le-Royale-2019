@@ -75,6 +75,17 @@ class UserClient:
 
         self._action = PlayerAction.unlock_module
 
+    def drop_cargo(self, amount):
+        self.reset_player_action()
+
+        # Minimum cargo drop requirement
+        if amount < 10:
+            return
+
+        #TODO: Create drop cargo controller
+        self._action = PlayerAction.drop_cargo
+        self._action_param_1 = amount
+
     def get_ships(self, universe, callback=None):
         return get_ships(universe, callback)
 
