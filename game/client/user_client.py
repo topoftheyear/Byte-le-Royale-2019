@@ -79,7 +79,21 @@ class UserClient:
         self.reset_player_action()
 
         # Make sure material actually exists
-        if material_type not in [MaterialType]:
+        if material_type not in [
+            MaterialType.iron,
+            MaterialType.steel,
+            MaterialType.copper,
+            MaterialType.circuitry,
+            MaterialType.pylons,
+            MaterialType.weaponry,
+            MaterialType.machinery,
+            MaterialType.computers,
+            MaterialType.drones,
+            MaterialType.gold,
+            MaterialType.goethite,
+            MaterialType.cuprite,
+            MaterialType.wire,
+            MaterialType.salvage ]:
             return
 
         # Minimum cargo drop requirement
