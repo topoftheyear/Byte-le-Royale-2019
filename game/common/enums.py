@@ -42,6 +42,7 @@ class LogEvent:
     module_purchased = 11
     material_purchased = 12
     material_sold = 13
+    module_unlocked = 14
 
 
 class MessageType:
@@ -60,6 +61,7 @@ class PlayerAction:
     buy_module = 3
     buy_material= 4
     sell_material = 5
+    unlock_module = 6
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer

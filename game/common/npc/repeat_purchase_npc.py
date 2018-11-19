@@ -5,7 +5,7 @@ from game.common.npc.npc import NPC
 from game.config import *
 from game.utils.helpers import *
 
-class ModuleNPC(NPC):
+class RepeatPurchaseNPC(NPC):
 
     def take_turn(self, universe):
 
@@ -24,7 +24,7 @@ class ModuleNPC(NPC):
         self.move(*self.heading)
 
         # buy random module if we don't have one and are in range of a station
-        if self.ship.module_0 == ModuleType.empty:
+        if self.ship.module_0 == ModuleType.empty or self.ship.module_1 == ModuleType.empty:
             for thing in universe:
 
                 # Check for all stations in the universe
@@ -43,11 +43,21 @@ class ModuleNPC(NPC):
                 # skip if not in range
                 if not ship_in_radius: continue
 
+
+
                 # Buy module
-                self.buy_module(
-                            ModuleType.engine_speed,
-                            random.choice([ModuleLevel.one, ModuleLevel.two, ModuleLevel.three, ModuleLevel.illegal]),
-                            ShipSlot.zero)
+                if self.ship.module_0 == ModuleType.empty:
+                    self.buy_module(
+                                ModuleType.engine_speed,
+                                ModuleLevel.one,
+                                ShipSlot.zero)
+                if self.ship.module_1 == ModuleType.empty:
+                    self.buy_module(
+                                ModuleType.engine_speed,
+                                ModuleLevel.two,
+                                ShipSlot.one)
+        elif self.ship.module_1 == ModuleType.locked:
+            self.unlock_module()
 
 
         return self.action_digest()
