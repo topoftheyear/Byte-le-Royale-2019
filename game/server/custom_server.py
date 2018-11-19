@@ -278,7 +278,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, , CargoDropNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
