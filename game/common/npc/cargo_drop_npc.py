@@ -15,7 +15,7 @@ class CargoDropNPC(NPC):
             locations = []
             for thing in universe:
                 # Check for all asteroid fields in the universe
-                if thing.object_type in [ObjectType.cuprite_field, ObjectType.goethite_field, ObjectType.gold_field]:
+                if thing.object_type in [ObjectType.cuprite_field]:
                     locations.append(thing)
 
             self.heading = random.choice(locations).position
@@ -27,9 +27,9 @@ class CargoDropNPC(NPC):
         if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
             self.heading = None
 
-        self.mine()
-
-        if MaterialType.cuprite in self.ship.inventory and self.ship.inventory[MaterialType.cuprite] > 50:
-            self.drop_cargo(self, MaterialType.cuprite, 50)
+        if MaterialType.cuprite not in self.ship.inventory or self.ship.inventory[MaterialType.cuprite] < 10000:
+            self.mine()
+        else:
+            self.drop_cargo(MaterialType.cuprite, 10000)
 
         return self.action_digest()

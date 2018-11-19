@@ -11,7 +11,7 @@ class MiningController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
