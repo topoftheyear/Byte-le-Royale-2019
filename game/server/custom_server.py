@@ -19,7 +19,7 @@ from game.server.combat_controller import CombatController
 from game.server.death_controller import DeathController
 from game.server.police_controller import PoliceController
 from game.server.module_controller import ModuleController
-from game.server.scrap_controller import ScrapController
+from game.server.illegal_salvage_controller import IllegalSalvageController
 
 
 class CustomServer(ServerControl):
@@ -49,7 +49,7 @@ class CustomServer(ServerControl):
         self.death_controller = DeathController()
         self.police_controller = PoliceController()
         self.module_controller = ModuleController()
-        self.scrap_controller = ScrapController()
+        self.illegal_salvage_controller = IllegalSalvageController()
 
 
 
@@ -296,7 +296,7 @@ class CustomServer(ServerControl):
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.scrap_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+        self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = filter(lambda e: not e.is_alive(), self.ships)
         self.death_controller.handle_actions(dead_ships)
@@ -317,7 +317,7 @@ class CustomServer(ServerControl):
 
         self.turn_log["events"].extend( self.module_controller.get_events() )
 
-        self.turn_log["events"].extend( self.scrap_controller.get_events() )
+        self.turn_log["events"].extend( self.illegal_salvage_controller.get_events() )
 
     def process_move_actions(self):
 

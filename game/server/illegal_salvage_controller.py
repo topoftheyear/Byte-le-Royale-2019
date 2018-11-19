@@ -3,9 +3,9 @@ import math
 
 from game.utils.helpers import *
 from game.common.stats import *
-from game.common.scrap import Scrap
+from game.common.illegal_salvage import IllegalSalvage
 
-class ScrapController:
+class IllegalSalvageController:
 
     def __init__(self):
 
@@ -34,7 +34,7 @@ class ScrapController:
 
             # Check for ships that are performing the drop cargo action
             if ship.action is PlayerAction.drop_cargo:
-                self.print('dropping scrap...')
+                self.print('dropping illegal salvage...')
 
                 if not ship.is_alive():
                     continue
@@ -50,10 +50,10 @@ class ScrapController:
 
                 ship.inventory[material_type] -= amount
 
-                # Create scrap object
-                #TODO: Create scrap object on ground
+                # Create salvage object
+                #TODO: Create illegal salvage object on ground
 
-                self.print('scrap dropped')
+                self.print('illegal salvage dropped')
 
                 # Logging
                 self.events.append({

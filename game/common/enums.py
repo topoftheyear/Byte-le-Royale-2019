@@ -79,7 +79,7 @@ class ObjectType:
     police = 8
     enforcer = 9
 
-    scrap = 10
+    illegal_salvage = 10
 
 class MaterialType:
     null = -1

@@ -6,20 +6,14 @@ from game.common.enums import *
 from game.common.stats import GameStats
 
 
-class Scrap(GameObject):
+class IllegalSalvage(GameObject):
 
-    def init(self, position=(0,0), material_remaining=10, turns_remaining=20, mining_rate=1, accessibility_radius=20):
-        GameObject.init(self, ObjectType.scrap)
+    def init(self, position=(0,0)):
+        GameObject.init(self, ObjectType.illegal_salvage)
 
         self.position = position
-
         self.material_type = MaterialType.salvage
-        self.mining_rate = mining_rate
-
-        self.accessibility_radius = accessibility_radius
-
-        self.material_remaining = material_remaining
-        self.turns_remaining = turns_remaining
+        self.turns_till_recycling = 20
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -34,7 +28,7 @@ class Scrap(GameObject):
 
         if security_level <= SecurityLevel.player_owned:
             # fields only accessible to the player owner of this object
-            # Could be used to determine who gets priority of the scrap
+            # Could be used to determine who gets priority of the salvage
             pass
 
         if security_level <= SecurityLevel.other_player:
