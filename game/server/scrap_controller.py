@@ -34,6 +34,7 @@ class ScrapController:
 
             # Check for ships that are performing the drop cargo action
             if ship.action is PlayerAction.drop_cargo:
+                self.print('dropping scrap...')
 
                 if not ship.is_alive():
                     continue
@@ -50,7 +51,9 @@ class ScrapController:
                 ship.inventory[material_type] -= amount
 
                 # Create scrap object
-                Scrap.init(ship.position, math.floor(amount/100))
+                #TODO: Create scrap object on ground
+
+                self.print('scrap dropped')
 
                 # Logging
                 self.events.append({
