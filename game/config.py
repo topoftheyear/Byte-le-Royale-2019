@@ -9,6 +9,8 @@ WORLD_BOUNDS = (1000, 700)
 
 DISPLAY_SIZE = (1280, 720)
 
+SECURE_ZONE_RADIUS = 200
+
 
 # High Performance Render Mode
 if platform.system() == 'Linux':

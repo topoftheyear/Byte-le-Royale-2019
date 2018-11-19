@@ -6,6 +6,7 @@ from game.common.enums import *
 from game.common.npc.mining_npc import MiningNPC
 from game.common.npc.combat_npc import CombatNPC
 from game.common.npc.module_npc import ModuleNPC
+from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.ship import Ship
@@ -106,7 +107,6 @@ class CustomServer(ServerControl):
 
             else:
                 # send game specific data in payload
-                pass
                 payload[i] = {
                     "message_type": MessageType.take_turn,
                     "ship": self.teams[i]["ship"].to_dict(),
@@ -159,9 +159,6 @@ class CustomServer(ServerControl):
                         "team_name": team_name,
                         "ship": ship
                     }
-
-                    # TODO refactor so we don't start till all teams have had a chance to give a name
-                    self.started = True
             else:
 
                 if message_type == MessageType.take_turn:
@@ -202,7 +199,14 @@ class CustomServer(ServerControl):
 
 
             for police in self.police:
+                police.move_action = None
+                police.action = None
+                police.action_param_1 = None
+                police.action_param_2 = None
+                police.action_param_3 = None
+
                 actions = self.police_controller.take_turn(police, self.universe)
+
                 police.move_action = actions["move_action"]
                 police.action = actions["action"]
                 police.action_param_1 = actions["action_param_1"]
@@ -210,20 +214,23 @@ class CustomServer(ServerControl):
                 police.action_param_3 = actions["action_param_3"]
 
 
-        self.process_actions()
+            self.process_actions()
 
-        self.process_move_actions()
+            self.process_move_actions()
 
 
-        # update station market / update BGS
-        self.station_controller.tick(
-            self.filter_universe(ObjectType.station))
+            # update station market / update BGS
+            self.station_controller.tick(
+                self.filter_universe(ObjectType.station))
 
-        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+            self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+
+
+        # set to started
+        self.started = True
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
-
 
 
 
@@ -271,7 +278,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, UnlockNPC, CargoDropNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, , CargoDropNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {

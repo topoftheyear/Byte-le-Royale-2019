@@ -51,7 +51,7 @@ class ServerControl:
 
         if self._clients_connected == 0:
             self.schedule(self.wait_for_clients, 2)
-        elif self._clients_connected > 0 and self.connection_wait_timer > 0:
+        elif  self.connection_wait_timer > 0:
             # this will slowly count down every  second and then start the game
             self.connection_wait_timer -= 1
             print(f"Starting in {self.connection_wait_timer}")

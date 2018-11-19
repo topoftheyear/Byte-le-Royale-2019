@@ -4,7 +4,7 @@ set -e
 
 printf "\n\n"
 echo "Build";
-./build.sh; 
+./scripts/build.sh; 
 printf "\n\n"
 echo "Generate";
 ./br_launcher.pyz generate; 

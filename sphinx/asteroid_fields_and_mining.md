@@ -1,5 +1,7 @@
 # Asteroid Fields
 
+## Mining
+
 Asteroid fields are where players can mine various resources which they can then sell to a ```station```. On our map there are three different types of fields, ```cuprite```, ```goethite```, and ```gold```.There are a few variables that players can view for each of the fields:
 * Name: ```field.name```
 * Position: ```field.position```
@@ -11,19 +13,8 @@ The following shows what [Stations](stations.md) these fields resources can be u
 * Cuprite
     * S6: makes Copper, secondary is Drones
 * Goethite
-    * S8: makes Iron,  secondary is Machinery
+    * S8: makes Iron, secondary is Machinery
 * Gold
     * S2: makes Circuitry, secondary is Wire
  
-# Mining
-
-# Stub for mining
-
-
-
-
-
-
-
-
-
+To mine from an asteroid field, approach the field and call `self.mine()` in the client to obtain the resources.
