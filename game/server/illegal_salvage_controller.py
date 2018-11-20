@@ -56,7 +56,7 @@ class IllegalSalvageController:
                 material_value = 10
 
                 # Create salvage object
-                salvage_to_create = math.floor(amount_dropped/10)
+                salvage_to_create = math.floor(amount_dropped/100)
 
                 for _ in range(salvage_to_create):
                     random_position = (
@@ -69,6 +69,12 @@ class IllegalSalvageController:
                     universe.append(new_illgal_salvage)
                     self.print('Created new illegal salvage at {} with value {}CR'.format(random_position, material_value))
 
+                    self.events.append({
+                        "type": LogEvent.illegal_salvage_spawned,
+                        "id": new_illgal_salvage.id,
+                        "position": new_illgal_salvage.position
+                    })
+
                 # Logging
                 self.events.append({
                     "type": LogEvent.cargo_dropped,
@@ -76,7 +82,6 @@ class IllegalSalvageController:
                     "amount": amount
                 })
 
-        print(len(universe))
         # for now we will decay salvage untill garbage collectior is finished.
         for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
             salvage.turns_till_recycling -= 1

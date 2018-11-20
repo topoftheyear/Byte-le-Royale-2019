@@ -6,6 +6,7 @@ from pygame.locals import *
 from game.visualizer.game_log_parser import GameLogParser
 from game.visualizer.ship_sprites import *
 from game.visualizer.station_sprites import *
+from game.visualizer.illegal_salvage_sprite import IllegalSalvageSprite
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
 from game.config import *
@@ -28,6 +29,7 @@ debug = False
 ship_group = pygame.sprite.RenderUpdates()
 station_group = pygame.sprite.Group()
 asteroid_field_group = pygame.sprite.Group()
+illegal_salvage_group = pygame.sprite.Group()
 
 _VIS_INTERMEDIATE_FRAMES = VIS_INTERMEDIATE_FRAMES
 _FPS = FPS
@@ -91,6 +93,11 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             asteroid_field_sprite = get_asteroid_field_sprite(obj.object_type, *obj.position)
             asteroid_field_group.add(asteroid_field_sprite)
 
+        elif obj.object_type is ObjectType.illegal_salvage:
+            illegal_salvage_sprite = IllegalSalvageSprite(*obj.position, obj.id)
+            illegal_salvage_group.add(illegal_salvage_sprite)
+
+
 
 
     # prepare for game loop
@@ -143,7 +150,9 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                         for ship_sprite in ship_group.sprites():
                             if ship_sprite.ship_id == event["ship_id"]:
                                 ship_group.remove(ship_sprite)
-
+                    if event["type"] is LogEvent.illegal_salvage_spawned:
+                        new_illegal_salvage = IllegalSalvageSprite(*event["position"], event["id"])
+                        illegal_salvage_group.add(new_illegal_salvage)
 
 
 
@@ -199,6 +208,8 @@ def update_groups(intermediate):
     # call update on groups
     ship_group.update(universe, events, intermediate)
 
+    illegal_salvage_group.update(universe, illegal_salvage_group)
+
 def draw_lasers(ship_group, events):
     attacks = get_events_of_type(LogEvent.ship_attack, events)
 
@@ -243,6 +254,7 @@ def draw_screen():
     # draw groups to screan
     station_group.draw(global_surf)
     asteroid_field_group.draw(global_surf)
+    illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
 
 

@@ -13,7 +13,7 @@ class IllegalSalvage(GameObject):
 
         self.position = position
         self.material_type = MaterialType.salvage
-        self.turns_till_recycling = 20
+        self.turns_till_recycling = 50
         self.value = value
 
     def to_dict(self, security_level=SecurityLevel.other_player):

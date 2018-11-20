@@ -5,6 +5,7 @@ from game.common.enums import *
 from game.common.ship import Ship
 from game.common.police_ship import PoliceShip
 from game.common.station import *
+from game.common.illegal_salvage import *
 from game.common.asteroid_field_types import load_asteroid_field
 
 class GameLogParser:
@@ -117,6 +118,11 @@ class GameLogParser:
 
             elif obj_type in [ObjectType.goethite_field]:
                 obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.engine)
+                objs.append(obj)
+
+            elif obj_type == ObjectType.illegal_salvage:
+                obj = IllegalSalvage()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.engine)
                 objs.append(obj)
 
         return objs
