@@ -1,9 +1,9 @@
-import random
 import os
 import json
 import platform
 import shutil
 import sys
+from datetime import datetime
 from datetime import datetime, timedelta
 
 
@@ -22,6 +22,9 @@ class ServerControl:
 
         self._client_ids = []
         self._quit = False
+
+        self._est_time = []
+        self._last_time = None
 
 
         # Game Configuration options
@@ -71,6 +74,20 @@ class ServerControl:
     def pre_tick(self):
         if self.verbose: print("SERVER TICK: {}".format(self.game_tick_no))
         self.game_tick_no += 1
+
+        if len(self._est_time) > 10:
+            self._est_time.pop(0)
+        now = datetime.now()
+
+        if self._last_time is not None:
+            self._est_time.append(now - self._last_time)
+        self._last_time = now
+
+
+        pad = len(str(self.max_game_tick))
+        tick_no = str(self.game_tick_no).ljust(pad, " ")
+        print("\r{}/{} ({}%)".format(tick_no, self.max_game_tick,
+                                     round(self.game_tick_no/self.max_game_tick*100), 2), end="")
 
         self.turn_data = []
 

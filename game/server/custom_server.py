@@ -222,11 +222,13 @@ class CustomServer(ServerControl):
             self.process_move_actions()
 
 
-            # update station market / update BGS
-            self.station_controller.tick(
-                self.filter_universe(ObjectType.station))
+        # update station market / update BGS
+        self.station_controller.tick(
+            self.filter_universe(ObjectType.station))
 
-            self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+        self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
+        self.turn_log["stats"]["buying/selling"] = self.buy_sell_controller.get_stats()
 
 
         # set to started
@@ -307,12 +309,10 @@ class CustomServer(ServerControl):
 
         self.notoriety_controller.update_standing_universe(self.ships)
 
-        # log events and stats
+        # log events
         self.turn_log["events"].extend( self.mining_controller.get_events() )
-        self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
 
         self.turn_log["events"].extend(self.buy_sell_controller.get_events())
-        self.turn_log["stats"]["buying/selling"] = self.buy_sell_controller.get_stats()
 
         self.turn_log["events"].extend( self.combat_controller.get_events() )
 
