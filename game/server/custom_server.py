@@ -6,6 +6,9 @@ from game.common.enums import *
 from game.common.npc.mining_npc import MiningNPC
 from game.common.npc.combat_npc import CombatNPC
 from game.common.npc.module_npc import ModuleNPC
+from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
+from game.common.npc.unlock_npc import UnlockNPC
+from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -16,6 +19,7 @@ from game.server.combat_controller import CombatController
 from game.server.death_controller import DeathController
 from game.server.police_controller import PoliceController
 from game.server.module_controller import ModuleController
+from game.server.illegal_salvage_controller import IllegalSalvageController
 
 
 class CustomServer(ServerControl):
@@ -45,6 +49,7 @@ class CustomServer(ServerControl):
         self.death_controller = DeathController()
         self.police_controller = PoliceController()
         self.module_controller = ModuleController()
+        self.illegal_salvage_controller = IllegalSalvageController()
 
 
 
@@ -102,7 +107,6 @@ class CustomServer(ServerControl):
 
             else:
                 # send game specific data in payload
-                pass
                 payload[i] = {
                     "message_type": MessageType.take_turn,
                     "ship": self.teams[i]["ship"].to_dict(),
@@ -155,9 +159,6 @@ class CustomServer(ServerControl):
                         "team_name": team_name,
                         "ship": ship
                     }
-
-                    # TODO refactor so we don't start till all teams have had a chance to give a name
-                    self.started = True
             else:
 
                 if message_type == MessageType.take_turn:
@@ -198,7 +199,14 @@ class CustomServer(ServerControl):
 
 
             for police in self.police:
+                police.move_action = None
+                police.action = None
+                police.action_param_1 = None
+                police.action_param_2 = None
+                police.action_param_3 = None
+
                 actions = self.police_controller.take_turn(police, self.universe)
+
                 police.move_action = actions["move_action"]
                 police.action = actions["action"]
                 police.action_param_1 = actions["action_param_1"]
@@ -206,20 +214,23 @@ class CustomServer(ServerControl):
                 police.action_param_3 = actions["action_param_3"]
 
 
-        self.process_actions()
+            self.process_actions()
 
-        self.process_move_actions()
+            self.process_move_actions()
 
 
-        # update station market / update BGS
-        self.station_controller.tick(
-            self.filter_universe(ObjectType.station))
+            # update station market / update BGS
+            self.station_controller.tick(
+                self.filter_universe(ObjectType.station))
 
-        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+            self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+
+
+        # set to started
+        self.started = True
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
-
 
 
 
@@ -267,7 +278,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -285,7 +296,7 @@ class CustomServer(ServerControl):
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-
+        self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = filter(lambda e: not e.is_alive(), self.ships)
         self.death_controller.handle_actions(dead_ships)
@@ -306,7 +317,7 @@ class CustomServer(ServerControl):
 
         self.turn_log["events"].extend( self.module_controller.get_events() )
 
-
+        self.turn_log["events"].extend( self.illegal_salvage_controller.get_events() )
 
     def process_move_actions(self):
 

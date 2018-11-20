@@ -40,7 +40,9 @@ class LogEvent:
     police_spawned = 9
     enforcer_spawned = 10
     module_purchased = 11
-
+    module_unlocked = 12
+    cargo_dropped = 13
+    illegal_salvage_spawned = 14
 
 class MessageType:
     null = 0
@@ -56,6 +58,8 @@ class PlayerAction:
     mine = 1
     attack = 2
     buy_module = 3
+    unlock_module = 4
+    drop_cargo = 5
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
@@ -76,6 +80,7 @@ class ObjectType:
     police = 8
     enforcer = 9
 
+    illegal_salvage = 10
 
 class MaterialType:
     null = -1
@@ -92,7 +97,7 @@ class MaterialType:
     goethite = 11
     cuprite = 12
     wire = 13
-
+    salvage = 14
 
 class LegalStanding:
     citizen = 0

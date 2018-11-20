@@ -4,15 +4,27 @@
 # Welcome to Byte-le Royale 2019!
 
 * [Overview](overview.md)
-* [Installing](installing.md)
+* [Installing](installation.md)
+* [Getting Started](getting_started.md)
 * [Running The Game](running_the_game.md)
+* [Using the Visualizer](using_the_visualizer.md)
+* [Writing Your AI](writing_your_ai.md)
+* [Rules](rules.md)
 * [Helpful Links](helpful_links.md)
 
 
 # Game Topics:
+
 * [Stations](stations.md)
 * [Asteroid Fields And Mining](asteroid_fields_and_mining.md)
-* [Piracy, Bounty Hunting, Police, and Lawfulness](bounty_hunting_lawfulness_and_piracy)
+* [Trading](trading.md)
+
+* [Bounty Hunting, Piracy, and Lawfulness](bounty_hunting_lawfulness_and_piracy.md)
+* [Combat](combat.md)
+
+* [Ships](ships.md)
+* [Ship Upgrades](ship_upgrades.md)
+
 
 ## Helpful Links
 

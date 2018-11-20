@@ -22,31 +22,31 @@ class PoliceShip(Ship):
             self.object_type = ObjectType.police
 
         # explicitly set ship stats
-        #if level == 1:
-        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.base)
-        #    self.current_hull = self.max_hull
-        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.base)
-        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.base)
-        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.base)
-        #    self.cargo_space = GameStats.get_ship_stat(UpgradeType.cargo_space, UpgradeLevel.base)
-        #    self.mining_yield = GameStats.get_ship_stat(UpgradeType.mining_yield, UpgradeLevel.base)
-        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.base)
+        if level >= 1:
+            self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.base)
+            self.current_hull = self.max_hull
+            self.engine_speed = GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.base) * 0.75
+            self.weapon_damage = GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.base) * 0.9
+            self.weapon_range = GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.base) * 1.0
+            self.cargo_space = GameStats.get_ship_stat(ShipStat.cargo_space, ModuleLevel.base) * 0.9
+            self.mining_yield = 0
+            self.sensor_range = GameStats.get_ship_stat(ShipStat.sensor_range, ModuleLevel.base) * 0.8
 
-        #elif level == 2:
-        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
-        #    self.current_hull = self.max_hull
-        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
-        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
-        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
-        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
+        if level >= 2:
+            self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.two)
+            self.current_hull = self.max_hull
+            self.engine_speed = GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.two)
+            self.weapon_damage = GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.two)
+            self.weapon_range = GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.two)
+            self.sensor_range = GameStats.get_ship_stat(ShipStat.sensor_range, ModuleLevel.two)
 
-        #elif level == 2:
-        #    self.max_hull = GameStats.get_ship_stat(UpgradeType.hull, UpgradeLevel.two)
-        #    self.current_hull = self.max_hull
-        #    self.engine_speed = GameStats.get_ship_stat(UpgradeType.engine_speed, UpgradeLevel.two)
-        #    self.weapon_damage = GameStats.get_ship_stat(UpgradeType.weapon_damage, UpgradeLevel.two)
-        #    self.weapon_range = GameStats.get_ship_stat(UpgradeType.weapon_range, UpgradeLevel.two)
-        #    self.sensor_range = GameStats.get_ship_stat(UpgradeType.sensor_range, UpgradeLevel.two)
+        if level >= 3:
+            self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.two)
+            self.current_hull = self.max_hull
+            self.engine_speed = GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.two)
+            self.weapon_damage = GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.two)
+            self.weapon_range = GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.two)
+            self.sensor_range = GameStats.get_ship_stat(ShipStat.sensor_range, ModuleLevel.two)
 
 
 

@@ -70,6 +70,39 @@ class UserClient:
         self._action_param_2 = upgrade_level
         self._action_param_3 = ship_slot
 
+    def unlock_module(self):
+        self.reset_player_action()
+
+        self._action = PlayerAction.unlock_module
+
+    def drop_cargo(self, material_type, amount):
+        self.reset_player_action()
+
+        # Make sure material actually exists
+        if material_type not in [
+            MaterialType.iron,
+            MaterialType.steel,
+            MaterialType.copper,
+            MaterialType.circuitry,
+            MaterialType.pylons,
+            MaterialType.weaponry,
+            MaterialType.machinery,
+            MaterialType.computers,
+            MaterialType.drones,
+            MaterialType.gold,
+            MaterialType.goethite,
+            MaterialType.cuprite,
+            MaterialType.wire,
+            MaterialType.salvage ]:
+            return
+
+        # Minimum cargo drop requirement
+        if amount < 10:
+            return
+
+        self._action = PlayerAction.drop_cargo
+        self._action_param_1 = material_type
+        self._action_param_2 = amount
 
     def get_ships(self, universe, callback=None):
         return get_ships(universe, callback)

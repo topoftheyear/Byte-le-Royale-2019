@@ -80,7 +80,11 @@ class Wire(Material):
             value,                      #value
             MaterialType.wire)       #material_type
 
-
+class Salvage(Material):
+    def init(self, value=100):
+        Material.init(self,
+            value,
+            MaterialType.salvage)
 
 def load_material(material_type, data):
     if material_type == MaterialType.iron:
@@ -109,6 +113,8 @@ def load_material(material_type, data):
         new_material = Geothite()
     elif material_type == MaterialType.wire:
         new_material = Wire()
+    elif material_type == MaterialType.salvage:
+        new_material = Salvage()
 
     else:
         raise Exception("Invalid material type: {0}".format(material_type))
