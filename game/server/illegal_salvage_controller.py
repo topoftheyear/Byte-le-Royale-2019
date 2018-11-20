@@ -1,4 +1,5 @@
 import sys
+import random
 import math
 
 from game.utils.helpers import *
@@ -45,15 +46,28 @@ class IllegalSalvageController:
                 if material_type not in ship.inventory:
                     continue
 
-                if ship.inventory[material_type] < amount:
-                    continue
+                inventory = ship.inventory[material_type]
+                amount_left = max(0, inventory-amount)
+                amount_dropped = inventory - amount_left
 
-                ship.inventory[material_type] -= amount
+                ship.inventory[material_type] = amount_left
+
+                # TODO get current value of material
+                material_value = 10
 
                 # Create salvage object
-                #TODO: Create illegal salvage object on ground
+                salvage_to_create = math.floor(amount_dropped/10)
 
-                self.print('illegal salvage dropped')
+                for _ in range(salvage_to_create):
+                    random_position = (
+                        ship.position[0] + random.randint(-10, 10),
+                        ship.position[1] + random.randint(-10, 10)
+                    )
+                    new_illgal_salvage = IllegalSalvage()
+                    new_illgal_salvage.init(position=random_position, value=material_value)
+
+                    universe.append(new_illgal_salvage)
+                    self.print('Created new illegal salvage at {} with value {}CR'.format(random_position, material_value))
 
                 # Logging
                 self.events.append({

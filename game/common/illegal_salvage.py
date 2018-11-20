@@ -8,12 +8,13 @@ from game.common.stats import GameStats
 
 class IllegalSalvage(GameObject):
 
-    def init(self, position=(0,0)):
+    def init(self, position=(0,0), value=0):
         GameObject.init(self, ObjectType.illegal_salvage)
 
         self.position = position
         self.material_type = MaterialType.salvage
         self.turns_till_recycling = 20
+        self.value = value
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
