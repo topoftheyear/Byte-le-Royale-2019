@@ -27,9 +27,9 @@ class CargoDropNPC(NPC):
         if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
             self.heading = None
 
-        if MaterialType.cuprite not in self.ship.inventory or self.ship.inventory[MaterialType.cuprite] < 10000:
+        if MaterialType.cuprite not in self.ship.inventory or self.ship.inventory[MaterialType.cuprite] < 100:
             self.mine()
         else:
-            self.drop_cargo(MaterialType.cuprite, 10000)
+            self.drop_cargo(MaterialType.cuprite, 100)
 
         return self.action_digest()

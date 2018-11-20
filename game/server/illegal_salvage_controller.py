@@ -75,3 +75,13 @@ class IllegalSalvageController:
                     "ship_id": ship.id,
                     "amount": amount
                 })
+
+        print(len(universe))
+        # for now we will decay salvage untill garbage collectior is finished.
+        for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
+            salvage.turns_till_recycling -= 1
+
+            if salvage.turns_till_recycling <= 0:
+                universe.remove(salvage)
+                del salvage
+

@@ -36,14 +36,10 @@ class IllegalSalvage(GameObject):
             # fields other players can view
             other_player = {
                 "position": self.position,
-
                 "material_type": self.material_type,
-                "mining_rate": self.mining_rate,
 
-                "accessibility_radius": self.accessibility_radius,
-
-                "material_remaining": self.material_remaining,
-                "turns_remaining": self.turns_remaining
+                "turns_till_recycling": self.turns_till_recycling,
+                "value": self.value
             }
 
             data = { **data, **other_player }
@@ -59,12 +55,9 @@ class IllegalSalvage(GameObject):
 
             self.position = data["position"]
             self.material_type = data["material_type"]
-            self.mining_rate = data["mining_rate"]
 
-            self.accessibility_radius = data["accessibility_radius"]
-
-            self.material_remaining = data["material_remaining"]
-            self.turns_remaining = data["turns_remaining"]
+            self.turns_till_recycling = data["turns_till_recycling"]
+            self.value = data["value"]
 
         if security_level <= SecurityLevel.player_owned:
             pass
