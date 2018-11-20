@@ -43,7 +43,8 @@ class LogEvent:
     material_purchased = 12
     material_sold = 13
     module_unlocked = 14
-
+    cargo_dropped = 15
+    illegal_salvage_spawned = 16
 
 class MessageType:
     null = 0
@@ -62,6 +63,7 @@ class PlayerAction:
     buy_material= 4
     sell_material = 5
     unlock_module = 6
+    drop_cargo = 7
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
@@ -82,6 +84,7 @@ class ObjectType:
     police = 8
     enforcer = 9
 
+    illegal_salvage = 10
 
 class MaterialType:
     null = -1
@@ -98,7 +101,7 @@ class MaterialType:
     goethite = 11
     cuprite = 12
     wire = 13
-
+    salvage = 14
 
 class LegalStanding:
     citizen = 0

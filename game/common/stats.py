@@ -33,11 +33,11 @@ class GameStats:
     cargo_space_3 = 800000
     cargo_space_4 = 1000000
 
-    mining_yield_0 = 50000
-    mining_yield_1 = 60000
-    mining_yield_2 = 70000
-    mining_yield_3 = 80000
-    mining_yield_4 = 100000
+    mining_yield_0 = 5
+    mining_yield_1 = 6
+    mining_yield_2 = 7
+    mining_yield_3 = 8
+    mining_yield_4 = 10
 
     sensor_range_0 = 75
     sensor_range_1 = 100

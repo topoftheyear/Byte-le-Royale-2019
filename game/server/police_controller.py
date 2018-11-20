@@ -19,7 +19,7 @@ class PoliceController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 
