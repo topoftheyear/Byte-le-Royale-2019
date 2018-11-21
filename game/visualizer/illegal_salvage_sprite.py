@@ -15,7 +15,7 @@ class IllegalSalvageSprite(pygame.sprite.DirtySprite):
 
         self.id = id
 
-        self.image = pygame.Surface((1, 1))
+        self.image = pygame.Surface((2, 2))
 
         self.image.fill(pygame.Color(255, 255, 255))
 
