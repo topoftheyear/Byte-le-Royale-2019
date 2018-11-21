@@ -4,6 +4,7 @@ from game.common.game_serializable import Serializable
 from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.stats import GameStats
+from game.visualizer import start # am I doing this right?
 
 
 class Ship(GameObject):
@@ -13,7 +14,10 @@ class Ship(GameObject):
 
 
     def init(self, team_name, is_npc=False, position=(0,0)):
-        GameObject.init(self, ObjectType.ship)
+        if team_name == start.focus_team:
+            GameObject.init(self, ObjectType.player_ship)
+        else:
+            GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
         self.id = str(uuid4())

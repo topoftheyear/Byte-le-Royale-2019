@@ -39,14 +39,16 @@ def log(msg):
         print(str(msg))
 
 
-def start(verbose, log_path, gamma, dont_wait, fullscreen):
+def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name):
     global fpsClock
     global log_parser
     global universe
     global events
+    global focus_team
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
+    focus_team = focus_team_name
 
     # initialize pygame
     pygame.init()
@@ -67,6 +69,10 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     for obj in universe:
         if obj.object_type == ObjectType.ship:
             ship_sprite = NeutralShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
+
+        elif obj.object_type == ObjectType.player_ship:
+            ship_sprite = PlayerShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
 
         elif obj.object_type == ObjectType.police:

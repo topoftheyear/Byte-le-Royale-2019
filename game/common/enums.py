@@ -75,13 +75,11 @@ class ObjectType:
     goethite_field = 4
     cuprite_field = 5
     gold_field = 6
-
     material = 7
-
     police = 8
     enforcer = 9
-
     illegal_salvage = 10
+    player_ship = 11
 
 class MaterialType:
     null = -1
