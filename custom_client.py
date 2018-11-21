@@ -15,6 +15,11 @@ class CustomClient(UserClient):
 
         return "Herp Derp"
 
+    def team_color(self):
+        print("Sending Team Color")
+
+        return [154,50,205]
+
     def take_turn(self):
 
         pass
