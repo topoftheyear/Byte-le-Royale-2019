@@ -9,6 +9,7 @@ from game.visualizer.station_sprites import *
 from game.visualizer.illegal_salvage_sprite import IllegalSalvageSprite
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
+from game.common.ship import Ship
 from game.config import *
 from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
@@ -39,16 +40,17 @@ def log(msg):
         print(str(msg))
 
 
-def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name):
+def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None):
     global fpsClock
     global log_parser
     global universe
     global events
-    global focus_team
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
-    focus_team = focus_team_name
+    Ship.set_focus_team(focus_team_name)
+    # if focus_team_name is not None: print(focus_team_name)
+    # else: print("None")
 
     # initialize pygame
     pygame.init()
