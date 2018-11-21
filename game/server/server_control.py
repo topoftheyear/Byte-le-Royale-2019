@@ -86,8 +86,8 @@ class ServerControl:
 
         pad = len(str(self.max_game_tick))
         tick_no = str(self.game_tick_no).ljust(pad, " ")
-        print("\r{}/{} ({}%)".format(tick_no, self.max_game_tick,
-                                     round(self.game_tick_no/self.max_game_tick*100), 2), end="")
+        percentage = round(self.game_tick_no/self.max_game_tick*100, 2)
+        print("\r {}/{} ({}%)\r".format(tick_no, self.max_game_tick, percentage), end="")
 
         self.turn_data = []
 

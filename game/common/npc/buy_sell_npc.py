@@ -18,37 +18,30 @@ class BuySellNPC(NPC):
         # choose a new heading if we don't have one
         if self.heading is None:
             #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-            self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+            self.heading = random.choice(list(filter(lambda e:e.object_type == ObjectType.station, universe))).position
 
         # move towards heading
         self.move(*self.heading)
 
-        # buy random module if we don't have one and are in range of a station
-        for thing in universe:
+        for station in filter(lambda e:e.object_type == ObjectType.station, universe):
 
-            # Check for all stations in the universe
-            if thing.object_type not in [ObjectType.station]:
-                continue
-
-
-            current_station = thing
             # Check if ship is within range of a / the station
             ship_in_radius = in_radius(
-                    current_station,
+                    station,
                     self.ship,
                     lambda s,t:s.accessibility_radius,
                     lambda e:e.position)
+            if not ship_in_radius:
+                continue
 
-            # skip if not in range
-            if not ship_in_radius: continue
-            if current_station.primary_import in self.ship.inventory:
-                if self.ship.inventory[current_station.primary_import] > 0:
-                    self.sell_material(current_station.primary_import, 1)
-                else:
-                    self.buy_material(10)
+            if(station.primary_import in self.ship.inventory
+                    and self.ship.inventory[station.primary_import] > 0):
+                self.sell_material(station.primary_import, self.ship.inventory[station.primary_import])
+            elif(station.secondary_import in self.ship.inventory
+                    and self.ship.inventory[station.secondary_import] > 0):
+                self.sell_material(station.secondary_import, self.ship.inventory[station.secondary_import])
             else:
-                self.buy_material(10)
-
+                self.buy_material(1000)
 
         return self.action_digest()
 
