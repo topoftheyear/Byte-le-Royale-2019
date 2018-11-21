@@ -120,7 +120,7 @@ class StationController:
                 percentage_primary = 0.0
             station.primary_buy_price = math.floor(max(0,
                     (1.0-percentage_primary) * station.base_primary_buy_price
-                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+                    + random.randint(0, jitter_thresh) * jitter
                 ))
 
             if station.secondary_import in station.cargo:
@@ -129,7 +129,7 @@ class StationController:
                 percentage_secondary = 0.0
             station.secondary_buy_price = math.floor(max(0,
                     (1.0-percentage_secondary) * station.base_secondary_buy_price
-                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+                    + random.randint(0, jitter_thresh) * jitter
                 ))
 
             if station.production_material in station.cargo:
@@ -137,7 +137,7 @@ class StationController:
             else:
                 percentage_production = 0.0
             station.sell_price = math.floor((2.0-percentage_production) * station.base_sell_price) \
-                    + random.randint(-jitter_thresh, jitter_thresh) * jitter
+                    + random.randint(0, jitter_thresh) * jitter
 
             # for debugging
             self.print(f"Primary Buy: {station.primary_buy_price} Secondary Buy: {station.secondary_buy_price} Production Sell: {station.sell_price}")

@@ -20,7 +20,7 @@ if platform.system() == 'Linux':
 else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
-    LOW_FPS = 30
+    LOW_FPS = 60
 
 # Low Performance Render Mode
 #VIS_INTERMEDIATE_FRAMES = -1
