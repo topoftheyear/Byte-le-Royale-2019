@@ -11,6 +11,9 @@ DISPLAY_SIZE = (1280, 720)
 
 SECURE_ZONE_RADIUS = 200
 
+ENFORCER_THRESHOLD = 20
+ENFORCER_WAVE_TIMER = 100  # how often to spawn the next wave of enforcers
+
 
 # High Performance Render Mode
 if platform.system() == 'Linux':
@@ -20,7 +23,7 @@ if platform.system() == 'Linux':
 else:
     VIS_INTERMEDIATE_FRAMES = 4
     FPS = 120
-    LOW_FPS = 30
+    LOW_FPS = 60
 
 # Low Performance Render Mode
 #VIS_INTERMEDIATE_FRAMES = -1

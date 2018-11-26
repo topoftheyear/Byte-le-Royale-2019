@@ -6,6 +6,7 @@ from game.common.enums import *
 from game.common.npc.mining_npc import MiningNPC
 from game.common.npc.combat_npc import CombatNPC
 from game.common.npc.module_npc import ModuleNPC
+from game.common.npc.buy_sell_npc import BuySellNPC
 from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
@@ -19,6 +20,7 @@ from game.server.combat_controller import CombatController
 from game.server.death_controller import DeathController
 from game.server.police_controller import PoliceController
 from game.server.module_controller import ModuleController
+from game.server.buy_sell_controller import BuySellController
 from game.server.illegal_salvage_controller import IllegalSalvageController
 
 
@@ -49,6 +51,7 @@ class CustomServer(ServerControl):
         self.death_controller = DeathController()
         self.police_controller = PoliceController()
         self.module_controller = ModuleController()
+        self.buy_sell_controller = BuySellController()
         self.illegal_salvage_controller = IllegalSalvageController()
 
 
@@ -77,16 +80,19 @@ class CustomServer(ServerControl):
             return # purposefully short circuit to get to send data
 
         # update police state
-        new_police, police_to_remove = self.police_controller.assess_universe(self.universe)
+        new_police, new_enforcers, to_remove = self.police_controller.assess_universe(self.universe)
 
-        self.universe = [ obj for obj in self.universe if obj not in police_to_remove ]
+        self.universe = [ obj for obj in self.universe if obj not in to_remove ]
+        self.universe.extend(new_enforcers)
         self.universe.extend(new_police)
 
-        self.ships = [ obj for obj in self.ships if obj not in police_to_remove ]
+        self.ships = [ obj for obj in self.ships if obj not in to_remove ]
         self.ships.extend(new_police)
+        self.ships.extend(new_enforcers)
 
-        self.police = [ obj for obj in self.police if obj not in police_to_remove ]
+        self.police = [ obj for obj in self.police if obj not in to_remove ]
         self.police.extend(new_police)
+        self.police.extend(new_enforcers)
 
     def send_turn_data(self):
         # send turn data to clients
@@ -219,11 +225,13 @@ class CustomServer(ServerControl):
             self.process_move_actions()
 
 
-            # update station market / update BGS
-            self.station_controller.tick(
-                self.filter_universe(ObjectType.station))
+        # update station market / update BGS
+        self.station_controller.tick(
+            self.filter_universe(ObjectType.station))
 
-            self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+        self.turn_log["stats"]["market"] = self.station_controller.get_stats()
+        self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
+        self.turn_log["stats"]["buying/selling"] = self.buy_sell_controller.get_stats()
 
 
         # set to started
@@ -278,7 +286,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC, BuySellNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -296,6 +304,7 @@ class CustomServer(ServerControl):
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+        self.buy_sell_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = filter(lambda e: not e.is_alive(), self.ships)
@@ -303,9 +312,10 @@ class CustomServer(ServerControl):
 
         self.notoriety_controller.update_standing_universe(self.ships)
 
-        # log events and stats
+        # log events
         self.turn_log["events"].extend( self.mining_controller.get_events() )
-        self.turn_log["stats"]["mining"] = self.mining_controller.get_stats()
+
+        self.turn_log["events"].extend(self.buy_sell_controller.get_events())
 
         self.turn_log["events"].extend( self.combat_controller.get_events() )
 
