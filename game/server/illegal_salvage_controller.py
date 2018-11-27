@@ -10,7 +10,7 @@ class IllegalSalvageController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 
@@ -33,13 +33,12 @@ class IllegalSalvageController:
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
-            # We don't care if the ship is dead
-            if not ship.is_alive():
-                continue
-
             # Check for ships that are performing the drop cargo action
             if ship.action is PlayerAction.drop_cargo:
                 self.print('dropping illegal salvage...')
+
+                if not ship.is_alive():
+                    continue
 
                 material_type = ship.action_param_1
                 amount = ship.action_param_2
@@ -86,18 +85,72 @@ class IllegalSalvageController:
 
 
             # Check for ships performing the salvage action
-            elif ship.action is PlayerAction.salvage:
+            elif ship.action is PlayerAction.collect_illegal_salvage:
+
+                if not ship.is_alive():
+                    continue
+
+                salvage = None
                 for thing in universe:
                     # Check for all scrap in the universe within weapon's range
-                    if thing.object_type is MaterialType.illegal_salvage:
+                    if thing.object_type is ObjectType.illegal_salvage:
                         scrap = thing
+
+                        ship_in_radius = in_radius(
+                            scrap,
+                            ship,
+                            ship.weapon_range,
+                            lambda e: e.position)
+
+                        if ship_in_radius:
+                            salvage = scrap
+                            break
+                else:
+                    self.print('No illegal salvage found nearby')
+                    continue
+
+                # Check if salvage pile is already empty just in case
+                if salvage.value == 0:
+                    self.print('Found illegal salvage has no value')
+                    continue
+
+                # TODO determine balanced pickup rate
+                pickup_rate = 10
+
+                pickup_amount = 0
+                if salvage.value >= pickup_rate:
+                    pickup_amount = pickup_rate
+                elif salvage.value < pickup_rate:
+                    pickup_amount = salvage.value
+
+                salvage.value -= pickup_amount
+                if MaterialType.salvage not in ship.inventory:
+                    ship.inventory[MaterialType.salvage] = 0
+                ship.inventory[MaterialType.salvage] += pickup_amount
+
+                self.print('Illegal salvage collected')
+
+                # Logging
+                self.events.append({
+                    "type": LogEvent.illegal_salvage_picked_up,
+                    "ship_id": ship.id,
+                })
+
+                self.stats.append({
+                    "ship_id": ship.id,
+                    "material": MaterialType.salvage,
+                    "yield": pickup_amount
+                })
+
+
+
 
 
         # for now we will decay salvage untill garbage collectior is finished.
         for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
             salvage.turns_till_recycling -= 1
 
-            if salvage.turns_till_recycling <= 0:
+            if salvage.turns_till_recycling <= 0 or salvage.value <= 0:
                 universe.remove(salvage)
                 del salvage
 

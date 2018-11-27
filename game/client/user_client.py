@@ -104,10 +104,10 @@ class UserClient:
         self._action_param_1 = material_type
         self._action_param_2 = amount
 
-    def salvage(self):
+    def collect_illegal_salvage(self):
         self.reset_player_action()
 
-        self._action = PlayerAction.salvage
+        self._action = PlayerAction.collect_illegal_salvage
 
     def get_ships(self, universe, callback=None):
         return get_ships(universe, callback)
