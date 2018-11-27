@@ -121,3 +121,24 @@ class UserClient:
 
     def ships_in_attack_range(self, universe):
         return ships_in_attack_range(universe, self.ship)
+
+    def sell_material(self, material, amount):
+        self.reset_player_action()
+
+        # returns if trying to sell <= to 0
+        if amount <= 0:
+            return
+
+        self._action = PlayerAction.sell_material
+        self._action_param_1 = material
+        self._action_param_2 = amount
+
+    def buy_material(self, amount):
+        self.reset_player_action()
+
+        # returns if trying to sell <= to 0
+        if amount <= 0:
+            return
+
+        self._action = PlayerAction.buy_material
+        self._action_param_1 = amount

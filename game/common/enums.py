@@ -40,9 +40,12 @@ class LogEvent:
     police_spawned = 9
     enforcer_spawned = 10
     module_purchased = 11
-    module_unlocked = 12
-    cargo_dropped = 13
-    illegal_salvage_spawned = 14
+    material_purchased = 12
+    material_sold = 13
+    module_unlocked = 14
+    cargo_dropped = 15
+    illegal_salvage_spawned = 16
+    despawn_enforcer = 17
 
 class MessageType:
     null = 0
@@ -58,9 +61,11 @@ class PlayerAction:
     mine = 1
     attack = 2
     buy_module = 3
-    unlock_module = 4
-    drop_cargo = 5
-    salvage = 6
+    buy_material= 4
+    sell_material = 5
+    unlock_module = 6
+    drop_cargo = 7
+    salvage = 8
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer

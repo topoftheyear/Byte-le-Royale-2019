@@ -89,9 +89,9 @@ class IllegalSalvageController:
             elif ship.action is PlayerAction.salvage:
                 for thing in universe:
                     # Check for all scrap in the universe within weapon's range
-                    if thing.object_type is MaterialType.illegal_salvage
+                    if thing.object_type is MaterialType.illegal_salvage:
                         scrap = thing
-                        
+
 
         # for now we will decay salvage untill garbage collectior is finished.
         for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):

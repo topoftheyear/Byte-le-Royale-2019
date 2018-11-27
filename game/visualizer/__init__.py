@@ -77,6 +77,10 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             ship_sprite = EnforcerShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
 
+        elif obj.object_type == ObjectType.enforcer:
+            ship_sprite = EnforcerShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
+
         elif obj.object_type == ObjectType.station:
             station_sprite = NeutralStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)
@@ -146,7 +150,14 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                     if event["type"] is LogEvent.police_spawned:
                         new_ship = PoliceShipSprite(*event["ship"].position, event["ship"].id)
                         ship_group.add(new_ship)
+                    if event["type"] is LogEvent.enforcer_spawned:
+                        new_ship = EnforcerShipSprite(*event["ship"].position, event["ship"].id)
+                        ship_group.add(new_ship)
                     elif event["type"] is LogEvent.police_removed:
+                        for ship_sprite in ship_group.sprites():
+                            if ship_sprite.ship_id == event["ship_id"]:
+                                ship_group.remove(ship_sprite)
+                    elif event["type"] is LogEvent.despawn_enforcer:
                         for ship_sprite in ship_group.sprites():
                             if ship_sprite.ship_id == event["ship_id"]:
                                 ship_group.remove(ship_sprite)
