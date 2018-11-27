@@ -60,6 +60,7 @@ class PlayerAction:
     buy_module = 3
     unlock_module = 4
     drop_cargo = 5
+    salvage = 6
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer

@@ -10,13 +10,13 @@ class IllegalSalvageController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
     def print(self, msg):
         if self.debug:
-            print(str(msg))
+            print('IllegalSalvageController: ' + str(msg))
             sys.stdout.flush()
 
     def get_events(self):
@@ -33,12 +33,13 @@ class IllegalSalvageController:
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
+            # We don't care if the ship is dead
+            if not ship.is_alive():
+                continue
+
             # Check for ships that are performing the drop cargo action
             if ship.action is PlayerAction.drop_cargo:
                 self.print('dropping illegal salvage...')
-
-                if not ship.is_alive():
-                    continue
 
                 material_type = ship.action_param_1
                 amount = ship.action_param_2
@@ -63,16 +64,16 @@ class IllegalSalvageController:
                         ship.position[0] + random.randint(-10, 10),
                         ship.position[1] + random.randint(-10, 10)
                     )
-                    new_illgal_salvage = IllegalSalvage()
-                    new_illgal_salvage.init(position=random_position, value=material_value)
+                    new_illegal_salvage = IllegalSalvage()
+                    new_illegal_salvage.init(position=random_position, value=material_value)
 
-                    universe.append(new_illgal_salvage)
+                    universe.append(new_illegal_salvage)
                     self.print('Created new illegal salvage at {} with value {}CR'.format(random_position, material_value))
 
                     self.events.append({
                         "type": LogEvent.illegal_salvage_spawned,
-                        "id": new_illgal_salvage.id,
-                        "position": new_illgal_salvage.position
+                        "id": new_illegal_salvage.id,
+                        "position": new_illegal_salvage.position
                     })
 
                 # Logging
@@ -81,6 +82,16 @@ class IllegalSalvageController:
                     "ship_id": ship.id,
                     "amount": amount
                 })
+
+
+
+            # Check for ships performing the salvage action
+            elif ship.action is PlayerAction.salvage:
+                for thing in universe:
+                    # Check for all scrap in the universe within weapon's range
+                    if thing.object_type is MaterialType.illegal_salvage
+                        scrap = thing
+                        
 
         # for now we will decay salvage untill garbage collectior is finished.
         for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
