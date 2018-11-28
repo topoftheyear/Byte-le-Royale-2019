@@ -6,14 +6,6 @@ from game.common.material_types import *
 
 class AsteroidField(GameObject):
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def init(self, field_type, name, material_type, position=(0,0), mining_rate=1, accessibility_radius=35):
         GameObject.init(self, field_type)
 

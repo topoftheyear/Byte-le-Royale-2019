@@ -86,6 +86,14 @@ class ObjectType:
 
     illegal_salvage = 10
 
+    def __str__(self):
+        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
+        return x
+
+    def __repr__(self):
+        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
+        return x
+
 class MaterialType:
     null = -1
     iron = 1

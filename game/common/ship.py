@@ -11,14 +11,6 @@ class Ship(GameObject):
     def __init__(self):
         pass
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def init(self, team_name, is_npc=False, position=(0,0)):
         GameObject.init(self, ObjectType.ship)
 

@@ -6,14 +6,6 @@ from game.common.material_types import *
 
 class Station(GameObject):
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def init(self,
             name,
             station_type=ObjectType.station,

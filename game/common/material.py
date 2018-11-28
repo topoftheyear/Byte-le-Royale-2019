@@ -3,14 +3,6 @@ from game.common.enums import *
 
 class Material(GameObject):
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def __init__(self):
         pass
 

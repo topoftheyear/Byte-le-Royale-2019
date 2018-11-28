@@ -8,14 +8,6 @@ from game.common.stats import GameStats
 
 class IllegalSalvage(GameObject):
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def init(self, position=(0,0), value=0):
         GameObject.init(self, ObjectType.illegal_salvage)
 

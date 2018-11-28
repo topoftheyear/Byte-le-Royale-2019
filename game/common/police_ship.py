@@ -7,14 +7,6 @@ from game.common.stats import GameStats
 
 class PoliceShip(Ship):
 
-    def __str__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
-    def __repr__(self):
-        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
-        return x
-
     def init(self, level=1, position=(0,0)):
         if level == 1:
             name = "Police"
