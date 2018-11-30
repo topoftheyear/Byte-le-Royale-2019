@@ -3,6 +3,14 @@ from uuid import uuid4
 
 class GameObject(Serializable):
 
+    def __str__(self):
+        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
+        return x
+
+    def __repr__(self):
+        x = '<{}: {}>'.format(self.__class__.__name__, self.id)
+        return x
+
     def init(self, object_type):
 
         if not issubclass(type(self), GameObject):
