@@ -66,7 +66,7 @@ class IllegalSalvageController:
 
 
                 # ceil((qty) * (material value) * 0.25)
-                material_amount = -(-amount_dropped * material_value // 4)
+                material_amount = math.ceil(amount_dropped * material_value * 0.25)
 
                 random_position = (
                     ship.position[0] + random.randint(-5, 5),
