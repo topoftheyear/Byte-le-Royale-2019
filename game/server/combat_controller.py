@@ -94,7 +94,7 @@ class CombatController:
                         target.module_2 = None
                     if target.module_3_level is ModuleLevel.illegal:
                         target.module_3 = None
-                # Eject inventory (waiting for some finality on the salvage mechanics)
+                # Eject inventory (awaiting full implementation and compatibility)
 
                 # End section for respawn penalties
 
