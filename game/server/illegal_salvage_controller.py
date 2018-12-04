@@ -10,7 +10,7 @@ class IllegalSalvageController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 
@@ -126,7 +126,6 @@ class IllegalSalvageController:
                 # TODO determine balanced pickup rate
                 pickup_rate = random.randint(1, 11) // 1
 
-                # TODO implement the case of ties
                 pickup_amount = 0
                 if salvage.amount >= pickup_rate:
                     pickup_amount = pickup_rate
