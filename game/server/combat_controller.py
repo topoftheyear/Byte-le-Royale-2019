@@ -83,6 +83,21 @@ class CombatController:
 
                 target.respawn_counter = RESPAWN_TIME + 1 #+1 to account for this turn
 
+                # This code is being added here as the respawn timer is also here, plus it ensures it fires off on turn
+                # of death versus a later time
+                if target.object_type is ObjectType.ship:
+                    if target.module_0_level is ModuleLevel.illegal:
+                        target.module_0 = None
+                    if target.module_1_level is ModuleLevel.illegal:
+                        target.module_1 = None
+                    if target.module_2_level is ModuleLevel.illegal:
+                        target.module_2 = None
+                    if target.module_3_level is ModuleLevel.illegal:
+                        target.module_3 = None
+                # Eject inventory (awaiting full implementation and compatibility)
+
+                # End section for respawn penalties
+
                 self.notoriety_controller.update_standing(ship)
                 self.notoriety_controller.update_standing(target)
 

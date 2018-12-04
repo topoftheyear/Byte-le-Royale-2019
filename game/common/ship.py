@@ -11,7 +11,6 @@ class Ship(GameObject):
     def __init__(self):
         pass
 
-
     def init(self, team_name, is_npc=False, position=(0,0)):
         GameObject.init(self, ObjectType.ship)
 
