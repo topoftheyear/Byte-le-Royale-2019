@@ -55,25 +55,24 @@ class IllegalSalvageController:
                 # TODO get current value of material
                 material_value = 10
 
-                # Create salvage object
-                salvage_to_create = math.floor(amount_dropped/100)
+                # Temp for testing
+                material_amount = amount_dropped * material_value
 
-                for _ in range(salvage_to_create):
-                    random_position = (
-                        ship.position[0] + random.randint(-10, 10),
-                        ship.position[1] + random.randint(-10, 10)
-                    )
-                    new_illegal_salvage = IllegalSalvage()
-                    new_illegal_salvage.init(position=random_position, value=material_value)
+                random_position = (
+                    ship.position[0] + random.randint(-5, 5),
+                    ship.position[1] + random.randint(-5, 5)
+                )
+                new_illegal_salvage = IllegalSalvage()
+                new_illegal_salvage.init(position=random_position, amount=material_amount)
 
-                    universe.append(new_illegal_salvage)
-                    self.print('Created new illegal salvage at {} with value {}CR'.format(random_position, material_value))
+                universe.append(new_illegal_salvage)
+                self.print('Created new illegal salvage at {} with amount {}CR'.format(random_position, material_amount))
 
-                    self.events.append({
-                        "type": LogEvent.illegal_salvage_spawned,
-                        "id": new_illegal_salvage.id,
-                        "position": new_illegal_salvage.position
-                    })
+                self.events.append({
+                    "type": LogEvent.illegal_salvage_spawned,
+                    "id": new_illegal_salvage.id,
+                    "position": new_illegal_salvage.position
+                })
 
                 # Logging
                 self.events.append({
@@ -110,20 +109,20 @@ class IllegalSalvageController:
                     continue
 
                 # Check if salvage pile is already empty just in case
-                if salvage.value == 0:
-                    self.print('Found illegal salvage has no value')
+                if salvage.amount == 0:
+                    self.print('Found illegal salvage has no amount')
                     continue
 
                 # TODO determine balanced pickup rate
                 pickup_rate = 10
 
                 pickup_amount = 0
-                if salvage.value >= pickup_rate:
+                if salvage.amount >= pickup_rate:
                     pickup_amount = pickup_rate
-                elif salvage.value < pickup_rate:
-                    pickup_amount = salvage.value
+                elif salvage.amount < pickup_rate:
+                    pickup_amount = salvage.amount
 
-                salvage.value -= pickup_amount
+                salvage.amount -= pickup_amount
                 if MaterialType.salvage not in ship.inventory:
                     ship.inventory[MaterialType.salvage] = 0
                 ship.inventory[MaterialType.salvage] += pickup_amount
@@ -146,11 +145,11 @@ class IllegalSalvageController:
 
 
 
-        # for now we will decay salvage untill garbage collectior is finished.
+        # for now we will decay salvage until garbage collectior is finished.
         for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
             salvage.turns_till_recycling -= 1
 
-            if salvage.turns_till_recycling <= 0 or salvage.value <= 0:
+            if salvage.turns_till_recycling <= 0 or salvage.amount <= 0:
                 universe.remove(salvage)
                 del salvage
 
