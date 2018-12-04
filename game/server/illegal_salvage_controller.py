@@ -10,7 +10,7 @@ class IllegalSalvageController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -52,8 +52,18 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                # TODO get current value of material
-                material_value = 10
+                # Get max price of material in the universe
+                station_price_list = []
+                for thing in universe:
+                    if thing.object_type is not ObjectType.station:
+                        continue
+                    station = thing
+                    if station.primary_import is material_type:
+                        station_price_list.append(station.primary_buy_price)
+                    elif station.secondary_import is material_type:
+                        station_price_list.append(station.secondary_buy_price)
+                material_value = max(station_price_list)
+
 
                 # ceil((qty) * (material value) * 0.25)
                 material_amount = -(-amount_dropped * material_value // 4)
@@ -114,8 +124,9 @@ class IllegalSalvageController:
                     continue
 
                 # TODO determine balanced pickup rate
-                pickup_rate = 10
+                pickup_rate = random.randint(1, 11) // 1
 
+                # TODO implement the case of ties
                 pickup_amount = 0
                 if salvage.amount >= pickup_rate:
                     pickup_amount = pickup_rate
