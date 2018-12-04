@@ -55,8 +55,8 @@ class IllegalSalvageController:
                 # TODO get current value of material
                 material_value = 10
 
-                # Temp for testing
-                material_amount = amount_dropped * material_value
+                # ceil((qty) * (material value) * 0.25)
+                material_amount = -(-amount_dropped * material_value // 4)
 
                 random_position = (
                     ship.position[0] + random.randint(-5, 5),
