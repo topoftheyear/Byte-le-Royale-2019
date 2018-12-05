@@ -13,6 +13,7 @@ from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
+from game.utils.material_price_finder import *
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -94,6 +95,9 @@ class CustomServer(ServerControl):
         self.police = [ obj for obj in self.police if obj not in to_remove ]
         self.police.extend(new_police)
         self.police.extend(new_enforcers)
+
+        # find/update material prices for reference list
+        update_prices(self.universe)
 
     def send_turn_data(self):
         # send turn data to clients

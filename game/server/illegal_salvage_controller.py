@@ -10,7 +10,7 @@ class IllegalSalvageController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -52,21 +52,9 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                # Get max price of material in the universe
-                station_price_list = []
-                for thing in universe:
-                    if thing.object_type is not ObjectType.station:
-                        continue
-                    station = thing
-                    if station.primary_import is material_type:
-                        station_price_list.append(station.primary_buy_price)
-                    elif station.secondary_import is material_type:
-                        station_price_list.append(station.secondary_buy_price)
-                material_value = max(station_price_list)
+                material_value = get_material_price(material_type)
 
-
-                # ceil((qty) * (material value) * 0.25)
-                material_amount = math.ceil(amount_dropped * material_value * 0.25)
+                material_amount = convert_material_to_scrap(material_type, amount_dropped)
 
                 random_position = (
                     ship.position[0] + random.randint(-5, 5),
