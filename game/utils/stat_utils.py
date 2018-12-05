@@ -2,36 +2,7 @@ import math
 
 from game.universe_config import STATION_DEFINITIONS
 from game.common.enums import *
-
-def get_material_name(material_type):
-    if material_type is MaterialType.circuitry:
-        return "Circuitry"
-    elif material_type is MaterialType.computers:
-        return "Computers"
-    elif material_type is MaterialType.copper:
-        return "Copper"
-    elif material_type is MaterialType.cuprite:
-        return "Cuprite"
-    elif material_type is MaterialType.drones:
-        return "Drones"
-    elif material_type is MaterialType.goethite:
-        return "Goethite"
-    elif material_type is MaterialType.gold:
-        return "Gold"
-    elif material_type is MaterialType.iron:
-        return "Iron"
-    elif material_type is MaterialType.machinery:
-        return "Machinery"
-    elif material_type is MaterialType.pylons:
-        return "Pylons"
-    elif material_type is MaterialType.steel:
-        return "Steel"
-    elif material_type is MaterialType.weaponry:
-        return "Weaponry"
-    elif material_type is MaterialType.wire:
-        return "Wire"
-    return "N/A"
-
+from game.utils.helpers import get_material_name
 
 class StatsTypes:
     primary_material_buy_by_station = 0

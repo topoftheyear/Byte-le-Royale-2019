@@ -6,6 +6,8 @@ import pygame
 from pygame.locals import *
 
 from game.config import *
+from game.common.enums import *
+from game.utils.helpers import get_material_name
 
 def test():
 
@@ -333,6 +335,318 @@ class Histogram(pygame.sprite.Sprite):
                 self.enabled_plots[i] = not self.enabled_plots[i]
                 self.dirty = True
 
+
+
+
+def show_ship_stats_display(ship, window_surf, clock):
+    initial_screen = window_surf.copy()
+    window_surf.fill(pygame.Color(0,0,0))
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 24)
+    little_font = pygame.font.Font(font_name, 16)
+
+    parts = []
+    little_parts = []
+
+    x = 200
+    parts.append((
+        "Ship Stats",
+        (550,20)
+    ))
+
+    parts.append((
+        f"Team Name: {ship.team_name[20:]}",
+        (x,70)
+    ))
+
+    parts.append((
+        f"Hull: {ship.current_hull}/{ship.max_hull}",
+        (x,100)
+    ))
+
+    parts.append((
+        f"Engine Speed: {ship.engine_speed}",
+        (x,160)
+    ))
+
+    parts.append((
+        f"Weapon Damage: {ship.weapon_damage}",
+        (x,190)
+    ))
+
+    parts.append((
+        f"Weapon Range: {ship.weapon_range}",
+        (x,220)
+    ))
+
+    parts.append((
+        f"Mining Yield: {ship.mining_yield}",
+        (x,250)
+    ))
+
+    parts.append((
+        f"Sensor Range: {ship.sensor_range}",
+        (x,280)
+    ))
+
+    parts.append((
+        f"Credits: {ship.credits}",
+        (x,340)
+    ))
+
+    # draw legal standing
+    legal_standing_pos = [400, 600]
+    width = 400
+    height = 20
+    pygame.draw.line(window_surf,
+                      pygame.Color(0,155,0),
+                     (legal_standing_pos[0], legal_standing_pos[1]+(height/2)),
+                      (legal_standing_pos[0]+width, legal_standing_pos[1]+(height/2)))
+
+    pygame.draw.line(window_surf,
+                      pygame.Color(0,155,0),
+                      legal_standing_pos,
+                      (legal_standing_pos[0], legal_standing_pos[1]+height))
+
+    pygame.draw.line(window_surf,
+                     pygame.Color(0,155,0),
+                     (legal_standing_pos[0]+(width*.25), legal_standing_pos[1]-5),
+                     (legal_standing_pos[0]+(width*.25), legal_standing_pos[1]+height+5))
+
+    pygame.draw.line(window_surf,
+                      pygame.Color(0,155,0),
+                      (legal_standing_pos[0]+(width/2), legal_standing_pos[1]-5),
+                      (legal_standing_pos[0]+(width/2), legal_standing_pos[1]+height+5))
+
+    pygame.draw.line(window_surf,
+                     pygame.Color(0,155,0),
+                     (legal_standing_pos[0]+(width*.75), legal_standing_pos[1]),
+                     (legal_standing_pos[0]+(width*.75), legal_standing_pos[1]+height))
+
+    pygame.draw.line(window_surf,
+                      pygame.Color(0,155,0),
+                      (legal_standing_pos[0]+width, legal_standing_pos[1]),
+                      (legal_standing_pos[0]+width, legal_standing_pos[1]+height))
+
+    marker_pos = min(((ship.notoriety/LegalStanding.pirate*2) * (width/2)) + (width/2), width)
+
+    pygame.draw.line(window_surf,
+                     pygame.Color(155,0,0),
+                     (legal_standing_pos[0]+marker_pos, legal_standing_pos[1]),
+                     (legal_standing_pos[0]+marker_pos, legal_standing_pos[1]+height), 3)
+
+    little_parts.append((
+        "Notoriety",
+        (
+            legal_standing_pos[0]+(width*.5)-30,
+            legal_standing_pos[1]-40
+        )
+    ))
+
+    x_offset = -4
+    y_offset = -20
+    little_parts.append((
+        "-10",
+        (
+            legal_standing_pos[0]+x_offset-8,
+            legal_standing_pos[1]+y_offset
+        )
+    ))
+
+    little_parts.append((
+        "-5",
+        (
+            legal_standing_pos[0]+(width*0.25)+x_offset-2,
+            legal_standing_pos[1]+y_offset
+        )
+    ))
+
+    little_parts.append((
+        "0",
+        (
+            legal_standing_pos[0]+(width*0.5)+x_offset,
+            legal_standing_pos[1]+y_offset
+        )
+    ))
+
+    little_parts.append((
+        "+5",
+        (
+            legal_standing_pos[0]+(width*0.75)+x_offset-4,
+            legal_standing_pos[1]+y_offset
+        )
+    ))
+
+    little_parts.append((
+        "+10",
+        (
+            legal_standing_pos[0]+width+x_offset-10,
+            legal_standing_pos[1]+y_offset
+        )
+    ))
+
+    little_parts.append((
+        "Bounty",
+        (
+            legal_standing_pos[0]+20,
+            legal_standing_pos[1]+20
+        )
+    ))
+    little_parts.append((
+        "Hunter",
+        (
+            legal_standing_pos[0]+20,
+            legal_standing_pos[1]+40
+        )
+    ))
+
+    little_parts.append((
+        "Pirate",
+        (
+            legal_standing_pos[0]+(width*0.75)+30,
+            legal_standing_pos[1]+20
+        )
+    ))
+
+    level_lut = {
+        ship.module_0_level: "",
+        ship.module_1_level: "Lvl 1",
+        ship.module_2_level: "Lvl 2",
+        ship.module_3_level: "Lvl 3",
+    }
+    modules = [
+        [ship.module_0, ship.module_0_level],
+        [ship.module_1, ship.module_1_level],
+        [ship.module_2, ship.module_2_level],
+        [ship.module_3, ship.module_3_level]
+    ]
+    module_names = []
+    for module in modules:
+        if module[0] == ModuleType.empty:
+            module_names.append("Empty")
+        elif module[0] == ModuleType.locked:
+            module_names.append("Locked")
+        elif module[0] == ModuleType.cargo_and_mining:
+            module_names.append(level_lut[module[1]]+" Cargo and Mining")
+        elif module[0] == ModuleType.engine_speed:
+            module_names.append(level_lut[module[1]]+" Engine Speed")
+        elif module[0] == ModuleType.sensors:
+            module_names.append(level_lut[module[1]]+" Sensors")
+        elif module[0] == ModuleType.hull:
+            module_names.append(level_lut[module[1]]+" Hull")
+        elif module[0] == ModuleType.weapons:
+            module_names.append(level_lut[module[1]]+" Weapon Damage")
+
+
+    offset = 120
+
+    for idx, module_name in enumerate(module_names):
+        draw_module(window_surf, (900, 40+(offset*idx)), module_name)
+
+
+
+    parts.append((
+        "Inventory",
+        (665,70)
+    ))
+
+    for idx, listing in enumerate(ship.inventory.items()):
+        material_type, count = listing
+        print(material_type)
+        material_name = get_material_name(material_type)
+        print(material_name)
+        parts.append((
+            f"{material_name}: {count}",
+            (665, 70+30*(idx+1))
+        ))
+
+
+    little_parts.append((
+        "Esc to go back",
+        (550,700)
+    ))
+
+    for part in parts:
+        window_surf.blit(
+            font.render(part[0], True, pygame.Color(0, 155, 0)),
+            part[1])
+
+    for part in little_parts:
+        window_surf.blit(
+            little_font.render(part[0], True, pygame.Color(0, 155, 0)),
+            part[1])
+
+    close = False
+    while not close:
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    close = True
+                    break
+
+        pygame.display.update()
+        clock.tick(30)
+
+
+    # show initial screen to transition back to game
+    window_surf.blit(initial_screen, (0,0))
+    pygame.display.update()
+    clock.tick(30)
+
+
+def draw_module(surf, pos, module_name):
+    width = 100
+    color = pygame.Color(0,155,0)
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 14)
+
+
+    pygame.draw.line(surf, color, pos, (
+        pos[0]+width,
+        pos[1]
+    ))
+
+    pygame.draw.line(surf, color, pos, (
+        pos[0],
+        pos[1]+width
+    ))
+
+    pygame.draw.line(surf, color, (
+        pos[0]+width,
+        pos[1]
+    ), (
+        pos[0]+width,
+        pos[1]+width
+    ))
+
+    pygame.draw.line(surf, color, (
+        pos[0],
+        pos[1]+width
+    ), (
+         pos[0]+width,
+         pos[1]+width
+    ))
+
+    text = font.render(module_name,
+                True,
+                pygame.Color(0, 155, 0))
+
+    x_offset = (width*.5)-(text.get_rect().w/2)
+    y_offset = (width*.5)-(text.get_rect().h/2)
+
+    surf.blit(text,
+              (
+                  pos[0] + x_offset,
+                  pos[1] + y_offset,
+              ))
 
 
 
