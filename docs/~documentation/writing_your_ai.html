@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Helpful Links &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Writing Your AI &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Stations" href="stations.html" />
-    <link rel="prev" title="Rules" href="rules.html" /> 
+    <link rel="next" title="Rules" href="rules.html" />
+    <link rel="prev" title="Using the Visualizer" href="using_the_visualizer.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -89,16 +89,16 @@
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Helpful Links</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#website">Website</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#github-repository">Github Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#leaderboards">Leaderboards</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#forum">Forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#report-a-bug">Report a Bug</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing Your AI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#functions-to-use">Functions to Use</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
@@ -153,13 +153,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Helpful Links</li>
+      <li>Writing Your AI</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/helpful_links.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/writing_your_ai.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,29 +172,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="helpful-links">
-<span id="helpful-links"></span><h1>Helpful Links<a class="headerlink" href="#helpful-links" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="website">
-<span id="website"></span><h2>Website<a class="headerlink" href="#website" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="writing-your-ai">
+<span id="writing-your-ai"></span><h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
+<p>There is a base AI that will have a structure of how the AI should work.</p>
+<div class="section" id="functions-to-use">
+<span id="functions-to-use"></span><h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
+<p>Functions that can be utilized by the ship:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://royale.ndacm.org">Website</a> - The event website. Contains the event schedule.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y)</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Set’s action to mine</li>
+<li><code class="docutils literal notranslate"><span class="pre">attack</span> <span class="pre">(target)</span></code> - Set ship action to target</li>
+<li><code class="docutils literal notranslate"><span class="pre">buy_module</span> <span class="pre">(module,</span> <span class="pre">upgrade_level,</span> <span class="pre">ship_slot)</span></code> - buy module <code class="docutils literal notranslate"><span class="pre">module</span></code> at level <code class="docutils literal notranslate"><span class="pre">upgrade_level</span></code> in slot <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer)</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_stations(universe)</span></code> - get list of stations in the universe</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_asteroid_fields(universe)</span></code> - get list of asteroid fields in the universe</li>
+<li><code class="docutils literal notranslate"><span class="pre">ships_in_attack_range(universe)</span></code> - list of ships in attack range</li>
+<li><code class="docutils literal notranslate"><span class="pre">sell_material(material,</span> <span class="pre">amount)</span></code> - sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range</li>
+<li><code class="docutils literal notranslate"><span class="pre">buy_material(material,</span> <span class="pre">amount)</span></code> - buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range</li>
+<li><code class="docutils literal notranslate"><span class="pre">unlock_module()</span></code> - unlock the module slot</li>
+</ul>
+<p>There are some <a class="reference external" href="rules.md">rules that your AI must follow</a>.</p>
+</div>
+<div class="section" id="related-links">
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 </ul>
 </div>
-<div class="section" id="github-repository">
-<span id="github-repository"></span><h2>Github Repository<a class="headerlink" href="#github-repository" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Github Repository</a></p>
-</div>
-<div class="section" id="leaderboards">
-<span id="leaderboards"></span><h2>Leaderboards<a class="headerlink" href="#leaderboards" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Leaderboards</a> - Submit a client and see how well you are doing compared to others.</p>
-</div>
-<div class="section" id="forum">
-<span id="forum"></span><h2>Forum<a class="headerlink" href="#forum" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Forum</a> - Please feel free to ask any questions you have here.</p>
-</div>
-<div class="section" id="report-a-bug">
-<span id="report-a-bug"></span><h2>Report a Bug<a class="headerlink" href="#report-a-bug" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Report a Bug</a> - If you find a bug please submit a bug report here.</p>
 </div>
 </div>
 
@@ -206,10 +211,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="stations.html" class="btn btn-neutral float-right" title="Stations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="rules.html" class="btn btn-neutral float-right" title="Rules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rules.html" class="btn btn-neutral" title="Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="using_the_visualizer.html" class="btn btn-neutral" title="Using the Visualizer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
