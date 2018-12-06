@@ -2,36 +2,7 @@ import math
 
 from game.universe_config import STATION_DEFINITIONS
 from game.common.enums import *
-
-def get_material_name(material_type):
-    if material_type is MaterialType.circuitry:
-        return "Circuitry"
-    elif material_type is MaterialType.computers:
-        return "Computers"
-    elif material_type is MaterialType.copper:
-        return "Copper"
-    elif material_type is MaterialType.cuprite:
-        return "Cuprite"
-    elif material_type is MaterialType.drones:
-        return "Drones"
-    elif material_type is MaterialType.goethite:
-        return "Goethite"
-    elif material_type is MaterialType.gold:
-        return "Gold"
-    elif material_type is MaterialType.iron:
-        return "Iron"
-    elif material_type is MaterialType.machinery:
-        return "Machinery"
-    elif material_type is MaterialType.pylons:
-        return "Pylons"
-    elif material_type is MaterialType.steel:
-        return "Steel"
-    elif material_type is MaterialType.weaponry:
-        return "Weaponry"
-    elif material_type is MaterialType.wire:
-        return "Wire"
-    return "N/A"
-
+from game.utils.helpers import get_material_name
 
 class StatsTypes:
     primary_material_buy_by_station = 0
@@ -39,6 +10,7 @@ class StatsTypes:
     material_sell_by_station = 2
     material_buy_vs_sell = 3
     station_stats = 4
+    material_production_vs_consumption = 5
 
 def generic_compile_stats(domain, stats, ignore_fields=[]):
     stat_names = list(stats[0][domain][1].keys())
@@ -165,6 +137,42 @@ def compile_material_buy_vs_sell(stats):
     return compiled
 
 
+def compile_consumption_vs_production(stats):
+    compiled = {}
+
+    for t in stats:
+        for station in t["market"]:
+            prod_material = station["production_material"]
+            pri_material = station["primary_import"]
+            sec_material = station["secondary_import"]
+
+            prod_name = get_material_name(prod_material)
+            pri_name = get_material_name(pri_material)
+            sec_name = get_material_name(sec_material)
+
+
+            if prod_name not in compiled:
+                compiled[prod_name] = {}
+
+            if "Produced" not in compiled[prod_name]:
+                compiled[prod_name]["Produced"] = []
+            compiled[prod_name]["Produced"].append(station["production_produced"])
+
+            if pri_name not in compiled:
+                compiled[pri_name] = {}
+            if "Primary Consumed" not in compiled:
+                compiled[pri_name]["Primary Consumed"] = []
+            compiled[pri_name]["Primary Consumed"].append(station["primary_consumed"])
+
+            if station["secondary_import"] != -1:
+                if sec_name not in compiled:
+                    compiled[sec_name] = {}
+                if "Secondary Consumed" not in compiled:
+                    compiled[sec_name]["Secondary Consumed"] = []
+                compiled[sec_name]["Secondary Consumed"].append(station["secondary_consumed"])
+
+    return compiled
+
 
 def format_stats(stats, format_type):
     if format_type is StatsTypes.primary_material_buy_by_station:
@@ -177,6 +185,8 @@ def format_stats(stats, format_type):
         return compile_material_buy_vs_sell(stats)
     elif format_type is StatsTypes.station_stats:
         return compile_station_stats(stats)
+    elif format_type is StatsTypes.material_production_vs_consumption:
+        return compile_consumption_vs_production(stats)
     return None
 
 

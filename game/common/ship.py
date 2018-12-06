@@ -11,7 +11,7 @@ focus_team = None
 class Ship(GameObject):
 
     def __init__(self):
-        global focus_team
+        pass
 
     def init(self, team_name, is_npc=False, position=(0,0)):
         global focus_team
