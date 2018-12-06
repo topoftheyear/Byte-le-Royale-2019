@@ -129,4 +129,4 @@ def get_material_name(material_type):
         return "Weaponry"
     elif material_type == MaterialType.wire:
         return "Wire"
-    return f"N/A ({material_type})"
+    return "N/A"
