@@ -14,7 +14,7 @@ from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
-import game.utils.ptext
+import ptext
 
 pause = False
 log_parser = None
@@ -251,11 +251,13 @@ def draw_screen():
     # clear screen, fill with black
     global_surf.fill(pygame.Color(0,0,0))
 
-    # draw groups to screan
+    # draw groups to screen
     station_group.draw(global_surf)
     asteroid_field_group.draw(global_surf)
     illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
+
+    ptext.draw("Tick" + fpsClock.get_ticks() + "/" + log_parser.get_turn(), (0,700), color=(255,255,255),owidth=2.0,ocolor=(0,0,0),fontsize=24,fontname='game/visualizer/assets/joystix/joystix monospace.ttf')[0]
 
 
 
