@@ -85,19 +85,26 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installing.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
+<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Stations</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#api">API:</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#stats-subject-to-change">Stats (Subject to Change)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#station-api">Station API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stats">Stats</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html#mining">Mining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html#stub-for-mining">Stub for mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
+<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -164,110 +171,69 @@
             
   <div class="section" id="stations">
 <span id="stations"></span><h1>Stations<a class="headerlink" href="#stations" title="Permalink to this headline">¶</a></h1>
-<p>Stations are the places where you will buy, sell, and trade resources.</p>
-<div class="section" id="api">
-<span id="api"></span><h2>API:<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>Stations are the places where you will buy, sell, and trade resources. When you get in range, you can
+use your action for the turn to <a class="reference external" href="trading.md">trade</a> with the station.
+The stations will take the primary imports and use them to produce the stated output.
+In addition, the amount of secondary product will help speed up the production.</p>
+<p>Note: the Black Market Stations have imports or produce anything; they only trade modules.</p>
+<p><a class="reference external" href="_static/simple_station.png"></a></p>
+<div class="section" id="station-api">
+<span id="station-api"></span><h2>Station API<a class="headerlink" href="#station-api" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - name of station</li>
+<li><code class="docutils literal notranslate"><span class="pre">position</span></code> - x,y of station</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_import</span></code> - the station’s primary import</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_import</span></code> - the station’s secondary import</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_consumption_qty</span></code> - quantity of primary import that is consumed in one tick</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_consumption_qty</span></code> - quantity of secondary import that is consumed in one tick</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_max</span></code> - The total amount of the station’s primary import that a station can store</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_max</span></code> - The total amount of the station’s secondary import that a station can store</li>
+<li><code class="docutils literal notranslate"><span class="pre">production_frequency</span></code> - how often to consume inputs for creating output</li>
+<li><code class="docutils literal notranslate"><span class="pre">production_material</span></code> - what is produced</li>
+<li><code class="docutils literal notranslate"><span class="pre">production_qty</span></code> - how much is stored</li>
+<li><code class="docutils literal notranslate"><span class="pre">production_max</span></code> - max amount of produced stuff to store</li>
+<li><code class="docutils literal notranslate"><span class="pre">base_sell_price</span></code> - The base selling price for the produced item.</li>
+<li><code class="docutils literal notranslate"><span class="pre">base_primary_price</span></code> - The base price the station will pay for the primary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">base_secondary_price</span></code> - The base price the station will pay for the secondary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">sell_price</span></code> - The station’s current sell price for the produced item.</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_price</span></code> - The station’s current buy price for the primary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_price</span></code> - The station’s current buy price for the secondary import.</li>
+</ul>
 </div>
-<div class="section" id="stats-subject-to-change">
-<span id="stats-subject-to-change"></span><h2>Stats (Subject to Change)<a class="headerlink" href="#stats-subject-to-change" title="Permalink to this headline">¶</a></h2>
-<p>Listed below is the stations’ stats:</p>
-<table border="1" class="docutils">
-<colgroup>
-<col width="5%" />
-<col width="32%" />
-<col width="21%" />
-<col width="28%" />
-<col width="14%" />
-</colgroup>
-<thead valign="bottom">
-<tr class="row-odd"><th class="head">ID</th>
-<th class="head">Station Name</th>
-<th class="head">Position (x,y)</th>
-<th class="head">Import (Secondary)</th>
-<th class="head">Produced</th>
-</tr>
-</thead>
-<tbody valign="top">
-<tr class="row-even"><td>s0</td>
-<td>Wire Station</td>
-<td>400, 70</td>
-<td>Copper (N/A)</td>
-<td>Wire</td>
-</tr>
-<tr class="row-odd"><td>s1</td>
-<td>Computers Station</td>
-<td>630, 56</td>
-<td>Circuitry (N/A)</td>
-<td>Computers</td>
-</tr>
-<tr class="row-even"><td>s2</td>
-<td>Circuitry Station</td>
-<td>900, 266</td>
-<td>Gold (Wire)</td>
-<td>Circuitry</td>
-</tr>
-<tr class="row-odd"><td>s3</td>
-<td>Drones Station</td>
-<td>960, 665</td>
-<td>Weaponry (N/A)</td>
-<td>Drones</td>
-</tr>
-<tr class="row-even"><td>s4</td>
-<td>Pylon Station</td>
-<td>25, 420</td>
-<td>Circuitry (N/A)</td>
-<td>Pylons</td>
-</tr>
-<tr class="row-odd"><td>s5</td>
-<td>Machinery Station</td>
-<td>85, 280</td>
-<td>Steel (Pylons)</td>
-<td>Machinery</td>
-</tr>
-<tr class="row-even"><td>s6</td>
-<td>Copper Station</td>
-<td>50, 630</td>
-<td>Cuprite (Drones)</td>
-<td>Copper</td>
-</tr>
-<tr class="row-odd"><td>s7</td>
-<td>Steel Station</td>
-<td>920, 21</td>
-<td>Iron (Drones)</td>
-<td>Steel</td>
-</tr>
-<tr class="row-even"><td>s8</td>
-<td>Iron Station</td>
-<td>600, 560</td>
-<td>Goethite (Machinery)</td>
-<td>Iron</td>
-</tr>
-<tr class="row-odd"><td>s9</td>
-<td>Weaponry Station</td>
-<td>150, 406</td>
-<td>Computers (N/A)</td>
-<td>Weaponry</td>
-</tr>
-<tr class="row-even"><td>s!</td>
-<td><cite>***** ****** !</cite></td>
-<td><a href="#id1"><span class="problematic" id="id2">**</span></a>), !&amp;%</td>
-<td><cite>8Wo</cite></td>
-<td>()$()</td>
-</tr>
-<tr class="row-odd"><td>s&#64;</td>
-<td><cite>***** ****** &#64;</cite></td>
-<td>!)), %^)</td>
-<td><cite>&#64;&amp;&#64;</cite></td>
-<td>()$()</td>
-</tr>
-<tr class="row-even"><td>s#</td>
-<td>Station Authority</td>
-<td>500, 350</td>
-<td>None</td>
-<td>None</td>
-</tr>
-</tbody>
-</table>
+<div class="section" id="stats">
+<span id="stats"></span><h2>Stats<a class="headerlink" href="#stats" title="Permalink to this headline">¶</a></h2>
+<p>Listed below are the stats for each station.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+-------------------------+----------------+----------------------+-----------+
+| Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
++=========================+================+======================+===========+
+| Wire Station            | 400, 70        | Copper (N/A)         | Wire      |
++-------------------------+----------------+----------------------+-----------+
+| Computers Station       | 630, 56        | Circuitry (N/A)      | Computers | 
++-------------------------+----------------+----------------------+-----------+
+| Circuitry Station       | 900, 266       | Gold (Wire)          | Circuitry | 
++-------------------------+----------------+----------------------+-----------+
+| Drones Station          | 960, 665       | Weaponry (N/A)       | Drones    |
++-------------------------+----------------+----------------------+-----------+
+| Pylon Station           | 25, 420        | Circuitry (N/A)      | Pylons    | 
++-------------------------+----------------+----------------------+-----------+
+| Machinery Station       | 85, 280        | Steel (Pylons)       | Machinery | 
++-------------------------+----------------+----------------------+-----------+
+| Copper Station          | 50, 630        | Cuprite (Drones)     | Copper    |
++-------------------------+----------------+----------------------+-----------+
+| Steel Station           | 920, 21        | Iron (Drones)        | Steel     |
++-------------------------+----------------+----------------------+-----------+
+| Iron Station            | 600, 560       | Goethite (Machinery) | Iron      | 
++-------------------------+----------------+----------------------+-----------+
+| Weaponry Station        | 150, 406       | Computers (N/A)      | Weaponry  | 
++-------------------------+----------------+----------------------+-----------+
+| `Black Market 1`        | 880, 175       | None                 | None      | 
++-------------------------+----------------+----------------------+-----------+
+| `Black Market 2`        | 100, 560       | None                 | None      | 
++-------------------------+----------------+----------------------+-----------+
+| Station Authority       | 500, 350       | None                 | None      |
++-------------------------+----------------+----------------------+-----------+
+</pre></div>
+</div>
 </div>
 </div>
 

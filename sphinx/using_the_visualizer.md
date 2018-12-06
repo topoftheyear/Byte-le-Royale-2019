@@ -15,6 +15,7 @@ The visualizer is invoked by running `br_launcher.pyz visualizer`.
 * 2 - Lists secondary material buy price by station
 * 3 - Material sell price by station
 * 4 - Material Buy vs Sell
+* 5 - Material Production vs Consumption
 * Shift-Up: Disable interpolation.
 * Shift-Down: Enable interpolation. Results in smoother flight paths but runs slower on windows.
 * *Click on station* - Station statistics

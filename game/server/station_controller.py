@@ -38,6 +38,9 @@ class StationController:
                 continue
 
             data = self.station_data[station.id]
+            data["primary_consumed"] = 0
+            data["secondary_consumed"] = 0
+            data["production_produced"] = 0
 
             self.print(f"Update Station {station.name} ({station.id}), produces: {station.production_material}")
             self.print(f"station.cargo: {station.cargo}")
@@ -76,7 +79,7 @@ class StationController:
 
             if(sufficient_primary_in_cargo and consume_inputs and not_at_max_production):
                 station.cargo[station.primary_import] -= station.primary_consumption_qty
-
+                data["primary_consumed"] = station.primary_consumption_qty
 
                 if(has_secondary and
                     sufficient_secondary_in_cargo and
@@ -84,21 +87,36 @@ class StationController:
 
                     station.cargo[station.secondary_import] -= station.secondary_consumption_qty
 
+                    qty = station.production_qty * 2
                     if station.production_material not in station.cargo:
-                        station.cargo[station.production_material] = station.production_qty * 2
+                        station.cargo[station.production_material] = qty
                     else:
-                        station.cargo[station.production_material] += station.production_qty * 2
+                        qty = min(station.cargo[station.production_material] + qty, station.production_max)
+                        station.cargo[station.production_material] = qty
+
+                    data["production_produced"] = qty
 
                     self.print(f"Created x{station.production_qty}*2 material {station.production_material}")
+                    data["secondary_consumed"] = station.secondary_consumption_qty
 
                 else:
-
-                    if station.production_material not in station.cargo:
-                        station.cargo[station.production_material] = station.production_qty
+                    if not has_secondary:
+                        data["secondary_consumed"] = -1
                     else:
-                        station.cargo[station.production_material] += station.production_qty
+                        data["secondary_consumed"] = 0
+
+
+                    qty = station.production_qty
+                    if station.production_material not in station.cargo:
+                        station.cargo[station.production_material] = qty
+                    else:
+                        qty = min(station.cargo[station.production_material] + qty, station.production_max)
+                        station.cargo[station.production_material] = qty
+
+                    data["production_produced"] = qty
 
                     self.print(f"Created x{station.production_qty} material {station.production_material}")
+
 
                 data["production_counter"] = 0
 
@@ -150,7 +168,10 @@ class StationController:
                 "secondary_import": station.secondary_import,
                 "secondary_buy_price": station.secondary_buy_price,
                 "production_material": station.production_material,
-                "sell_price": station.sell_price
+                "sell_price": station.sell_price,
+                "primary_consumed": self.station_data[station.id]["primary_consumed"],
+                "secondary_consumed": self.station_data[station.id]["secondary_consumed"],
+                "production_produced": self.station_data[station.id]["production_produced"],
             })
 
 
