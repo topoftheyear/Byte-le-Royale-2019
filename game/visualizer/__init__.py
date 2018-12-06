@@ -77,6 +77,10 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
             ship_sprite = EnforcerShipSprite(*obj.position, obj.id)
             ship_group.add(ship_sprite)
 
+        elif obj.object_type == ObjectType.enforcer:
+            ship_sprite = EnforcerShipSprite(*obj.position, obj.id)
+            ship_group.add(ship_sprite)
+
         elif obj.object_type == ObjectType.station:
             station_sprite = NeutralStationSprite(*obj.position, obj.id)
             station_group.add(station_sprite)
@@ -146,7 +150,14 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                     if event["type"] is LogEvent.police_spawned:
                         new_ship = PoliceShipSprite(*event["ship"].position, event["ship"].id)
                         ship_group.add(new_ship)
+                    if event["type"] is LogEvent.enforcer_spawned:
+                        new_ship = EnforcerShipSprite(*event["ship"].position, event["ship"].id)
+                        ship_group.add(new_ship)
                     elif event["type"] is LogEvent.police_removed:
+                        for ship_sprite in ship_group.sprites():
+                            if ship_sprite.ship_id == event["ship_id"]:
+                                ship_group.remove(ship_sprite)
+                    elif event["type"] is LogEvent.despawn_enforcer:
                         for ship_sprite in ship_group.sprites():
                             if ship_sprite.ship_id == event["ship_id"]:
                                 ship_group.remove(ship_sprite)
@@ -319,6 +330,12 @@ def handle_events():
 
                 material_stats_selection_screen(compiled, global_surf, fpsClock)
 
+            if event.key == K_5:
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.material_production_vs_consumption)
+
+                material_stats_selection_screen(compiled, global_surf, fpsClock)
+
             if event.key == K_o and pygame.key.get_mods() & pygame.KMOD_SHIFT:
                 global debug
                 debug = not debug
@@ -339,15 +356,19 @@ def handle_events():
         elif event.type == MOUSEBUTTONUP:
             pos = event.pos
 
+            ship = click_utils.get_ship_near_pos(pos, universe, first=True)
+            if ship is not None:
+                show_ship_stats_display(ship, global_surf, fpsClock)
+
+
             station = click_utils.get_static_obj_near_pos(pos, first=True, obj_type=ObjectType.station)
-            if station is None:
-                continue
-            station_name = station["name"]
+            if station is not None:
+                station_name = station["name"]
 
-            stats = log_parser.get_stats()
-            compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.station_stats)
+                stats = log_parser.get_stats()
+                compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.station_stats)
 
-            show_station_stats_display(f"{station_name} Statistics", compiled[station_name], global_surf, fpsClock)
+                show_station_stats_display(f"{station_name} Statistics", compiled[station_name], global_surf, fpsClock)
 
 
 

@@ -41,7 +41,7 @@ def distance_to(source, target, accessor, target_accessor=None):
     Params:
     - source: the source object that you wish to start from
     - target: the target you wish to determine the distance to
-    - accessor: an accessor method used to get the position of the source. if target_accessor is None, this will be applied to the target.
+    - accessor: an accessor method used to get the position of the source. if target_accessor == None, this will be applied to the target.
     - target_accessor: an accessor method used to get the position of the target. Default: None.
     """
 
@@ -63,7 +63,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     - source: the source object that you want to search a radius around
     - target: the target object you wish to see if it lies in a radius around the source
     - radius: either an integer, float or accessor function that takes the source and the target and returns an integer or float.
-    - accessor: an accessor method used to get the position of the source. If target_accessor is None, this will also be applied to the target.
+    - accessor: an accessor method used to get the position of the source. If target_accessor == None, this will also be applied to the target.
     - target_accessor: an accessor method used to get the position of the target. Default: None.
     - verify_instance: Verify that source and target do not have the same id.
     """
@@ -81,14 +81,14 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     in_range = result < radius**2
 
     if verify_instance:
-        return in_range  and source.id != target.id
+        return in_range
     else:
         return in_range
 
 def in_secure_zone(target, target_accessor):
     """
     Params:
-    - The object you wish to check if it's position is within the save zone
+    - The object you wish to check if it's position == within the save zone
 
     """
 
@@ -101,3 +101,32 @@ def in_secure_zone(target, target_accessor):
 
 
 
+def get_material_name(material_type):
+    material_type = int(material_type)
+    if material_type == MaterialType.circuitry:
+        return "Circuitry"
+    elif material_type == MaterialType.computers:
+        return "Computers"
+    elif material_type == MaterialType.copper:
+        return "Copper"
+    elif material_type == MaterialType.cuprite:
+        return "Cuprite"
+    elif material_type == MaterialType.drones:
+        return "Drones"
+    elif material_type == MaterialType.goethite:
+        return "Goethite"
+    elif material_type == MaterialType.gold:
+        return "Gold"
+    elif material_type == MaterialType.iron:
+        return "Iron"
+    elif material_type == MaterialType.machinery:
+        return "Machinery"
+    elif material_type == MaterialType.pylons:
+        return "Pylons"
+    elif material_type == MaterialType.steel:
+        return "Steel"
+    elif material_type == MaterialType.weaponry:
+        return "Weaponry"
+    elif material_type == MaterialType.wire:
+        return "Wire"
+    return f"N/A ({material_type})"

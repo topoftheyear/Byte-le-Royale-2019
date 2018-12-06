@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Helpful Links &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Installing &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Stations" href="stations.html" />
-    <link rel="prev" title="Rules" href="rules.html" /> 
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,20 +85,18 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launcher-scripts">Launcher Scripts</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Helpful Links</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#website">Website</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#github-repository">Github Repository</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#leaderboards">Leaderboards</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#forum">Forum</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#report-a-bug">Report a Bug</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
@@ -153,13 +151,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Helpful Links</li>
+      <li>Installing</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/helpful_links.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -172,29 +170,32 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="helpful-links">
-<span id="helpful-links"></span><h1>Helpful Links<a class="headerlink" href="#helpful-links" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="website">
-<span id="website"></span><h2>Website<a class="headerlink" href="#website" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://royale.ndacm.org">Website</a> - The event website. Contains the event schedule.</li>
-</ul>
+  <div class="section" id="installing">
+<span id="installing"></span><h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
+<p>[This will be the link to the actual download URL](INSERT THE LINK HERE)##################</p>
+<div class="section" id="introduction">
+<span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The installation process has been streamlined from last year. The application
+has the bonuses of update notification, an enclosed runtime environment, and a help
+function to assist in starting up the components.</p>
 </div>
-<div class="section" id="github-repository">
-<span id="github-repository"></span><h2>Github Repository<a class="headerlink" href="#github-repository" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Github Repository</a></p>
+<div class="section" id="install-dependencies">
+<span id="install-dependencies"></span><h2>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Note: the following instructions are verified to work for installing Python 3.7 on Windows. If the installation is done in a different way, you may not be able to properly run the program.</p>
+<ol class="simple">
+<li>Install Python 3.7 (use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see which version you are running). Make sure to custom install for all
+users and that the box to add Python to $PATH (if you do not add it to $PATH, you can not directly invoke Python
+in the command prompt)</li>
+<li>Install pipenv from <a class="reference external" href="https://pipenv.readthedocs.io/en/latest/install/">https://pipenv.readthedocs.io/en/latest/install/</a>, following their instructions.</li>
+<li>After installing pipenv, run the following command to install dependencies: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code></li>
+<li>Enter the pipenv virtual environment: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code></li>
+</ol>
+<p>Note: you will need to enter the virtual environment for each new shell session you create.</p>
+<p>From there, you can <a class="reference external" href="getting_started.md">get started</a> with creating your AI.</p>
 </div>
-<div class="section" id="leaderboards">
-<span id="leaderboards"></span><h2>Leaderboards<a class="headerlink" href="#leaderboards" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Leaderboards</a> - Submit a client and see how well you are doing compared to others.</p>
-</div>
-<div class="section" id="forum">
-<span id="forum"></span><h2>Forum<a class="headerlink" href="#forum" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Forum</a> - Please feel free to ask any questions you have here.</p>
-</div>
-<div class="section" id="report-a-bug">
-<span id="report-a-bug"></span><h2>Report a Bug<a class="headerlink" href="#report-a-bug" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="#">Report a Bug</a> - If you find a bug please submit a bug report here.</p>
+<div class="section" id="launcher-scripts">
+<span id="launcher-scripts"></span><h2>Launcher Scripts<a class="headerlink" href="#launcher-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">./br_launcher.pyz</span> <span class="pre">--help</span></code> to view available scripts</p>
 </div>
 </div>
 
@@ -206,10 +207,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="stations.html" class="btn btn-neutral float-right" title="Stations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="rules.html" class="btn btn-neutral" title="Rules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

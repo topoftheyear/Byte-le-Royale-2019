@@ -65,6 +65,9 @@ class GameLogParser:
             elif event["type"] == LogEvent.police_spawned:
                 event["ship"] = self.get_ship(event["ship_id"], universe)
 
+            elif event["type"] == LogEvent.enforcer_spawned:
+                event["ship"] = self.get_ship(event["ship_id"], universe)
+
         self.stats.append(turn["turn_result"]["stats"])
 
         return universe, events

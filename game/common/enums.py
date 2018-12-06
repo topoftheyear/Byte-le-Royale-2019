@@ -45,6 +45,7 @@ class LogEvent:
     module_unlocked = 14
     cargo_dropped = 15
     illegal_salvage_spawned = 16
+    despawn_enforcer = 17
 
 class MessageType:
     null = 0

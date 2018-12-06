@@ -80,16 +80,19 @@ class CustomServer(ServerControl):
             return # purposefully short circuit to get to send data
 
         # update police state
-        new_police, police_to_remove = self.police_controller.assess_universe(self.universe)
+        new_police, new_enforcers, to_remove = self.police_controller.assess_universe(self.universe)
 
-        self.universe = [ obj for obj in self.universe if obj not in police_to_remove ]
+        self.universe = [ obj for obj in self.universe if obj not in to_remove ]
+        self.universe.extend(new_enforcers)
         self.universe.extend(new_police)
 
-        self.ships = [ obj for obj in self.ships if obj not in police_to_remove ]
+        self.ships = [ obj for obj in self.ships if obj not in to_remove ]
         self.ships.extend(new_police)
+        self.ships.extend(new_enforcers)
 
-        self.police = [ obj for obj in self.police if obj not in police_to_remove ]
+        self.police = [ obj for obj in self.police if obj not in to_remove ]
         self.police.extend(new_police)
+        self.police.extend(new_enforcers)
 
     def send_turn_data(self):
         # send turn data to clients
@@ -283,8 +286,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.ships:
-            #npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC, BuySellNPC])
-            npc_type = random.choice([BuySellNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC, BuySellNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {

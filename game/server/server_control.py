@@ -5,6 +5,7 @@ import shutil
 import sys
 from datetime import datetime
 from datetime import datetime, timedelta
+from tqdm import tqdm
 
 
 
@@ -73,6 +74,8 @@ class ServerControl:
 
     def pre_tick(self):
         if self.verbose: print("SERVER TICK: {}".format(self.game_tick_no))
+        if self.game_tick_no == 0:
+            self.percent_display = tqdm(total=self.max_game_tick)
         self.game_tick_no += 1
 
         if len(self._est_time) > 10:
@@ -83,11 +86,7 @@ class ServerControl:
             self._est_time.append(now - self._last_time)
         self._last_time = now
 
-
-        pad = len(str(self.max_game_tick))
-        tick_no = str(self.game_tick_no).ljust(pad, " ")
-        percentage = round(self.game_tick_no/self.max_game_tick*100, 2)
-        print("\r {}/{} ({}%)\r".format(tick_no, self.max_game_tick, percentage), end="")
+        self.percent_display.update()
 
         self.turn_data = []
 
@@ -116,6 +115,9 @@ class ServerControl:
                 self.schedule(self.pre_tick)
             else:
                 # Exit Cleanly
+                if self.percent_display is not None:
+                    self.percent_display.close()
+                    self.percent_display = None
 
                 # Dump Game log manifest
                 with open("game_log/manifest.json", "w") as f:
