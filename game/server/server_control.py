@@ -127,7 +127,7 @@ class ServerControl:
                 self.schedule(lambda : sys.exit(0), 3)
 
         else:
-            print("Exiting - MAX Tickes: {0} exceeded".format(self.max_game_tick))
+            print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
 
             # Dump Game log manifest
             with open("game_log/manifest.json", "w") as f:

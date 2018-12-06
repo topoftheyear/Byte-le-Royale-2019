@@ -54,6 +54,7 @@ class MessageType:
     pong = 2
     team_name = 3
     take_turn = 4
+    team_color = 5
 
 
 class PlayerAction:
@@ -79,13 +80,11 @@ class ObjectType:
     goethite_field = 4
     cuprite_field = 5
     gold_field = 6
-
     material = 7
-
     police = 8
     enforcer = 9
-
     illegal_salvage = 10
+    player_ship = 11
 
 class MaterialType:
     null = -1

@@ -65,9 +65,10 @@ def generate():
 @click.option("--gamma", default=1.0)
 @click.option("--dont-wait", is_flag=True)
 @click.option("--fullscreen", is_flag=True)
-def visualizer(verbose, log_path, gamma, dont_wait, fullscreen):
+@click.option("--team-name", default=None)
+def visualizer(verbose, log_path, gamma, dont_wait, fullscreen, team_name):
     from game.visualizer import start
-    start(verbose, log_path, gamma, dont_wait, fullscreen)
+    start(verbose, log_path, gamma, dont_wait, fullscreen, team_name)
 
 
 @cli.command()

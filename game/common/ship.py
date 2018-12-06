@@ -5,15 +5,22 @@ from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.stats import GameStats
 
+focus_team = None
+
 
 class Ship(GameObject):
 
     def __init__(self):
-        pass
-
+        global focus_team
 
     def init(self, team_name, is_npc=False, position=(0,0)):
-        GameObject.init(self, ObjectType.ship)
+        global focus_team
+        if focus_team is not None and team_name == focus_team:
+            GameObject.init(self, ObjectType.player_ship)
+            print("PLAYER FOUND")
+        else:
+            GameObject.init(self, ObjectType.ship)
+            # print(team_name)
 
         # used by engine to track ships
         self.id = str(uuid4())
@@ -141,7 +148,6 @@ class Ship(GameObject):
 
         return data
 
-
     def from_dict(self, data, security_level=SecurityLevel.other_player):
         GameObject.from_dict(self, data)
 
@@ -200,7 +206,10 @@ class Ship(GameObject):
         if security_level <= SecurityLevel.other_player:
             pass
 
-
+    @staticmethod
+    def set_focus_team(self, team_name=None):
+        global focus_team
+        focus_team = team_name
 
     def is_alive(self):
         return self.current_hull > 0
