@@ -605,7 +605,11 @@ def show_ship_stats_display(ship, window_surf, clock):
 
 def draw_module(surf, pos, module_name, level):
     width = 150
-    color = pygame.Color(0,155,0)
+
+    if level == "Lvl 4":
+        color = pygame.Color(155, 0, 0)
+    else:
+        color = pygame.Color(0,155,0)
 
     font_name = pygame.font.get_default_font()
     font = pygame.font.Font(font_name, 14)
