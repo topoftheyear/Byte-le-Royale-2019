@@ -96,9 +96,6 @@ class CustomServer(ServerControl):
         self.police.extend(new_police)
         self.police.extend(new_enforcers)
 
-        # find/update material prices for reference list
-        update_prices(self.universe)
-
     def send_turn_data(self):
         # send turn data to clients
         self.print("SERVER SEND DATA")

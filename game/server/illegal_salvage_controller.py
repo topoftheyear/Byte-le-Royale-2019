@@ -3,6 +3,7 @@ import random
 import math
 
 from game.utils.helpers import *
+from game.utils.material_price_finder import *
 from game.common.stats import *
 from game.common.illegal_salvage import IllegalSalvage
 
@@ -52,9 +53,7 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                material_value = get_material_price(material_type)
-
-                material_amount = convert_material_to_scrap(material_type, amount_dropped)
+                material_amount = convert_material_to_scrap(universe, material_type, amount_dropped)
 
                 random_position = (
                     ship.position[0] + random.randint(-5, 5),

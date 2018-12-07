@@ -4,6 +4,7 @@ import math
 from game.common.enums import *
 from game.utils.material_price_finder import *
 
+
 def get_ships(universe, callback=None):
     if callback != None:
         return [ obj
@@ -87,25 +88,18 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     else:
         return in_range
 
-def convert_material_to_scrap(material, amount):
+
+def convert_material_to_scrap(universe, material, amount):
     """
     Params:
+    :param universe: the universe
     :param material: MaterialType enum of material to convert
     :param amount: number amount of the material given
     :return: integer amount of how many scrap should be created
     """
-
-    value = get_material_price(material)
+    value = get_material_price(universe, material)
     return math.ceil(amount * value * 0.25)
 
-def get_material_price(material):
-    """
-    Get the current highest available market price for the given material
-    :param material: MaterialType material to get the price of
-    :return: number value of the material
-    """
-    value = ascertain_material_price(material)
-    return value
 
 def in_secure_zone(target, target_accessor):
     """
