@@ -9,7 +9,7 @@ from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
 from game.utils.helpers import *
 from game.utils.projection import *
-from game.utils.filters import *
+import game.utils.filters as F
 
 class PoliceVariant:
     waiting = 1
@@ -63,6 +63,11 @@ class PoliceController:
             universe.add_object(new_police)
             p.append(new_police)
 
+            self.events.append({
+                "type": LogEvent.police_spawned,
+                "ship_id": new_police.id,
+            })
+
         return p
 
 
@@ -101,7 +106,7 @@ class PoliceController:
             if police.is_alive():
                 living_police += 1
             else:
-                universe.remove_obj(police)
+                universe.remove_object(police)
                 self.events.append({
                     "type": LogEvent.police_removed,
                     "ship_id": police.id
@@ -109,7 +114,7 @@ class PoliceController:
 
         for ship in universe.get_filtered(
                 ObjectType.ship,
-                filter=GT(ENFORCER_THRESHOLD, lambda e: e.legal_standing)):
+                filter=F.GT(ENFORCER_THRESHOLD, lambda e: e.legal_standing)):
             # track new pirates
             if ship.team_name not in self.profiles:
                 self.profiles[ship.team_name] = {
@@ -125,8 +130,8 @@ class PoliceController:
             ship = universe.get_filtered_one(
                 ObjectType.ship,
                 AND(
-                    equals(team_name),
-                    less_than(ENFORCER_THRESHOLD, lambda e: e.legal_standing)
+                    F.EQ(team_name),
+                    F.less_than(ENFORCER_THRESHOLD, lambda e: e.legal_standing)
                 ))
 
             if ship is not None:
@@ -136,8 +141,8 @@ class PoliceController:
             ship = universe.get_filtered_one(
                 ObjectType.ship,
                 AND(
-                    equals(team_name),
-                    alive()
+                    F.EQ(team_name),
+                    F.alive()
                 ))
             if ship is not None:
                 teams_to_remove.append(team_name)
@@ -162,8 +167,9 @@ class PoliceController:
 
                     profile["assigned_enforcers"].append(new_enforcer)
 
-                    new_enforcers.append(new_enforcer)
                     self.create_state(new_enforcer)
+
+                    universe.add_object(new_enforcer)
 
                     self.events.append({
                         "type": LogEvent.enforcer_spawned,
@@ -202,9 +208,10 @@ class PoliceController:
                 new_police.append(new_ship)
                 self.police_spawn_counter = 0
 
+                universe.add_object(new_ship)
                 self.events.append({
                     "type": LogEvent.police_spawned,
-                    "ship_id": new_ship.id
+                    "ship_id": new_ship.id,
                 })
 
         return new_police, new_enforcers, to_remove
@@ -352,7 +359,7 @@ class PoliceController:
                     state["waypoint"],
                     lambda s: s.position)
 
-            if not ( -5 < distance[0] < 5 and -5 < distance[1] < 5):
+            if not ( -5 < distance < 5 ):
                 # we are not at waypoint, continue moving towards
                 state["heading"] = state["waypoint"].position
 
@@ -535,8 +542,8 @@ class PoliceController:
 
     def closest_pirate(self, police_ship, universe):
 
-        range_pred = in_radius(police_ship, police_ship.sensor_range, lambda s: s.position)
-        ships = universe.get_filtered(ObjectType.ship, filter=AND(alive(), pirate(), range_pred))
+        range_pred = F.in_radius(police_ship, police_ship.sensor_range, lambda s: s.position)
+        ships = universe.get_filtered(ObjectType.ship, filter=F.AND(F.alive(), F.pirate(), range_pred))
 
         num_ships = len(ships)
 
