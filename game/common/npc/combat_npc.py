@@ -17,8 +17,7 @@ class CombatNPC(NPC):
 
         # choose a new heading if we don't have one
         if self.heading is None:
-            #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-            self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+            self.heading = random.choice(list(universe.get(ObjectType.ship))).position
 
         # move towards heading
         self.move(*self.heading)

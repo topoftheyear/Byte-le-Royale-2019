@@ -44,12 +44,9 @@ class ModuleController:
 
                 self.print('Found a ship trying to purchase a module: ' + str(ship.team_name))
 
-                for thing in universe:
-                    # Check for all applicable stations in the universe
-                    if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
-                        continue
-
-                    current_station = thing
+                for current_station in (
+                        universe.get(ObjectType.black_market_station) +
+                        universe.get(ObjectType.secure_station)):
 
                     # Check if ship is within range of a / the station
                     ship_in_radius = in_radius(
@@ -136,11 +133,9 @@ class ModuleController:
 
                 self.print('Found a ship trying to unlock a module')
 
-                for thing in universe:
-                    if thing.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
-                        continue
-
-                    current_station = thing
+                for current_station in (
+                        universe.get(ObjectType.black_market_station) +
+                        universe.get(ObjectType.secure_station)):
 
                     ship_in_radius = in_radius(
                         current_station,

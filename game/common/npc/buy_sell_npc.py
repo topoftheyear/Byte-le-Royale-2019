@@ -18,12 +18,12 @@ class BuySellNPC(NPC):
         # choose a new heading if we don't have one
         if self.heading is None:
             #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-            self.heading = random.choice(list(filter(lambda e:e.object_type == ObjectType.station, universe))).position
+            self.heading = random.choice(universe.get(ObjectType.station)).position
 
         # move towards heading
         self.move(*self.heading)
 
-        for station in filter(lambda e:e.object_type == ObjectType.station, universe):
+        for station in universe.get(ObjectType.station):
 
             # Check if ship is within range of a / the station
             ship_in_radius = in_radius(
