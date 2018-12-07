@@ -20,7 +20,6 @@ global_surf = None
 fpsClock = None
 universe = None
 events = None
-counter = 0
 
 debug = False
 
@@ -43,8 +42,6 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     global log_parser
     global universe
     global events
-
-    global counter
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
@@ -211,7 +208,6 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                     # update the display
                     pygame.display.update()
                     fpsClock.tick(FPS)
-                counter += 1
         else:
             handle_events()
 
@@ -271,7 +267,7 @@ def draw_screen():
     ship_group.draw(global_surf)
 
     font = pygame.font.SysFont("comicsansms",24,True)
-    text = ("Tick " + str(counter)).rjust(10)
+    text = ("Tick " + str(log_parser.tick - 1)).rjust(10)
     renderText = font.render(text, True, (255, 255, 255))
     global_surf.blit(renderText, (0, 676))
 
