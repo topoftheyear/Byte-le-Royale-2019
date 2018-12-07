@@ -5,11 +5,7 @@ price_list = {}
 
 def update_prices(universe):
     all_prices = {}
-    for thing in universe:
-        if thing.object_type is not ObjectType.station:
-            continue
-        station = thing
-
+    for station in universe.get(ObjectType.station):
         if station.primary_import is not None:
             if station.primary_import not in all_prices:
                 all_prices[station.primary_import] = []

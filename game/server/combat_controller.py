@@ -126,8 +126,8 @@ class CombatController:
 
 
     def get_ship(self, id, universe):
-        for obj in universe:
-            if obj.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer] and obj.id == id:
+        for obj in universe.get(ObjectType.ship) + universe.get("police"):
+            if obj.id == id:
                 return obj
         return None
 

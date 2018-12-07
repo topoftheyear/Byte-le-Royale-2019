@@ -59,15 +59,11 @@ class BuySellController:
 
             # check if station in range
             station = None
-            for thing in universe:
+            for thing in universe.get(ObjectType.station):
                 # find station in range
-                if (thing.object_type is ObjectType.station and
-                        in_radius(
-                            thing,
-                            ship,
-                            thing.accessibility_radius,
-                            lambda e:e.position)):
+                if in_radius(thing, ship, thing.accessibility_radius, lambda e:e.position):
                     station = thing
+                    break
 
             # if no station in range, continue on
             if not station:
