@@ -9,7 +9,7 @@ from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
 from game.utils.helpers import *
 from game.utils.projection import *
-from game.utils.filters import *
+import game.utils.filters as F
 
 class PoliceVariant:
     waiting = 1
@@ -109,7 +109,7 @@ class PoliceController:
 
         for ship in universe.get_filtered(
                 ObjectType.ship,
-                filter=GT(ENFORCER_THRESHOLD, lambda e: e.legal_standing)):
+                filter=F.GT(ENFORCER_THRESHOLD, lambda e: e.legal_standing)):
             # track new pirates
             if ship.team_name not in self.profiles:
                 self.profiles[ship.team_name] = {
@@ -125,8 +125,8 @@ class PoliceController:
             ship = universe.get_filtered_one(
                 ObjectType.ship,
                 AND(
-                    equals(team_name),
-                    less_than(ENFORCER_THRESHOLD, lambda e: e.legal_standing)
+                    F.EQ(team_name),
+                    F.less_than(ENFORCER_THRESHOLD, lambda e: e.legal_standing)
                 ))
 
             if ship is not None:
@@ -136,8 +136,8 @@ class PoliceController:
             ship = universe.get_filtered_one(
                 ObjectType.ship,
                 AND(
-                    equals(team_name),
-                    alive()
+                    F.EQ(team_name),
+                    F.alive()
                 ))
             if ship is not None:
                 teams_to_remove.append(team_name)
@@ -535,8 +535,8 @@ class PoliceController:
 
     def closest_pirate(self, police_ship, universe):
 
-        range_pred = in_radius(police_ship, police_ship.sensor_range, lambda s: s.position)
-        ships = universe.get_filtered(ObjectType.ship, filter=AND(alive(), pirate(), range_pred))
+        range_pred = F.in_radius(police_ship, police_ship.sensor_range, lambda s: s.position)
+        ships = universe.get_filtered(ObjectType.ship, filter=F.AND(F.alive(), F.pirate(), range_pred))
 
         num_ships = len(ships)
 
