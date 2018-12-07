@@ -84,7 +84,6 @@ class ObjectType:
     police = 8
     enforcer = 9
     illegal_salvage = 10
-    player_ship = 11
 
 class MaterialType:
     null = -1
