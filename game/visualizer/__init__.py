@@ -14,14 +14,13 @@ from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
-import ptext
-
 pause = False
 log_parser = None
 global_surf = None
 fpsClock = None
 universe = None
 events = None
+counter = 0
 
 debug = False
 
@@ -44,6 +43,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     global log_parser
     global universe
     global events
+
+    global counter
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
@@ -210,6 +211,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
                     # update the display
                     pygame.display.update()
                     fpsClock.tick(FPS)
+                counter += 1
         else:
             handle_events()
 
@@ -268,8 +270,11 @@ def draw_screen():
     illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
 
-    ptext.draw("Tick" + fpsClock.get_ticks() + "/" + log_parser.get_turn(), (0,700), color=(255,255,255),owidth=2.0,ocolor=(0,0,0),fontsize=24,fontname='game/visualizer/assets/joystix/joystix monospace.ttf')[0]
-
+    font = pygame.font.SysFont("comicsansms",24,True)
+    text = ("Tick " + str(counter)).rjust(10)
+    renderText = font.render(text, True, (255, 255, 255))
+    global_surf.blit(renderText, (0, 600))
+    #renderText.draw(global_surf)
 
 
 def handle_events():
