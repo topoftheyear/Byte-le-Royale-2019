@@ -33,6 +33,7 @@ class CombatNPC(NPC):
 
         # attack ships in range
         ships = self.ships_in_attack_range(universe)
+        if(self.ship in ships): print("fuck")
         ship_to_attack = next(iter(ships), None)
         if ship_to_attack:
             self.attack(ship_to_attack)

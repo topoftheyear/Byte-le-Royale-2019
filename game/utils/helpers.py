@@ -83,7 +83,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     in_range = result < radius**2
 
     if verify_instance:
-        return in_range
+        return in_range and source.id != target.id
     else:
         return in_range
 
