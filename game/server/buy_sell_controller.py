@@ -21,7 +21,7 @@ class BuySellController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
         self.station_bids = {}
@@ -54,37 +54,85 @@ class BuySellController:
             if not ship.is_alive():
                 continue
 
-            if ship.action not in [PlayerAction.sell_material, PlayerAction.buy_material]:
+            if ship.action not in [PlayerAction.sell_material, PlayerAction.buy_material, PlayerAction.sell_salvage]:
                 continue
 
-            # check if station in range
-            station = None
-            for thing in universe:
-                # find station in range
-                if (thing.object_type is ObjectType.station and
-                        in_radius(
-                            thing,
-                            ship,
-                            thing.accessibility_radius,
-                            lambda e:e.position)):
-                    station = thing
+            if ship.action in [PlayerAction.sell_material, PlayerAction.buy_material]:
+                # check if station in range
+                station = None
+                for thing in universe:
+                    # find station in range
+                    if (thing.object_type is ObjectType.station and
+                            in_radius(
+                                thing,
+                                ship,
+                                thing.accessibility_radius,
+                                lambda e:e.position)):
+                        station = thing
 
-            # if no station in range, continue on
-            if not station:
-                continue
+                # if no station in range, continue on
+                if not station:
+                    continue
 
-            # Check for ships that are performing the sell material action
-            if ship.action is PlayerAction.sell_material:
-                self.process_sell_action(ship, station)
+                # Check for ships that are performing the sell material action
+                if ship.action is PlayerAction.sell_material:
+                    self.process_sell_action(ship, station)
 
-            elif ship.action is PlayerAction.buy_material:
-                self.process_buy_action(ship, station)
+                elif ship.action is PlayerAction.buy_material:
+                    self.process_buy_action(ship, station)
+            else:
+                # check if station in range
+                station = None
+                for thing in universe:
+                    # find station in range
+                    if (thing.object_type is ObjectType.black_market_station and
+                            in_radius(
+                                thing,
+                                ship,
+                                thing.accessibility_radius,
+                                lambda e: e.position)):
+                        station = thing
 
+                # if no station in range, continue on
+                if not station:
+                    continue
+
+                # Check for ships that are performing the sell material action
+                self.process_sell_salvage(ship, station)
         self.process_sell_bids()
         self.process_buy_bids()
 
         self.sell_bids = {}
         self.buy_bids = {}
+
+
+    def process_sell_salvage(self, ship, station):
+
+        self.print('Ship in range of a black market to sell salvage')
+        material = MaterialType.salvage
+
+
+        # Check if material  is in ships inventory
+        if material not in ship.inventory:
+            self.print("Ship does not have salvage in inventory")
+            return
+        amount = ship.inventory[material]
+        ship.inventory[material] = 0
+        sale = amount * 4.5
+        ship.credits += sale
+        self.print("Ship {} sold {} {}".format(
+            ship.team_name,
+            amount,
+            get_material_name(material)
+        ))
+
+        self.events.append({
+            "type": LogEvent.salvage_sold,
+            "station_id": station.id,
+            "ship_id": ship.team_name,
+            "amount": amount,
+            "total_sale": sale
+        })
 
     def process_sell_action(self, ship, station):
 

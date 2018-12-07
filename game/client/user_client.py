@@ -117,6 +117,11 @@ class UserClient:
     def ships_in_attack_range(self, universe):
         return ships_in_attack_range(universe, self.ship)
 
+    def sell_salvage(self):
+        self.reset_player_action()
+
+        self._action = PlayerAction.sell_salvage
+
     def sell_material(self, material, amount):
         self.reset_player_action()
 

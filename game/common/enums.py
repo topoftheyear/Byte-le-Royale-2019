@@ -46,6 +46,7 @@ class LogEvent:
     cargo_dropped = 15
     illegal_salvage_spawned = 16
     despawn_enforcer = 17
+    salvage_sold = 14
 
 class MessageType:
     null = 0
@@ -65,6 +66,7 @@ class PlayerAction:
     sell_material = 5
     unlock_module = 6
     drop_cargo = 7
+    sell_salvage = 8
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
