@@ -22,7 +22,16 @@ def update_prices(universe):
         price_list[material] = max(prices)
 
 
-def ascertain_material_price(material):
+def get_material_price(universe, material):
+    """
+    Get the current highest available market price for the given material
+    :param universe: the universe
+    :param material: MaterialType material to get the price of
+    :return: number value of the material
+    """
+    #TODO prevent multiple updates in one turn
+    update_prices(universe)
+
     if material not in price_list:
         return None
     return price_list[material]

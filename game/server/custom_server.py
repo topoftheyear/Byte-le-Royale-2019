@@ -79,9 +79,6 @@ class CustomServer(ServerControl):
         # update police state
         self.police_controller.assess_universe(self.universe)
 
-        # find/update material prices for reference list
-        update_prices(self.universe)
-
     def send_turn_data(self):
         # send turn data to clients
         self.print("SERVER SEND DATA")
