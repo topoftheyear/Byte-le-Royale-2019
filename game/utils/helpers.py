@@ -1,4 +1,7 @@
 import types
+from itertools import groupby
+from game.utils.filters import in_radius as pred_in_radius
+from game.utils.filters import AND, EQ, NOT
 
 from game.common.enums import *
 
@@ -15,15 +18,16 @@ def get_ships(universe, callback=None):
             if obj.object_type == ObjectType.ship
             and obj.is_alive()]
 
-def ships_in_attack_range(universe, ship):
-    def is_ship_visible_wrapper(ship):
-        def is_ship_visible(target):
-            result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
-            in_range = result < ship.weapon_range**2
-            return in_range  and ship.id != target.id
-        return is_ship_visible
 
+def ships_in_attack_range(universe, ship):
+    return universe.get_filtered(
+        ObjectType.ship,
+        filter=AND(
+            pred_in_radius(ship, ship.weapon_range, lambda e: e.position),
+            NOT(EQ(ship.id))
+        ))
     return get_ships(universe, is_ship_visible_wrapper(ship))
+
 
 def get_stations(universe):
     return [ obj for obj in universe if obj.object_type == ObjectType.station ]
@@ -129,4 +133,16 @@ def get_material_name(material_type):
         return "Weaponry"
     elif material_type == MaterialType.wire:
         return "Wire"
-    return f"N/A ({material_type})"
+    return "N/A"
+
+def separate_universe(flat_universe):
+
+    universe = {}
+
+    for key, group in groupby(flat_universe, lambda e: e.object_type):
+        if key not in universe:
+            universe[key] = []
+        universe[key].extend(list(group))
+
+    return universe
+

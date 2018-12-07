@@ -59,7 +59,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
     # get global surface object and set window caption
     global global_surf
     if fullscreen:
-        global_surf = pygame.display.set_mode(DISPLAY_SIZE, flags=pygame.FULLSCREEN)
+        global_surf = pygame.display.set_mode(DISPLAY_SIZE, pygame.FULLSCREEN)
     else:
         global_surf = pygame.display.set_mode(DISPLAY_SIZE)
     pygame.display.set_caption('Byte-le Royale')

@@ -31,6 +31,8 @@ class StationController:
 
         self.initialized = True
 
+        self.stats = [] # reset stats
+
     def tick(self, stations):
         for station in stations:
 
@@ -38,9 +40,18 @@ class StationController:
                 continue
 
             data = self.station_data[station.id]
-            data["primary_consumed"] = 0
-            data["secondary_consumed"] = 0
-            data["production_produced"] = 0
+
+            if "primary_consumed" not in data:
+                data["primary_consumed"] = 0
+
+            if "secondary_consumed" not in data:
+                if station.secondary_import != -1:
+                    data["secondary_consumed"] = 0
+                else:
+                    data["secondary_consumed"] = -1
+
+            if "production_produced" not in data:
+                data["production_produced"] = 0
 
             self.print(f"Update Station {station.name} ({station.id}), produces: {station.production_material}")
             self.print(f"station.cargo: {station.cargo}")
@@ -76,10 +87,9 @@ class StationController:
             )
             self.print(f"Sufficient primary for boost: {sufficient_primary_for_boost}")
 
-
-            if(sufficient_primary_in_cargo and consume_inputs and not_at_max_production):
+            if sufficient_primary_in_cargo and consume_inputs and not_at_max_production:
                 station.cargo[station.primary_import] -= station.primary_consumption_qty
-                data["primary_consumed"] = station.primary_consumption_qty
+                data["primary_consumed"] += station.primary_consumption_qty
 
                 if(has_secondary and
                     sufficient_secondary_in_cargo and
@@ -94,18 +104,12 @@ class StationController:
                         qty = min(station.cargo[station.production_material] + qty, station.production_max)
                         station.cargo[station.production_material] = qty
 
-                    data["production_produced"] = qty
+                    data["production_produced"] += qty
 
                     self.print(f"Created x{station.production_qty}*2 material {station.production_material}")
-                    data["secondary_consumed"] = station.secondary_consumption_qty
+                    data["secondary_consumed"] += station.secondary_consumption_qty
 
                 else:
-                    if not has_secondary:
-                        data["secondary_consumed"] = -1
-                    else:
-                        data["secondary_consumed"] = 0
-
-
                     qty = station.production_qty
                     if station.production_material not in station.cargo:
                         station.cargo[station.production_material] = qty
@@ -113,12 +117,9 @@ class StationController:
                         qty = min(station.cargo[station.production_material] + qty, station.production_max)
                         station.cargo[station.production_material] = qty
 
-                    data["production_produced"] = qty
+                    data["production_produced"] += qty
 
                     self.print(f"Created x{station.production_qty} material {station.production_material}")
-
-
-                data["production_counter"] = 0
 
             elif sufficient_primary_in_cargo and not consume_inputs:
                 # increment counter if we have enough in cargo to do work, but havn't reached the counter

@@ -66,7 +66,7 @@ class IllegalSalvageController:
                     new_illgal_salvage = IllegalSalvage()
                     new_illgal_salvage.init(position=random_position, value=material_value)
 
-                    universe.append(new_illgal_salvage)
+                    universe.add_object(new_illgal_salvage)
                     self.print('Created new illegal salvage at {} with value {}CR'.format(random_position, material_value))
 
                     self.events.append({
@@ -83,10 +83,10 @@ class IllegalSalvageController:
                 })
 
         # for now we will decay salvage untill garbage collectior is finished.
-        for salvage in filter(lambda e:e.object_type == ObjectType.illegal_salvage, universe):
+        for salvage in universe.get(ObjectType.illegal_salvage):
             salvage.turns_till_recycling -= 1
 
             if salvage.turns_till_recycling <= 0:
-                universe.remove(salvage)
+                universe.remove_object(salvage)
                 del salvage
 

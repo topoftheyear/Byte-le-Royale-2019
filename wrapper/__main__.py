@@ -1,5 +1,5 @@
+import os
 import click
-
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -194,6 +194,29 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait):
 
     client_proc.wait()
     server_proc.wait()
+
+
+@cli.group()
+def scrim():
+    pass
+
+@scrim.command()
+def announcements():
+    pass
+
+admin_password = os.getenv("BL_ROYALE_ADMIN_PASSWORD", False)
+
+if admin_password:
+    @scrim.group()
+    def admin():
+        pass
+
+    @admin.command()
+    @click.argument("message")
+    def add_announcement(message):
+        auth = HTTPBasicAuth("BL_ROYALE_ADMIN", admin_password)
+        payload = requests.post("scrimmage.royale.ndacm.org/announcements", auth=auth, data={"message": message})
+
 
 
 
