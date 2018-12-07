@@ -273,8 +273,7 @@ def draw_screen():
     font = pygame.font.SysFont("comicsansms",24,True)
     text = ("Tick " + str(counter)).rjust(10)
     renderText = font.render(text, True, (255, 255, 255))
-    global_surf.blit(renderText, (0, 600))
-    #renderText.draw(global_surf)
+    global_surf.blit(renderText, (0, 676))
 
 
 def handle_events():
