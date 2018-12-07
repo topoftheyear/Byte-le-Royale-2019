@@ -85,20 +85,17 @@ class IllegalSalvageController:
                     continue
 
                 salvage = None
-                for thing in universe:
-                    # Check for all scrap in the universe within weapon's range
-                    if thing.object_type is ObjectType.illegal_salvage:
-                        scrap = thing
+                salvage_list = universe.get(ObjectType.illegal_salvage)
+                for scrap in salvage_list:
+                    ship_in_radius = in_radius(
+                        scrap,
+                        ship,
+                        ship.weapon_range,
+                        lambda e: e.position)
 
-                        ship_in_radius = in_radius(
-                            scrap,
-                            ship,
-                            ship.weapon_range,
-                            lambda e: e.position)
-
-                        if ship_in_radius:
-                            salvage = scrap
-                            break
+                    if ship_in_radius:
+                        salvage = scrap
+                        break
                 else:
                     self.print('No illegal salvage found nearby')
                     continue
