@@ -8,8 +8,8 @@ from game.common.enums import *
 from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
 from game.utils.projection import *
-from game.utils.helpers import *
 import game.utils.filters as F
+from game.utils.helpers import *
 
 class PoliceVariant:
     waiting = 1
@@ -49,7 +49,6 @@ class PoliceController:
         return s
 
     def setup_police(self, universe):
-        p = []
         for _ in range(NUM_POLICE):
             pos = [
                 random.randint(0, WORLD_BOUNDS[0]),
@@ -61,9 +60,12 @@ class PoliceController:
             self.create_state(new_police)
 
             universe.add_object(new_police)
-            p.append(new_police)
 
-        return p
+            self.events.append({
+                "type": LogEvent.police_spawned,
+                "ship_id": new_police.id,
+            })
+
 
 
     def create_state(self, ship):
@@ -101,7 +103,7 @@ class PoliceController:
             if police.is_alive():
                 living_police += 1
             else:
-                universe.remove_obj(police)
+                universe.remove_object(police)
                 self.events.append({
                     "type": LogEvent.police_removed,
                     "ship_id": police.id
@@ -162,8 +164,9 @@ class PoliceController:
 
                     profile["assigned_enforcers"].append(new_enforcer)
 
-                    new_enforcers.append(new_enforcer)
                     self.create_state(new_enforcer)
+
+                    universe.add_object(new_enforcer)
 
                     self.events.append({
                         "type": LogEvent.enforcer_spawned,
@@ -202,9 +205,10 @@ class PoliceController:
                 new_police.append(new_ship)
                 self.police_spawn_counter = 0
 
+                universe.add_object(new_ship)
                 self.events.append({
                     "type": LogEvent.police_spawned,
-                    "ship_id": new_ship.id
+                    "ship_id": new_ship.id,
                 })
 
         return new_police, new_enforcers, to_remove
@@ -352,7 +356,7 @@ class PoliceController:
                     state["waypoint"],
                     lambda s: s.position)
 
-            if not ( -5 < distance[0] < 5 and -5 < distance[1] < 5):
+            if not ( -5 < distance < 5 ):
                 # we are not at waypoint, continue moving towards
                 state["heading"] = state["waypoint"].position
 

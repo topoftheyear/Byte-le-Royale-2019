@@ -58,7 +58,7 @@ class CustomServer(ServerControl):
         self.illegal_salvage_controller = IllegalSalvageController()
 
         # prep police
-        self.police = self.police_controller.setup_police(self.universe)
+        self.police_controller.setup_police(self.universe)
 
         self.claim_npcs()
 
@@ -188,7 +188,7 @@ class CustomServer(ServerControl):
                 self.npc_teams[npc]["ship"].move_action = result["move_action"]
 
 
-            for police in self.police:
+            for police in self.universe.get("police"):
                 police.move_action = None
                 police.action = None
                 police.action_param_1 = None
@@ -322,7 +322,7 @@ class CustomServer(ServerControl):
                     ship.move_action = data["move_action"]
                 self.move_ship(ship)
 
-        for ship in self.police:
+        for ship in self.universe.get("police"):
             self.move_ship(ship)
 
 
