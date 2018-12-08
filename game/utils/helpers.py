@@ -90,7 +90,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
         return in_range
 
 
-def convert_material_to_scrap(universe, material_qty, material_value):
+def convert_material_to_scrap(material_qty, material_value):
     """
     Params:
     :param universe: the universe
@@ -158,7 +158,7 @@ def separate_universe(flat_universe):
     return universe
 
 
-def get_mateiral_prices(universe):
+def get_material_prices(universe):
     price_list = {}
     all_prices = {}
     for station in universe.get(ObjectType.station):
