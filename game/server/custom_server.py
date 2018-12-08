@@ -13,7 +13,6 @@ from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
-from game.utils.material_price_finder import *
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -291,7 +290,7 @@ class CustomServer(ServerControl):
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
-        self.death_controller.handle_actions(dead_ships)
+        self.death_controller.handle_actions(dead_ships, self.universe)
 
         self.notoriety_controller.update_standing_universe(self.universe.get(ObjectType.ship))
 
