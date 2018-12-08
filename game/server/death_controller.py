@@ -56,7 +56,7 @@ class DeathController:
 
     def on_death(self, ship, universe):
         ship_salvage_constant = SHIP_SALVAGE_CONSTANT
-        value_to_drop = 0
+        value_to_drop = 100
         if ship.object_type is ObjectType.ship:
             for material_type in ship.inventory:
                 self.material_prices = get_material_prices(universe)
