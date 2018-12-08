@@ -3,7 +3,6 @@ import random
 import math
 
 from game.utils.helpers import *
-from game.utils.material_price_finder import *
 from game.common.stats import *
 from game.common.illegal_salvage import IllegalSalvage
 
