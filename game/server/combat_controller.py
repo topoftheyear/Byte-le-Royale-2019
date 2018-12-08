@@ -9,11 +9,12 @@ from game.config import *
 
 from game.server.notoriety_controller import NotorietyController
 
+
 class CombatController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -21,7 +22,7 @@ class CombatController:
 
     def print(self, msg):
         if self.debug:
-            print(str(msg))
+            print("Combat Controller: " + str(msg))
             sys.stdout.flush()
 
     def get_events(self):
@@ -95,7 +96,6 @@ class CombatController:
                     if target.module_3_level is ModuleLevel.illegal:
                         target.module_3 = None
                 # Eject inventory (awaiting full implementation and compatibility)
-
                 # End section for respawn penalties
 
                 self.notoriety_controller.update_standing(ship)
@@ -108,10 +108,20 @@ class CombatController:
                         if target.legal_standing == LegalStanding.citizen:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_civilian)
 
+                            # If attacker is a pirate apply a bounty
+                            if ship.legal_standing >= LegalStanding.pirate:
+                                ship.bounty_list.append({"bounty_type": BountyType.ship_destroyed, "value": 1500, "age": 0})
+                                self.print(f"Bounty {BountyType.ship_destroyed} given to ship {ship.id}")
+
                         elif target.legal_standing == LegalStanding.pirate:
 
                             if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
                                 self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
+
+                                # If current notoriety is higher than a value, awards the bounty
+                                if ship.legal_standing >= 0:
+                                    ship.credits += target.bounty_total
+                                    self.print(f"Bounty of {target.bounty_total} given to ship {ship.id}")
 
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)

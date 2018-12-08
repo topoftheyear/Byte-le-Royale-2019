@@ -91,6 +91,8 @@ class ObjectType:
 
     illegal_salvage = 10
 
+    bounty = 11
+
 class MaterialType:
     null = -1
     iron = 1
@@ -134,3 +136,7 @@ class ShipSlot:
     three = 3
 
 
+class BountyType:
+    ship_destroyed = 0
+    scrap_sold = 1
+    became_pirate = 2

@@ -6,6 +6,7 @@ from game.common.stats import *
 from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
+from game.server.bounty_controller import *
 
 class NotorietyController:
 
@@ -18,7 +19,7 @@ class NotorietyController:
         else:
             NotorietyController.__instance = self
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -42,7 +43,7 @@ class NotorietyController:
 
     def print(self, msg):
         if self.debug:
-            print(str(msg))
+            print("Notoriety Controller:" + str(msg))
             sys.stdout.flush()
 
     def attribute_notoriety(self, ship, change_reason):
@@ -88,8 +89,19 @@ class NotorietyController:
 
     def update_standing(self, ship):
         if ship.notoriety >= LegalStanding.pirate:
+            # If ship previously was not a pirate add a bounty
+            if ship.legal_standing < LegalStanding.pirate:
+                ship.bounty_list.append({"bounty_type": BountyType.became_pirate, "value": 500, "age": 0})
+                self.print(f"Bounty {BountyType.became_pirate} given to ship {ship.id}")
+
             ship.legal_standing = LegalStanding.pirate
+
         elif ship.notoriety <= LegalStanding.bounty_hunter:
             ship.legal_standing = LegalStanding.bounty_hunter
+
         else:
+            # If ship previously was a pirate remove possible bounties
+            if ship.legal_standing >= LegalStanding.pirate:
+                BountyController.clear_bounty(ship)
+
             ship.legal_standing = LegalStanding.citizen

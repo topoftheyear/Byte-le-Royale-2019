@@ -24,6 +24,7 @@ from game.server.module_controller import ModuleController
 from game.server.buy_sell_controller import BuySellController
 from game.server.illegal_salvage_controller import IllegalSalvageController
 from game.common.universe_manager import UniverseManager
+from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
 
 
@@ -55,6 +56,7 @@ class CustomServer(ServerControl):
         self.module_controller = ModuleController()
         self.buy_sell_controller = BuySellController()
         self.illegal_salvage_controller = IllegalSalvageController()
+        self.bounty_controller = BountyController()
 
         # prep police
         self.police_controller.setup_police(self.universe)
@@ -268,7 +270,8 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.universe.get(ObjectType.ship):
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC, BuySellNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
+                                      BuySellNPC, SalvageNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -288,6 +291,7 @@ class CustomServer(ServerControl):
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.buy_sell_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+        self.bounty_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
         self.death_controller.handle_actions(dead_ships, self.universe)
@@ -310,6 +314,8 @@ class CustomServer(ServerControl):
         self.turn_log["events"].extend( self.module_controller.get_events() )
 
         self.turn_log["events"].extend( self.illegal_salvage_controller.get_events() )
+
+        self.turn_log["events"].extend( self.bounty_controller.get_events() )
 
     def process_move_actions(self):
 
