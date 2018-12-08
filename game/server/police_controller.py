@@ -7,9 +7,9 @@ from game.config import NUM_POLICE, WORLD_BOUNDS
 from game.common.enums import *
 from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
-from game.utils.helpers import *
 from game.utils.projection import *
 import game.utils.filters as F
+from game.utils.helpers import *
 
 class PoliceVariant:
     waiting = 1
@@ -49,7 +49,6 @@ class PoliceController:
         return s
 
     def setup_police(self, universe):
-        p = []
         for _ in range(NUM_POLICE):
             pos = [
                 random.randint(0, WORLD_BOUNDS[0]),
@@ -61,14 +60,12 @@ class PoliceController:
             self.create_state(new_police)
 
             universe.add_object(new_police)
-            p.append(new_police)
 
             self.events.append({
                 "type": LogEvent.police_spawned,
                 "ship_id": new_police.id,
             })
 
-        return p
 
 
     def create_state(self, ship):

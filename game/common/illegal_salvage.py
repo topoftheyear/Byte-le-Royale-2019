@@ -8,13 +8,13 @@ from game.common.stats import GameStats
 
 class IllegalSalvage(GameObject):
 
-    def init(self, position=(0,0), value=0):
+    def init(self, position=(0,0), amount=0):
         GameObject.init(self, ObjectType.illegal_salvage)
 
         self.position = position
         self.material_type = MaterialType.salvage
-        self.turns_till_recycling = 50
-        self.value = value
+        self.turns_till_recycling = 100
+        self.amount = amount
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
@@ -39,7 +39,7 @@ class IllegalSalvage(GameObject):
                 "material_type": self.material_type,
 
                 "turns_till_recycling": self.turns_till_recycling,
-                "value": self.value
+                "amount": self.amount
             }
 
             data = { **data, **other_player }
@@ -57,7 +57,7 @@ class IllegalSalvage(GameObject):
             self.material_type = data["material_type"]
 
             self.turns_till_recycling = data["turns_till_recycling"]
-            self.value = data["value"]
+            self.amount = data["amount"]
 
         if security_level <= SecurityLevel.player_owned:
             pass

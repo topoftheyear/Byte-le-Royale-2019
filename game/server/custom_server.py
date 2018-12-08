@@ -10,8 +10,10 @@ from game.common.npc.buy_sell_npc import BuySellNPC
 from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
+from game.common.npc.salvage_collector_npc import SalvageNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
+from game.utils.material_price_finder import *
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -56,7 +58,7 @@ class CustomServer(ServerControl):
         self.illegal_salvage_controller = IllegalSalvageController()
 
         # prep police
-        self.police = self.police_controller.setup_police(self.universe)
+        self.police_controller.setup_police(self.universe)
 
         self.claim_npcs()
 
@@ -186,7 +188,7 @@ class CustomServer(ServerControl):
                 self.npc_teams[npc]["ship"].move_action = result["move_action"]
 
 
-            for police in self.police:
+            for police in self.universe.get("police"):
                 police.move_action = None
                 police.action = None
                 police.action_param_1 = None
@@ -320,7 +322,7 @@ class CustomServer(ServerControl):
                     ship.move_action = data["move_action"]
                 self.move_ship(ship)
 
-        for ship in self.police:
+        for ship in self.universe.get("police"):
             self.move_ship(ship)
 
 
