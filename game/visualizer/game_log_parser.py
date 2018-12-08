@@ -134,5 +134,7 @@ class GameLogParser:
         for obj in universe:
             if obj.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer] and obj.id == ship_id:
                 return obj
-        return None
+
+        raise Exception(f"Could not find ship {ship_id}")
+
 
