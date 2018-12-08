@@ -4,6 +4,7 @@ from game.common.enums import *
 from game.common.npc.npc import NPC
 from game.config import *
 from game.utils.helpers import *
+import game.utils.filters as filters
 
 class ModuleNPC(NPC):
 
@@ -18,21 +19,23 @@ class ModuleNPC(NPC):
         # choose a new heading if we don't have one
         if self.heading is None:
             #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-            self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+            self.heading = random.choice(
+                universe.get(ObjectType.station) +
+                universe.get(ObjectType.secure_station) +
+                universe.get(ObjectType.black_market_station) +
+                universe.get(ObjectType.cuprite_field) +
+                universe.get(ObjectType.gold_field) +
+                universe.get(ObjectType.goethite_field)
+            ).position
 
         # move towards heading
         self.move(*self.heading)
 
         # buy random module if we don't have one and are in range of a station
         if self.ship.module_0 == ModuleType.empty:
-            for thing in universe:
+            stations = universe.get(ObjectType.secure_station) + universe.get(ObjectType.black_market_station)
+            for current_station in stations:
 
-                # Check for all stations in the universe
-                if thing.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
-                    continue
-
-
-                current_station = thing
                 # Check if ship is within range of a / the station
                 ship_in_radius = in_radius(
                         current_station,
@@ -41,7 +44,8 @@ class ModuleNPC(NPC):
                         lambda e:e.position)
 
                 # skip if not in range
-                if not ship_in_radius: continue
+                if not ship_in_radius:
+                    continue
 
                 # Buy module
                 self.buy_module(

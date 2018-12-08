@@ -510,10 +510,11 @@ def show_ship_stats_display(ship, window_surf, clock):
     ))
 
     level_lut = {
-        ship.module_0_level: "",
-        ship.module_1_level: "Lvl 1",
-        ship.module_2_level: "Lvl 2",
-        ship.module_3_level: "Lvl 3",
+        ModuleLevel.base: "",
+        ModuleLevel.one: "Lvl 1",
+        ModuleLevel.two: "Lvl 2",
+        ModuleLevel.three: "Lvl 3",
+        ModuleLevel.illegal: "Lvl 4",
     }
     modules = [
         [ship.module_0, ship.module_0_level],
@@ -523,26 +524,27 @@ def show_ship_stats_display(ship, window_surf, clock):
     ]
     module_names = []
     for module in modules:
+        mod_level = level_lut[module[1]]
         if module[0] == ModuleType.empty:
-            module_names.append("Empty")
+            module_names.append(("Empty", ""))
         elif module[0] == ModuleType.locked:
-            module_names.append("Locked")
+            module_names.append(("Locked", ""))
         elif module[0] == ModuleType.cargo_and_mining:
-            module_names.append(level_lut[module[1]]+" Cargo and Mining")
+            module_names.append(("Cargo and Mining", mod_level))
         elif module[0] == ModuleType.engine_speed:
-            module_names.append(level_lut[module[1]]+" Engine Speed")
+            module_names.append(("Engine Speed", mod_level))
         elif module[0] == ModuleType.sensors:
-            module_names.append(level_lut[module[1]]+" Sensors")
+            module_names.append(("Sensors", mod_level))
         elif module[0] == ModuleType.hull:
-            module_names.append(level_lut[module[1]]+" Hull")
+            module_names.append(("Hull", mod_level))
         elif module[0] == ModuleType.weapons:
-            module_names.append(level_lut[module[1]]+" Weapon Damage")
+            module_names.append(("Weapon Damage", mod_level))
 
 
-    offset = 120
+    offset = 170
 
     for idx, module_name in enumerate(module_names):
-        draw_module(window_surf, (900, 40+(offset*idx)), module_name)
+        draw_module(window_surf, (1000, 20+(offset*idx)), module_name[0], module_name[1])
 
 
 
@@ -601,9 +603,13 @@ def show_ship_stats_display(ship, window_surf, clock):
     clock.tick(30)
 
 
-def draw_module(surf, pos, module_name):
-    width = 100
-    color = pygame.Color(0,155,0)
+def draw_module(surf, pos, module_name, level):
+    width = 150
+
+    if level == "Lvl 4":
+        color = pygame.Color(155, 0, 0)
+    else:
+        color = pygame.Color(0,155,0)
 
     font_name = pygame.font.get_default_font()
     font = pygame.font.Font(font_name, 14)
@@ -640,7 +646,20 @@ def draw_module(surf, pos, module_name):
                 pygame.Color(0, 155, 0))
 
     x_offset = (width*.5)-(text.get_rect().w/2)
-    y_offset = (width*.5)-(text.get_rect().h/2)
+    y_offset = (width*.45)-(text.get_rect().h/2)
+
+    surf.blit(text,
+              (
+                  pos[0] + x_offset,
+                  pos[1] + y_offset,
+              ))
+
+    text = font.render(level,
+                       True,
+                       pygame.Color(0, 155, 0))
+
+    x_offset = (width*.5)-(text.get_rect().w/2)
+    y_offset = (width*.65)-(text.get_rect().h/2)
 
     surf.blit(text,
               (

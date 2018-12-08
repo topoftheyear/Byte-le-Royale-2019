@@ -7,8 +7,9 @@ from game.config import NUM_POLICE, WORLD_BOUNDS
 from game.common.enums import *
 from game.common.name_helpers import *
 from game.common.police_ship import PoliceShip
-from game.utils.helpers import *
 from game.utils.projection import *
+import game.utils.filters as F
+from game.utils.helpers import *
 
 class PoliceVariant:
     waiting = 1
@@ -48,7 +49,6 @@ class PoliceController:
         return s
 
     def setup_police(self, universe):
-        p = []
         for _ in range(NUM_POLICE):
             pos = [
                 random.randint(0, WORLD_BOUNDS[0]),
@@ -59,10 +59,13 @@ class PoliceController:
 
             self.create_state(new_police)
 
-            universe.append(new_police)
-            p.append(new_police)
+            universe.add_object(new_police)
 
-        return p
+            self.events.append({
+                "type": LogEvent.police_spawned,
+                "ship_id": new_police.id,
+            })
+
 
 
     def create_state(self, ship):
@@ -94,50 +97,50 @@ class PoliceController:
 
         living_police = 0
 
-        for obj in universe:
+        for police in universe.get(ObjectType.police):
 
             #  remove dead police
-            if obj.object_type is ObjectType.police:
-                if obj.is_alive():
-                    living_police += 1
-                else:
-                    to_remove.append(obj)
+            if police.is_alive():
+                living_police += 1
+            else:
+                universe.remove_object(police)
+                self.events.append({
+                    "type": LogEvent.police_removed,
+                    "ship_id": police.id
+                })
 
-                    self.events.append({
-                        "type": LogEvent.police_removed,
-                        "ship_id": obj.id
-                    })
-
+        for ship in universe.get_filtered(
+                ObjectType.ship,
+                filter=F.GT(ENFORCER_THRESHOLD, lambda e: e.legal_standing)):
             # track new pirates
-            if(obj.object_type is ObjectType.ship
-                    and obj.legal_standing >= LegalStanding.pirate
-                    and obj.legal_standing >= ENFORCER_THRESHOLD):
-
-                if obj.team_name not in self.profiles:
-                    self.profiles[obj.team_name] = {
-                        "ship": obj.id,
-                        "wave_counter": 0,
-                        "wave_timer": 0,
-                        "assigned_enforcers": []
-                    }
+            if ship.team_name not in self.profiles:
+                self.profiles[ship.team_name] = {
+                    "ship": ship.id,
+                    "wave_counter": 0,
+                    "wave_timer": 0,
+                    "assigned_enforcers": []
+                }
 
         teams_to_remove = []
         for team_name in self.profiles.keys():
             # stop tracking ships that are no longer within enforcer thresh
-            ship = next(filter(lambda e: e.object_type == ObjectType.ship
-                               and e.team_name == team_name
-                               and e.legal_standing < ENFORCER_THRESHOLD,
-                               universe),
-                        None)
+            ship = universe.get_filtered_one(
+                ObjectType.ship,
+                AND(
+                    F.EQ(team_name),
+                    F.less_than(ENFORCER_THRESHOLD, lambda e: e.legal_standing)
+                ))
+
             if ship is not None:
                 teams_to_remove.append(team_name)
 
             # stop tracking ships that are destroyed
-            ship = next(filter(lambda e: e.object_type == ObjectType.ship
-                               and e.team_name == team_name
-                               and not e.is_alive(),
-                               universe),
-                        None)
+            ship = universe.get_filtered_one(
+                ObjectType.ship,
+                AND(
+                    F.EQ(team_name),
+                    F.alive()
+                ))
             if ship is not None:
                 teams_to_remove.append(team_name)
 
@@ -149,7 +152,6 @@ class PoliceController:
         for team_name, profile in self.profiles.items():
             if profile["wave_timer"] <= 0:
                 profile["wave_counter"] += 1
-                profile["wave_counrer"] = max(profile["wave_counter"], 8)
                 self.print("Spawning {} enforcers".format(profile["wave_counter"]))
                 for _ in range(profile["wave_counter"]):
                     # spawn new enforcer
@@ -162,8 +164,9 @@ class PoliceController:
 
                     profile["assigned_enforcers"].append(new_enforcer)
 
-                    new_enforcers.append(new_enforcer)
                     self.create_state(new_enforcer)
+
+                    universe.add_object(new_enforcer)
 
                     self.events.append({
                         "type": LogEvent.enforcer_spawned,
@@ -176,7 +179,7 @@ class PoliceController:
 
         # despawn enforcers without a profile if at center
         assigned_enforcers = [ e for _,p in self.profiles.items() for e in p["assigned_enforcers"]]
-        for enforcer in filter(lambda e: e.object_type == ObjectType.enforcer, universe):
+        for enforcer in universe.get(ObjectType.enforcer):
             # if at center of world
             there = in_radius(enforcer, percent_world(0.5, 0.5), 15, lambda e: e.position, lambda t: t)
             if there and enforcer not in assigned_enforcers:
@@ -189,10 +192,7 @@ class PoliceController:
                 })
 
         # Spawn more police if needed
-        living_police = len(list(filter(
-            lambda e: e.object_type is ObjectType.police and e.is_alive(),
-            universe
-            )))
+        living_police = sum([e.is_alive() for e in universe.get(ObjectType.police)])
 
         if living_police < NUM_POLICE:
             self.police_spawn_counter += 1
@@ -205,9 +205,10 @@ class PoliceController:
                 new_police.append(new_ship)
                 self.police_spawn_counter = 0
 
+                universe.add_object(new_ship)
                 self.events.append({
                     "type": LogEvent.police_spawned,
-                    "ship_id": new_ship.id
+                    "ship_id": new_ship.id,
                 })
 
         return new_police, new_enforcers, to_remove
@@ -252,7 +253,8 @@ class PoliceController:
                 state["heading"] = None
         else:
             # update target location
-            target_ships = get_ships(universe, lambda s:s.id==state["target"].id)
+            id = state["target"].id
+            target_ships = [ ship for ship in universe.get("ships") if ship.id == id]
             if len(target_ships) > 0:
                 state["target"] = target_ships[0]
             else:
@@ -304,7 +306,7 @@ class PoliceController:
 
         if "patrol_route" not in state:
             # get stations to choose between
-            stations = get_stations(universe)
+            stations = universe.get("all_stations")
 
             state["patrol_route"] = random.choices(stations, k=3)
 
@@ -323,7 +325,8 @@ class PoliceController:
 
         if "target" in state:
             # get updated copy of target
-            target_ships = get_ships(universe, lambda s:s.id==state["target"].id)
+            id = state["target"].id
+            target_ships = [ ship for ship in universe.get("ships") if ship.id == id]
             if len(target_ships) > 0:
                 state["target"] = target_ships[0]
 
@@ -353,7 +356,7 @@ class PoliceController:
                     state["waypoint"],
                     lambda s: s.position)
 
-            if not ( -5 < distance[0] < 5 and -5 < distance[1] < 5):
+            if not ( -5 < distance < 5 ):
                 # we are not at waypoint, continue moving towards
                 state["heading"] = state["waypoint"].position
 
@@ -406,7 +409,8 @@ class PoliceController:
             # if we have a target...
 
             # update target location
-            target_ships = get_ships(universe, lambda s:s.id==state["target"].id)
+            id = state["target"].id
+            target_ships = [ ship for ship in universe.get("ships") if ship.id == id]
             if len(target_ships) > 0:
                 state["target"] = target_ships[0]
 
@@ -493,8 +497,11 @@ class PoliceController:
             self.print("Profile found, locating target")
 
             # get target
-            target = next(filter(lambda e: e.id == profile["ship"] and e.object_type == ObjectType.ship,
-                                 universe), None)
+            target = None
+            for ship in universe.get(ObjectType.ship):
+                if ship.id == profile["ship"]:
+                    target = ship
+                    break
 
             if target is None or not target.is_alive():
                 self.print("target not found or dead, moving to center.")
@@ -529,18 +536,17 @@ class PoliceController:
         ship.move_action = None
 
 
+
     def closest_pirate(self, police_ship, universe):
-        ships = get_ships(universe, lambda s: (
-                s.legal_standing >= LegalStanding.pirate
-                and in_radius(police_ship, s, police_ship.sensor_range, lambda s:s.position)
-                and s.is_alive())
-        )
+
+        range_pred = F.in_radius(police_ship, police_ship.sensor_range, lambda s: s.position)
+        ships = universe.get_filtered(ObjectType.ship, filter=F.AND(F.alive(), F.pirate(), range_pred))
 
         num_ships = len(ships)
 
         if num_ships > 1:
-            ships = sorted(ships, key=lambda e: distance_to(police_ship, e, lambda x:x.position))
-            return ships[0]
+            ship = min(ships, key=lambda e: distance_to(police_ship, e, lambda x:x.position))
+            return ship
         elif num_ships == 1:
             return ships[0]
         else:

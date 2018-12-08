@@ -12,12 +12,7 @@ class CargoDropNPC(NPC):
 
         # choose a new heading if we don't have one
         if self.heading is None:
-            locations = []
-            for thing in universe:
-                # Check for all asteroid fields in the universe
-                if thing.object_type in [ObjectType.cuprite_field]:
-                    locations.append(thing)
-
+            locations = universe.get(ObjectType.cuprite_field)
             self.heading = random.choice(locations).position
 
         # move towards heading

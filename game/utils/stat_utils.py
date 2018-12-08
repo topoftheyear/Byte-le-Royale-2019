@@ -120,7 +120,9 @@ def compile_material_buy_vs_sell(stats):
             )
 
 
-    del compiled["N/A"]
+    if "N/A" in compiled:
+
+        del compiled["N/A"]
 
     # Fix for drones since they arent a primary but 2 secondaries
     drones_avg = []
@@ -141,6 +143,7 @@ def compile_consumption_vs_production(stats):
     compiled = {}
 
     for t in stats:
+        compiled_tick = {}
         for station in t["market"]:
             prod_material = station["production_material"]
             pri_material = station["primary_import"]
@@ -150,26 +153,35 @@ def compile_consumption_vs_production(stats):
             pri_name = get_material_name(pri_material)
             sec_name = get_material_name(sec_material)
 
+            if prod_name not in compiled_tick:
+                compiled_tick[prod_name] = {}
+            if "Produced" not in compiled_tick[prod_name]:
+                compiled_tick[prod_name]["Produced"] = 0
+            compiled_tick[prod_name]["Produced"] += station["production_produced"]
 
-            if prod_name not in compiled:
-                compiled[prod_name] = {}
+            if pri_name not in compiled_tick:
+                compiled_tick[pri_name] = {}
+            pri_consumed = "Primary Consumed"
+            if pri_consumed not in compiled_tick[pri_name]:
+                compiled_tick[pri_name][pri_consumed] = 0
+            compiled_tick[pri_name][pri_consumed] += station["primary_consumed"]
 
-            if "Produced" not in compiled[prod_name]:
-                compiled[prod_name]["Produced"] = []
-            compiled[prod_name]["Produced"].append(station["production_produced"])
+            if sec_material != -1:
+                sec_consumed = "Secondary Consumed"
+                if sec_name not in compiled_tick:
+                    compiled_tick[sec_name] = {}
+                if sec_consumed not in compiled_tick[sec_name]:
+                    compiled_tick[sec_name][sec_consumed] = 0
+                compiled_tick[sec_name][sec_consumed] += station["secondary_consumed"]
 
-            if pri_name not in compiled:
-                compiled[pri_name] = {}
-            if "Primary Consumed" not in compiled:
-                compiled[pri_name]["Primary Consumed"] = []
-            compiled[pri_name]["Primary Consumed"].append(station["primary_consumed"])
+        for mat, counts in compiled_tick.items():
+            if mat not in compiled:
+                compiled[mat] = {}
 
-            if station["secondary_import"] != -1:
-                if sec_name not in compiled:
-                    compiled[sec_name] = {}
-                if "Secondary Consumed" not in compiled:
-                    compiled[sec_name]["Secondary Consumed"] = []
-                compiled[sec_name]["Secondary Consumed"].append(station["secondary_consumed"])
+            for type, count in counts.items():
+                if type not in compiled[mat]:
+                    compiled[mat][type] = []
+                compiled[mat][type].append(count)
 
     return compiled
 
