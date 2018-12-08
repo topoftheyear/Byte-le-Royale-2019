@@ -7,7 +7,10 @@ from game.visualizer.spritesheet_functions import SpriteSheet
 from game.common.enums import *
 from game.utils.projection import *
 
+
 class ShipSpriteSheet(pygame.sprite.DirtySprite):
+    focus_team = None
+
     def __init__(self, sprite_sheet_data, x, y, ship_id, color):
         super().__init__()
 
@@ -22,11 +25,15 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         self.current_vec = None
         self.new_vec = None
         self.move_target = None
+        self.reload_color = True
 
         self.first = False
 
         self.dirty = 2
 
+    @staticmethod
+    def set_focus_team(self, team_name=None):
+        ShipSpriteSheet.focus_team = team_name
 
     def load_sprite(self):
         sprite_sheet = SpriteSheet("game/visualizer/assets/simple_ship.png")
@@ -68,13 +75,15 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         pa.replace(pygame.Color("#3c3c3c"), self.color_3)
         del pa
 
-
-
     def update(self, universe, events, intermediate=-1):
 
         ship = self.find_self(universe)
         if ship is None:
             return
+
+        if self.reload_color and ship.color is not None:
+            self.load_sprite()
+            self.reload_color = False
 
         if not ship.is_alive():
             self.rect.center = percent_display(0.5, 0.5)
@@ -91,14 +100,13 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
             self.current_vec = pygame.math.Vector2(self.rect.center[0], self.rect.center[1])
             self.new_vec = pygame.math.Vector2(world_to_display(*ship.position))
 
-
         move_event = self.get_event_type(events, LogEvent.ship_move, one=True)
         if move_event:
             self.move_target = world_to_display(*move_event["target_pos"])
         else:
             self.move_target = None
 
-        if self.move_target != None:
+        if self.move_target is not None:
             # update rotation
             angle_to = math.degrees(math.atan2(
                 self.rect.center[0]-self.new_vec[0],
@@ -109,7 +117,6 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         # lerp
         lerp = self.current_vec.lerp(self.new_vec, intermediate if intermediate >= 0 else 1.0)
         self.rect.center = lerp
-
 
     def find_self(self, universe):
         for obj in universe:
@@ -132,7 +139,6 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
                     return e
                 selected.append(e)
         return selected if len(selected) else None
-
 
     def rotate(self, angle):
         rot_sprite = pygame.transform.rotozoom(self.image_cache, angle, 0.6)
@@ -176,15 +182,6 @@ class NeutralShipSprite(ShipSpriteSheet):
             self.load_sprite()
 
         super().update(universe, events, intermediate)
-
-
-
-class EnforcerShipSprite(ShipSpriteSheet):
-    def __init__(self, x, y, ship_id):
-        ShipSpriteSheet.__init__(self, [
-            0, 0,
-            32, 32
-        ], x, y, ship_id, pygame.Color(0, 0, 255))
 
 
 class PoliceShipSprite(ShipSpriteSheet):
@@ -237,6 +234,3 @@ class EnforcerShipSprite(ShipSpriteSheet):
             self.load_sprite()
 
         super().update(universe, events, intermediate)
-
-
-

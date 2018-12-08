@@ -140,9 +140,10 @@ class CustomServer(ServerControl):
 
                     client_id = data["client_id"]
                     team_name = data["team_name"]
+                    team_color = data["team_color"]
 
                     ship = Ship()
-                    ship.init(team_name)
+                    ship.init(team_name, team_color)
 
                     self.universe.add_object(ship)
 

@@ -9,6 +9,7 @@ from game.visualizer.station_sprites import *
 from game.visualizer.illegal_salvage_sprite import IllegalSalvageSprite
 from game.visualizer.asteroid_field_sprites import get_asteroid_field_sprite
 from game.common.enums import *
+from game.visualizer.ship_sprites import ShipSpriteSheet
 from game.config import *
 from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
@@ -37,7 +38,7 @@ def log(msg):
         print(str(msg))
 
 
-def start(verbose, log_path, gamma, dont_wait, fullscreen):
+def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None):
     global fpsClock
     global log_parser
     global universe
@@ -45,6 +46,9 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
+    ShipSpriteSheet.set_focus_team(focus_team_name)
+    # if focus_team_name is not None: print(focus_team_name)
+    # else: print("None")
 
     # initialize pygame
     pygame.init()
@@ -61,11 +65,14 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen):
     # set gamma (i.e. sort of like brightness)
     pygame.display.set_gamma(gamma)
 
-
     for obj in universe:
         if obj.object_type == ObjectType.ship:
-            ship_sprite = NeutralShipSprite(*obj.position, obj.id)
-            ship_group.add(ship_sprite)
+            if obj.team_name == focus_team_name:  # is the team name the focus team?
+                ship_sprite = PlayerShipSprite(*obj.position, obj.id)
+                ship_group.add(ship_sprite)
+            else:
+                ship_sprite = NeutralShipSprite(*obj.position, obj.id)
+                ship_group.add(ship_sprite)
 
         elif obj.object_type == ObjectType.police:
             ship_sprite = PoliceShipSprite(*obj.position, obj.id)

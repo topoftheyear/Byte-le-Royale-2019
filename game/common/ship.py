@@ -5,13 +5,15 @@ from game.common.game_object import GameObject
 from game.common.enums import *
 from game.common.stats import GameStats
 
+focus_team = None
+
 
 class Ship(GameObject):
 
     def __init__(self):
         pass
 
-    def init(self, team_name, is_npc=False, position=(0,0)):
+    def init(self, team_name, color=None, is_npc=False, position=(0,0)):
         GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
@@ -26,8 +28,10 @@ class Ship(GameObject):
 
         if self.is_npc:
             self.team_name = team_name + f" ({self.id})"
+            self.color = None
         else:
             self.team_name = team_name
+            self.color = color
 
         self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.base)
         self.current_hull = self.max_hull
@@ -84,6 +88,7 @@ class Ship(GameObject):
                 "id": self.id,
                 "team_name": self.team_name,
                 "is_npc": self.is_npc,
+                "color": self.color,
             }
 
 
@@ -147,7 +152,6 @@ class Ship(GameObject):
 
         return data
 
-
     def from_dict(self, data, security_level=SecurityLevel.other_player):
         GameObject.from_dict(self, data)
 
@@ -158,6 +162,7 @@ class Ship(GameObject):
             self.id = data["id"]
             self.public_id = data["public_id"]
             self.team_name = data["team_name"]
+            self.color = data["color"]
 
             self.max_hull = data["max_hull"]
             self.current_hull = data["current_hull"]
@@ -207,8 +212,6 @@ class Ship(GameObject):
 
         if security_level <= SecurityLevel.other_player:
             pass
-
-
 
     def is_alive(self):
         return self.current_hull > 0
