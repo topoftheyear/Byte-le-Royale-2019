@@ -17,21 +17,24 @@ class UnlockNPC(NPC):
 
         # choose a new heading if we don't have one
         if self.heading is None:
-            #self.heading = ( random.randint(0, WORLD_BOUNDS[0]), random.randint(0, WORLD_BOUNDS[1]))
-            self.heading = random.choice(list(filter(lambda e:e.object_type != ObjectType.ship, universe))).position
+            self.heading = random.choice(
+                universe.get(ObjectType.station) +
+                universe.get(ObjectType.secure_station) +
+                universe.get(ObjectType.black_market_station) +
+                universe.get(ObjectType.cuprite_field) +
+                universe.get(ObjectType.gold_field) +
+                universe.get(ObjectType.goethite_field)
+            ).position
 
         # move towards heading
         self.move(*self.heading)
 
         # unlock a module slot if we still have locked slots
         if self.ship.module_3 == ModuleType.locked:
-            for thing in universe:
 
-                # Check for all stations in the universe
-                if thing.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
-                    continue
+            stations = universe.get(ObjectType.secure_station) + universe.get(ObjectType.black_market_station)
+            for current_station in stations:
 
-                current_station = thing
                 # Check if ship is within range of a / the station
                 ship_in_radius = in_radius(
                     current_station,
@@ -44,7 +47,6 @@ class UnlockNPC(NPC):
 
                 # Unlock module
                 self.unlock_module()
-
 
         return self.action_digest()
 

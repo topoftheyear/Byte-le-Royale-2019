@@ -36,7 +36,8 @@ Run build_WIN.bat
 
 ### Run:
 ```shell
-python ./br_launcher.pyz [ script to run ] [ options ]
+pipenv shell
+./br_launcher.pyz [ script to run ] [ options ]
 ```
 
 # Launcher Scripts

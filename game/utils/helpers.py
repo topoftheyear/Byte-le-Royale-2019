@@ -1,40 +1,44 @@
+import math
+from itertools import groupby
+from game.utils.filters import in_radius as pred_in_radius
+from game.utils.filters import AND, EQ, NOT
 import types
 
+from game.config import *
 from game.common.enums import *
 
+
 def get_ships(universe, callback=None):
-    if callback != None:
-        return [ obj
-                for obj in universe
-                if obj.object_type in [ ObjectType.ship, ObjectType.police, ObjectType.enforcer ]
-                and obj.is_alive()
+
+    if callback is not None:
+        return [obj
+                for obj in universe.get("ships")
+                if obj.is_alive()
                 and callback(obj)]
 
-    return [ obj
-            for obj in universe
-            if obj.object_type == ObjectType.ship
-            and obj.is_alive()]
+    return [obj
+            for obj in universe.get("ships")
+            if obj.is_alive()]
+
 
 def ships_in_attack_range(universe, ship):
-    def is_ship_visible_wrapper(ship):
-        def is_ship_visible(target):
-            result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
-            in_range = result < ship.weapon_range**2
-            return in_range  and ship.id != target.id
-        return is_ship_visible
+    def is_visible_wrapper(t):
+        return in_radius(ship, t, ship.weapon_range, lambda e: e.position, verify_instance=True)
+    return get_ships(universe, is_visible_wrapper)
 
-    return get_ships(universe, is_ship_visible_wrapper(ship))
 
 def get_stations(universe):
     return [ obj for obj in universe if obj.object_type == ObjectType.station ]
 
+
 def get_asteroid_fields(universe):
-    return [ obj
+    return [obj
             for obj in universe
             if obj.object_type in [
                 ObjectType.cuprite_field,
                 ObjectType.goethite_field,
-                ObjectType.gold_field] ]
+                ObjectType.gold_field]]
+
 
 def distance_to(source, target, accessor, target_accessor=None):
     """
@@ -52,9 +56,9 @@ def distance_to(source, target, accessor, target_accessor=None):
         target_pos = accessor(target)
 
     return (
-        source_pos[0] - target_pos[0],
-        source_pos[1] - target_pos[1]
-    )
+        (source_pos[0] - target_pos[0])**2 +
+        (source_pos[1] - target_pos[1])**2
+    )**(1/2)
 
 
 def in_radius(source, target, radius, accessor, target_accessor=None, verify_instance=True):
@@ -81,11 +85,23 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     in_range = result < radius**2
 
     if verify_instance:
-        return in_range
+        return in_range and source.id != target.id
     else:
         return in_range
 
-def in_secure_zone(target, target_accessor):
+
+def convert_material_to_scrap(universe, material_qty, material_value):
+    """
+    Params:
+    :param universe: the universe
+    :param material: MaterialType enum of material to convert
+    :param amount: number amount of the material given
+    :return: integer amount of how many scrap should be created
+    """
+    return math.ceil(material_qty * material_value * 0.25)
+
+
+def in_secure_zone(source, accessor):
     """
     Params:
     - The object you wish to check if it's position == within the save zone
@@ -97,8 +113,7 @@ def in_secure_zone(target, target_accessor):
         WORLD_BOUNDS[1]/2.0
     )
 
-    return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, accessor, lambda e: e)
-
+    return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, accessor, target_accessor=lambda e: e)
 
 
 def get_material_name(material_type):
@@ -129,4 +144,39 @@ def get_material_name(material_type):
         return "Weaponry"
     elif material_type == MaterialType.wire:
         return "Wire"
-    return f"N/A ({material_type})"
+    return "N/A"
+
+def separate_universe(flat_universe):
+
+    universe = {}
+
+    for key, group in groupby(flat_universe, lambda e: e.object_type):
+        if key not in universe:
+            universe[key] = []
+        universe[key].extend(list(group))
+
+    return universe
+
+
+def get_mateiral_prices(universe):
+    price_list = {}
+    all_prices = {}
+    for station in universe.get(ObjectType.station):
+        if station.primary_import is not None:
+            if station.primary_import not in all_prices:
+                all_prices[station.primary_import] = []
+            all_prices[station.primary_import].append(station.primary_buy_price)
+
+        if station.secondary_import is not None:
+            if station.secondary_import not in all_prices:
+                all_prices[station.secondary_import] = []
+            all_prices[station.secondary_import].append(station.secondary_buy_price)
+
+    for material, prices in all_prices.items():
+        if material not in price_list:
+            price_list[material] = 0
+        price_list[material] = max(prices)
+
+    return price_list
+
+

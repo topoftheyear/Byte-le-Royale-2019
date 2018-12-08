@@ -122,12 +122,9 @@ class CombatController:
                     elif target.object_type is ObjectType.enforcer:
                         self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_enforcer)
 
-
-
-
     def get_ship(self, id, universe):
-        for obj in universe:
-            if obj.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer] and obj.id == id:
+        for obj in universe.get(ObjectType.ship) + universe.get("police"):
+            if obj.id == id:
                 return obj
         return None
 

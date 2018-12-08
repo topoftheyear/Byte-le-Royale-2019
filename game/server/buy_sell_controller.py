@@ -21,7 +21,7 @@ class BuySellController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
         self.station_bids = {}
@@ -60,15 +60,11 @@ class BuySellController:
             if ship.action in [PlayerAction.sell_material, PlayerAction.buy_material]:
                 # check if station in range
                 station = None
-                for thing in universe:
+                for _station in universe.get(ObjectType.station):
                     # find station in range
-                    if (thing.object_type is ObjectType.station and
-                            in_radius(
-                                thing,
-                                ship,
-                                thing.accessibility_radius,
-                                lambda e:e.position)):
-                        station = thing
+                    if (in_radius(_station, ship, _station.accessibility_radius, lambda e:e.position)):
+                        station = _station
+                        break
 
                 # if no station in range, continue on
                 if not station:
@@ -83,15 +79,11 @@ class BuySellController:
             else:
                 # check if station in range
                 station = None
-                for thing in universe:
+                for thing in universe.get(ObjectType.black_market_station):
                     # find station in range
-                    if (thing.object_type is ObjectType.black_market_station and
-                            in_radius(
-                                thing,
-                                ship,
-                                thing.accessibility_radius,
-                                lambda e: e.position)):
+                    if (in_radius(thing, ship, thing.accessibility_radius, lambda e: e.position)):
                         station = thing
+                        break
 
                 # if no station in range, continue on
                 if not station:
@@ -99,6 +91,7 @@ class BuySellController:
 
                 # Check for ships that are performing the sell material action
                 self.process_sell_salvage(ship, station)
+
         self.process_sell_bids()
         self.process_buy_bids()
 
