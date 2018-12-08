@@ -58,14 +58,10 @@ class ClientLogic:
 
         if turn_data["message_type"] == MessageType.team_name:
             team_name = self.player_client.team_name()
-            return {
-                "message_type": MessageType.team_name,
-                "team_name": team_name
-            }
-        elif turn_data["message_type"] == MessageType.team_color:
             team_color = self.player_client.team_color()
             return {
-                "message_type": MessageType.team_color,
+                "message_type": MessageType.team_name,
+                "team_name": team_name,
                 "team_color": team_color
             }
         elif turn_data["message_type"] == MessageType.ping:

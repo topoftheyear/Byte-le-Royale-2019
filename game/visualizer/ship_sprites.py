@@ -25,6 +25,7 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         self.current_vec = None
         self.new_vec = None
         self.move_target = None
+        self.reload_color = True
 
         self.first = False
 
@@ -79,6 +80,10 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         ship = self.find_self(universe)
         if ship is None:
             return
+
+        if self.reload_color and ship.color is not None:
+            self.load_sprite()
+            self.reload_color = False
 
         if not ship.is_alive():
             self.rect.center = percent_display(0.5, 0.5)

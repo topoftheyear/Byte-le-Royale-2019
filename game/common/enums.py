@@ -56,7 +56,6 @@ class MessageType:
     pong = 2
     team_name = 3
     take_turn = 4
-    team_color = 5
 
 
 class PlayerAction:

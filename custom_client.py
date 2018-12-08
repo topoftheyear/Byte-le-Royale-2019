@@ -13,16 +13,18 @@ class CustomClient(UserClient):
     def team_name(self):
         print("Sending Team Name")
 
-        return "Herp Derp"
+        return "Derp"
 
     def team_color(self):
         print("Sending Team Color")
 
+        # list of [ red, green, blue ] values or
+        # hex color "#333aaa"
         return [154, 50, 205]
 
     def take_turn(self):
 
-        pass
+        self.move(random.randint(100,500), random.randint(100, 500))
 
 
 
