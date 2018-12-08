@@ -159,3 +159,26 @@ def separate_universe(flat_universe):
 
     return universe
 
+
+def get_mateiral_prices(universe):
+    price_list = {}
+    all_prices = {}
+    for station in universe.get(ObjectType.station):
+        if station.primary_import is not None:
+            if station.primary_import not in all_prices:
+                all_prices[station.primary_import] = []
+            all_prices[station.primary_import].append(station.primary_buy_price)
+
+        if station.secondary_import is not None:
+            if station.secondary_import not in all_prices:
+                all_prices[station.secondary_import] = []
+            all_prices[station.secondary_import].append(station.secondary_buy_price)
+
+    for material, prices in all_prices.items():
+        if material not in price_list:
+            price_list[material] = 0
+        price_list[material] = max(prices)
+
+    return price_list
+
+

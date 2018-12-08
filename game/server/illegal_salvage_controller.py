@@ -15,6 +15,8 @@ class IllegalSalvageController:
         self.events = []
         self.stats = []
 
+        self.material_prices = None
+
     def print(self, msg):
         if self.debug:
             print('IllegalSalvageController: ' + str(msg))
@@ -31,6 +33,8 @@ class IllegalSalvageController:
         return s
 
     def handle_actions(self, living_ships, universe, teams, npc_teams):
+        self.material_prices = None
+
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
@@ -53,7 +57,8 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                material_amount = convert_material_to_scrap(universe, material_type, amount_dropped)
+                self.material_prices = get_mateiral_prices(universe)
+                material_amount = self.material_prices[material_type]
 
                 random_position = (
                     ship.position[0] + random.randint(-5, 5),
