@@ -266,7 +266,7 @@ def draw_screen():
     illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
 
-    font = pygame.font.SysFont("arial",24,True)
+    font = pygame.font.SysFont(pygame.font.get_default_font(),24,True)
     text = ("Tick " + str(log_parser.tick - 1)).rjust(10)
     renderText = font.render(text, True, (255, 255, 255))
     global_surf.blit(renderText, (0, 676))
