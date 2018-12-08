@@ -6,7 +6,6 @@ import types
 
 from game.config import *
 from game.common.enums import *
-from game.utils.material_price_finder import *
 
 
 def get_ships(universe, callback=None):
@@ -160,7 +159,7 @@ def separate_universe(flat_universe):
     return universe
 
 
-def get_mateiral_prices(universe):
+def get_material_prices(universe):
     price_list = {}
     all_prices = {}
     for station in universe.get(ObjectType.station):
