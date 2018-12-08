@@ -290,7 +290,7 @@ class CustomServer(ServerControl):
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
-        self.death_controller.handle_actions(dead_ships)
+        self.death_controller.handle_actions(dead_ships, self.universe)
 
         self.notoriety_controller.update_standing_universe(self.universe.get(ObjectType.ship))
 

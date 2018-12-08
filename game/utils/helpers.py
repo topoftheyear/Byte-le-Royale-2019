@@ -90,7 +90,7 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
         return in_range
 
 
-def convert_material_to_scrap(universe, material, amount):
+def convert_material_to_scrap(material_qty, material_value):
     """
     Params:
     :param universe: the universe
@@ -98,8 +98,7 @@ def convert_material_to_scrap(universe, material, amount):
     :param amount: number amount of the material given
     :return: integer amount of how many scrap should be created
     """
-    value = get_material_price(universe, material)
-    return math.ceil(amount * value * 0.25)
+    return math.ceil(material_qty * material_value * 0.25)
 
 
 def in_secure_zone(source, accessor):

@@ -66,8 +66,6 @@ class PoliceController:
                 "ship_id": new_police.id,
             })
 
-
-
     def create_state(self, ship):
         self.states[ship.id] = {
             "variation":  random.choices([
@@ -271,8 +269,7 @@ class PoliceController:
                 else:
                     state["heading"] = None
 
-
-        # move toward target and attack
+       # move toward target and attack
         if state.get("target"):
             if not state["target"].is_alive():
                 state["target"] = None
