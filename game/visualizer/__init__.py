@@ -14,8 +14,6 @@ from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
-import game.utils.ptext
-
 pause = False
 log_parser = None
 global_surf = None
@@ -262,12 +260,16 @@ def draw_screen():
     # clear screen, fill with black
     global_surf.fill(pygame.Color(0,0,0))
 
-    # draw groups to screan
+    # draw groups to screen
     station_group.draw(global_surf)
     asteroid_field_group.draw(global_surf)
     illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
 
+    font = pygame.font.SysFont(pygame.font.get_default_font(),24,True)
+    text = ("Turn " + str(log_parser.tick - 1).rjust(6, "0"))
+    renderText = font.render(text, True, (0, 155, 0))
+    global_surf.blit(renderText, (10, 695))
 
 
 def handle_events():
