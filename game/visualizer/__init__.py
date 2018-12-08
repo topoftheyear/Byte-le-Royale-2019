@@ -267,9 +267,9 @@ def draw_screen():
     ship_group.draw(global_surf)
 
     font = pygame.font.SysFont(pygame.font.get_default_font(),24,True)
-    text = ("Tick " + str(log_parser.tick - 1)).rjust(10)
-    renderText = font.render(text, True, (255, 255, 255))
-    global_surf.blit(renderText, (0, 676))
+    text = ("Turn " + str(log_parser.tick - 1).rjust(6, "0"))
+    renderText = font.render(text, True, (0, 155, 0))
+    global_surf.blit(renderText, (10, 695))
 
 
 def handle_events():
