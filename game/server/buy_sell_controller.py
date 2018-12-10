@@ -21,7 +21,7 @@ class BuySellController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
         self.station_bids = {}
@@ -31,7 +31,7 @@ class BuySellController:
 
     def print(self, msg):
         if self.debug:
-            print("Buy Sell Controller:" + str(msg))
+            print("Buy Sell Controller: " + str(msg))
             sys.stdout.flush()
 
     def get_events(self):
@@ -90,6 +90,7 @@ class BuySellController:
                     continue
 
                 # Check for ships that are performing the sell material action
+                self.print("selling salvage action")
                 self.process_sell_salvage(ship, station)
 
         self.process_sell_bids()
@@ -121,8 +122,9 @@ class BuySellController:
 
         # Apply bounty for selling scrap
         # TODO determine balanced value for this, current 1:1
-        ship.bounty_list.append({"bounty_type": BountyType.scrap_sold, "value": sale, "age": 0})
-        self.print(f"Bounty {BountyType.scrap_sold} given to ship {ship.id}")
+        if ship.legal_standing >= LegalStanding.pirate:
+            ship.bounty_list.append({"bounty_type": BountyType.scrap_sold, "value": sale, "age": 0})
+            self.print(f"Bounty {BountyType.scrap_sold} given to ship {ship.id}")
 
         self.events.append({
             "type": LogEvent.salvage_sold,

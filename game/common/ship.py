@@ -72,7 +72,7 @@ class Ship(GameObject):
         self.legal_standing = LegalStanding.citizen
 
         self.bounty_total = 0
-        self.bounty_list: list[Bounty] = []
+        self.bounty_list = []
 
         self.respawn_counter = -1
 

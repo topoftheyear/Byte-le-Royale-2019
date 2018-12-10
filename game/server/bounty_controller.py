@@ -7,7 +7,7 @@ class BountyController:
 
     def __init__(self):
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 
@@ -32,7 +32,6 @@ class BountyController:
         for bounty in ship.bounty_list:
             if bounty["bounty_type"] is not BountyType.became_pirate:
                 ship.bounty_list.remove(bounty)
-        self.print(f"Bounties removed from ship {ship.id}")
 
     def handle_actions(self, living_ships, universe, teams, npc_teams):
         for team, data in { **teams, **npc_teams}.items():
@@ -41,7 +40,8 @@ class BountyController:
             if ship.is_alive():
                 # Determine new bounty if ship is not a pirate
                 if ship.legal_standing < LegalStanding.pirate:
-                    ship.bounty = 0
+                    ship.bounty_total = 0
+                    self.clear_bounty(ship)
                     continue
 
                 # Determine new bounty total
@@ -63,8 +63,8 @@ class BountyController:
                         new_bounty += bounty["value"]
 
                 # Only performing the ceiling one time to maintain accuracy
-                ship.bounty = math.ceil(new_bounty)
-                self.print(f"New bounty of {new_bounty} determined for ship: {ship.id}")
+                ship.bounty_total = math.ceil(new_bounty)
+                self.print(f"New bounty of {ship.bounty_total} determined for ship: {ship.id}")
 
             else:
                 self.clear_bounty(ship)

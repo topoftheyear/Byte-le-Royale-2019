@@ -19,7 +19,7 @@ class NotorietyController:
         else:
             NotorietyController.__instance = self
 
-        self.debug = True
+        self.debug = False
         self.events = []
         self.stats = []
 

@@ -11,6 +11,7 @@ from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
+from game.common.npc.bounty_redeemer import BountyRedeemerNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -272,7 +273,7 @@ class CustomServer(ServerControl):
 
         for ship in self.universe.get(ObjectType.ship):
             npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
-                                      BuySellNPC, SalvageNPC])
+                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -287,12 +288,12 @@ class CustomServer(ServerControl):
         living_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.alive())
 
         # apply the results of any actions a player took if player still alive
+        self.bounty_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.buy_sell_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.bounty_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
         self.death_controller.handle_actions(dead_ships, self.universe)

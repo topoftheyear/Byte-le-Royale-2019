@@ -88,7 +88,6 @@ class ObjectType:
     enforcer = 9
     illegal_salvage = 10
 
-    bounty = 11
 
 class MaterialType:
     null = -1

@@ -36,13 +36,4 @@ class SalvageNPC(NPC):
             self.move(station.position[0], station.position[1])
             self.sell_salvage()
 
-
-
-
         return self.action_digest()
-
-
-
-
-
-
