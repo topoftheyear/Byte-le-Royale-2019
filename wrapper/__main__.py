@@ -224,6 +224,12 @@ def announcements():
         click.echo("\n No available announcements.")
 
 
+@scrim.command()
+def ui():
+    from scrimmage import run_scrimmage_ui
+    run_scrimmage_ui()
+
+
 admin_password = os.getenv("BL_ROYALE_ADMIN_PASSWORD", False)
 if admin_password:
     @scrim.group()
@@ -258,6 +264,8 @@ if admin_password:
             click.echo("An error occurred " + payload.raw)
         else:
             click.echo("Successfully cleared announcements")
+
+
 
 
 

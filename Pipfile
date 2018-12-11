@@ -10,6 +10,7 @@ numpy = "*"
 tqdm = "*"
 requests = "*"
 Pygame = "*"
+prompt-toolkit = "*"
 
 [dev-packages]
 sphinx = "*"
@@ -19,6 +20,7 @@ pymongo = "*"
 flask = "*"
 flask-cors = "*"
 flask-pymongo = "*"
+pygments = "*"
 
 [requires]
 python_version = "3.7"
