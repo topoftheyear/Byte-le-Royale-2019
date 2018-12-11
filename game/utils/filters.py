@@ -66,6 +66,13 @@ def greater_than(obj, accessor=None):
         return e > obj
     return pred
 
+
+def id_in(id_list):
+    def pred(e):
+        return e.id in id_list
+    return pred
+
+
 def NOT(outer_pred):
     def pred(e):
         return not outer_pred(e)

@@ -55,6 +55,17 @@ class DeathController:
                 })
 
     def on_death(self, ship, universe):
+
+        if ship.object_type is ObjectType.ship:
+            if ship.module_0_level is ModuleLevel.illegal:
+                ship.module_0 = None
+            if ship.module_1_level is ModuleLevel.illegal:
+                ship.module_1 = None
+            if ship.module_2_level is ModuleLevel.illegal:
+                ship.module_2 = None
+            if ship.module_3_level is ModuleLevel.illegal:
+                ship.module_3 = None
+
         ship_salvage_constant = SHIP_SALVAGE_CONSTANT
         value_to_drop = 100
         if ship.object_type is ObjectType.ship:

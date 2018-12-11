@@ -112,7 +112,7 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
                 self.rect.center[0]-self.new_vec[0],
                 self.rect.center[1]-self.new_vec[1]))
 
-            self.rotate(angle_to)
+            self.rotate(round(angle_to))
 
         # lerp
         lerp = self.current_vec.lerp(self.new_vec, intermediate if intermediate >= 0 else 1.0)
