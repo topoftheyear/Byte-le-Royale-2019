@@ -364,12 +364,12 @@ def handle_events():
             pos = event.pos
 
             ship = click_utils.get_ship_near_pos(pos, universe, first=True)
+            station = click_utils.get_static_obj_near_pos(pos, first=True, obj_type=ObjectType.station)
+
             if ship is not None:
                 show_ship_stats_display(ship, global_surf, fpsClock)
 
-
-            station = click_utils.get_static_obj_near_pos(pos, first=True, obj_type=ObjectType.station)
-            if station is not None:
+            elif station is not None:
                 station_name = station["name"]
 
                 stats = log_parser.get_stats()

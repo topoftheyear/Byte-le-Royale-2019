@@ -356,7 +356,7 @@ def show_ship_stats_display(ship, window_surf, clock):
     ))
 
     parts.append((
-        f"Team Name: {ship.team_name[20:]}",
+        f"Team Name: {ship.team_name[:15]}",
         (x,70)
     ))
 

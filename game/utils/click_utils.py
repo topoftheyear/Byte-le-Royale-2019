@@ -10,7 +10,6 @@ STATIC_OBJS = [
 ]
 
 def get_static_obj_near_pos(pos, radius = 40, first=False, obj_type=None):
-
     hits = []
 
     for obj in STATIC_OBJS:
@@ -26,11 +25,11 @@ def get_static_obj_near_pos(pos, radius = 40, first=False, obj_type=None):
     return hits
 
 
-def get_ship_near_pos(pos, universe, radius=40, first=False):
+def get_ship_near_pos(pos, universe, radius=30, first=False):
 
     hits = []
 
-    for obj in filter(lambda e: e.object_type == ObjectType.ship, universe):
+    for obj in filter(lambda e: e.object_type in [ObjectType.ship, ObjectType.police, ObjectType.enforcer], universe):
         obj_pos = world_to_display(*obj.position)
         rect = pygame.Rect(obj_pos[0]-(radius/2), obj_pos[1]-(radius/2), radius, radius)
 
