@@ -11,6 +11,8 @@ from game.utils.projection import *
 import game.utils.filters as F
 from game.utils.helpers import *
 
+SCAN_TICKS = 15
+
 class PoliceVariant:
     waiting = 1
     patrolling = 3
@@ -239,9 +241,10 @@ class PoliceController:
         action_param_2 = None
         action_param_3 = None
 
+        self.scan_ships(ship, universe, state)
 
         if not state.get("target"):
-            target = self.closest_pirate(ship, universe)
+            target = self.get_scanned_pirate(ship, universe, state)
 
             if target is not None:
                 state["target"] = target
@@ -299,6 +302,8 @@ class PoliceController:
         action_param_2 = None
         action_param_3 = None
 
+        self.scan_ships(ship, universe, state)
+
         # first time pick 3 to 4 stations to patrol between
 
         if "patrol_route" not in state:
@@ -314,7 +319,7 @@ class PoliceController:
 
         # check ships nearby to verify no pirates
         if "target" not in state:
-            target_ship = self.closest_pirate(ship, universe)
+            target_ship = self.get_scanned_pirate(ship, universe, state)
 
             if target_ship is not None:
                 # set target
@@ -572,3 +577,55 @@ class PoliceController:
             center[1]+pt[1]
         )
         return pt
+
+    def scan_ships(self, ship, universe, state):
+        if "scan" not in state:
+            state["scan"] = {}
+
+        ships = universe.get_filtered(ObjectType.ship,
+                                    F.AND(
+                                        F.alive(),
+                                        F.pirate(),
+                                        F.in_radius(
+                                            ship,
+                                            ship.sensor_range,
+                                            lambda s: s.position
+                                        )))
+
+        found_ships = []
+        for ship in ships:
+            if ship.id not in state["scan"]:
+                state["scan"][ship.id] = SCAN_TICKS
+            else:
+                state["scan"][ship.id] = max(state["scan"][ship.id]-1, 0)
+            found_ships.append(ship.id)
+
+        missing_ships = set(state["scan"].keys()) - set(found_ships)
+
+        for ship_id in missing_ships:
+            del state["scan"][ship_id]
+
+
+    def get_scanned_pirate(self, ship, universe, state):
+        """ get pirate that has highest notoriety,
+        if two ships have the same notoriety pick the closest one.
+        """
+        pirates = universe.get_filtered(
+            ObjectType.ship,
+            F.id_in(
+                list(state["scan"].keys())
+            ))
+
+        scanned_pirates = [ ship for ship in pirates if state["scan"][ship.id] == 0]
+
+        return max(
+            sorted(scanned_pirates, key=lambda s: s.notoriety, reverse=True),
+            key=lambda s: s.notoriety,
+            default=None
+        )
+
+
+
+
+
+

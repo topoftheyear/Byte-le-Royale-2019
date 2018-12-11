@@ -287,13 +287,15 @@ class CustomServer(ServerControl):
         # check if ships still alive
         living_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.alive())
 
+        teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
+
         # apply the results of any actions a player took if player still alive
-        self.bounty_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.mining_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.combat_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.module_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.buy_sell_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
-        self.illegal_salvage_controller.handle_actions(living_ships, self.universe, self.teams, self.npc_teams)
+        self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.mining_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.combat_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.module_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.buy_sell_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.illegal_salvage_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
         self.death_controller.handle_actions(dead_ships, self.universe)

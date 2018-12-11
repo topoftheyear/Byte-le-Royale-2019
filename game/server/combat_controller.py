@@ -43,13 +43,14 @@ class CombatController:
             # Check for ships that are attempting to attack
             if not ship.action is PlayerAction.attack: continue
 
+
             # get attack target
             target = self.get_ship(ship.action_param_1, universe)
             self.print(f"Ship {ship.team_name} attempting to attack ship {ship.team_name}")
 
-            #verify target is in sensor range
+            #verify target is in weapon range
             result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
-            if not (result < ship.sensor_range**2):
+            if not (result < ship.weapon_range**2):
                 self.print("Target not in range.")
                 # the target is not in range
                 continue
@@ -83,20 +84,6 @@ class CombatController:
                 })
 
                 target.respawn_counter = RESPAWN_TIME + 1 #+1 to account for this turn
-
-                # This code is being added here as the respawn timer is also here, plus it ensures it fires off on turn
-                # of death versus a later time
-                if target.object_type is ObjectType.ship:
-                    if target.module_0_level is ModuleLevel.illegal:
-                        target.module_0 = None
-                    if target.module_1_level is ModuleLevel.illegal:
-                        target.module_1 = None
-                    if target.module_2_level is ModuleLevel.illegal:
-                        target.module_2 = None
-                    if target.module_3_level is ModuleLevel.illegal:
-                        target.module_3 = None
-                # Eject inventory (awaiting full implementation and compatibility)
-                # End section for respawn penalties
 
                 self.notoriety_controller.update_standing(ship)
                 self.notoriety_controller.update_standing(target)
@@ -133,7 +120,7 @@ class CombatController:
                         self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_enforcer)
 
     def get_ship(self, id, universe):
-        for obj in universe.get(ObjectType.ship) + universe.get("police"):
+        for obj in universe.get("ships"):
             if obj.id == id:
                 return obj
         return None
