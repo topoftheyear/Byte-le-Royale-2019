@@ -1,10 +1,10 @@
 import os
 import datetime
-from flask import Flask, request, redirect, url_for, g, jsonify
+from flask import Flask, request, redirect, url_for, g, Response
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from functools import wraps
-from flask import request, Response
+from bson import json_util
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -82,13 +82,17 @@ def requires_admin(f):
 
 
 # API Routes
-@app.route("/announcements", metods=["GET"])
+@app.route("/announcements", methods=["GET"])
 def get_announcements():
-    annoncements = [a for a in mongo.db.announcements.find()]
-    return jsonify({"announcements": annoncements})
+    announcements = [a for a in mongo.db.announcements.find()]
+
+    return Response(
+        json_util.dumps({"announcements": announcements}),
+        mimetype="application/json"
+    )
 
 
-@app.route("/announcements", metods=["POST"])
+@app.route("/announcements", methods=["POST"])
 @requires_admin
 def add_announcement():
     data = request.json
@@ -96,8 +100,32 @@ def add_announcement():
     if "message" not in data:
         raise Exception("Key 'message' not present in payload.")
 
-    mongo.db.announcements.insert_one(data["message"])
-    return True
+    if "title" not in data:
+        raise Exception("Key 'title' not present in payload.")
+
+    mongo.db.announcements.insert_one({
+        "title": data["title"],
+        "message": data["message"],
+        "posted_date": str(datetime.datetime.now())
+    })
+    return "success"
+
+
+@app.route("/announcements", methods=["DELETE"])
+@requires_admin
+def clear_announcements():
+    all = request.args.get("all", False)
+
+    if all:
+        mongo.db.announcements.delete_many({})
+
+    else:
+        # Delete only one
+        # TODO update to allow deleting one
+        pass
+
+    return "Success"
+
 
 
 @app.route("/register", methods=["POST"])
@@ -136,7 +164,7 @@ def register_team():
         "submissions": []
     })
 
-    return True
+    return "success"
 
 
 @app.route("/submissions", methods=["POST"])
@@ -189,11 +217,14 @@ def get_submissions():
             "submission_info": most_recent_submission["submission_no"],
         })
 
-    return jsonify({"teams": team_data})
+    return Response(
+        json_util.dumps({"teams_": team_data}),
+        mimetype="application/json"
+    )
 
 
 
-@app.route("/report", method=["POST"])
+@app.route("/report", methods=["POST"])
 @requires_admin
 def upload_game_info():
     """Used by the runner to upload the client logs, results, update leaderboards"""
@@ -202,13 +233,7 @@ def upload_game_info():
 
 
 
-
-
-
-
-
-
-# Helpers
+# ######### Helpers
 
 def get_user():
     auth = request.authorization
@@ -219,3 +244,6 @@ def get_user():
 
     return user
 
+
+if __name__ == "__main__":
+    app.run()
