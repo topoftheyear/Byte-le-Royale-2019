@@ -69,6 +69,7 @@ class PlayerAction:
     drop_cargo = 7
     sell_salvage = 8
     collect_illegal_salvage = 9
+    pay_off_bounty = 10
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
@@ -123,7 +124,7 @@ class NotorietyChangeReason:
 
     # decrease notoriety
     destroy_pirate = 5
-    pay_off_bounty = 6 # possibly
+    pay_off_bounty = 6
 
 class ShipSlot:
     zero = 0

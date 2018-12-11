@@ -143,7 +143,7 @@ class Ship(GameObject):
                 "notoriety": self.notoriety,
                 "legal_standing": self.legal_standing,
 
-                "bounty_total": self.bounty_total,
+                "bounty": self.bounty_total,
             }
 
 
@@ -192,7 +192,7 @@ class Ship(GameObject):
 
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]
-            self.bounty_total = data["bounty_total"]
+            self.bounty_total = data["bounty"]
             self.bounty_list = data["bounty_list"]
 
             self.respawn_counter = data["respawn_counter"]

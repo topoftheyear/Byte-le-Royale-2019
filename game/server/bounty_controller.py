@@ -2,6 +2,7 @@ import sys
 import math
 
 from game.utils.helpers import *
+from game.server.notoriety_controller import NotorietyController.attribute_notoriety()
 
 class BountyController:
 
@@ -11,7 +12,7 @@ class BountyController:
         self.events = []
         self.stats = []
 
-        self.material_prices = None
+        self.notoriety_controller = NotorietyController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -40,7 +41,7 @@ class BountyController:
             if ship.is_alive():
                 # Determine new bounty if ship is not a pirate
                 if ship.legal_standing < LegalStanding.pirate:
-                    ship.bounty_total = 0
+                    ship.bounty = 0
                     self.clear_bounty(ship)
                     continue
 
@@ -48,23 +49,50 @@ class BountyController:
                 new_bounty = 0
 
                 # Sum the value of all bounties currently held
-                for bounty in ship.bounty_list:
-                    if bounty["bounty_type"] is BountyType.scrap_sold:
+                for bounty_instance in ship.bounty_list:
+                    if bounty_instance["bounty_type"] is BountyType.scrap_sold:
                         # Scrap sold has its bounty value reduced by 0.2% multiplied by number of ticks since it occurred
                         # TODO determine balanced rate to diminish scrap value by
-                        ratio = 1 - (0.002 * bounty["age"])
+                        ratio = 1 - (0.002 * bounty_instance["age"])
                         if ratio <= 0:
-                            ship.bounty_list.remove(bounty)
+                            ship.bounty_list.remove(bounty_instance)
                             continue
-                        new_bounty += ratio * bounty["value"]
+                        new_bounty += ratio * bounty_instance["value"]
 
-                        bounty["age"] += 1
+                        bounty_instance["age"] += 1
                     else:
-                        new_bounty += bounty["value"]
+                        new_bounty += bounty_instance["value"]
 
                 # Only performing the ceiling one time to maintain accuracy
-                ship.bounty_total = math.ceil(new_bounty)
-                self.print(f"New bounty of {ship.bounty_total} determined for ship: {ship.id}")
+                ship.bounty = math.ceil(new_bounty)
+                self.print(f"New bounty of {ship.bounty} determined for ship: {ship.id}")
+
+                # Check if the player is trying to pay off their bounty
+                if ship.action is PlayerAction.pay_off_bounty:
+
+                    if ship.credits < ship.bounty:
+                        self.print("Not enough funds to pay off the bounty")
+
+                    self.print("Ship has funds to pay off bounty")
+                    # Reduce credits and bounty
+                    ship.credits -= ship.bounty
+                    ship.bounty = 0
+
+                    # Remove all necessary bounties
+                    self.clear_bounty(ship)
+
+                    # Reduce notoriety
+                    self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.pay_off_bounty)
+
+                    self.events.append({
+                        "type": LogEvent.ship_pay_off_bounty,
+                        "ship_id": ship.id,
+                    })
+
+                    self.stats.append({
+                        "ship_id": ship.id,
+                        "credits": ship.credits,
+                    })
 
             else:
                 self.clear_bounty(ship)

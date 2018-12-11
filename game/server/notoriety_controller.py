@@ -70,9 +70,9 @@ class NotorietyController:
         elif change_reason is NotorietyChangeReason.destroy_pirate:
             ship.notoriety += GameStats.destroy_pirate
 
-        # a remote possibility that you will be ably to pay off your own bounty
-        #elif change_reason is NotorietyChangeReason.pay_off_bounty:
-        #    ship.notoriety += GameStats.pay_off_bounty
+        # pay off your own bounty
+        elif change_reason is NotorietyChangeReason.pay_off_bounty:
+            ship.notoriety += GameStats.pay_off_bounty
 
         self.events.append({
             "type": LogEvent.notoriety_change,
