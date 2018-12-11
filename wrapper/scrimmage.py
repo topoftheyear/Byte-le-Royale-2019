@@ -9,8 +9,6 @@ from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
 from prompt_toolkit.widgets import TextArea, SearchToolbar
 from prompt_toolkit.eventloop import use_asyncio_event_loop
-from prompt_toolkit.lexers import PygmentsLexer
-from pygments.lexers.markup import MarkdownLexer
 from prompt_toolkit.application import get_app
 import requests
 import asyncio
@@ -31,14 +29,17 @@ def exit_(event):
 
 buffer1 = Buffer()  # Editable buffer.
 
-help_text = "Press Ctrl+C to exit"
+help_text = """Available Commands:
+- announcements: Display announcements, updates automatically.
+- leaderboard: Displays the leaderboard, updates automatically.
+- 
+Press Ctrl+C to exit"""
 search_field = SearchToolbar()
 output_field = TextArea(
     style='class:output-field',
     text=help_text,
     scrollbar=True,
-    read_only=True,
-    lexer=PygmentsLexer(MarkdownLexer))
+    read_only=True)
 
 input_field = TextArea(
     height=1, prompt='>>> ', style='class:input-field', multiline=False,
@@ -59,7 +60,6 @@ def accept_input(buff):
         text=new_text, cursor_position=len(new_text))
 
 
-input_field.accept_handler = accept_input
 
 
 # Style.
@@ -79,18 +79,47 @@ root_container = HSplit([
 layout = Layout(root_container, focused_element=input_field)
 
 
-def input_parser():
-    pass
+def input_parser(buff):
+    global update_announcements_enabled
+    loop = asyncio.get_event_loop()
 
+    text = input_field.text
+    text = text.strip()
+
+    if text == "announcements":
+        stop_screens()
+        update_announcements_enabled = True
+        loop.create_task(update_announcements())
+        return
+    elif text == "clear":
+        stop_screens()
+        output_field.text = help_text
+
+
+def stop_screens():
+    global update_announcements_enabled
+    loop = asyncio.get_event_loop()
+
+    if update_announcements_enabled:
+        update_announcements_enabled= False
+
+
+
+
+input_field.accept_handler = input_parser
 
 
 host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
 
+
+update_announcements_enabled= False
 async def update_announcements():
     loop = asyncio.get_event_loop()
 
-
     payload = await loop.run_in_executor(None, requests.get, "http://" + host + "/announcements")
+
+    if not update_announcements_enabled:
+        return
 
     output_field.text = "Announcements:\n\n"
 
@@ -110,7 +139,10 @@ async def update_announcements():
 
     await asyncio.sleep(5)
 
-    loop.create_task(update_announcements())
+    if not update_announcements_enabled:
+        return
+    update_announcements_task = loop.create_task(update_announcements())
+
 
 
 def run_scrimmage_ui():
@@ -125,6 +157,5 @@ def run_scrimmage_ui():
         enable_page_navigation_bindings=True,)
 
     loop = asyncio.get_event_loop()
-    loop.create_task(update_announcements())
     loop.run_until_complete(
         app.run_async().to_asyncio_future())
