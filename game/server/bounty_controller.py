@@ -2,7 +2,6 @@ import sys
 import math
 
 from game.utils.helpers import *
-#from game.server.notoriety_controller import NotorietyController.attribute_notoriety()
 
 class BountyController:
 
@@ -11,8 +10,6 @@ class BountyController:
         self.debug = False
         self.events = []
         self.stats = []
-
-        #self.notoriety_controller = NotorietyController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -34,7 +31,7 @@ class BountyController:
             if bounty["bounty_type"] is not BountyType.became_pirate:
                 ship.bounty_list.remove(bounty)
 
-    def handle_actions(self, living_ships, universe, teams, npc_teams):
+    def handle_actions(self, living_ships, universe, teams, npc_teams, notoriety_controller):
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
@@ -82,7 +79,7 @@ class BountyController:
                     self.clear_bounty(ship)
 
                     # Reduce notoriety
-                    #self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.pay_off_bounty)
+                    notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.pay_off_bounty)
 
                     self.events.append({
                         "type": LogEvent.ship_pay_off_bounty,
