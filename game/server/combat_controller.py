@@ -107,8 +107,8 @@ class CombatController:
 
                                 # If current notoriety is higher than a value, awards the bounty
                                 if ship.legal_standing >= 0:
-                                    ship.credits += target.bounty_total
-                                    self.print(f"Bounty of {target.bounty_total} given to ship {ship.id}")
+                                    ship.credits += target.bounty
+                                    self.print(f"Bounty of {target.bounty} given to ship {ship.id}")
 
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)

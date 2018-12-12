@@ -14,7 +14,7 @@ class BountyRedeemerNPC(NPC):
         if self.heading is None:
             hunting_list = []
             for ship in universe.get(ObjectType.ship):
-                if ship.bounty_total > 0:
+                if ship.bounty > 0:
                     hunting_list.append(ship)
             if len(hunting_list) > 0:
                 self.heading = random.choice(hunting_list)
