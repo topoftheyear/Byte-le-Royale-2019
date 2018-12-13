@@ -12,6 +12,7 @@ from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
 from game.common.npc.bounty_redeemer import BountyRedeemerNPC
+from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -273,7 +274,7 @@ class CustomServer(ServerControl):
 
         for ship in self.universe.get(ObjectType.ship):
             npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
-                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC])
+                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
