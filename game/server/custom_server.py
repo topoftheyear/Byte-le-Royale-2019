@@ -291,7 +291,7 @@ class CustomServer(ServerControl):
         teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
 
         # apply the results of any actions a player took if player still alive
-        self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams, self.notoriety_controller)
+        self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.mining_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)

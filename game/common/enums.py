@@ -48,6 +48,7 @@ class LogEvent:
     despawn_enforcer = 17
     salvage_sold = 18
     illegal_salvage_picked_up = 19
+    ship_pay_off_bounty = 20
 
 class MessageType:
     null = 0

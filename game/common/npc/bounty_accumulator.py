@@ -32,7 +32,7 @@ class BountyAccumulatorNPC(NPC):
         # pay off bounty if its gotten out of hand
         if self.ship.legal_standing is LegalStanding.pirate:
             station = None
-            for st in ObjectType.secure_station:
+            for st in universe.get(ObjectType.secure_station):
                 station = st
                 break
             self.move(*station.position)

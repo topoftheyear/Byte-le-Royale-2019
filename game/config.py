@@ -32,3 +32,8 @@ else:
 RESPAWN_TIME = 10
 
 SHIP_SALVAGE_CONSTANT = 500 # the value of a ship kill
+
+# Bounty related items
+BOUNTY_DECAY_RATE = 0.002
+BOUNTY_PAYOFF_RATIO = 1
+ILLEGAL_SCRAP_NOTORIETY_RATIO = 1

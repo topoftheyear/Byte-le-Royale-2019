@@ -3,6 +3,7 @@ import math
 
 from game.utils.helpers import *
 
+
 class BountyController:
 
     def __init__(self):
@@ -26,18 +27,19 @@ class BountyController:
         self.stats = []
         return s
 
-    def clear_bounty(self, ship):
+    @staticmethod
+    def clear_bounty(ship):
         for bounty in ship.bounty_list:
             if bounty["bounty_type"] is not BountyType.became_pirate:
                 ship.bounty_list.remove(bounty)
 
-    def handle_actions(self, living_ships, universe, teams, npc_teams, notoriety_controller):
+    def handle_actions(self, living_ships, universe, teams, npc_teams):
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
             if ship.is_alive():
                 # Determine new bounty if ship is not a pirate
-                if ship.legal_standing < LegalStanding.pirate:
+                if ship.notoriety < 5:
                     ship.bounty = 0
                     self.clear_bounty(ship)
                     continue
@@ -50,7 +52,7 @@ class BountyController:
                     if bounty_instance["bounty_type"] is BountyType.scrap_sold:
                         # Scrap sold has its bounty value reduced by 0.2% multiplied by number of ticks since it occurred
                         # TODO determine balanced rate to diminish scrap value by
-                        ratio = 1 - (0.002 * bounty_instance["age"])
+                        ratio = 1 - (BOUNTY_DECAY_RATE * bounty_instance["age"])
                         if ratio <= 0:
                             ship.bounty_list.remove(bounty_instance)
                             continue
@@ -71,15 +73,16 @@ class BountyController:
                         self.print("Not enough funds to pay off the bounty")
 
                     self.print("Ship has funds to pay off bounty")
+
                     # Reduce credits and bounty
-                    ship.credits -= ship.bounty
+                    ship.credits -= ship.bounty * BOUNTY_PAYOFF_RATIO
                     ship.bounty = 0
 
                     # Remove all necessary bounties
                     self.clear_bounty(ship)
 
                     # Reduce notoriety
-                    notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.pay_off_bounty)
+                    ship.notoriety = 4
 
                     self.events.append({
                         "type": LogEvent.ship_pay_off_bounty,
