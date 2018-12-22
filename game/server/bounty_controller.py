@@ -39,7 +39,7 @@ class BountyController:
 
             if ship.is_alive():
                 # Determine new bounty if ship is not a pirate
-                if ship.notoriety < 5:
+                if ship.notoriety < LegalStanding.pirate:
                     ship.bounty = 0
                     self.clear_bounty(ship)
                     continue
@@ -69,13 +69,13 @@ class BountyController:
                 # Check if the player is trying to pay off their bounty
                 if ship.action is PlayerAction.pay_off_bounty:
 
-                    if ship.credits < ship.bounty:
+                    if ship.credits < ship.bounty * BOUNTY_PAYOFF_RATIO:
                         self.print("Not enough funds to pay off the bounty")
 
                     self.print("Ship has funds to pay off bounty")
 
                     # Reduce credits and bounty
-                    ship.credits -= ship.bounty * BOUNTY_PAYOFF_RATIO
+                    ship.credits -= max(math.floor(ship.bounty * BOUNTY_PAYOFF_RATIO), 0)
                     ship.bounty = 0
 
                     # Remove all necessary bounties
