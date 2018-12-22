@@ -76,7 +76,7 @@ class Ship(GameObject):
 
         self.respawn_counter = -1
 
-        self.credits = 200
+        self.credits = 2000
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)

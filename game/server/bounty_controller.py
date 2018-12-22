@@ -70,9 +70,24 @@ class BountyController:
                 if ship.action is PlayerAction.pay_off_bounty:
 
                     if ship.credits < ship.bounty * BOUNTY_PAYOFF_RATIO:
-                        self.print("Not enough funds to pay off the bounty")
+                        self.print(f"Not enough funds to pay off the bounty, has {ship.credits} needs {ship.bounty * BOUNTY_PAYOFF_RATIO}")
+                        continue
 
                     self.print("Ship has funds to pay off bounty")
+
+                    for station in universe.get(ObjectType.secure_station):
+                        ship_in_radius = in_radius(
+                            station,
+                            ship,
+                            lambda s, t: s.accessibility_radius,
+                            lambda e: e.position)
+                        if ship_in_radius:
+                            self.print("Ship in range of secure station")
+                            break
+                    else:
+                        self.print("Ship not in range of a secure station")
+                        continue
+
 
                     # Reduce credits and bounty
                     ship.credits -= max(math.floor(ship.bounty * BOUNTY_PAYOFF_RATIO), 0)
