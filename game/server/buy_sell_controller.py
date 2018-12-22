@@ -122,7 +122,7 @@ class BuySellController:
 
         # Apply bounty for selling scrap
         # TODO determine balanced value for this, current 1:1
-        if ship.legal_standing >= LegalStanding.pirate:
+        if ship.notoriety >= LegalStanding.pirate:
             ship.bounty_list.append({"bounty_type": BountyType.scrap_sold, "value": sale * ILLEGAL_SCRAP_NOTORIETY_RATIO, "age": 0})
             self.print(f"Bounty {BountyType.scrap_sold} given to ship {ship.id}")
 
