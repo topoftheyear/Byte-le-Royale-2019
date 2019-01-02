@@ -112,7 +112,7 @@ class BuySellController:
             return
         amount = ship.inventory[material]
         ship.inventory[material] = 0
-        sale = amount * 4.5
+        sale = amount * ILLEGAL_SCRAP_VALUE
         ship.credits += sale
         self.print("Ship {} sold {} {}".format(
             ship.team_name,

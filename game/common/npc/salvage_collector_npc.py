@@ -5,6 +5,7 @@ from game.common.enums import *
 from game.client.user_client import UserClient
 from game.common.npc.npc import NPC
 from game.config import *
+from game.utils.helpers import *
 
 class SalvageNPC(NPC):
 
@@ -12,17 +13,10 @@ class SalvageNPC(NPC):
 
         if not (MaterialType.salvage in self.ship.inventory and self.ship.inventory[MaterialType.salvage] >= 500):
             closest_scrap = None
-            distance = -1
 
-            for scrap in universe.get(ObjectType.illegal_salvage):
-                if closest_scrap is None:
-                    closest_scrap = scrap
-                    distance = math.sqrt((scrap.position[0] - self.ship.position[0]) ** 2 + (scrap.position[1] - self.ship.position[1]) ** 2)
-                else:
-                    new_distance = math.sqrt((scrap.position[0] - self.ship.position[0]) ** 2 + (scrap.position[1] - self.ship.position[1]) ** 2)
-                    if new_distance < distance:
-                        distance = new_distance
-                        closest_scrap = scrap
+            scrap_piles = universe.get(ObjectType.illegal_salvage)
+            if len(scrap_piles) > 0:
+                closest_scrap = sorted(scrap_piles, key=lambda e: distance_to(self.ship, e, lambda s: s.position))[0]
 
             if closest_scrap is not None:
                 self.move(closest_scrap.position[0], closest_scrap.position[1])

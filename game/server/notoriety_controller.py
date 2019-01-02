@@ -72,7 +72,7 @@ class NotorietyController:
 
         # pay off your own bounty
         elif change_reason is NotorietyChangeReason.pay_off_bounty:
-            ship.notoriety += GameStats.pay_off_bounty
+            ship.notoriety = LegalStanding.pirate - 1
 
         self.events.append({
             "type": LogEvent.notoriety_change,
