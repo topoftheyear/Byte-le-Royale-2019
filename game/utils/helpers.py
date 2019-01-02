@@ -177,6 +177,8 @@ def get_material_prices(universe):
             price_list[material] = 0
         price_list[material] = max(prices)
 
+    price_list[MaterialType.salvage] = ILLEGAL_SCRAP_VALUE
+
     return price_list
 
 

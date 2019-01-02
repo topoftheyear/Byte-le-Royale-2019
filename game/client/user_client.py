@@ -147,3 +147,8 @@ class UserClient:
 
         self._action = PlayerAction.buy_material
         self._action_param_1 = amount
+
+    def pay_off_bounty(self):
+        self.reset_player_action()
+
+        self._action = PlayerAction.pay_off_bounty
