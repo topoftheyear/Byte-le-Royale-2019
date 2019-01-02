@@ -51,7 +51,6 @@ class BountyController:
                 for bounty_instance in ship.bounty_list:
                     if bounty_instance["bounty_type"] is BountyType.scrap_sold:
                         # Scrap sold has its bounty value reduced by 0.2% multiplied by number of ticks since it occurred
-                        # TODO determine balanced rate to diminish scrap value by
                         ratio = 1 - (BOUNTY_DECAY_RATE * bounty_instance["age"])
                         if ratio <= 0:
                             ship.bounty_list.remove(bounty_instance)
