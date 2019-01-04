@@ -83,5 +83,4 @@ class RepairController:
             #    if ship.credits < payment:
             #        return
 
-            #    hull_to_repair = payment
-            #    ship.current_hull
+            #    hull_to_repair = payment / GameStats.repair_to_hull_ratio
