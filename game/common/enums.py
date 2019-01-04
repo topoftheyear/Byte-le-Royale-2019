@@ -69,6 +69,8 @@ class PlayerAction:
     drop_cargo = 7
     sell_salvage = 8
     collect_illegal_salvage = 9
+    repair = 10
+
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer

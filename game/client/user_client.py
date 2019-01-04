@@ -147,3 +147,13 @@ class UserClient:
 
         self._action = PlayerAction.buy_material
         self._action_param_1 = amount
+
+    def repair(self, payment):
+        self.reset_player_action()
+
+        # returns if not a valid payment
+        if payment <= 0:
+            return
+
+        self._action = PlayerAction.repair
+        self._action_param_1 = payment
