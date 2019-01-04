@@ -75,6 +75,8 @@ class Ship(GameObject):
 
         self.credits = 200
 
+        self.passive_repair_counter = 0
+
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
 
@@ -120,6 +122,8 @@ class Ship(GameObject):
                 "respawn_counter": self.respawn_counter,
 
                 "credits": self.credits,
+
+                "passive_repair_counter": self.passive_repair_counter,
             }
 
             data = { **data, **player_owned }
@@ -189,6 +193,8 @@ class Ship(GameObject):
             self.respawn_counter = data["respawn_counter"]
 
             self.credits = data["credits"]
+
+            self.passive_repair_counter = data["passive_repair_counter"]
 
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update

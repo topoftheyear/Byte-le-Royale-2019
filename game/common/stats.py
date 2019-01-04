@@ -147,3 +147,6 @@ class GameStats:
     unlock_slot_cost_1 = 1000
     unlock_slot_cost_2 = 2000
     unlock_slot_cost_3 = 3000
+
+    passive_repair_counter = 10
+    passive_repair_amount = 500
