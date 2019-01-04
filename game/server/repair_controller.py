@@ -48,10 +48,10 @@ class RepairController:
                     lambda e: e.position)
                 if ship_in_radius:
                     ship_near_a_station = True
-                    if ship.passive_repair_counter <= 0:
+                    if ship.passive_repair_counter > 0:
+                        self.print(f"ship repairing in progress... turns remaining: {ship.passive_repair_counter}")
                         # countdown to next heal
-                        ship.passive_repair_counter -= 0
-
+                        ship.passive_repair_counter -= 1
                     elif ship.current_hull != ship.max_hull:
                         ship.passive_repair_counter = GameStats.passive_repair_counter
 
@@ -60,6 +60,16 @@ class RepairController:
                             ship.current_hull = ship.max_hull
                         else:
                             ship.current_hull += GameStats.passive_repair_amount
+
+                        self.print(f"Ship successfully repaired. New Health: {ship.current_hull}")
+                        self.events.append({
+                            "type": LogEvent.passive_repair,
+                            "ship_id": ship.id,
+                            "new_health": ship.current_hull,
+                        })
+                    #  else:
+                        #  warning: the following print statement prints a large amount of messages when no ships are active
+                        #  self.print("ship cannot finish repairing since it's already at full health.")
 
             if not ship_near_a_station:
                 ship.passive_repair_counter = GameStats.passive_repair_counter
