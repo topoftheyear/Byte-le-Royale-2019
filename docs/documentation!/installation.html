@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Combat &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Installing &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Ships" href="ships.html" />
-    <link rel="prev" title="Bounty Hunting, Lawfulness, and Piracy" href="bounty_hunting_lawfulness_and_piracy.html" /> 
+    <link rel="next" title="Getting Started" href="getting_started.html" />
+    <link rel="prev" title="Overview" href="overview.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,9 +83,14 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launcher-scripts">Launcher Scripts</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
@@ -93,23 +98,14 @@
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Combat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#list-of-modules">List of Modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#how-to-upgrade">How To Upgrade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#module-table-revise-illegal-numbers-when-completed">Module Table (Revise Illegal Numbers When Completed)</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="ship_upgrades.html#related-links">Related Links</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Combat</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -155,13 +151,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Combat</li>
+      <li>Installing</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/combat.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/installation.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -174,11 +170,33 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="combat">
-<span id="combat"></span><h1>Combat<a class="headerlink" href="#combat" title="Permalink to this headline">¶</a></h1>
-<p>Combat is a common occurrence in space, whether you initiate it or get attacked. Combat occurs simultaneously to allow
-both ships to destroy each other in the same step.</p>
-<p>To attack another ship, call <code class="docutils literal notranslate"><span class="pre">self.attack(ship_to_attack)</span></code>, where <code class="docutils literal notranslate"><span class="pre">ship_to_attack</span></code> is the target. If the target is in range, you will attack them.</p>
+  <div class="section" id="installing">
+<span id="installing"></span><h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
+<p>[This will be the link to the actual download URL](INSERT THE LINK HERE)##################</p>
+<div class="section" id="introduction">
+<span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>The installation process has been streamlined from last year. The application
+has the bonuses of update notification, an enclosed runtime environment, and a help
+function to assist in starting up the components.</p>
+</div>
+<div class="section" id="install-dependencies">
+<span id="install-dependencies"></span><h2>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>Note: the following instructions are verified to work for installing Python 3.7 on Windows. If the installation is done in a different way, you may not be able to properly run the program.</p>
+<ol class="simple">
+<li>Install Python 3.7 (use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see which version you are running). Make sure to custom install for all
+users and that the box to add Python to $PATH (if you do not add it to $PATH, you can not directly invoke Python
+in the command prompt)</li>
+<li>Install pipenv from <a class="reference external" href="https://pipenv.readthedocs.io/en/latest/install/">https://pipenv.readthedocs.io/en/latest/install/</a>, following their instructions.</li>
+<li>After installing pipenv, run the following command to install dependencies: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code></li>
+<li>Enter the pipenv virtual environment: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code></li>
+</ol>
+<p>Note: you will need to enter the virtual environment for each new shell session you create.</p>
+<p>From there, you can <a class="reference external" href="getting_started.md">get started</a> with creating your AI.</p>
+</div>
+<div class="section" id="launcher-scripts">
+<span id="launcher-scripts"></span><h2>Launcher Scripts<a class="headerlink" href="#launcher-scripts" title="Permalink to this headline">¶</a></h2>
+<p>Run <code class="docutils literal notranslate"><span class="pre">./br_launcher.pyz</span> <span class="pre">--help</span></code> to view available scripts</p>
+</div>
 </div>
 
 
@@ -189,10 +207,10 @@ both ships to destroy each other in the same step.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="ships.html" class="btn btn-neutral float-right" title="Ships" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="bounty_hunting_lawfulness_and_piracy.html" class="btn btn-neutral" title="Bounty Hunting, Lawfulness, and Piracy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -226,8 +244,8 @@ both ships to destroy each other in the same step.</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

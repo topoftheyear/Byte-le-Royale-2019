@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installing &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Running The Game &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Getting Started" href="getting_started.html" />
-    <link rel="prev" title="Overview" href="overview.html" /> 
+    <link rel="next" title="Using the Visualizer" href="using_the_visualizer.html" />
+    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -85,14 +85,12 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Installing</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#launcher-scripts">Launcher Scripts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Running The Game</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
@@ -151,13 +149,15 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Installing</li>
+          <li><a href="getting_started.html">Getting Started</a> &raquo;</li>
+        
+      <li>Running The Game</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/installation.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/running_the_game.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -170,32 +170,20 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installing">
-<span id="installing"></span><h1>Installing<a class="headerlink" href="#installing" title="Permalink to this headline">¶</a></h1>
-<p>[This will be the link to the actual download URL](INSERT THE LINK HERE)##################</p>
-<div class="section" id="introduction">
-<span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
-<p>The installation process has been streamlined from last year. The application
-has the bonuses of update notification, an enclosed runtime environment, and a help
-function to assist in starting up the components.</p>
-</div>
-<div class="section" id="install-dependencies">
-<span id="install-dependencies"></span><h2>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h2>
-<p>Note: the following instructions are verified to work for installing Python 3.7 on Windows. If the installation is done in a different way, you may not be able to properly run the program.</p>
+  <div class="section" id="running-the-game">
+<span id="running-the-game"></span><h1>Running The Game<a class="headerlink" href="#running-the-game" title="Permalink to this headline">¶</a></h1>
+<p>Basic flow of how a game works:</p>
 <ol class="simple">
-<li>Install Python 3.7 (use <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">--version</span></code> to see which version you are running). Make sure to custom install for all
-users and that the box to add Python to $PATH (if you do not add it to $PATH, you can not directly invoke Python
-in the command prompt)</li>
-<li>Install pipenv from <a class="reference external" href="https://pipenv.readthedocs.io/en/latest/install/">https://pipenv.readthedocs.io/en/latest/install/</a>, following their instructions.</li>
-<li>After installing pipenv, run the following command to install dependencies: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">install</span></code></li>
-<li>Enter the pipenv virtual environment: <code class="docutils literal notranslate"><span class="pre">pipenv</span> <span class="pre">shell</span></code></li>
+<li>A game map is generated.</li>
+<li>Start a server.</li>
+<li>Start a client. Your client will connect to the server.</li>
+<li>The server then orchestrates the game based on the <code class="docutils literal notranslate"><span class="pre">game_data.json</span></code> file and responses from the client. The server also generates a <code class="docutils literal notranslate"><span class="pre">game_log/</span></code> directory which contains the game log which is used by the visualizer to visualize the game after it has finished running.</li>
+<li>Wait for the client and server to finish running.</li>
+<li><a class="reference external" href="using_the_visualizer.md">Run the visualizer</a> to visualize how the game played out.</li>
 </ol>
-<p>Note: you will need to enter the virtual environment for each new shell session you create.</p>
-<p>From there, you can <a class="reference external" href="getting_started.md">get started</a> with creating your AI.</p>
-</div>
-<div class="section" id="launcher-scripts">
-<span id="launcher-scripts"></span><h2>Launcher Scripts<a class="headerlink" href="#launcher-scripts" title="Permalink to this headline">¶</a></h2>
-<p>Run <code class="docutils literal notranslate"><span class="pre">./br_launcher.pyz</span> <span class="pre">--help</span></code> to view available scripts</p>
+<div class="section" id="related-links">
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="writing_your_ai.md">Writing Your AI</a></p>
 </div>
 </div>
 
@@ -207,10 +195,10 @@ in the command prompt)</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="using_the_visualizer.html" class="btn btn-neutral float-right" title="Using the Visualizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="overview.html" class="btn btn-neutral" title="Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -244,8 +232,8 @@ in the command prompt)</li>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

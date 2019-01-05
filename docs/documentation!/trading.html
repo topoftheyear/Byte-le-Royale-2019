@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Running The Game &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Trading &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Using the Visualizer" href="using_the_visualizer.html" />
-    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+    <link rel="next" title="Bounty Hunting, Lawfulness, and Piracy" href="bounty_hunting_lawfulness_and_piracy.html" />
+    <link rel="prev" title="Asteroid Fields" href="asteroid_fields_and_mining.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,23 +83,26 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Running The Game</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Trading</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-trade">How to Trade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#buying">Buying</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#selling">Selling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-items">Related Items</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
@@ -149,15 +152,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="getting_started.html">Getting Started</a> &raquo;</li>
-        
-      <li>Running The Game</li>
+      <li>Trading</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/running_the_game.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/trading.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -170,20 +171,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="running-the-game">
-<span id="running-the-game"></span><h1>Running The Game<a class="headerlink" href="#running-the-game" title="Permalink to this headline">¶</a></h1>
-<p>Basic flow of how a game works:</p>
-<ol class="simple">
-<li>A game map is generated.</li>
-<li>Start a server.</li>
-<li>Start a client. Your client will connect to the server.</li>
-<li>The server then orchestrates the game based on the <code class="docutils literal notranslate"><span class="pre">game_data.json</span></code> file and responses from the client. The server also generates a <code class="docutils literal notranslate"><span class="pre">game_log/</span></code> directory which contains the game log which is used by the visualizer to visualize the game after it has finished running.</li>
-<li>Wait for the client and server to finish running.</li>
-<li><a class="reference external" href="using_the_visualizer.md">Run the visualizer</a> to visualize how the game played out.</li>
-</ol>
-<div class="section" id="related-links">
-<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="writing_your_ai.md">Writing Your AI</a></p>
+  <div class="section" id="trading">
+<span id="trading"></span><h1>Trading<a class="headerlink" href="#trading" title="Permalink to this headline">¶</a></h1>
+<p>Trading is the most common way to make money. By buying and selling resources for profit, you will make a name for yourself and be a master of your trade.</p>
+<div class="section" id="how-to-trade">
+<span id="how-to-trade"></span><h2>How to Trade<a class="headerlink" href="#how-to-trade" title="Permalink to this headline">¶</a></h2>
+<p>Trading is accomplished by entering the range of a station and using the <code class="docutils literal notranslate"><span class="pre">buy</span> <span class="pre">material</span></code> or <code class="docutils literal notranslate"><span class="pre">sell</span> <span class="pre">material</span></code> action.</p>
+</div>
+<div class="section" id="buying">
+<span id="buying"></span><h2>Buying<a class="headerlink" href="#buying" title="Permalink to this headline">¶</a></h2>
+<p>When you buy items, you specify the item you wish to purchase in the first parameter, and the amount in the second one.
+Then, the following conditions are checked:</p>
+<ul class="simple">
+<li>buying more than the station possesses - will buy available amount</li>
+<li>buying more than you can afford - will buy as much as you can afford</li>
+<li>if 2 or more players both try to buy a combined total more than store has in stock,
+each player will purchase (total amount / <code class="docutils literal notranslate"><span class="pre">n</span></code>) rounded up, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of players buying.</li>
+</ul>
+</div>
+<div class="section" id="selling">
+<span id="selling"></span><h2>Selling<a class="headerlink" href="#selling" title="Permalink to this headline">¶</a></h2>
+<p>When you sell items, you specify the item you wish to sell in the first parameter, and the amount in the second one.
+Then, the following conditions are checked:</p>
+<ul class="simple">
+<li>selling more than the station can hold - will sell available amount</li>
+<li>selling more than you can afford - will sell as much as you can afford</li>
+<li>if 2 or more players both try to sell a combined total more than store has in stock,
+each player will sell (total amount / <code class="docutils literal notranslate"><span class="pre">n</span></code>) rounded up, where <code class="docutils literal notranslate"><span class="pre">n</span></code> is the number of players selling.</li>
+</ul>
+</div>
+<div class="section" id="related-items">
+<span id="related-items"></span><h2>Related Items<a class="headerlink" href="#related-items" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="asteroid_fields_and_mining.md">Mining</a></p>
 </div>
 </div>
 
@@ -195,10 +214,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="using_the_visualizer.html" class="btn btn-neutral float-right" title="Using the Visualizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="bounty_hunting_lawfulness_and_piracy.html" class="btn btn-neutral float-right" title="Bounty Hunting, Lawfulness, and Piracy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="asteroid_fields_and_mining.html" class="btn btn-neutral" title="Asteroid Fields" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -232,8 +251,8 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   
