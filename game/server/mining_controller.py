@@ -50,7 +50,13 @@ class MiningController:
                         material = current_field.material_type
                         amount = math.floor(current_field.mining_rate * ship.mining_yield)
 
-                        self.print("Logging events")
+                        # Check if amount of space is available
+                        current_capacity = sum(ship.inventory.values())
+
+                        if current_capacity + amount > ship.cargo_space:
+                            amount = ship.cargo_space - current_capacity
+                            self.print(f"Ship exceeded capacity of {ship.cargo_space}, only mined {amount} units")
+
                         self.events.append({
                             "type": LogEvent.ship_mine,
                             "ship_id": ship.id,

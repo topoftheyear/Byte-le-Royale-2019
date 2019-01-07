@@ -118,6 +118,11 @@ class IllegalSalvageController:
                 elif salvage.amount < pickup_rate:
                     pickup_amount = salvage.amount
 
+                current_capacity = sum(ship.inventory.values())
+                if current_capacity + pickup_amount > ship.cargo_space:
+                    pickup_amount = ship.cargo_space - current_capacity
+                    self.print(f"Ship exceeded capacity of {ship.cargo_space}, only took {pickup_amount} units")
+
                 salvage.amount -= pickup_amount
                 if MaterialType.salvage not in ship.inventory:
                     ship.inventory[MaterialType.salvage] = 0
