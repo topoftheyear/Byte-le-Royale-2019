@@ -52,10 +52,8 @@ class MiningController:
 
                         # Check if amount of space is available
                         current_capacity = sum(ship.inventory.values())
-
-                        if current_capacity + amount > ship.cargo_space:
-                            amount = ship.cargo_space - current_capacity
-                            self.print(f"Ship exceeded capacity of {ship.cargo_space}, only mined {amount} units")
+                        new_capacity = min(current_capacity + amount, ship.cargo_space)
+                        amount = new_capacity - current_capacity
 
                         self.events.append({
                             "type": LogEvent.ship_mine,
