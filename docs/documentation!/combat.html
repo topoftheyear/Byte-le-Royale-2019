@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting Started &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Combat &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Running The Game" href="running_the_game.html" />
-    <link rel="prev" title="Installing" href="installation.html" /> 
+    <link rel="next" title="Ships" href="ships.html" />
+    <link rel="prev" title="Bounty Hunting, Lawfulness, and Piracy" href="bounty_hunting_lawfulness_and_piracy.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,32 +83,33 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#starting-the-launcher">Starting the Launcher</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#visualizer">Visualizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="running_the_game.html">Running the Game</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
 <li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
 <li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
 <li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Combat</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#list-of-modules">List of Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#how-to-upgrade">How To Upgrade</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#module-table-revise-illegal-numbers-when-completed">Module Table (Revise Illegal Numbers When Completed)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="ship_upgrades.html#related-links">Related Links</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Combat</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
             
@@ -154,13 +155,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Getting Started</li>
+      <li>Combat</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/getting_started.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/combat.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,44 +174,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getting-started">
-<span id="getting-started"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="starting-the-launcher">
-<span id="starting-the-launcher"></span><h2>Starting the Launcher<a class="headerlink" href="#starting-the-launcher" title="Permalink to this headline">¶</a></h2>
-<p>There are 3 components to the launcher:</p>
-<ul class="simple">
-<li>Server</li>
-<li>Client</li>
-<li>Visualizer</li>
-</ul>
-<p>To initialize each component, run br_launcher.pyz in CMD with the corresponding command
-/ argument. Here are the steps for setting up the server:</p>
-<ol class="simple">
-<li>Open a command prompt / PowerShell / terminal in the folder that <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span></code> is located in.</li>
-<li>Run <code class="docutils literal notranslate"><span class="pre">by_launcher.pyz</span> <span class="pre">update</span></code> to check if any updates have occurred since last runtime and automatically update.</li>
-<li>Use <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">run</span></code> to run the client and server.</li>
-</ol>
-<ul class="simple">
-<li>When the client and server are running, watch the 2 prompts for potential output.</li>
-</ul>
-<ol class="simple">
-<li>Once the client has completed, run <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">visualizer</span></code> to watch the match.</li>
-</ol>
-</div>
-<div class="section" id="visualizer">
-<span id="visualizer"></span><h2>Visualizer<a class="headerlink" href="#visualizer" title="Permalink to this headline">¶</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">visualizer</span></code>
-Once the client has finished, the visualizer can be run. The visualizer takes the log of the game session
-and presents it in a visual format. This is useful for seeing where the AI’s weaknesses and strengths are.</p>
-</div>
-<div class="section" id="related-links">
-<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running the Game</a></li>
-</ul>
-</div>
-</div>
+  <div class="section" id="combat">
+<span id="combat"></span><h1>Combat<a class="headerlink" href="#combat" title="Permalink to this headline">¶</a></h1>
+<p>Combat is a common occurrence in space, whether you initiate it or get attacked. Combat occurs simultaneously to allow
+both ships to destroy each other in the same step.</p>
+<p>To attack another ship, call <code class="docutils literal notranslate"><span class="pre">self.attack(ship_to_attack)</span></code>, where <code class="docutils literal notranslate"><span class="pre">ship_to_attack</span></code> is the target. If the target is in range, you will attack them.</p>
 </div>
 
 
@@ -221,10 +189,10 @@ and presents it in a visual format. This is useful for seeing where the AI’s w
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="running_the_game.html" class="btn btn-neutral float-right" title="Running The Game" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="ships.html" class="btn btn-neutral float-right" title="Ships" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installation.html" class="btn btn-neutral" title="Installing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="bounty_hunting_lawfulness_and_piracy.html" class="btn btn-neutral" title="Bounty Hunting, Lawfulness, and Piracy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -258,8 +226,8 @@ and presents it in a visual format. This is useful for seeing where the AI’s w
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

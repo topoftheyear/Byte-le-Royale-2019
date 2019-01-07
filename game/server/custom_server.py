@@ -11,6 +11,8 @@ from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
+from game.common.npc.bounty_redeemer import BountyRedeemerNPC
+from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -24,6 +26,7 @@ from game.server.module_controller import ModuleController
 from game.server.buy_sell_controller import BuySellController
 from game.server.illegal_salvage_controller import IllegalSalvageController
 from game.common.universe_manager import UniverseManager
+from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
 
 
@@ -55,6 +58,7 @@ class CustomServer(ServerControl):
         self.module_controller = ModuleController()
         self.buy_sell_controller = BuySellController()
         self.illegal_salvage_controller = IllegalSalvageController()
+        self.bounty_controller = BountyController()
 
         # prep police
         self.police_controller.setup_police(self.universe)
@@ -269,7 +273,8 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         for ship in self.universe.get(ObjectType.ship):
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC, BuySellNPC])
+            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
+                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC])
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -286,6 +291,7 @@ class CustomServer(ServerControl):
         teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
 
         # apply the results of any actions a player took if player still alive
+        self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.mining_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.combat_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.module_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
@@ -313,6 +319,8 @@ class CustomServer(ServerControl):
         self.turn_log["events"].extend( self.module_controller.get_events() )
 
         self.turn_log["events"].extend( self.illegal_salvage_controller.get_events() )
+
+        self.turn_log["events"].extend( self.bounty_controller.get_events() )
 
     def process_move_actions(self):
 
