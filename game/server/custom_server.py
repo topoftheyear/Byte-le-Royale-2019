@@ -132,6 +132,9 @@ class CustomServer(ServerControl):
 
         # handle response if we got one
         for data in self.turn_data:
+            print(data, MessageType.team_name)
+            client_id = data["client_id"]
+
             if "message_type" not in data:
                 return # bad turn
             else:
@@ -139,8 +142,8 @@ class CustomServer(ServerControl):
 
             if not self.started:
                 if message_type == MessageType.team_name:
+                    print("Register team name")
 
-                    client_id = data["client_id"]
                     team_name = data["team_name"]
                     team_color = data["team_color"]
 

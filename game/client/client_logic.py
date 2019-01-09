@@ -69,6 +69,10 @@ class ClientLogic:
             return {
                 "message_type": MessageType.pong
             }
+        elif turn_data["message_type"] == MessageType.take_turn:
+            self.player_client.reset_actions()
+            self.player_client.take_turn()
+            return self.player_client.get_turn_result()
         else:
             return{
                 "message_type": MessageType.null
