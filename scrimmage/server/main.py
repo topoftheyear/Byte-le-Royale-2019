@@ -7,6 +7,7 @@ from functools import wraps
 from bson import json_util
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.exceptions import BadRequest
 from uuid import uuid4
 
 ADMIN_USERNAME = "BL_ROYALE_ADMIN"
@@ -99,10 +100,10 @@ def add_announcement():
     data = request.json
 
     if "message" not in data:
-        raise Exception("Key 'message' not present in payload.")
+        raise BadRequest("Key 'message' not present in payload.")
 
     if "title" not in data:
-        raise Exception("Key 'title' not present in payload.")
+        raise BadRequest("Key 'title' not present in payload.")
 
     mongo.db.announcements.insert_one({
         "title": data["title"],
@@ -134,21 +135,21 @@ def register_team():
     data = request.json
 
     if not mongo.db.config.find_one({"registration_open": True}):
-        raise Exception("Registration is closed.")
+        raise BadRequest("Registration is closed.")
 
     if "team_name" not in data:
-        raise Exception("Team name is required.")
+        raise BadRequest("Team name is required.")
 
     team_name = data["team_name"]
     password = str(uuid4())
 
     if len("".join(team_name.split())) == 0:
-        raise Exception("Team name cannot be empty or white space.")
+        raise BadRequest("Team name cannot be empty or white space.")
 
     team_name = team_name.strip()
 
     if mongo.db.users.find_one({"username": team_name}):
-        raise Exception(f"Team with name '{team_name}' already exists.")
+        raise BadRequest(f"Team with name '{team_name}' already exists.")
 
     mongo.db.users.insert_one({
         "team_name": team_name,

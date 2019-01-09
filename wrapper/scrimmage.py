@@ -14,14 +14,24 @@ from prompt_toolkit.application import get_app
 import requests
 import asyncio
 import os
+import re
 
 
 ## attempt to load credentials file
-if False:
-    pass
+if os.path.exists("byte-le-royale-auth.txt"):
+    with open("byte-le-royale-auth.txt", "r") as f:
+        lines = f.readlines()
+        registered_team_name = lines[0].strip()
+        registered_auth_token = lines[1].strip()
 else:
     registered_team_name = None
     auth_token = None
+
+
+def cleanhtml(raw_html):
+  cleanr = re.compile('<.*?>')
+  cleantext = re.sub(cleanr, '', raw_html)
+  return cleantext
 
 kb = KeyBindings()
 
@@ -68,8 +78,12 @@ def registration_submit_handler(buf):
         loop.create_task(register_team(registration_input_field.text))
     else:
         output_field.text = "You have already registered a team: \"{}\".\nOnly one " \
-            "registration is allowed per team. Multiple registrations may result in disqualification." \
+            "registration is allowed per team. Multiple registrations may result in disqualification.\n" \
+            "We applolgize for this inconvinience but it ensure that the scrimmage matches run as smoothly as possible \n" \
+            "Instead of registering another team, please share the byte-le-royale-auth.txt file with your teammates to \n" \
+            "allow them access to your team's accout. Do not share this with other teams."
             .format(registered_team_name)
+        layout.focus(input_field)
 
 
 async def register_team(team_name):
@@ -89,10 +103,14 @@ async def register_team(team_name):
             f.write("{}\n".format(response.json()["auth_token"]))
 
         output_field.text = "Registration Successful for team \"{}\"".format(team_name)
+        global registered_team_name
+        global registered_auth_token
         registered_team_name = team_name
+        registered_auth_token = response.json()["auth_token"]
+
 
     else:
-        output_field.text = "Registration failed for team \"{}\"\nReason:\n{}".format(team_name, response.raw)
+        output_field.text = "Registration failed for team \"{}\"\nReason:\n{}".format(team_name, cleanhtml(response.text))
 
     layout.focus(input_field)
 
