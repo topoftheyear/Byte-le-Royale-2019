@@ -1,12 +1,13 @@
 import os
 import datetime
-from flask import Flask, request, redirect, url_for, g, Response
+from flask import Flask, request, redirect, url_for, g, Response, jsonify
 from flask_cors import CORS
 from flask_pymongo import PyMongo
 from functools import wraps
 from bson import json_util
 from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
+from uuid import uuid4
 
 ADMIN_USERNAME = "BL_ROYALE_ADMIN"
 ADMIN_PASSWORD = "bl_royale_admin_123"
@@ -141,7 +142,7 @@ def register_team():
     team_name = data["team_name"]
     password = str(uuid4())
 
-    if len("".join(team_name.split())):
+    if len("".join(team_name.split())) == 0:
         raise Exception("Team name cannot be empty or white space.")
 
     team_name = team_name.strip()
@@ -156,6 +157,18 @@ def register_team():
     })
 
     return jsonify({"auth_token": password})
+
+@app.route("/registration/open", methods=["POST"])
+@requires_admin
+def registration_open():
+    mongo.db.config.insert_one({"registration_open": True})
+    return "success"
+
+@app.route("/registration/close", methods=["POST"])
+@requires_admin
+def registration_close():
+    mongo.db.config.delete_many({"registration_open": True})
+    return "success"
 
 
 @app.route("/submissions", methods=["POST"])

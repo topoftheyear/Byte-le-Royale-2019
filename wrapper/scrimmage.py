@@ -67,7 +67,7 @@ def registration_submit_handler(buf):
     if not os.path.exists("byte-le-royale-auth.txt"):
         loop.create_task(register_team(registration_input_field.text))
     else:
-        output_field.text = "You have already registered at team: \"{}\". Only one " \
+        output_field.text = "You have already registered a team: \"{}\".\nOnly one " \
             "registration is allowed per team. Multiple registrations may result in disqualification." \
             .format(registered_team_name)
 
@@ -86,7 +86,7 @@ async def register_team(team_name):
     if response.status_code == 200:
         with open("byte-le-royale-auth.txt", "w") as f:
             f.write("{}\n".format(team_name))
-            f.write("{}\n".format(response.json["auth_token"]))
+            f.write("{}\n".format(response.json()["auth_token"]))
 
         output_field.text = "Registration Successful for team \"{}\"".format(team_name)
         registered_team_name = team_name
