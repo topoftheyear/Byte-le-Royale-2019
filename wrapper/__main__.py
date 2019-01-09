@@ -202,27 +202,6 @@ host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
 def scrim():
     pass
 
-@scrim.command()
-def announcements():
-    payload = requests.get("http://" + host + "/announcements")
-
-    if payload.status_code != 200:
-        click.echo("An error occurred: " + payload.raw)
-
-    data = payload.json()["announcements"]
-
-    click.echo("Announcements:")
-
-    for announcement in sorted(data, key=lambda e: e["posted_date"]):
-        title = announcement["title"]
-        message = announcement["message"]
-        date = announcement["posted_date"]
-        click.echo()
-        click.echo(("-"*50) + f"\n*{title}*\nPosted at: {date}\n\n{message}\n" + ("-"*50) + "\n")
-
-    if len(data) == 0:
-        click.echo("\n No available announcements.")
-
 
 @scrim.command()
 def ui():

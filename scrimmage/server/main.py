@@ -138,20 +138,11 @@ def register_team():
     if "team_name" not in data:
         raise Exception("Team name is required.")
 
-    if "password" not in data:
-        raise Exception("Password is required.")
-
     team_name = data["team_name"]
-    password = data["password"]
+    password = str(uuid4())
 
     if len("".join(team_name.split())):
         raise Exception("Team name cannot be empty or white space.")
-
-    if len("".join(password.split())) < len(password):
-        raise Exception("White space characters not allowed in passwords.")
-
-    if len(password) < 6:
-        raise Exception("Password must be at least 6 characters.")
 
     team_name = team_name.strip()
 
@@ -164,7 +155,7 @@ def register_team():
         "submissions": []
     })
 
-    return "success"
+    return jsonify({"auth_token": password})
 
 
 @app.route("/submissions", methods=["POST"])
