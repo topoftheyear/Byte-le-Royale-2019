@@ -7,6 +7,16 @@ from game.config import *
 from game.utils.helpers import *
 
 class TestTraderNPC(NPC):
+
+    def __init__(self, ship):
+        UserClient.__init__(self)
+        self.ship = ship
+        self.ship_id = ship.id
+
+        self.heading = None
+        self.action = 0
+        self.material = None
+
     def take_turn(self, universe):
 
         stations = universe.get(ObjectType.station)
@@ -32,10 +42,10 @@ class TestTraderNPC(NPC):
         chosenBuy = 0
         chosenPrice = 0
         chosenMaterial = ""
-        chosenSellStation = ""
-        chosenBuyStation = ""
+        chosenSellStation = None
+        chosenBuyStation = None
 
-        if self.action is None:
+        if self.action is 0:
             for key,sellPrice in sellPrices.items():
                 if key not in buyPrices:
                     continue
@@ -47,8 +57,8 @@ class TestTraderNPC(NPC):
                     secondHighest = firstHighest
                     firstHighest = difference
 
-                    thirdMaterial = secondHighest
-                    secondMaterial = firstHighest
+                    thirdMaterial = secondMaterial
+                    secondMaterial = firstMaterial
                     firstMaterial = key
 
                     thirdBuy = secondBuy
@@ -62,7 +72,7 @@ class TestTraderNPC(NPC):
                     thirdHighest = secondHighest
                     secondHighest = difference
 
-                    thirdMaterial = secondHighest
+                    thirdMaterial = secondMaterial
                     secondMaterial = key
 
                     thirdBuy = secondBuy
@@ -84,17 +94,17 @@ class TestTraderNPC(NPC):
                 chosenPrice = firstHighest
                 chosenMaterial = firstMaterial
                 chosenSell = firstSell
-                chosenbuy = firstBuy
+                chosenBuy = firstBuy
             elif rand == 2:
                 chosenPrice = secondHighest
                 chosenMaterial = secondMaterial
                 chosenSell = secondSell
-                chosenbuy = secondBuy
+                chosenBuy = secondBuy
             if rand == 3:
                 chosenPrice = thirdHighest
                 chosenMaterial = thirdMaterial
                 chosenSell = thirdSell
-                chosenbuy = thirdBuy
+                chosenBuy = thirdBuy
 
             for tempStation in stations:
                 if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
@@ -103,9 +113,10 @@ class TestTraderNPC(NPC):
                     chosenSellStation = tempStation
 
                 if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
-                    chosenSellStation = tempStation
-            self.sellStation = chosenSellStation
-            self.buyStation = chosenBuyStation
+                    chosenBuyStation = tempStation
+            self.sellStation = chosenSellStation.position
+            self.buyStation = chosenBuyStation.position
+            self.material = chosenMaterial
 
             self.action = 1
             self.heading = self.buyStation
@@ -113,27 +124,32 @@ class TestTraderNPC(NPC):
         elif self.action == 1:  # buying
             self.heading = self.buyStation
             # Gather as much of the material determined as possible
-            self.buy_material(chosenMaterial, self.ship.cargo_space)
+            if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
+                self.buy_material(self.ship.cargo_space)
 
-            if self.ship.inventory[chosenMaterial] > 0:
+            if self.material in self.ship.inventory and self.ship.inventory[self.material] > 0:
                 self.action = 2
+                self.heading = self.sellStation
 
         elif self.action == 2:  # selling
             self.heading = self.sellStation
             # Sell material when possible
-            self.sell_material(chosenMaterial, self.ship.inventory[chosenMaterial])
+            self.sell_material(self.material, self.ship.inventory[self.material])
 
-            if self.ship.inventory[chosenMaterial] == 0:
+            if self.ship.inventory[self.material] == 0:
                 self.action == 0
-        # choose a new heading if we don't have one
-            self.heading = random.choice(universe.get("asteroid_fields")).position
 
         # move towards heading
         self.move(*self.heading)
 
         # if at heading, clear heading
         if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-            self.heading = None
+            if self.action == 1:
+                self.action = 2
+                self.heading = self.sellStation
+            if self.action == 2:
+                self.action = None
+                self.heading = None
 
 
 

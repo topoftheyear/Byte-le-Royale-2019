@@ -182,13 +182,11 @@ def get_material_prices(universe):
     return price_list
 
 
-def get_material_buy_prices_stations(universe):
+def get_material_buy_prices(universe):
     all_prices = {}
     for station in universe.get(ObjectType.station):
         if station.production_material is not None:
-            if station.production_material not in all_prices:
-                all_prices[station.production_material] = []
-            all_prices[station.production_material].append(station.sell_price)
+            all_prices[station.production_material] = station.sell_price
 
     return all_prices
 
