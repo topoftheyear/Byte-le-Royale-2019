@@ -38,7 +38,7 @@ class RepairController:
 
             # passive heal for ships near station
             ship_near_a_station = False
-            for stations in universe.get("all_stations"):
+            for stations in universe.get(ObjectType.secure_station):
 
                 #  determine if ship should start repairing
                 ship_in_radius = in_radius(
@@ -46,6 +46,7 @@ class RepairController:
                     ship,
                     lambda s, t: s.accessibility_radius,
                     lambda e: e.position)
+
                 if ship_in_radius:
                     ship_near_a_station = True
                     if ship.passive_repair_counter > 0:
