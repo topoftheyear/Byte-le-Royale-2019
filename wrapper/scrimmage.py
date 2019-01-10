@@ -191,15 +191,17 @@ def show_submission_dialog():
     layout.focus(submission_dialog)
     root_container.floats.append(flt)
 
-submission_dialog= Dialog(
+submission_dialog = Dialog(
         title="Submit a client",
         body=HSplit([
             Label("Please select a client to upload:"),
             submission_options,
+            Label("Press tab and then enter to confirm."),
         ]),
         buttons=[
             Button(text="Submit", handler=lambda :submission_submit_handler(None))
         ])
+
 
 
 # completions menu
@@ -228,7 +230,8 @@ root_container = FloatContainer(
     ]),
     floats=[
         completions_menu
-    ])
+    ],
+    key_bindings=KeyBindings())
 
 layout = Layout(root_container, focused_element=input_field)
 
