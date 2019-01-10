@@ -10,10 +10,12 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import BadRequest
 from uuid import uuid4
 
-ADMIN_USERNAME = "BL_ROYALE_ADMIN"
+ADMIN_team_name = "BL_ROYALE_ADMIN"
 ADMIN_PASSWORD = "bl_royale_admin_123"
 
 UPLOAD_FOLDER = os.path.abspath('uploads')
+
+SIZE_LIMIT = 5
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -28,31 +30,30 @@ mongo = PyMongo(app)
 
 
 
-class RunState:
-    none = 0
-    running = 1
-    queued = 2
-    finished = 3
-    failed = 4
+class SubmissionState:
+    waiting = "Waiting for next scrimmage match."
+    running = "Submission running."
+    error = "Client terminated with an error."
+    finished = "Submission finished running."
 
 
 # Auth
-def check_auth(username, password):
-    """This function is called to check if a username /
+def check_auth(team_name, password):
+    """This function is called to check if a team_name /
     password combination is valid.
     """
-    if username == ADMIN_USERNAME:
+    if team_name == ADMIN_team_name:
         return password == ADMIN_PASSWORD
     else:
-        user = mongo.db.users.find_one({"username": username})
+        user = mongo.db.users.find_one({"team_name": team_name})
 
         if user:
-            return check_password_hash(user.password_hash, password)
+            return check_password_hash(user["password_hash"], password)
     return False
 
 
-def check_admin(username, password):
-    return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
+def check_admin(team_name, password):
+    return team_name == ADMIN_team_name and password == ADMIN_PASSWORD
 
 
 def authenticate():
@@ -67,6 +68,7 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
+        print(auth)
         if not auth or not check_auth(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
@@ -148,7 +150,7 @@ def register_team():
 
     team_name = team_name.strip()
 
-    if mongo.db.users.find_one({"username": team_name}):
+    if mongo.db.users.find_one({"team_name": team_name}):
         raise BadRequest(f"Team with name '{team_name}' already exists.")
 
     mongo.db.users.insert_one({
@@ -175,10 +177,14 @@ def registration_close():
 @app.route("/submissions", methods=["POST"])
 @requires_auth
 def upload_file():
+
+    if request.content_length > SIZE_LIMIT*1024*1024:
+        raise BadRequest("Uploaded client too large. sent: {}MB max: {}MB".format(request.content_length/1024/1024, SIZE_LIMIT))
+
     data = request.json
     user = get_user()
 
-    team_name = user.username
+    team_name = user["team_name"]
     filename = "".join(x for x in team_name if x.isalnum()) + ".py"
     file_data = data["file_data"]
 
@@ -191,10 +197,11 @@ def upload_file():
         "name": f"Submission #{no_subs} ({time})",
         "file_name": filename,
         "upload_date": time,
+        "submission_state": SubmissionState.waiting,
         "stats": {}
     })
 
-    mongo.db.users.update_one({"username": team_name}, {"$set": {
+    mongo.db.users.update_one({"team_name": team_name}, {"$set": {
         "submissions": submissions
     }})
 
@@ -203,7 +210,7 @@ def upload_file():
     with open(os.path.join(UPLOAD_FOLDER, filename), "w") as f:
         f.write(file_data)
 
-    return True
+    return jsonify({"submission_no": no_subs})
 
 
 @app.route("/submissions", methods=["GET"])
@@ -217,7 +224,7 @@ def get_submissions():
             client_data = f.read()
 
         team_data.append({
-            "team_name": team["username"],
+            "team_name": team["team_name"],
             "client_data": client_data,
             "submission_info": most_recent_submission["submission_no"],
         })
@@ -245,7 +252,7 @@ def get_user():
     if not auth:
         return None
 
-    user = mongo.db.users.find_one({"username": auth.username})
+    user = mongo.db.users.find_one({"team_name": auth.username})
 
     return user
 

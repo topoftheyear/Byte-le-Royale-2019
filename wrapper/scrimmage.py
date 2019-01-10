@@ -8,10 +8,14 @@ from prompt_toolkit.layout.layout import Layout
 from prompt_toolkit.layout import FloatContainer, Float
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.styles import Style
-from prompt_toolkit.widgets import TextArea, SearchToolbar, Dialog, Label, Button
+from prompt_toolkit.widgets import TextArea, SearchToolbar, Dialog, Label, Button, RadioList
 from prompt_toolkit.eventloop import use_asyncio_event_loop
 from prompt_toolkit.application import get_app
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.layout.menus import CompletionsMenu
+
 import requests
+from requests.auth import HTTPBasicAuth
 import asyncio
 import os
 import re
@@ -51,7 +55,8 @@ buffer1 = Buffer()  # Editable buffer.
 help_text = """Available Commands:
 - announcements: Display announcements, updates automatically.
 - leaderboard: Displays the leaderboard, updates automatically.
-- register: Displays the registration form.
+- registration: Displays the registration form.
+- submit: Submit a client to the scrimmage server.
 
 Press Ctrl+C to exit"""
 search_field = SearchToolbar()
@@ -69,7 +74,7 @@ input_field = TextArea(
 ### Registration Dialog
 
 def registration_submit_handler(buf):
-    root_container.floats = []
+    clear_floats()
     output_field.text = "Submitting registration..."
     loop = asyncio.get_event_loop()
 
@@ -81,7 +86,7 @@ def registration_submit_handler(buf):
             "registration is allowed per team. Multiple registrations may result in disqualification.\n" \
             "We applolgize for this inconvinience but it ensure that the scrimmage matches run as smoothly as possible \n" \
             "Instead of registering another team, please share the byte-le-royale-auth.txt file with your teammates to \n" \
-            "allow them access to your team's accout. Do not share this with other teams."
+            "allow them access to your team's accout. Do not share this with other teams." \
             .format(registered_team_name)
         layout.focus(input_field)
 
@@ -114,8 +119,6 @@ async def register_team(team_name):
 
     layout.focus(input_field)
 
-
-
 registration_input_field = TextArea(
         height=1,
         style='class:input-field',
@@ -135,6 +138,78 @@ registration_dialog = Dialog(
         ])
 
 
+## Submission Dialog
+def submission_submit_handler(buf):
+    clear_floats()
+    client_path = submission_options.current_value
+    output_field.text = "Submitting client \"{}\"...".format(client_path)
+    loop = asyncio.get_event_loop()
+
+    if registered_team_name is None or registered_auth_token is None:
+        output_field.text = "Submitting client failed.\n Reason:\n You have not registered a " \
+                "team or you are missing credentails.\n If you have recently registered, or "\
+                "copied a \"byte-le-royale-auth.txt\" file into the current directory. Call the"\
+                "\"reload_auth\" command."
+
+        layout.focus(input_field)
+    else:
+        loop.create_task(submit_client(client_path))
+
+
+async def submit_client(client_path):
+    loop = asyncio.get_event_loop()
+
+    with open(client_path, "r") as f:
+        file_data = f.read()
+
+    request_data = {
+        "file_data": file_data
+    }
+    auth = HTTPBasicAuth(registered_team_name, registered_auth_token)
+    response = await loop.run_in_executor(
+            None,
+            lambda: requests.post("http://" + host + "/submissions", auth=auth, json=request_data))
+
+
+    if response.status_code == 200:
+        output_field.text = "Successfully submitted client."
+    else:
+        output_field.text = "Submission failed.\nReason:\n{}".format(cleanhtml(response.text))
+        output_field.text += "\n " + registered_team_name + " " + registered_auth_token
+
+    layout.focus(input_field)
+
+submission_options = RadioList([(None, None)])
+
+def show_submission_dialog():
+    dir_path = os.getcwd()
+    submission_options.values = [
+            (obj, obj) for obj in os.listdir(dir_path)
+            if os.path.isfile(obj) and obj[-3:] == ".py" ]
+
+    flt = Float(content=submission_dialog)
+    layout.focus(submission_dialog)
+    root_container.floats.append(flt)
+
+submission_dialog= Dialog(
+        title="Submit a client",
+        body=HSplit([
+            Label("Please select a client to upload:"),
+            submission_options,
+        ]),
+        buttons=[
+            Button(text="Submit", handler=lambda :submission_submit_handler(None))
+        ])
+
+
+# completions menu
+completions_menu = Float(
+        xcursor=True,
+        ycursor=True,
+        content=CompletionsMenu(
+        max_height=16,
+        scroll_offset=1))
+
 
 
 # Style.
@@ -152,6 +227,7 @@ root_container = FloatContainer(
         search_field
     ]),
     floats=[
+        completions_menu
     ])
 
 layout = Layout(root_container, focused_element=input_field)
@@ -177,6 +253,9 @@ def input_parser(buff):
         flt = Float(content=registration_dialog)
         layout.focus(registration_dialog)
         root_container.floats.append(flt)
+    elif text == "submit":
+        stop_screens()
+        show_submission_dialog()
 
 
 def stop_screens():
@@ -186,6 +265,9 @@ def stop_screens():
     if update_announcements_enabled:
         update_announcements_enabled= False
 
+def clear_floats():
+        root_container.floats.clear()
+        root_container.floats.append(completions_menu)
 
 
 
