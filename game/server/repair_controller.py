@@ -32,7 +32,7 @@ class RepairController:
         return s
 
 
-    def handle_actions(self, living_ships, universe, teams, npc_teams):
+    def handle_actions(self, living_ships, universe, teams, npc_teams, combat_timeouts):
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
@@ -49,7 +49,11 @@ class RepairController:
 
                 if ship_in_radius:
                     ship_near_a_station = True
-                    if ship.passive_repair_counter > 0:
+
+                    # verify ship out of combat
+                    ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) == GameStats.healing_combat_cooldown
+
+                    if ship.passive_repair_counter > 0 and ship_out_of_combat:
                         self.print(f"ship passive repairing in progress... turns remaining: {ship.passive_repair_counter}")
                         # countdown to next heal
                         ship.passive_repair_counter -= 1
@@ -97,7 +101,12 @@ class RepairController:
                             price_decrease = True
 
                 if not ship_near_a_station:
-                    return
+                    continue
+
+                # verify ship out of combat
+                ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) == GameStats.healing_combat_cooldown
+                if not ship_out_of_combat:
+                    continue
 
                 hull_to_repair = ship.action_param_1
 

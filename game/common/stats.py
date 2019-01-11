@@ -155,3 +155,6 @@ class GameStats:
     repair_cost = 10
     repair_discount = 0.5
     repair_markup = 2
+
+    healing_combat_cooldown = 20
+

@@ -18,6 +18,8 @@ class CombatController:
         self.events = []
         self.stats = []
 
+        self.combat_counters = {}
+
         self.notoriety_controller = NotorietyController.get_instance()
 
     def print(self, msg):
@@ -75,6 +77,11 @@ class CombatController:
             elif target.object_type is ObjectType.enforcer:
                 self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.attack_police)
 
+            # record the most recent time these ships was in combat
+            self.record_combat(target)
+            self.record_combat(ship)
+
+
             if target.current_hull == 0:
                 self.print("Target destroyed, hiding ship.")
 
@@ -119,9 +126,27 @@ class CombatController:
                     elif target.object_type is ObjectType.enforcer:
                         self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_enforcer)
 
+        # increment combat counters
+        self.increment_combat_counters()
+
     def get_ship(self, id, universe):
         for obj in universe.get("ships"):
             if obj.id == id:
                 return obj
         return None
+
+    def record_combat(self, ship):
+        # start at -1 so we can blindly increment everyone
+        # and then this ship's count will be 1
+        self.combat_counters[ship.id] = -1
+
+
+    def increment_combat_counters(self):
+        for ship_id in self.combat_counters.keys():
+            self.combat_counters[ship_id] += 1
+
+    def get_combat_counts(self):
+        return self.combat_counters
+
+
 

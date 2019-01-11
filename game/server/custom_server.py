@@ -136,7 +136,6 @@ class CustomServer(ServerControl):
 
         # handle response if we got one
         for data in self.turn_data:
-            print(data, MessageType.team_name)
             client_id = data["client_id"]
 
             if "message_type" not in data:
@@ -282,7 +281,7 @@ class CustomServer(ServerControl):
         for ship in self.universe.get(ObjectType.ship):
             npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
                                       BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC,  LazyNPC, RepairNPC])
-            
+
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -305,7 +304,7 @@ class CustomServer(ServerControl):
         self.module_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.buy_sell_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
-        self.repair_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.repair_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams, self.combat_controller.get_combat_counts())
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
         self.death_controller.handle_actions(dead_ships, self.universe)
@@ -330,7 +329,7 @@ class CustomServer(ServerControl):
         self.turn_log["events"].extend( self.illegal_salvage_controller.get_events() )
 
         self.turn_log["events"].extend( self.bounty_controller.get_events() )
-        
+
         self.turn_log["events"].extend( self.repair_controller.get_events() )
 
 
