@@ -78,12 +78,12 @@ class RepairController:
             # Check for ships that are performing the repair action
             if ship.action is PlayerAction.repair:
 
-                # TODO: check to see if ship is close to a station
-                # TODO: adjust price properly
+                self.print(f"Ship attempts to repair...")
+
                 ship_near_a_station = False
                 price_increase = False
                 price_decrease = False
-                for station in universe.get("all stations"):
+                for station in universe.get("all_stations"):
                     ship_in_radius = in_radius(
                         station,
                         ship,
@@ -126,7 +126,7 @@ class RepairController:
                 ship.credits = ship.credits - payment
                 ship.current_hull += hull_to_repair
 
-                self.print(f"Ship successfully repaired. New Health: {ship.current_hull}")
+                self.print(f"Ship successfully repaired. Amount healed: {hull_to_repair} New Health: {ship.current_hull} Price: {payment}")
                 self.events.append({
                     "type": LogEvent.manual_repair,
                     "ship_id": ship.id,
