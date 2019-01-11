@@ -127,4 +127,10 @@ class RepairController:
                 ship.current_hull += hull_to_repair
 
                 self.print(f"Ship successfully repaired. New Health: {ship.current_hull}")
+                self.events.append({
+                    "type": LogEvent.manual_repair,
+                    "ship_id": ship.id,
+                    "repair_amount": hull_to_repair,
+                    "payment": payment
+                })
 

@@ -49,6 +49,7 @@ class LogEvent:
     salvage_sold = 18
     illegal_salvage_picked_up = 19
     passive_repair = 20
+    manual_repair = 21
 
 class MessageType:
     null = 0
