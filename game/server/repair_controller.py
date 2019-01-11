@@ -50,7 +50,7 @@ class RepairController:
                 if ship_in_radius:
                     ship_near_a_station = True
                     if ship.passive_repair_counter > 0:
-                        self.print(f"ship repairing in progress... turns remaining: {ship.passive_repair_counter}")
+                        self.print(f"ship passive repairing in progress... turns remaining: {ship.passive_repair_counter}")
                         # countdown to next heal
                         ship.passive_repair_counter -= 1
                     elif ship.current_hull != ship.max_hull:
@@ -62,7 +62,7 @@ class RepairController:
                         else:
                             ship.current_hull += GameStats.passive_repair_amount
 
-                        self.print(f"Ship successfully repaired. New Health: {ship.current_hull}")
+                        self.print(f"Ship successfully passive repaired. New Health: {ship.current_hull}")
                         self.events.append({
                             "type": LogEvent.passive_repair,
                             "ship_id": ship.id,
@@ -76,12 +76,28 @@ class RepairController:
                 ship.passive_repair_counter = GameStats.passive_repair_counter
 
             # Check for ships that are performing the repair action
-            #if ship.action is PlayerAction.repair:
+            if ship.action is PlayerAction.repair:
 
-            #    payment = ship.action_param_2
+                # TODO: check to see if ship is close to a station
+                # TODO: adjust price properly
 
-                #  cannot afford repair
-            #    if ship.credits < payment:
-            #        return
+                hull_to_repair = ship.action_param_1
 
-            #    hull_to_repair = payment / GameStats.repair_to_hull_ratio
+                payment = hull_to_repair * GameStats.repair_cost
+
+                #  cannot afford repair, set to most that ship can pay
+                if payment > ship.credits:
+                    payment = ship.credits
+                    hull_to_repair = math.floor(payment / GameStats.repair_cost)
+                    payment = hull_to_repair * GameStats.repair_cost
+
+                #  cannot repair that much, decrease to match
+                if hull_to_repair > ship.max_hull - ship.current_hull:
+                    hull_to_repair = ship.max_hull - ship.current_hull
+                    payment = hull_to_repair * GameStats.repair_cost  # no need to check price again, price only drops
+
+                ship.credits = ship.credits - payment
+                ship.current_hull += hull_to_repair
+
+                self.print(f"Ship successfully repaired. New Health: {ship.current_hull}")
+
