@@ -80,21 +80,48 @@ class RepairController:
 
                 # TODO: check to see if ship is close to a station
                 # TODO: adjust price properly
+                ship_near_a_station = False
+                price_increase = False
+                price_decrease = False
+                for station in universe.get("all stations"):
+                    ship_in_radius = in_radius(
+                        station,
+                        ship,
+                        lambda s, t: s.accessibility_radius,
+                        lambda e: e.position)
+                    if ship_in_radius:
+                        ship_near_a_station = True
+                        if station == ObjectType.station:
+                            price_increase = True
+                        elif station == ObjectType.black_market_station:
+                            price_decrease = True
+
+                if not ship_near_a_station:
+                    return
 
                 hull_to_repair = ship.action_param_1
 
-                payment = hull_to_repair * GameStats.repair_cost
+                if price_increase:
+                    price_adjustment = GameStats.repair_markup
+                elif price_decrease:
+                    price_adjustment = GameStats.repair_discount
+                else:
+                    price_adjustment = 1.0
+
+                repair_cost = math.floor(GameStats.repair_cost * price_adjustment)
+
+                payment = hull_to_repair * repair_cost
 
                 #  cannot afford repair, set to most that ship can pay
                 if payment > ship.credits:
                     payment = ship.credits
-                    hull_to_repair = math.floor(payment / GameStats.repair_cost)
-                    payment = hull_to_repair * GameStats.repair_cost
+                    hull_to_repair = math.floor(payment / repair_cost)
+                    payment = hull_to_repair * repair_cost
 
                 #  cannot repair that much, decrease to match
                 if hull_to_repair > ship.max_hull - ship.current_hull:
                     hull_to_repair = ship.max_hull - ship.current_hull
-                    payment = hull_to_repair * GameStats.repair_cost  # no need to check price again, price only drops
+                    payment = hull_to_repair * repair_cost  # no need to check price again, price only drops
 
                 ship.credits = ship.credits - payment
                 ship.current_hull += hull_to_repair

@@ -148,8 +148,10 @@ class GameStats:
     unlock_slot_cost_2 = 2000
     unlock_slot_cost_3 = 3000
 
-    # heal stats
+    # repair stats
     passive_repair_counter = 10
     passive_repair_amount = 500
 
     repair_cost = 10
+    repair_discount = 0.5
+    repair_markup = 2
