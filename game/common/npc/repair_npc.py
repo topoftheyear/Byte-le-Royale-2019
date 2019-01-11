@@ -26,7 +26,7 @@ class RepairNPC(NPC):
         # move towards heading
         self.move(*self.heading)
 
-        self.repair(self, random.randint(0, self.ship.max_hull))
+        self.repair( random.randint(0, self.ship.max_hull))
 
 
         return self.action_digest()
