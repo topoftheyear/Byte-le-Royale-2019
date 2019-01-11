@@ -1,4 +1,5 @@
 import random
+import operator
 
 from game.common.enums import *
 from game.client.user_client import UserClient
@@ -8,51 +9,59 @@ from game.utils.helpers import *
 
 class TestMinerNPC(NPC):
 
+    def init(self):
+        self.chosen_mineral = None
+
     def take_turn(self, universe):
         # Pick random best of 2 minerals to mine
         # Go to station and sell minerals
         # Repeat
 
-        # Compile profit of each mineral
+        # Pick random of best 2 minerals
+        print(self.heading)
         if self.heading is None:
-            max_price = 0
-            max_mineral = None
+            mineral_prices = {}
             minerals = [MaterialType.cuprite, MaterialType.goethite, MaterialType.gold]
+            fields = universe.get("asteroid_fields")
             prices = get_material_prices(universe)
-            for key, item in prices:
+
+            for key, item in prices.items():
                 if key not in minerals:
                     continue
-                if max_price > item:
-                    max_price = item
-                    max_mineral = key
+                mineral_prices[key] = item
 
-            for field in universe.get(ObjectType.asteroid_field):
-                if field.material_type is not max_mineral:
+            sorted_minerals = sorted(mineral_prices.items(), key=operator.itemgetter(1))
+            sorted_minerals.reverse()
+            self.chosen_mineral = sorted_minerals[random.randint(0, 1)][0]
+            print(fields)
+
+            for field in fields:
+                if field.material_type is not self.chosen_mineral:
                     continue
                 self.heading = field
                 break
-        elif self.heading is ObjectType.asteroid_field:
-            #mine, set heading to station when full
-            pass
-        elif self.heading is ObjectType.station:
+
+        # Mine until full
+        elif self.heading in universe.get("asteroid_fields"):
+            if self.chosen_mineral not in self.ship.inventory or self.ship.inventory[self.chosen_mineral] < self.ship.cargo_space:
+                self.mine()
+                self.move(*self.heading.position)
+            else:
+                for station in universe.get(ObjectType.station):
+                    if self.chosen_mineral not in [station.primary_import, station.secondary_import]:
+                        continue
+                    self.heading = station
+                    break
+
+        # Sell until empty
+        elif self.heading in universe.get("stations"):
             #go and sell the stuff, set heading to None
-            pass
-
-
-
-
-
-        # choose a new heading if we don't have one
-        if self.heading is None:
-            self.heading = random.choice(universe.get("asteroid_fields")).position
-
-        # move towards heading
-        self.move(*self.heading)
-
-        # if at heading, clear heading
-        if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-            self.heading = None
-
-        self.mine()
+            if self.ship.inventory[self.chosen_mineral] != 0:
+                self.move(*self.heading.position)
+                self.sell_material(self.chosen_mineral, self.ship.inventory[self.chosen_material])
+            else:
+                self.heading = None
+        else:
+            self.move(0,0)
 
         return self.action_digest()
