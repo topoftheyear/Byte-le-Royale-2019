@@ -51,7 +51,7 @@ class RepairController:
                     ship_near_a_station = True
 
                     # verify ship out of combat
-                    ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) == GameStats.healing_combat_cooldown
+                    ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) >= GameStats.healing_combat_cooldown
 
                     if ship.passive_repair_counter > 0 and ship_out_of_combat:
                         self.print(f"ship passive repairing in progress... turns remaining: {ship.passive_repair_counter}")
@@ -101,11 +101,13 @@ class RepairController:
                             price_decrease = True
 
                 if not ship_near_a_station:
+                    self.print(f"ship is not near a station.")
                     continue
 
                 # verify ship out of combat
-                ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) == GameStats.healing_combat_cooldown
+                ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) >= GameStats.healing_combat_cooldown
                 if not ship_out_of_combat:
+                    self.print(f"Ship is in combat already. Please wait {GameStats.healing_combat_cooldown - combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown)} turns.")
                     continue
 
                 hull_to_repair = ship.action_param_1
