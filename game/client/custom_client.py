@@ -11,7 +11,6 @@ class CustomClient(ClientLogic):
         """
         super().__init__(verbose)
 
-
     def turn(self, turn_data):
 
         print("tick: {}".format(self.tick_no))

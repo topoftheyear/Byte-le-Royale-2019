@@ -50,6 +50,7 @@ class LogEvent:
     illegal_salvage_picked_up = 19
     passive_repair = 20
     manual_repair = 21
+    ship_pay_off_bounty = 22
 
 class MessageType:
     null = 0
@@ -72,7 +73,7 @@ class PlayerAction:
     sell_salvage = 8
     collect_illegal_salvage = 9
     repair = 10
-
+    pay_off_bounty = 11
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
@@ -91,6 +92,7 @@ class ObjectType:
     police = 8
     enforcer = 9
     illegal_salvage = 10
+
 
 class MaterialType:
     null = -1
@@ -126,7 +128,7 @@ class NotorietyChangeReason:
 
     # decrease notoriety
     destroy_pirate = 5
-    pay_off_bounty = 6 # possibly
+    pay_off_bounty = 6
 
 class ShipSlot:
     zero = 0
@@ -135,3 +137,7 @@ class ShipSlot:
     three = 3
 
 
+class BountyType:
+    ship_destroyed = 0
+    scrap_sold = 1
+    became_pirate = 2

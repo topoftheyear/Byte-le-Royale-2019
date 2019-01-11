@@ -27,11 +27,11 @@ class GameStats:
     weapon_range_3 = 125
     weapon_range_4 = 150
 
-    cargo_space_0 = 500000
-    cargo_space_1 = 600000
-    cargo_space_2 = 700000
-    cargo_space_3 = 800000
-    cargo_space_4 = 1000000
+    cargo_space_0 = 500
+    cargo_space_1 = 600
+    cargo_space_2 = 700
+    cargo_space_3 = 800
+    cargo_space_4 = 1000
 
     mining_yield_0 = 5
     mining_yield_1 = 6

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Using the Visualizer &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Getting Started &mdash; Byte-le-Royale 201X 9 documentation</title>
   
 
   
@@ -29,8 +29,8 @@
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Writing Your AI" href="writing_your_ai.html" />
-    <link rel="prev" title="Running The Game" href="running_the_game.html" /> 
+    <link rel="next" title="Running The Game" href="running_the_game.html" />
+    <link rel="prev" title="Installing" href="installation.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -86,25 +86,18 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting Started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#starting-the-launcher">Starting the Launcher</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#visualizer">Visualizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="running_the_game.html">Running the Game</a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Visualizer</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#how-the-visualizer-works">How the Visualizer Works</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#keyboard-shortcuts">Keyboard shortcuts</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="writing_your_ai.html#functions-to-use">Functions to Use</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="writing_your_ai.html#related-links">Related Links</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Using the Visualizer</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#how-the-visualizer-works">How the Visualizer Works</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#keyboard-shortcuts">Keyboard shortcuts</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
 </ul>
@@ -161,13 +154,13 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Using the Visualizer</li>
+      <li>Getting Started</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/using_the_visualizer.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/getting_started.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -180,29 +173,43 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="using-the-visualizer">
-<span id="using-the-visualizer"></span><h1>Using the Visualizer<a class="headerlink" href="#using-the-visualizer" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="how-the-visualizer-works">
-<span id="how-the-visualizer-works"></span><h2>How the Visualizer Works<a class="headerlink" href="#how-the-visualizer-works" title="Permalink to this headline">¶</a></h2>
-<p>The visualizer takes the log generated from the server after the client is run and uses it to step through the game visually.
-The visualizer is invoked by running <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">visualizer</span></code>.</p>
-</div>
-<div class="section" id="keyboard-shortcuts">
-<span id="keyboard-shortcuts"></span><h2>Keyboard shortcuts<a class="headerlink" href="#keyboard-shortcuts" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="getting-started">
+<span id="getting-started"></span><h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="starting-the-launcher">
+<span id="starting-the-launcher"></span><h2>Starting the Launcher<a class="headerlink" href="#starting-the-launcher" title="Permalink to this headline">¶</a></h2>
+<p>There are 3 components to the launcher:</p>
 <ul class="simple">
-<li>p - pause the visualizer</li>
-<li>f - fullscreen mode (Windows quirks may prevent consistently working)</li>
-<li>escape - quit the visualizer</li>
-<li>s - stats screen</li>
-<li>1 - Lists primary material buy price by station</li>
-<li>2 - Lists secondary material buy price by station</li>
-<li>3 - Material sell price by station</li>
-<li>4 - Material Buy vs Sell</li>
-<li>5 - Material Production vs Consumption</li>
-<li>Shift-Up: Disable interpolation.</li>
-<li>Shift-Down: Enable interpolation. Results in smoother flight paths but runs slower on windows.</li>
-<li><em>Click on station</em> - Station statistics</li>
+<li>Server</li>
+<li>Client</li>
+<li>Visualizer</li>
 </ul>
+<p>To initialize each component, run br_launcher.pyz in CMD with the corresponding command
+/ argument. Here are the steps for setting up the server:</p>
+<ol class="simple">
+<li>Open a command prompt / PowerShell / terminal in the folder that <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span></code> is located in.</li>
+<li>Run <code class="docutils literal notranslate"><span class="pre">by_launcher.pyz</span> <span class="pre">update</span></code> to check if any updates have occurred since last runtime and automatically update.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">run</span></code> to run the client and server.</li>
+</ol>
+<ul class="simple">
+<li>When the client and server are running, watch the 2 prompts for potential output.</li>
+</ul>
+<ol class="simple">
+<li>Once the client has completed, run <code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">visualizer</span></code> to watch the match.</li>
+</ol>
+</div>
+<div class="section" id="visualizer">
+<span id="visualizer"></span><h2>Visualizer<a class="headerlink" href="#visualizer" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">br_launcher.pyz</span> <span class="pre">visualizer</span></code>
+Once the client has finished, the visualizer can be run. The visualizer takes the log of the game session
+and presents it in a visual format. This is useful for seeing where the AI’s weaknesses and strengths are.</p>
+</div>
+<div class="section" id="related-links">
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running the Game</a></li>
+</ul>
+</div>
 </div>
 </div>
 
@@ -214,10 +221,10 @@ The visualizer is invoked by running <code class="docutils literal notranslate">
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="writing_your_ai.html" class="btn btn-neutral float-right" title="Writing Your AI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="running_the_game.html" class="btn btn-neutral float-right" title="Running The Game" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="running_the_game.html" class="btn btn-neutral" title="Running The Game" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="installation.html" class="btn btn-neutral" title="Installing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -251,8 +258,8 @@ The visualizer is invoked by running <code class="docutils literal notranslate">
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
-        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

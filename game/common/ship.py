@@ -71,9 +71,12 @@ class Ship(GameObject):
         self.notoriety = 0
         self.legal_standing = LegalStanding.citizen
 
+        self.bounty = 0
+        self.bounty_list = []
+
         self.respawn_counter = -1
 
-        self.credits = 200
+        self.credits = 2000
 
         self.passive_repair_counter = 0
 
@@ -119,6 +122,8 @@ class Ship(GameObject):
                 "action_param_3": self.action_param_3,
                 "move_action": self.move_action,
 
+                "bounty_list": self.bounty_list,
+
                 "respawn_counter": self.respawn_counter,
 
                 "credits": self.credits,
@@ -141,6 +146,8 @@ class Ship(GameObject):
 
                 "notoriety": self.notoriety,
                 "legal_standing": self.legal_standing,
+
+                "bounty": self.bounty,
             }
 
 
@@ -189,6 +196,8 @@ class Ship(GameObject):
 
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]
+            self.bounty = data["bounty"]
+            self.bounty_list = data["bounty_list"]
 
             self.respawn_counter = data["respawn_counter"]
 

@@ -23,6 +23,19 @@ class UserClient:
         self._action_param_2 = None
         self._action_param_3 = None
 
+    def get_turn_result(self):
+        return {
+            "message_type": MessageType.take_turn,
+
+            "action_type": self._action,
+            "action_param_1": self._action_param_1,
+            "action_param_2": self._action_param_2,
+            "action_param_3": self._action_param_3,
+            "move_action": self._move_action
+
+        }
+
+
 
     def team_name(self):
         return "ForgotToSetAName"
@@ -157,3 +170,8 @@ class UserClient:
 
         self._action = PlayerAction.repair
         self._action_param_1 = hull_to_repair
+
+    def pay_off_bounty(self):
+        self.reset_player_action()
+
+        self._action = PlayerAction.pay_off_bounty

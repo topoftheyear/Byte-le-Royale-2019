@@ -196,26 +196,77 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait):
     server_proc.wait()
 
 
+host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
+
 @cli.group()
 def scrim():
     pass
 
 @scrim.command()
 def announcements():
-    pass
+    payload = requests.get("http://" + host + "/announcements")
+
+    if payload.status_code != 200:
+        click.echo("An error occurred: " + payload.raw)
+
+    data = payload.json()["announcements"]
+
+    click.echo("Announcements:")
+
+    for announcement in sorted(data, key=lambda e: e["posted_date"]):
+        title = announcement["title"]
+        message = announcement["message"]
+        date = announcement["posted_date"]
+        click.echo()
+        click.echo(("-"*50) + f"\n*{title}*\nPosted at: {date}\n\n{message}\n" + ("-"*50) + "\n")
+
+    if len(data) == 0:
+        click.echo("\n No available announcements.")
+
+
+@scrim.command()
+def ui():
+    from scrimmage import run_scrimmage_ui
+    run_scrimmage_ui()
+
 
 admin_password = os.getenv("BL_ROYALE_ADMIN_PASSWORD", False)
-
 if admin_password:
     @scrim.group()
     def admin():
         pass
 
-    @admin.command()
+    @admin.group()
+    def announcements():
+        pass
+
+    @announcements.command("add")
+    @click.argument("title")
     @click.argument("message")
-    def add_announcement(message):
+    def add_announcement(title, message):
         auth = HTTPBasicAuth("BL_ROYALE_ADMIN", admin_password)
-        payload = requests.post("scrimmage.royale.ndacm.org/announcements", auth=auth, data={"message": message})
+        payload = requests.post("http://" + host + "/announcements", auth=auth, json={
+            "title": title,
+            "message": message
+        })
+
+        if payload.status_code != 200 :
+            click.echo("An error occurred " + payload.raw)
+        else:
+            click.echo("Successfully added announcement")
+
+    @announcements.command("clear")
+    def clear_announcements():
+        auth = HTTPBasicAuth("BL_ROYALE_ADMIN", admin_password)
+        payload = requests.delete("http://" + host + "/announcements?all=true", auth=auth)
+
+        if payload.status_code != 200 :
+            click.echo("An error occurred " + payload.raw)
+        else:
+            click.echo("Successfully cleared announcements")
+
+
+
 
 
 

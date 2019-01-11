@@ -9,6 +9,7 @@ from game.config import *
 
 from game.server.notoriety_controller import NotorietyController
 
+
 class CombatController:
 
     def __init__(self):
@@ -21,7 +22,7 @@ class CombatController:
 
     def print(self, msg):
         if self.debug:
-            print(str(msg))
+            print("Combat Controller: " + str(msg))
             sys.stdout.flush()
 
     def get_events(self):
@@ -94,10 +95,20 @@ class CombatController:
                         if target.legal_standing == LegalStanding.citizen:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_civilian)
 
+                            # If attacker is a pirate apply a bounty
+                            if ship.legal_standing >= LegalStanding.pirate:
+                                ship.bounty_list.append({"bounty_type": BountyType.ship_destroyed, "value": 1500, "age": 0})
+                                self.print(f"Bounty {BountyType.ship_destroyed} given to ship {ship.id}")
+
                         elif target.legal_standing == LegalStanding.pirate:
 
                             if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
                                 self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
+
+                                # If current notoriety is lower than a value, awards the bounty
+                                if ship.notoriety <= 0:
+                                    ship.credits += target.bounty
+                                    self.print(f"Bounty of {target.bounty} given to ship {ship.id}")
 
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
