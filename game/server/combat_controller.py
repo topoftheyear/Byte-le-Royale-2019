@@ -6,6 +6,7 @@ from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.config import *
+from game.common.stats import GameStats
 
 from game.server.notoriety_controller import NotorietyController
 
@@ -81,6 +82,8 @@ class CombatController:
             self.record_combat(target)
             self.record_combat(ship)
 
+            # reset passive repair for attacker
+            ship.passive_repair_counter = GameStats.passive_repair_counter
 
             if target.current_hull == 0:
                 self.print("Target destroyed, hiding ship.")

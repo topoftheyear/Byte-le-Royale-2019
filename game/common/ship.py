@@ -78,7 +78,7 @@ class Ship(GameObject):
 
         self.credits = 2000
 
-        self.passive_repair_counter = 0
+        self.passive_repair_counter = GameStats.passive_repair_counter
 
     def to_dict(self, security_level=SecurityLevel.other_player):
         data = GameObject.to_dict(self)
