@@ -18,7 +18,6 @@ class TestMinerNPC(NPC):
         # Repeat
 
         # Pick random of best 2 minerals
-        print(self.heading)
         if self.heading is None:
             mineral_prices = {}
             minerals = [MaterialType.cuprite, MaterialType.goethite, MaterialType.gold]
@@ -54,11 +53,11 @@ class TestMinerNPC(NPC):
                     break
 
         # Sell until empty
-        elif self.heading in universe.get("stations"):
-            #go and sell the stuff, set heading to None
-            if self.ship.inventory[self.chosen_mineral] != 0:
+        elif self.heading in universe.get(ObjectType.station):
+            if self.chosen_mineral in self.ship.inventory and self.ship.inventory[self.chosen_mineral] > 0:
                 self.move(*self.heading.position)
-                self.sell_material(self.chosen_mineral, self.ship.inventory[self.chosen_material])
+                self.sell_material(self.chosen_mineral, self.ship.inventory[self.chosen_mineral])
+                print(self.ship.inventory)
             else:
                 self.heading = None
         else:
