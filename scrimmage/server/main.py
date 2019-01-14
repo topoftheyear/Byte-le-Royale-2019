@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import BadRequest
 from uuid import uuid4
+from validate_script import validate
 
 ADMIN_team_name = "BL_ROYALE_ADMIN"
 ADMIN_PASSWORD = "bl_royale_admin_123"
