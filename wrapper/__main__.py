@@ -78,8 +78,8 @@ def update():
     current_version = version.v
 
     # check latest release version
-    auth = HTTPBasicAuth("jghibiki", "386b4b36cbcc13a8c4e0b14b7d0a08a6bcc74200")
-    payload = requests.get("https://api.github.com/repos/jghibiki/Byte-le-Royale-2019/releases/latest", auth=auth)
+    auth = HTTPBasicAuth("byte-le-royale-slave", "21b9b335294445199026eda76431621251886775")
+    payload = requests.get("https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases/latest", auth=auth)
 
 
     if payload.status_code == 200:
@@ -110,7 +110,7 @@ def update():
     if not os.path.exists("br_updates"):
         os.makedirs("br_updates")
 
-    remote_url = "https://api.github.com/repos/jghibiki/Byte-le-Royale-2019/releases/assets/{0}".format(asset_id)
+    remote_url = "https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases/assets/{0}".format(asset_id)
     local_file = "br_updates/v{0}.pyz".format(remote_version)
 
     if not download_file(local_file, remote_url, auth):
