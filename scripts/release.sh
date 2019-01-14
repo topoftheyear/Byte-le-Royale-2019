@@ -4,7 +4,7 @@
 echo "Bump version? [y/N]"
 python bump_version.py
 
-release_version=cat ../wrapper/version.py
+release_version=cat wrapper/version.py
 release_version="${release_version//v=}"
 
 git add wrapper/version.py
@@ -33,8 +33,7 @@ response=( http post \
     tag_commitish="master" \
     name="Version $release_version" \
     body="$@" \
-    draft=true \
-    2>&1 )
+    draft=true 2>&1 )
 
 echo $response
 
