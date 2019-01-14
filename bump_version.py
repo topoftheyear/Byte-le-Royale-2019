@@ -7,7 +7,7 @@ v=text.split("=")[1]
 print("Current Version:", v)
 v = v.split(".")
 major = v[0]
-minor = int(v[1])
+minor = int("".join(str(i) for i in v[1:]))
 minor += 1
 new_v = "{}.{}".format(major, minor)
 print("New Version:", new_v)
