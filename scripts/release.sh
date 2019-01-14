@@ -2,6 +2,10 @@
 
 
 echo "Bump version? [y/N]"
+read prompt
+if [[ $prompt != "y" ]]; then
+    exit
+fi
 python bump_version.py
 
 release_version=$(cat wrapper/version.py)
@@ -18,6 +22,11 @@ echo "Building app..."
 echo "App built."
 
 echo "Are you sure you wish to release ${release_version}? [N/y]"
+read prompt
+if [[ $prompt != "y" ]]; then
+    exit
+fi
+
 
 GITHUB_TOKEN="21b9b335294445199026eda76431621251886775"
 
@@ -34,25 +43,25 @@ response=$( http --json \
     tag_name=$release_version \
     tag_commitish="master" \
     name="Version $release_version" \
-    body="Release Notes:\n$@" \
+    body="Release Notes: $@" \
     draft:=true 2>&1 )
 
 echo $response
 
 
 # parse out upload url
-set -x
-upload_url=$(echo $response | tr , \\n | grep "upload_url" | cut -d ":" -f 2-3 | cut -d / -f 1-8) 
+upload_url=$(echo $response | tr , \\n | grep "upload_url" | cut -d ":" -f 2-3 | cut -d / -f 1-8 | cut -c 2-) 
 upload_url="$upload_url/assets?name=br_launcher.pyz"
 echo "Upload URL: $upload_url"
 
 
 echo "Uploading launcher"
-http \
-    -a byte-le-royale-slave:$GITHUB_TOKEN \
+http -v\
+    --form \
+    --auth byte-le-royale-slave:$GITHUB_TOKEN \
     post \
-    $upload_url
+    $upload_url \
     Content-Type:application/octet-stream \
-    file@br_launcher.pyz
+    < br_launcher.pyz
 
 echo "Launcher uploaded"
