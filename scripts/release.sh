@@ -42,7 +42,7 @@ echo $response
 
 # parse out upload url
 set -x
-upload_url=$(echo $response | tr , \\n | grep "upload_url" | cut -d ":\"" -f 2 ) #| cut -d / -f 1-8) + "/assets?name=br_launcher.pyz"
+upload_url=$(echo $response | tr , \\n | grep "upload_url" | cut -d ":" -f 2-3 ) #| cut -d / -f 1-8) + "/assets?name=br_launcher.pyz"
 echo "Upload URL: $upload_url"
 
 
