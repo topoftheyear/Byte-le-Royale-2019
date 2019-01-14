@@ -28,13 +28,13 @@ GITHUB_TOKEN="21b9b335294445199026eda76431621251886775"
 
 # Create release
 response=$( http --json post \
+    -a byte-le-royale-slave:$GITHUB_TOKEN \
     "https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases" \
     tag_name=$release_version \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes:\n$@" \
     draft="true" 2>&1 )
-    -a byte-le-royale-slave:$GITHUB_TOKEN \
 
 echo $response
 
