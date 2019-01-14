@@ -27,7 +27,6 @@ GITHUB_TOKEN="21b9b335294445199026eda76431621251886775"
 #    --data-binary @$FILE "https://uploads.github.com/repos/hubot/singularity/releases/123/assets?name=$(basename $FILE)"
 
 # Create release
-set -x
 response=$( http --json \
     --auth byte-le-royale-slave:$GITHUB_TOKEN \
     post \
@@ -36,7 +35,7 @@ response=$( http --json \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes:\n$@" \
-    draft="true" 2>&1 )
+    draft=true 2>&1 )
 
 echo $response
 
