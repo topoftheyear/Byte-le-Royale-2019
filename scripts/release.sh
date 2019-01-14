@@ -35,7 +35,7 @@ response=$( http --json \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes:\n$@" \
-    draft=true 2>&1 )
+    draft:=true 2>&1 )
 
 echo $response
 
