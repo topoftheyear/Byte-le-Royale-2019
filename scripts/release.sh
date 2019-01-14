@@ -27,8 +27,9 @@ GITHUB_TOKEN="21b9b335294445199026eda76431621251886775"
 #    --data-binary @$FILE "https://uploads.github.com/repos/hubot/singularity/releases/123/assets?name=$(basename $FILE)"
 
 # Create release
-response=$( http post --json\
+response=$( http post \
     "https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases" \
+     --json \
     -a byte-le-royale-slave:$GITHUB_TOKEN \
     tag_name=$release_version \
     tag_commitish="master" \
