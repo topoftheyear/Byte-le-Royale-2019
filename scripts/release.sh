@@ -5,7 +5,7 @@ echo "Bump version? [y/N]"
 python bump_version.py
 
 release_version=$(cat wrapper/version.py)
-version=$(echo $release_version | cut -c 3-4)
+release_version=$(echo $release_version | cut -c 3-4)
 
 git add wrapper/version.py
 git commit -m "Bump version to ${release_verison}"
