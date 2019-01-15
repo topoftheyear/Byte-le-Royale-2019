@@ -3,6 +3,7 @@ import click
 import requests
 from requests.auth import HTTPBasicAuth
 
+from validate import validate
 
 
 @click.group()
@@ -42,6 +43,13 @@ def client(client_verbose, script, port):
     import os
 
     script = os.getcwd() + "/" + script + ".py"
+
+    with open(script, "r") as f:
+        script_text = f.read()
+    if not validate(script_text):
+        print("Client script failed to validate. Please fix any illegal imports and try again.")
+        exit()
+
 
     spec = importlib.util.spec_from_file_location("custom_client", script)
     module = importlib.util.module_from_spec(spec)
