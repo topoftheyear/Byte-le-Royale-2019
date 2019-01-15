@@ -32,7 +32,6 @@ class TestMinerNPC(NPC):
             sorted_minerals = sorted(mineral_prices.items(), key=operator.itemgetter(1))
             sorted_minerals.reverse()
             self.chosen_mineral = sorted_minerals[random.randint(0, 1)][0]
-            print(fields)
 
             for field in fields:
                 if field.material_type is not self.chosen_mineral:
@@ -57,7 +56,6 @@ class TestMinerNPC(NPC):
             if self.chosen_mineral in self.ship.inventory and self.ship.inventory[self.chosen_mineral] > 0:
                 self.move(*self.heading.position)
                 self.sell_material(self.chosen_mineral, self.ship.inventory[self.chosen_mineral])
-                print(self.ship.inventory)
             else:
                 self.heading = None
         else:

@@ -17,7 +17,7 @@ class TestTraderNPC(NPC):
         self.heading = ship.position
         self.doing = 0
         self.material = None
-        self.debug = True
+        self.debug = False
 
     def print(self, msg):
         if self.debug:
@@ -127,7 +127,7 @@ class TestTraderNPC(NPC):
             self.sellStation = chosenSellStation.position
             self.buyStation = chosenBuyStation.position
             self.material = chosenMaterial
-            print("Action 0:" + str(self.material) + ":" + str(self.sellStation) + ":" + str(self.buyStation))
+            self.print("Action 0:" + str(self.material) + ":" + str(self.sellStation) + ":" + str(self.buyStation))
             self.doing = 1
             self.heading = self.buyStation
 
@@ -140,16 +140,16 @@ class TestTraderNPC(NPC):
             if self.material in self.ship.inventory and self.ship.inventory[self.material] > 0:
                 self.doing = 2
                 self.heading = self.sellStation
-                print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
+                self.print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
 
 
         elif self.doing == 2:  # selling
             self.heading = self.sellStation
             # Sell material when possible
             self.sell_material(self.material, self.ship.inventory[self.material])
-            print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
+            self.print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
             if self.ship.inventory[self.material] == 0:
-                print("successfully sold")
+                self.print("successfully sold")
                 self.doing = 0
                 self.heading = self.ship.position
 
