@@ -68,7 +68,6 @@ def requires_auth(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         auth = request.authorization
-        print(auth)
         if not auth or not check_auth(auth.username, auth.password):
             return authenticate()
         return f(*args, **kwargs)
@@ -218,9 +217,11 @@ def upload_file():
 def get_submissions():
     team_data = []
     for team in mongo.db.users.find():
-        most_recent_submission = next(sorted(team["submissions"], key=lambda e:e["submission_no"], reverse=True))
+        most_recent_submission = next(iter(sorted(team["submissions"], key=lambda e:e["submission_no"], reverse=True)), None)
+        if most_recent_submission is None:
+            continue
 
-        with open(os.path.join(UPLOAD_FOLDER, team["file_name"]), "r") as f:
+        with open(os.path.join(UPLOAD_FOLDER, most_recent_submission["file_name"]), "r") as f:
             client_data = f.read()
 
         team_data.append({
@@ -229,8 +230,15 @@ def get_submissions():
             "submission_info": most_recent_submission["submission_no"],
         })
 
+    # mark all submissions as running
+    mongo.db.users.update_many(
+            { "submissions.submission_state": SubmissionState.waiting},
+            {"$set": {
+                "submissions.$.submission_state": SubmissionState.running
+    }})
+
     return Response(
-        json_util.dumps({"teams_": team_data}),
+        json_util.dumps({"teams": team_data}),
         mimetype="application/json"
     )
 

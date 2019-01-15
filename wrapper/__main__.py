@@ -15,13 +15,14 @@ def cli():
 @click.option("--server-verbose", is_flag=True)
 @click.option("--port", default=8080)
 @click.option("--no-wait", is_flag=True, help="Prevents server from waiting on client response for longer than configured turn time.")
-def server(server_verbose, port, no_wait):
+@click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server.")
+def server(server_verbose, port, no_wait, connection_wait_timer):
     from game.server import start
 
     if server_verbose:
         print("Server Verbosity: ON")
 
-    start(server_verbose, port, no_wait)
+    start(server_verbose, port, no_wait, connection_wait_timer)
 
 
 

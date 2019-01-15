@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 class ServerControl:
 
-    def __init__(self, wait_on_client, verbose):
+    def __init__(self, wait_on_client, connection_wait_timer, verbose):
 
         self._loop = None
         self._socket_client = None
@@ -19,7 +19,7 @@ class ServerControl:
         self.wait_on_client = wait_on_client
 
         self._clients_connected = 0
-        self.connection_wait_timer = 3
+        self.connection_wait_timer = connection_wait_timer
 
         self._client_ids = []
         self._quit = False

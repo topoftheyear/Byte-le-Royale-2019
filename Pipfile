@@ -11,6 +11,7 @@ tqdm = "*"
 requests = "*"
 Pygame = "*"
 prompt-toolkit = "*"
+docker = "*"
 
 [dev-packages]
 sphinx = "*"
@@ -23,4 +24,3 @@ flask-pymongo = "*"
 
 [requires]
 python_version = "3.7"
-
