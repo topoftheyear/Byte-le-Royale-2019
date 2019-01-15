@@ -1,4 +1,5 @@
 import random
+import sys
 
 from game.common.enums import *
 from game.client.user_client import UserClient
@@ -13,9 +14,15 @@ class TestTraderNPC(NPC):
         self.ship = ship
         self.ship_id = ship.id
 
-        self.heading = None
-        self.action = 0
+        self.heading = ship.position
+        self.doing = 0
         self.material = None
+        self.debug = True
+
+    def print(self, msg):
+        if self.debug:
+            print("Buy Sell Controller: " + str(msg))
+            sys.stdout.flush()
 
     def take_turn(self, universe):
 
@@ -45,8 +52,11 @@ class TestTraderNPC(NPC):
         chosenSellStation = None
         chosenBuyStation = None
 
-        if self.action is 0:
+        if self.doing is 0:
+            self.heading = self.ship.position
             for key,sellPrice in sellPrices.items():
+                if key is MaterialType.salvage:
+                    continue
                 if key not in buyPrices:
                     continue
                 buyPrice = buyPrices[key]
@@ -117,42 +127,34 @@ class TestTraderNPC(NPC):
             self.sellStation = chosenSellStation.position
             self.buyStation = chosenBuyStation.position
             self.material = chosenMaterial
-
-            self.action = 1
+            print("Action 0:" + str(self.material) + ":" + str(self.sellStation) + ":" + str(self.buyStation))
+            self.doing = 1
             self.heading = self.buyStation
 
-        elif self.action == 1:  # buying
+        elif self.doing == 1:  # buying
             self.heading = self.buyStation
             # Gather as much of the material determined as possible
             if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
                 self.buy_material(self.ship.cargo_space)
 
             if self.material in self.ship.inventory and self.ship.inventory[self.material] > 0:
-                self.action = 2
+                self.doing = 2
                 self.heading = self.sellStation
+                print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
 
-        elif self.action == 2:  # selling
+
+        elif self.doing == 2:  # selling
             self.heading = self.sellStation
             # Sell material when possible
             self.sell_material(self.material, self.ship.inventory[self.material])
-
+            print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
             if self.ship.inventory[self.material] == 0:
-                self.action == 0
+                print("successfully sold")
+                self.doing = 0
+                self.heading = self.ship.position
 
+        self.move(self.heading[0], self.heading[1])
         # move towards heading
-        self.move(*self.heading)
-
-        # if at heading, clear heading
-        if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-            if self.action == 1:
-                self.action = 2
-                self.heading = self.sellStation
-            if self.action == 2:
-                self.action = None
-                self.heading = None
-
-
-
         return self.action_digest()
 
 
