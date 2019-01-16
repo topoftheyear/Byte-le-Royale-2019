@@ -16,7 +16,7 @@ def cli():
 @click.option("--port", default=8080)
 @click.option("--no-wait", is_flag=True, help="Prevents server from waiting on client response for longer than configured turn time.")
 @click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server after the first has connected.")
-@click.option("--wait-timeout", default=None, help="Number of seconds to wait for the first client to connect to the server.")
+@click.option("--wait-timeout", default=-1, help="Number of seconds to wait for the first client to connect to the server.")
 def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout):
     from game.server import start
 

@@ -60,7 +60,7 @@ class ServerControl:
             print("Waiting for clients...")
 
         if self._clients_connected == 0:
-            if self.wait_timer != None:
+            if self.wait_timer != -1:
                 if self.wait_timer > 0:
                     self.wait_timer -= 1
                 else:

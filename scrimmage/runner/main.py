@@ -9,6 +9,8 @@ import tempfile
 import tarfile
 import json
 import shutil
+import signal
+import traceback
 
 
 class Config:
@@ -27,8 +29,6 @@ class ScrimmageRunner:
         if not os.path.exists(Config.UPLOAD_DIR):
                 os.makedirs(Config.UPLOAD_DIR)
 
-        if not os.path.exists(Config.GAME_LOG_LOCATION):
-                os.makedirs(Config.GAME_LOG_LOCATION)
 
         self.auth = HTTPBasicAuth("BL_ROYALE_ADMIN", "bl_royale_admin_123")
         self.client_metadata = {}
@@ -45,6 +45,7 @@ class ScrimmageRunner:
 
 
         # Get latest batch of clients
+        self.docker_remove_container("br_server")
         self.clear_clients()
         self.clear_logs()
 
@@ -61,23 +62,24 @@ class ScrimmageRunner:
         self.persist_clients(clients["teams"])
 
         print("Starting Server")
-        results = self.start_server()
+        self.start_server()
 
         print("Starting Clients")
         self.start_clients()
 
         print("Waiting for server to exit...")
-        run_success = self.wait_for_server()
-        if not run_success:
-            self.docker_remove_container("bl_server")
-            return
+        self.wait_for_server()
 
-        self.pull_server_data()
+        print("Pulling server data")
+        results = self.pull_server_data()
+
+        print("Pulling client's data")
         self.pull_client_data()
 
-        self.docker_remove_container("bl_server")
-
+        print("Sending results")
         self.send_results(results)
+
+        self.docker_remove_container("br_server")
 
 
     def get_clients(self):
@@ -124,19 +126,21 @@ class ScrimmageRunner:
         try:
             self.server_node = self.docker_client.containers.run(
                     Config.DOCKER_IMAGE_SERVER,
-                    name="bl_server",
-                    network="bl_net",
+                    name="br_server",
+                    network="br_net",
                     detach=True)
         except Exception as e:
-            print("Exception: ", e)
-            if self.server_node is not None:
-                self.docker_remove_container("bl_server")
-            exit()
+            self.handle_exception(e)
 
     def docker_remove_container(self, name):
-        server = self.docker_client.containers.get(name)
-        server.stop()
-        server.remove()
+        try:
+            c = self.docker_client.containers.get(name)
+            c.reload()
+            if c.status != "exited":
+                c.stop()
+            c.remove()
+        except:
+            pass
 
 
 
@@ -150,7 +154,7 @@ class ScrimmageRunner:
             self.client_nodes[team_name] = self.docker_client.containers.run(
                     Config.DOCKER_IMAGE_CLIENT,
                     detach=True,
-                    network="bl_net",
+                    network="br_net",
                     mounts=[
                         docker.types.Mount(
                             target="/code/custom_client.py",
@@ -190,7 +194,7 @@ class ScrimmageRunner:
             self.client_metadata[team_name]["log"] = text
 
 
-    def send_results(results):
+    def send_results(self, results):
         # send server data
         requests.post(
                 Config.API_HOST + "/report/results",
@@ -202,7 +206,7 @@ class ScrimmageRunner:
             data = f.read()
 
         requests.post(
-                Config.API_HOST + "/report/results",
+                Config.API_HOST + "/report/game_logs",
                 auth=self.auth,
                 json={
                     "file_data": data
@@ -213,7 +217,7 @@ class ScrimmageRunner:
         # send client logs
         for team_name, metadata in self.client_metadata.items():
             requests.post(
-                    Config.API_HOST + "/report/results",
+                    Config.API_HOST + "/report/client_log",
                     auth=self.auth,
                     json={
                         "team_name": team_name,
@@ -223,13 +227,12 @@ class ScrimmageRunner:
 
     def clear_logs(self):
         if os.path.exists(Config.GAME_LOG_LOCATION):
-            shutil.rmtree(Config.GAME_LOG_LOCATION)
+            os.unlink(Config.GAME_LOG_LOCATION)
 
-        if not os.path.exists(Config.GAME_LOG_LOCATION):
-            os.makedirs(Config.GAME_LOG_LOCATION)
 
 
     def docker_get_file(self, node, file_name):
+        print("Retreiving:", file_name)
         raw_data = self.docker_client.api.get_archive(
                 node.name,
                 file_name)
@@ -256,15 +259,32 @@ class ScrimmageRunner:
                 dir_name)
 
         file_path = extract_to
-        with open(file_path, "w") as f:
-            for chunk in raw_data[0].stream():
+        with open(file_path, "wb") as f:
+            for chunk in raw_data[0]:
                 f.write(chunk)
+
+    def handle_sigint(self, sig, frame):
+        print("User pressed, Ctrl+c. Cleaning up and exiting.")
+        self.docker_remove_container("br_server")
+        sys.exit(1)
+
+    def handle_exception(self, e):
+        print("Exception occurred", e)
+        traceback.print_exc()
+        self.docker_remove_container("br_server")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
     runner = ScrimmageRunner()
 
+    signal.signal(signal.SIGINT, runner.handle_sigint)
+
     while(True):
-        runner.work()
+        try:
+            runner.work()
+        except Exception as e:
+            runner.handle_exception(e)
+
         time.sleep(0.25)
 

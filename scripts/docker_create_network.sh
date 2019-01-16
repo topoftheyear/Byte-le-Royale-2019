@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker network create bl_net
+docker network create br_net
 

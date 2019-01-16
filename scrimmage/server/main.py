@@ -250,11 +250,14 @@ def upload_game_results():
     json = request.json
     print(json)
 
+    return "ok"
+
 @app.route("/report/results", methods=["GET"])
 @requires_admin
 def get_game_results():
     # return results data
     pass
+    return "ok"
 
 @app.route("/report/game_logs", methods=["POST"])
 @requires_admin
@@ -263,27 +266,31 @@ def upload_game_logs():
     print("got data")
 
     # save data to file
+    return "ok"
 
 @app.route("/report/game_logs", methods=["GET"])
 @requires_admin
 def get_game_logs():
     # return game log data
     pass
+    return "ok"
 
 @app.route("/report/client_log", methods=["POST"])
 @requires_admin
 def upload_client_logs():
     json = request.json
-    print("got data")
+    print("Client log: ",  json)
+    return "ok"
 
-@app.route("/report/client_log/<submission_id>", methods=["GET"])
+@app.route("/report/client_log", methods=["GET"])
 @requires_admin
-def get_client_logs(submission_id):
+def get_client_logs():
 
     # get team name from auth
 
     # return game log data
     pass
+    return "ok"
 
 
 
