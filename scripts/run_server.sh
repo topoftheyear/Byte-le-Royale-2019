@@ -10,4 +10,5 @@ echo "Starting server"
     server \
     --port 8888 \
     --no-wait \
-    --connection-wait-timer 120
+    --connection-wait-timer 120 \
+    --wait-timeout 600
