@@ -32,8 +32,17 @@ import game.utils.filters as filters
 
 class CustomServer(ServerControl):
 
-    def __init__(self, verbose=False, wait_on_client=False, connection_wait_timer=3):
-        super().__init__(wait_on_client, connection_wait_timer, verbose)
+    def __init__(
+            self,
+            verbose=False,
+            wait_on_client=False,
+            connection_wait_timer=3,
+            wait_timer=None):
+        super().__init__(
+                wait_on_client,
+                connection_wait_timer,
+                wait_timer,
+                verbose)
 
         self.verbose = verbose
 

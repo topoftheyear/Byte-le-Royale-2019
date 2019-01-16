@@ -244,11 +244,46 @@ def get_submissions():
 
 
 
-@app.route("/report", methods=["POST"])
+@app.route("/report/results", methods=["POST"])
 @requires_admin
-def upload_game_info():
-    """Used by the runner to upload the client logs, results, update leaderboards"""
+def upload_game_results():
     json = request.json
+    print(json)
+
+@app.route("/report/results", methods=["GET"])
+@requires_admin
+def get_game_results():
+    # return results data
+    pass
+
+@app.route("/report/game_logs", methods=["POST"])
+@requires_admin
+def upload_game_logs():
+    json = request.json
+    print("got data")
+
+    # save data to file
+
+@app.route("/report/game_logs", methods=["GET"])
+@requires_admin
+def get_game_logs():
+    # return game log data
+    pass
+
+@app.route("/report/client_log", methods=["POST"])
+@requires_admin
+def upload_client_logs():
+    json = request.json
+    print("got data")
+
+@app.route("/report/client_log/<submission_id>", methods=["GET"])
+@requires_admin
+def get_client_logs(submission_id):
+
+    # get team name from auth
+
+    # return game log data
+    pass
 
 
 

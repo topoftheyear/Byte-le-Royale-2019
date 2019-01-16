@@ -15,23 +15,23 @@ def cli():
 @click.option("--server-verbose", is_flag=True)
 @click.option("--port", default=8080)
 @click.option("--no-wait", is_flag=True, help="Prevents server from waiting on client response for longer than configured turn time.")
-@click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server.")
-def server(server_verbose, port, no_wait, connection_wait_timer):
+@click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server after the first has connected.")
+@click.option("--wait-timeout", default=None, help="Number of seconds to wait for the first client to connect to the server.")
+def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout):
     from game.server import start
 
     if server_verbose:
         print("Server Verbosity: ON")
 
-    start(server_verbose, port, no_wait, connection_wait_timer)
-
-
+    start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout)
 
 
 @cli.command()
 @click.option("--client-verbose", is_flag=True)
 @click.option("--script", default="custom_client")
 @click.option("--port", default=8080)
-def client(client_verbose, script, port):
+@click.option("--host", default="127.0.0.1")
+def client(client_verbose, script, port, host):
     import importlib
 
     from game.client import start
@@ -59,7 +59,7 @@ def client(client_verbose, script, port):
     #mod = importlib.import_module(script)
 
 
-    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port)
+    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
 
 
 @cli.command()
