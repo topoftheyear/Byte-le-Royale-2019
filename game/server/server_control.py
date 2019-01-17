@@ -135,6 +135,8 @@ class ServerControl:
             most_mined = self.accolade_controller.most_ore_mined()
             most_bounties = self.accolade_controller.most_bounties_claimed()
             most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()
+            most_credits_earned = self.accolade_controller.most_credits_earned()
+
 
             # Dump Game log manifest
             with open("game_log/manifest.json", "w") as f:
