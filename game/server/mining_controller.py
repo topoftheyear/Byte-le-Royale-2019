@@ -6,6 +6,7 @@ from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.utils.helpers import *
+from game.server.accolade_controller import AccoladeController
 
 class MiningController:
 
@@ -14,6 +15,7 @@ class MiningController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.accolade_controller = AccoladeController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -29,7 +31,6 @@ class MiningController:
         s = self.stats
         self.stats = []
         return s
-
 
     def handle_actions(self, living_ships, universe, teams, npc_teams):
         for team, data in { **teams, **npc_teams}.items():
@@ -71,4 +72,5 @@ class MiningController:
                         if material not in ship.inventory:
                             ship.inventory[material] = 0
                         ship.inventory[material] += amount
+                        self.accolade_controller.ore_mined(ship, amount)
 

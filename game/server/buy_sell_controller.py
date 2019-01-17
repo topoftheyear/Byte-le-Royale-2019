@@ -8,6 +8,7 @@ from game.common.ship import Ship
 from game.utils.helpers import *
 from game.common.stats import *
 from game.utils.stat_utils import get_material_name
+from game.server.accolade_controller import AccoladeController
 
 class Bid:
     def __init__(self, ship, material, quantity):
@@ -25,6 +26,8 @@ class BuySellController:
         self.events = []
         self.stats = []
         self.station_bids = {}
+
+        self.accolade_controller = AccoladeController.get_instance()
 
         self.buy_bids = {}
         self.sell_bids = {}
@@ -119,6 +122,7 @@ class BuySellController:
             amount,
             get_material_name(material)
         ))
+        self.accolade_controller.redeem_salvage(ship, amount)
 
         # Apply bounty for selling scrap
         # TODO determine balanced value for this, current 1:1

@@ -6,6 +6,7 @@ import sys
 from datetime import datetime
 from datetime import datetime, timedelta
 from tqdm import tqdm
+from game.server.accolade_controller import AccoladeController
 
 
 
@@ -26,6 +27,7 @@ class ServerControl:
 
         self._est_time = []
         self._last_time = None
+        self.accolade_controller = AccoladeController.get_instance()
 
 
         # Game Configuration options
@@ -128,6 +130,11 @@ class ServerControl:
 
         else:
             print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
+
+            # Start accolades
+            most_mined = self.accolade_controller.most_ore_mined()
+            most_bounties = self.accolade_controller.most_bounties_claimed()
+            most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()
 
             # Dump Game log manifest
             with open("game_log/manifest.json", "w") as f:
