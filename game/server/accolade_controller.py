@@ -26,6 +26,7 @@ class AccoladeController:
         self.bounties = dict()
         self.scrap = dict()
         self.salvage = dict()
+        self.credits = dict() #credits earned NOT salvage
 
 
     @staticmethod
@@ -160,3 +161,19 @@ class AccoladeController:
 
         return [ship, most]
 
+
+    def credits_earned(self, ship, creditAdd):
+        if ship in self.credits:
+            self.credits[ship] += creditAdd
+        else:
+            self.credits[ship] = creditAdd
+
+    def most_credits_earned(self):
+        most = -1
+        ship = ""
+        for x in self.credits:
+            if self.credits[x] > most:
+                most = self.credits[x]
+                ship = x
+
+        return [ship, most]

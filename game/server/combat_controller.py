@@ -8,6 +8,7 @@ from game.common.ship import Ship
 from game.config import *
 
 from game.server.notoriety_controller import NotorietyController
+from game.server.accolade_controller import AccoladeController
 
 
 class CombatController:
@@ -19,6 +20,7 @@ class CombatController:
         self.stats = []
 
         self.notoriety_controller = NotorietyController.get_instance()
+        self.accolade_controller = AccoladeController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -109,6 +111,10 @@ class CombatController:
                                 if ship.notoriety <= 0:
                                     ship.credits += target.bounty
                                     self.print(f"Bounty of {target.bounty} given to ship {ship.id}")
+
+                                    self.accolade_controller.bounty_claim(ship)
+
+
 
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)

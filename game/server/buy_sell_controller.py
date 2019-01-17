@@ -242,6 +242,8 @@ class BuySellController:
                     bid.ship.credits += price
                     bid.ship.inventory[bid.material] -= quantity
 
+                    self.accolade_controller.credits_earned(bid.ship, price)
+
                     self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
                         bid.ship.team_name, quantity, price
                     ))
