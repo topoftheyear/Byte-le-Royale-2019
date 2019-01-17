@@ -12,3 +12,19 @@ echo "Starting server"
     --no-wait \
     --connection-wait-timer 10 \
     --wait-timeout 10
+
+echo '{
+    "leaderboard": [
+        {
+            "team_name": "herp derp",
+            "credits": 1000
+        },
+        {
+            "team_name": "team 2",
+            "credits": 999
+        }
+    ],
+    "accolades": {
+        "badass": "herp derp"
+    }
+}' > results.json

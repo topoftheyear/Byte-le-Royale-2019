@@ -42,15 +42,14 @@ class ScrimmageRunner:
 
 
     def work(self):
-
-
         # Get latest batch of clients
         self.docker_remove_container("br_server")
         self.clear_clients()
         self.clear_logs()
 
         clients = self.get_clients()
-        if not clients: return
+        if len(clients["teams"]) == 0:
+            return
 
         # increment run id
         self.run_id += 1
@@ -177,7 +176,6 @@ class ScrimmageRunner:
                 self.server_node,
                 "/code/" + Config.RESULT_FILE)
 
-        print(results)
         results = json.loads(results)
 
         self.docker_get_dir(
@@ -195,11 +193,15 @@ class ScrimmageRunner:
 
 
     def send_results(self, results):
+        requests.post(
+                Config.API_HOST + "/report/run",
+                auth=self.auth)
+
         # send server data
         requests.post(
-                Config.API_HOST + "/report/results",
+                Config.API_HOST + "/report/ranking",
                 auth=self.auth,
-                json=results)
+                json=results["leaderboard"])
 
         # send game logs
         with open(Config.GAME_LOG_LOCATION, "r") as f:
@@ -209,7 +211,8 @@ class ScrimmageRunner:
                 Config.API_HOST + "/report/game_logs",
                 auth=self.auth,
                 json={
-                    "file_data": data
+                    "game_log": data,
+                    "results": results
                 })
 
         del data
@@ -249,7 +252,6 @@ class ScrimmageRunner:
                 tar_info = tar.getmembers()[0]
                 f = tar.extractfile(tar_info)
                 data = f.read()
-                print(data)
                 return data
 
 
@@ -286,5 +288,5 @@ if __name__ == "__main__":
         except Exception as e:
             runner.handle_exception(e)
 
-        time.sleep(0.25)
+        time.sleep(10)
 

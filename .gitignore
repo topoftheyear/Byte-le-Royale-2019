@@ -117,4 +117,5 @@ br_updates/
 sphinx/_build/
 
 scrimmage/server/uploads/*
+scrimmage/server/runs/*
 scrimmage/*/uploads/*

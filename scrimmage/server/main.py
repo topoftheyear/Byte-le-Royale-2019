@@ -9,6 +9,7 @@ from werkzeug.utils import secure_filename
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.exceptions import BadRequest
 from uuid import uuid4
+import json
 
 ADMIN_team_name = "BL_ROYALE_ADMIN"
 ADMIN_PASSWORD = "bl_royale_admin_123"
@@ -27,6 +28,7 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 CORS(app)
 mongo = PyMongo(app)
+
 
 
 
@@ -197,13 +199,12 @@ def upload_file():
         "file_name": filename,
         "upload_date": time,
         "submission_state": SubmissionState.waiting,
-        "stats": {}
+        "runs": []
     })
 
     mongo.db.users.update_one({"team_name": team_name}, {"$set": {
         "submissions": submissions
     }})
-
 
     # save file to disk
     with open(os.path.join(UPLOAD_FOLDER, filename), "w") as f:
@@ -227,84 +228,224 @@ def get_submissions():
         team_data.append({
             "team_name": team["team_name"],
             "client_data": client_data,
-            "submission_info": most_recent_submission["submission_no"],
+            "submission_no": most_recent_submission["submission_no"],
         })
 
-    # mark all submissions as running
-    mongo.db.users.update_many(
-            { "submissions.submission_state": SubmissionState.waiting},
-            {"$set": {
-                "submissions.$.submission_state": SubmissionState.running
-    }})
+        subs = team["submissions"]
+        idx = subs.index(most_recent_submission)
+        subs[idx]["submission_state"] = SubmissionState.running
+
+        # mark team submission as running
+        mongo.db.users.update_one({"team_name": team["team_name"]}, {"$set": {
+            "submissions": subs
+        }})
+
 
     return Response(
         json_util.dumps({"teams": team_data}),
         mimetype="application/json"
     )
 
-
-
-@app.route("/report/results", methods=["POST"])
+@app.route("/report/run", methods=["POST"])
 @requires_admin
-def upload_game_results():
-    json = request.json
-    print(json)
+def update_run_no():
+    data = request.json
+
+
+    run_no = get_latest_run_no()
+
+    if run_no == None:
+        run_no = 1
+    else:
+        run_no += 1
+
+
+    mongo.db.runs.insert_one({
+        "run_no": run_no
+    })
 
     return "ok"
 
-@app.route("/report/results", methods=["GET"])
+
+@app.route("/report/ranking", methods=["POST"])
 @requires_admin
-def get_game_results():
-    # return results data
-    pass
+def upload_game_ranking():
+    data = request.json
+    run_no = get_latest_run_no()
+    mongo.db.leaderboard.insert_one({
+        "run_number": run_no,
+        "leaderboard": data
+    })
+
     return "ok"
+
 
 @app.route("/report/game_logs", methods=["POST"])
 @requires_admin
 def upload_game_logs():
-    json = request.json
-    print("got data")
+    data = request.json
+    run_no = get_latest_run_no()
 
-    # save data to file
+    if not os.path.exists("runs"):
+        os.makedirs("runs")
+
+    old_result_file = "runs/{}_result.json".format(run_no-1)
+    old_log_files = "runs/{}.tar".format(run_no-1)
+
+    if os.path.exists(old_result_file):
+        os.unlink(old_result_file)
+
+    if os.path.exists(old_log_files):
+        os.unlink(old_log_files)
+
+    # insert into db
+    result_file = "runs/{}_result.json".format(run_no)
+    log_files = "runs/{}.tar".format(run_no)
+    with open(log_files, "w") as f:
+        f.write(data["game_log"])
+
+    with open(result_file, "w") as f:
+        json.dump(data["results"], f)
+
     return "ok"
 
-@app.route("/report/game_logs", methods=["GET"])
+@app.route("/report/game_logs/<int:run>", methods=["GET"])
 @requires_admin
-def get_game_logs():
-    # return game log data
-    pass
-    return "ok"
+def get_game_logs(run=-1):
+
+    if run < 0:
+        run = get_latest_run_no()
+
+    result_file = "runs/{}_result.py".format(run)
+    log_files = "runs/{}.py".format(run)
+    with open(log_files, "rb") as f:
+        log_data = f.read()
+
+    with open(result_file, "r") as f:
+        results_data = f.read()
+
+    return jsonify({
+        "results": results_data,
+        "log_data": log_data
+    })
 
 @app.route("/report/client_log", methods=["POST"])
 @requires_admin
 def upload_client_logs():
-    json = request.json
-    print("Client log: ",  json)
+    data = request.json
+
+    user = get_user(data["team_name"])
+    run_no = get_latest_run_no()
+
+    submissions = user["submissions"]
+    most_recent_submission = sorted(
+                    submissions,
+                    key=lambda e:e["submission_no"], reverse=True)[0]
+
+    index = submissions.index(most_recent_submission)
+
+    submissions[index]["submission_state"] = SubmissionState.finished
+
+    # get submissions older than the last 5
+    cutoff = run_no-5
+    to_save = list(filter(
+            lambda s: s["run_number"]>cutoff,
+            submissions[index]["runs"]))
+
+    print(len(to_save))
+
+    submissions[index]["runs"] = None
+    submissions[index]["runs"] = to_save
+    submissions[index]["runs"].append({
+        "run_number": run_no,
+        "log": data["log"]
+    })
+
+    mongo.db.users.update_one({"team_name": user["team_name"]}, {"$set": {
+        "submissions": submissions
+    }})
+
     return "ok"
 
-@app.route("/report/client_log", methods=["GET"])
-@requires_admin
-def get_client_logs():
+@app.route("/submissions/list", methods=["GET"])
+@requires_auth
+def get_client_submissions():
+    user = get_user()
+    s = []
+    for sub in user["submissions"]:
+        s.append({
+            "submission_no": sub["submission_no"],
+            "name": sub["name"],
+            "file_name": sub["file_name"],
+            "upload_date": sub["upload_date"],
+            "submission_state": sub["submission_state"]
+        })
 
-    # get team name from auth
+    return Response(
+        json_util.dumps(s),
+        mimetype="application/json"
+    )
 
-    # return game log data
-    pass
-    return "ok"
+@app.route("/report/submissions/<int:submission_no>", methods=["GET"])
+@requires_auth
+def get_client_logs(submission_no):
 
+    user = get_user()
+
+    submission = next(
+            iter(filter(
+                lambda s: s["submission_no"] == submission_no,
+                user["submissions"])), None)
+
+    return jsonify(submission)
+
+@app.route("/leaderboard", methods=["GET"])
+def get_leaderboard():
+
+    leaderboard = next(iter(
+        mongo.db.leaderboard.find({}, sort=[("run_number", -1)])),
+        None)
+
+    return Response(
+        json_util.dumps(leaderboard),
+        mimetype="application/json"
+    )
+
+@app.route("/leaderboard/<int:run_no>", methods=["GET"])
+def get_leaderboard_by_no(run_no):
+
+    leaderboard = next(iter(
+        mongo.db.leaderboard.find({"run_number": run_no})),
+        None)
+
+    return Response(
+        json_util.dumps(leaderboard),
+        mimetype="application/json"
+    )
 
 
 
 # ######### Helpers
 
-def get_user():
-    auth = request.authorization
-    if not auth:
+def get_user(team_name=None):
+    if team_name is None:
+        auth = request.authorization
+        if not auth:
+            return None
+
+        user = mongo.db.users.find_one({"team_name": auth.username})
+
+        return user
+    else:
+        user = mongo.db.users.find_one({"team_name": team_name})
+        return user
+
+def get_latest_run_no():
+    run_info = mongo.db.runs.find_one({}, sort=[("run_no", -1)])
+    if run_info == None:
         return None
-
-    user = mongo.db.users.find_one({"team_name": auth.username})
-
-    return user
+    else:
+        return run_info["run_no"]
 
 
 if __name__ == "__main__":

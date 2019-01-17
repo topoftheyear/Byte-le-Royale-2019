@@ -13,12 +13,14 @@ from prompt_toolkit.eventloop import use_asyncio_event_loop
 from prompt_toolkit.application import get_app
 from prompt_toolkit.completion import Completer, Completion
 from prompt_toolkit.layout.menus import CompletionsMenu
+from prompt_toolkit.key_binding.bindings.scroll import scroll_page_up, scroll_page_down, scroll_one_line_down, scroll_one_line_up
 
 import requests
 from requests.auth import HTTPBasicAuth
 import asyncio
 import os
 import re
+import time
 
 
 ## attempt to load credentials file
@@ -49,14 +51,48 @@ def exit_(event):
     """
     event.app.exit()
 
+@kb.add('up')
+def _(event):
+    scroll_one_line_up(event)
+
+@kb.add('down')
+def _(event):
+    scroll_one_line_down(event)
+
+@kb.add('pageup')
+def _(event):
+    scroll_page_up(event)
+
+@kb.add('pagedown')
+def _(event):
+    scroll_page_down(event)
+
+bit = False
+block_backtick = False
+@kb.add('`')
+def _(event):
+    global bit
+
+    if block_backtick:
+        return
+
+    bit = not bit
+    if bit:
+        layout.focus(input_field)
+    else:
+        layout.focus(output_field)
 
 buffer1 = Buffer()  # Editable buffer.
 
 help_text = """Available Commands:
 - announcements: Display announcements, updates automatically.
-- leaderboard: Displays the leaderboard, updates automatically.
 - registration: Displays the registration form.
+- leaderboard: Displays the leaderboard, updates automatically.
 - submit: Submit a client to the scrimmage server.
+- results: View results for submitted clients.
+- help: Display this help page.
+
+Note: Press the backtick key to toggle between the results panel and the input prompt. Use up, down, pageup, and pagedown to navigate the results panel.
 
 Press Ctrl+C to exit"""
 search_field = SearchToolbar()
@@ -71,7 +107,9 @@ input_field = TextArea(
     wrap_lines=False, search_field=search_field)
 
 
+########################
 ### Registration Dialog
+########################
 
 def registration_submit_handler(buf):
     clear_floats()
@@ -117,6 +155,8 @@ async def register_team(team_name):
     else:
         output_field.text = "Registration failed for team \"{}\"\nReason:\n{}".format(team_name, cleanhtml(response.text))
 
+    global block_backtick
+    block_backtick = False
     layout.focus(input_field)
 
 registration_input_field = TextArea(
@@ -137,11 +177,143 @@ registration_dialog = Dialog(
             Button(text="Submit", handler=lambda :registration_submit_handler(None))
         ])
 
+#############################
+## Rusults Selection Dialog
+#############################
+results_select = RadioList([(None, None)])
 
+
+def show_results_select_dialog():
+    output_field.text = "Getting submission information..."
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(async_show_results_select_dialog())
+
+async def async_show_results_select_dialog():
+    loop = asyncio.get_event_loop()
+
+    auth = HTTPBasicAuth(registered_team_name, registered_auth_token)
+    response = await loop.run_in_executor(
+            None,
+            lambda: requests.get("http://" + host + "/submissions/list", auth=auth))
+
+
+    if response.status_code != 200:
+        output_field.text = "Failed to fetch submissions information.\nReason:\n{}".format(cleanhtml(response.text))
+        return
+
+    data = response.json()
+
+    results_select.values = [
+            (s["submission_no"],
+                "{} {}".format(
+                s["name"],
+                s["submission_state"])
+                )
+            for s in data]
+
+    submission_options.values.append(("None", "None"))
+
+    flt = Float(content=results_select_dialog)
+    layout.focus(results_select_dialog)
+    root_container.floats.append(flt)
+    output_field.text = ""
+
+def results_select_submit_handler(buf):
+    global show_submission_info_enabled
+    clear_floats()
+    submission = results_select.current_value
+
+    if submission == "None":
+        layout.focus(input_field)
+        return
+
+    output_field.text = "Getting submission \"{}\" information...".format(submission)
+
+    loop = asyncio.get_event_loop()
+    show_submission_info_enabled = True
+    loop.create_task(async_show_submission_info(submission))
+
+
+show_submission_info_enabled = False
+async def async_show_submission_info(submission):
+    loop = asyncio.get_event_loop()
+
+    if not show_submission_info_enabled:
+        return
+
+    auth = HTTPBasicAuth(registered_team_name, registered_auth_token)
+    response = await loop.run_in_executor(
+        None,
+        lambda: requests.get(
+            "http://" + host + "/report/submissions/{}".format(submission),
+            auth=auth))
+
+    if response.status_code != 200:
+        output_field.text = "Failed to fetch submission \"{}\" information.\nReason:\n{}".format(submission, cleanhtml(response.text))
+        return
+
+    submission_data = response.json()
+
+    output_field.text = """
+Note: Press the backtick key to toggle between the results panel and the input prompt. Use up, down, pageup, and pagedown to navigate the results panel.
+-----------------------
+{}
+Upload Date: {}
+Submission State: {}
+
+""".format(
+            submission_data["name"],
+            submission_data["upload_date"],
+            submission_data["submission_state"])
+
+    for run in submission_data["runs"][::-1]*5:
+        output_field.text += ("-"*100) + "\n"
+        output_field.text += "Match Number: {}\n".format(run["run_number"])
+        output_field.text += "~~ | LOG | ~~\n"
+        output_field.text += run["log"]
+        output_field.text += ("-"*100) + "\n"
+
+    global block_backtick
+    block_backtick = False
+    layout.focus(output_field)
+
+    await asyncio.sleep(5)
+
+    if not show_submission_info_enabled:
+        return
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(async_show_submission_info(submission))
+
+
+
+results_select_dialog = Dialog(
+        title="Submission Select",
+        body=HSplit([
+            Label("Select a submission to view:"),
+            results_select,
+            Label("Press tab and then enter to confirm."),
+        ]),
+        buttons=[
+            Button(text="Submit", handler=lambda :results_select_submit_handler(None))
+        ])
+
+
+####################
 ## Submission Dialog
+####################
+
 def submission_submit_handler(buf):
+    global block_backtick
     clear_floats()
     client_path = submission_options.current_value
+
+    if client_path == "None":
+        block_backtick = False
+        layout.focus(input_field)
+        return
+
     output_field.text = "Submitting client \"{}\"...".format(client_path)
     loop = asyncio.get_event_loop()
 
@@ -151,13 +323,16 @@ def submission_submit_handler(buf):
                 "copied a \"byte-le-royale-auth.txt\" file into the current directory. Call the"\
                 "\"reload_auth\" command."
 
+        block_backtick = False
         layout.focus(input_field)
     else:
         loop.create_task(submit_client(client_path))
 
 
 async def submit_client(client_path):
+    global show_submission_info_enabled
     loop = asyncio.get_event_loop()
+
 
     with open(client_path, "r") as f:
         file_data = f.read()
@@ -177,7 +352,14 @@ async def submit_client(client_path):
         output_field.text = "Submission failed.\nReason:\n{}".format(cleanhtml(response.text))
         output_field.text += "\n " + registered_team_name + " " + registered_auth_token
 
-    layout.focus(input_field)
+    await asyncio.sleep(2)
+
+    response_data = response.json()
+
+    loop = asyncio.get_event_loop()
+    show_submission_info_enabled = True
+    loop.create_task(async_show_submission_info(response_data["submission_no"]))
+
 
 submission_options = RadioList([(None, None)])
 
@@ -186,6 +368,7 @@ def show_submission_dialog():
     submission_options.values = [
             (obj, obj) for obj in os.listdir(dir_path)
             if os.path.isfile(obj) and obj[-3:] == ".py" ]
+    submission_options.values.append(("None", "None"))
 
     flt = Float(content=submission_dialog)
     layout.focus(submission_dialog)
@@ -203,6 +386,41 @@ submission_dialog = Dialog(
         ])
 
 
+update_leaderboard_enabled = False
+async def update_leaderboard():
+    loop = asyncio.get_event_loop()
+
+    response = await loop.run_in_executor(
+            None,
+            lambda: requests.get(
+                "http://" + host + "/leaderboard"))
+
+    if response.status_code != 200:
+        output_field.text = "Error:\n{}".format(cleanhtml(response.text))
+        return
+
+    data = response.json()
+
+    if not update_leaderboard_enabled:
+        return
+
+    output_field.text = "Run Number: #{}\n\n".format(data["run_number"])
+    output_field.text += "Leaderboard:\n\n"
+    output_field.text += "    {1:<8} : {0:<20}\n".format(
+            "Credits", "Team Name")
+
+    for team in data["leaderboard"]:
+        output_field.text += "    {1:<8} : {0:<20}\n".format(
+            team["team_name"],
+            team["credits"]
+        )
+
+    await asyncio.sleep(5)
+
+    if not update_leaderboard_enabled:
+        return
+    loop.create_task(update_leaderboard())
+
 
 # completions menu
 completions_menu = Float(
@@ -211,8 +429,6 @@ completions_menu = Float(
         content=CompletionsMenu(
         max_height=16,
         scroll_offset=1))
-
-
 
 # Style.
 style = Style([
@@ -238,35 +454,59 @@ layout = Layout(root_container, focused_element=input_field)
 
 def input_parser(buff):
     global update_announcements_enabled
+    global update_leaderboard_enabled
+    global block_backtick
     loop = asyncio.get_event_loop()
 
     text = input_field.text
     text = text.strip()
 
-    if text == "announcements":
+    if text == "announcements" or text == "a":
         stop_screens()
         update_announcements_enabled = True
         loop.create_task(update_announcements())
         return
-    elif text == "clear":
+    elif text == "clear" or text == "help" or text == "c":
         stop_screens()
         output_field.text = help_text
-    elif text == "registration":
+    elif text == "registration" or text == "register":
         stop_screens()
+        block_backtick = True
         flt = Float(content=registration_dialog)
         layout.focus(registration_dialog)
         root_container.floats.append(flt)
-    elif text == "submit":
+    elif text == "submit" or text == "s":
         stop_screens()
+        block_backtick = True
         show_submission_dialog()
+        layout.focus(submission_options)
+    elif text == "leaderboard" or text == "l":
+        stop_screens()
+        update_leaderboard_enabled = True
+        loop.create_task(update_leaderboard())
+    elif text == "results" or text == "r":
+        stop_screens()
+        block_backtick = True
+        show_results_select_dialog()
+
+
+
+
 
 
 def stop_screens():
     global update_announcements_enabled
-    loop = asyncio.get_event_loop()
+    global update_leaderboard_enabled
+    global show_submission_info_enabled
 
     if update_announcements_enabled:
         update_announcements_enabled= False
+
+    if update_leaderboard_enabled:
+        update_leaderboard_enabled= False
+
+    if show_submission_info_enabled:
+        show_submission_info_enabled = False
 
 def clear_floats():
         root_container.floats.clear()
@@ -309,7 +549,7 @@ async def update_announcements():
 
     if not update_announcements_enabled:
         return
-    update_announcements_task = loop.create_task(update_announcements())
+    loop.create_task(update_announcements())
 
 
 
