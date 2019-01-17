@@ -2,7 +2,6 @@ import sys
 import math
 
 from game.common.enums import *
-from game.utils.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.common.stats import GameStats
@@ -12,7 +11,7 @@ class RepairController:
 
     def __init__(self):
 
-        self.debug = False
+        self.debug = True
         self.events = []
         self.stats = []
 
@@ -104,9 +103,10 @@ class RepairController:
 
                 # determine closest station
                 closest_station = next(
-                    sorted(
+                    iter(sorted(
                         in_range,
-                        key=lambda s: distance_to(ship, station, lambda s: s.position)),
+                        key=lambda s:
+                            distance_to(ship, station, lambda s: s.position))),
                     None)
 
                 # no nearby stations
