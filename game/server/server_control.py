@@ -136,6 +136,10 @@ class ServerControl:
             most_bounties = self.accolade_controller.most_bounties_claimed()
             most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()
             most_credits_earned = self.accolade_controller.most_credits_earned()
+            most_efficient = self.accolade_controller.most_efficient()
+            most_upgraded = self.accolade_controller.most_upgrades()
+            print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded)
+            input()
 
 
             # Dump Game log manifest

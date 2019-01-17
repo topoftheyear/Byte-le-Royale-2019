@@ -27,6 +27,8 @@ class AccoladeController:
         self.scrap = dict()
         self.salvage = dict()
         self.credits = dict() #credits earned NOT salvage
+        self.moved = dict()
+        self.upgrades = dict()
 
 
 
@@ -46,72 +48,12 @@ class AccoladeController:
         self.stats = []
         return s
 
-
     def print(self, msg):
         if self.debug:
             print("Accolade Controller:" + str(msg))
             sys.stdout.flush()
 
-    # def attribute_accolade(self, ship, change_reason):
-    #     change = 0
-    #
-    #     if ship.object_type == ObjectType.police or ship.object_type == ObjectType.enforcer:
-    #         return
-    #
-    #     # evil deeds
-    #     if change_reason is NotorietyChangeReason.destroy_civilian:
-    #         ship.notoriety += GameStats.destroy_civilian
-    #     elif change_reason is NotorietyChangeReason.destroy_bounty_hunter:
-    #         ship.notoriety += GameStats.destroy_bounty_hunter
-    #     elif change_reason is NotorietyChangeReason.destroy_police:
-    #         ship.notoriety += GameStats.destroy_police
-    #     elif change_reason is NotorietyChangeReason.destroy_enforcer:
-    #         ship.notoriety += GameStats.destroy_enforcer
-    #     elif change_reason is NotorietyChangeReason.carrying_illegal_module:
-    #         ship.notoriety += GameStats.carrying_illegal_module
-    #     elif change_reason is NotorietyChangeReason.attack_police:
-    #         ship.notoriety += GameStats.attack_police
-    #
-    #     # good deeds
-    #     elif change_reason is NotorietyChangeReason.destroy_pirate:
-    #         ship.notoriety += GameStats.destroy_pirate
-    #
-    #     # pay off your own bounty
-    #     elif change_reason is NotorietyChangeReason.pay_off_bounty:
-    #         ship.notoriety = LegalStanding.pirate - 1
-    #
-    #     self.events.append({
-    #         "type": LogEvent.notoriety_change,
-    #         "reason": change_reason,
-    #         "ship_id": ship.id,
-    #     })
-    #
-    #
-    # def update_standing_universe(self, ships):
-    #     for obj in ships:
-    #         if obj.object_type is not ObjectType.ship: continue
-    #         self.update_standing(obj)
-    #
-    #
-    # def update_standing(self, ship):
-    #     if ship.notoriety >= LegalStanding.pirate:
-    #         # If ship previously was not a pirate add a bounty
-    #         if ship.legal_standing < LegalStanding.pirate:
-    #             ship.bounty_list.append({"bounty_type": BountyType.became_pirate, "value": 500, "age": 0})
-    #             self.print(f"Bounty {BountyType.became_pirate} given to ship {ship.id}")
-    #
-    #         ship.legal_standing = LegalStanding.pirate
-    #
-    #     elif ship.notoriety <= LegalStanding.bounty_hunter:
-    #         ship.legal_standing = LegalStanding.bounty_hunter
-    #
-    #     else:
-    #         # If ship previously was a pirate remove possible bounties
-    #         if ship.legal_standing >= LegalStanding.pirate:
-    #             BountyController.clear_bounty(ship)
-    #
-    #         ship.legal_standing = LegalStanding.citizen
-
+    # Ore Mined
     def ore_mined(self, ship, oreAdd):
         if ship in self.ore:
             self.ore[ship] += oreAdd
@@ -128,6 +70,7 @@ class AccoladeController:
 
         return [ship, most]
 
+    # Bounties claimed
     def bounty_claim(self, ship):
         if ship in self.bounties:
             self.bounties[ship] += 1
@@ -143,9 +86,8 @@ class AccoladeController:
                 ship = x
 
         return [ship, most]
-    #PROPERLY IMPLEMENT THIS
 
-
+    # How much salavge redeemed
     def redeem_salvage(self, ship, salvageAdd):
         if ship in self.salvage:
             self.salvage[ship] += salvageAdd
@@ -162,7 +104,7 @@ class AccoladeController:
 
         return [ship, most]
 
-
+    # credits not from salvage
     def credits_earned(self, ship, creditAdd):
         if ship in self.credits:
             self.credits[ship] += creditAdd
@@ -179,19 +121,34 @@ class AccoladeController:
 
         return [ship, most]
 
+    # Fuel Efficient
     def ship_moved(self, ship, distance):
         if ship in self.ore:
             self.ore[ship] += distance
         else:
             self.ore[ship] = distance
 
-    # Final turn, add the credits to this controller
-    def efficient_moved(self):
-        most = -1
-        ship = ""
-        for x in self.ore:
-            if self.ore[x] > most:
-                most = self.ore[x]
-                ship = x
+    def ships_credits(self, ship):
+        max_efficient = -1
+        ship_efficient = {}
+        for x in ship:
+            if ship.credits / self.moved[x] > max_efficient:
+                ship_efficient = x
 
+        return [ship_efficient, max_efficient]
+
+    # Ship Upgrades
+    def ship_upgraded(self, ship, cost):
+        if ship in self.upgrades:
+            self.upgrades[ship] += cost
+        else:
+            self.upgrades[ship] = cost
+
+    def most_upgrades(self):
+        most = -1
+        ship = {}
+        for x in self.upgrades:
+            if self.upgrades[x] > most:
+                ship = x
+                most = self.upgrades[x]
         return [ship, most]
