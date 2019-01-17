@@ -2,7 +2,7 @@ import sys
 import math
 
 from game.common.enums import *
-from game.common.name_helpers import *
+from game.utils.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.common.stats import GameStats
@@ -36,6 +36,9 @@ class RepairController:
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
+            if not ship.is_alive():
+                continue
+
             # passive heal for ships near station
             ship_near_a_station = False
             for stations in universe.get(ObjectType.secure_station):
@@ -52,29 +55,26 @@ class RepairController:
 
                     # verify ship out of combat
                     ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) >= GameStats.healing_combat_cooldown
+                    if ship_out_of_combat:
+                        if ship.passive_repair_counter > 0:
+                            self.print(f"ship passive repairing in progress... turns remaining: {ship.passive_repair_counter}")
+                            # countdown to next heal
+                            ship.passive_repair_counter -= 1
+                        elif ship.current_hull != ship.max_hull:
+                            ship.passive_repair_counter = GameStats.passive_repair_counter
 
-                    if ship.passive_repair_counter > 0 and ship_out_of_combat:
-                        self.print(f"ship passive repairing in progress... turns remaining: {ship.passive_repair_counter}")
-                        # countdown to next heal
-                        ship.passive_repair_counter -= 1
-                    elif ship.current_hull != ship.max_hull:
-                        ship.passive_repair_counter = GameStats.passive_repair_counter
+                            # commence heal
+                            if ship.max_hull - ship.current_hull < GameStats.passive_repair_amount:
+                                ship.current_hull = ship.max_hull
+                            else:
+                                ship.current_hull += GameStats.passive_repair_amount
 
-                        # commence heal
-                        if ship.max_hull - ship.current_hull < GameStats.passive_repair_amount:
-                            ship.current_hull = ship.max_hull
-                        else:
-                            ship.current_hull += GameStats.passive_repair_amount
-
-                        self.print(f"Ship successfully passive repaired. New Health: {ship.current_hull}")
-                        self.events.append({
-                            "type": LogEvent.passive_repair,
-                            "ship_id": ship.id,
-                            "new_health": ship.current_hull,
-                        })
-                    #  else:
-                        #  warning: the following print statement prints a large amount of messages when no ships are active
-                        #  self.print("ship cannot finish repairing since it's already at full health.")
+                            self.print(f"Ship successfully passive repaired. New Health: {ship.current_hull}")
+                            self.events.append({
+                                "type": LogEvent.passive_repair,
+                                "ship_id": ship.id,
+                                "new_health": ship.current_hull,
+                            })
 
             if not ship_near_a_station:
                 ship.passive_repair_counter = GameStats.passive_repair_counter
@@ -84,9 +84,11 @@ class RepairController:
 
                 self.print(f"Ship attempts to repair...")
 
-                ship_near_a_station = False
                 price_increase = False
                 price_decrease = False
+
+                # Create a list of stations that are in range
+                in_range = []
                 for station in universe.get("all_stations"):
                     ship_in_radius = in_radius(
                         station,
@@ -94,15 +96,29 @@ class RepairController:
                         lambda s, t: s.accessibility_radius,
                         lambda e: e.position)
                     if ship_in_radius:
-                        ship_near_a_station = True
-                        if station == ObjectType.station:
-                            price_increase = True
-                        elif station == ObjectType.black_market_station:
-                            price_decrease = True
+                        in_range.append(station)
 
-                if not ship_near_a_station:
+                if len(in_range) == 0:
                     self.print(f"ship is not near a station.")
                     continue
+
+                # determine closest station
+                closest_station = next(
+                    sorted(
+                        in_range,
+                        key=lambda s: distance_to(ship, station, lambda s: s.position)),
+                    None)
+
+                # no nearby stations
+                if closest_station is None:
+                    continue
+
+                # determine what price modifer to apply
+                if closest_station == ObjectType.station:
+                    price_increase = True
+                elif closest_station == ObjectType.black_market_station:
+                    price_decrease = True
+
 
                 # verify ship out of combat
                 ship_out_of_combat = combat_timeouts.get(ship.id, GameStats.healing_combat_cooldown) >= GameStats.healing_combat_cooldown
@@ -112,6 +128,7 @@ class RepairController:
 
                 hull_to_repair = ship.action_param_1
 
+                # apply adjustment
                 if price_increase:
                     price_adjustment = GameStats.repair_markup
                 elif price_decrease:
@@ -134,7 +151,7 @@ class RepairController:
                     hull_to_repair = ship.max_hull - ship.current_hull
                     payment = hull_to_repair * repair_cost  # no need to check price again, price only drops
 
-                ship.credits = ship.credits - payment
+                ship.credits -= payment
                 ship.current_hull += hull_to_repair
 
                 self.print(f"Ship successfully repaired. Amount healed: {hull_to_repair} New Health: {ship.current_hull} Price: {payment}")
