@@ -1,5 +1,6 @@
 import json
 import random
+from math import sqrt
 
 from game.server.server_control import ServerControl
 from game.common.enums import *
@@ -354,6 +355,8 @@ class CustomServer(ServerControl):
 
             x_move = min(ship.engine_speed, x_magnitude)
             y_move = min(ship.engine_speed, y_magnitude)
+
+            self.accolade_controller.ship_moved(ship, sqrt(x_move**2 + y_move**2) )
 
             ship.position = (
                 x_direction*x_move + ship.position[0],

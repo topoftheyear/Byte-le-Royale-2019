@@ -29,6 +29,7 @@ class AccoladeController:
         self.credits = dict() #credits earned NOT salvage
 
 
+
     @staticmethod
     def get_instance():
         if AccoladeController.__instance == None:
@@ -174,6 +175,23 @@ class AccoladeController:
         for x in self.credits:
             if self.credits[x] > most:
                 most = self.credits[x]
+                ship = x
+
+        return [ship, most]
+
+    def ship_moved(self, ship, distance):
+        if ship in self.ore:
+            self.ore[ship] += distance
+        else:
+            self.ore[ship] = distance
+
+    # Final turn, add the credits to this controller
+    def efficient_moved(self):
+        most = -1
+        ship = ""
+        for x in self.ore:
+            if self.ore[x] > most:
+                most = self.ore[x]
                 ship = x
 
         return [ship, most]
