@@ -230,6 +230,7 @@ class CustomServer(ServerControl):
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
+        #self.accolade_controller.update_ships(self.teams)
 
 
 

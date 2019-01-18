@@ -24,7 +24,8 @@ class AccoladeController:
         self.moved = dict()
         self.upgrades = dict()
         self.kInnocent = dict() #killed an innocent
-        self.notorious = {"": 4}
+        self.notorious = {"name": "", "notoriety": 4}
+        self.allShips = dict()
 
 
     @staticmethod
@@ -118,24 +119,29 @@ class AccoladeController:
 
     # credits not from salvage
     def all_credits_earned(self, ship, creditAdd):
-        if ship in self.credits:
-            self.credits[ship] += creditAdd
+        if ship in self.allCredits:
+            self.allCredits[ship] += creditAdd
         else:
-            self.credits[ship] = creditAdd
+            self.allCredits[ship] = creditAdd
 
     # Fuel Efficient
     def ship_moved(self, ship, distance):
-        if ship in self.ore:
-            self.ore[ship] += distance
+        if ship in self.moved:
+            self.moved[ship] += distance
         else:
-            self.ore[ship] = distance
+            self.moved[ship] = distance
 
     def most_efficient(self):
         max_efficient = -1
         ship_efficient = ""
-        for x in self.allCredits:
-            if self.allCredits[x] / self.moved[x] > max_efficient:
-                ship_efficient = x.team_name
+        print("Moved: ", self.moved)
+        print("AllCredits: ", self.allCredits)
+        for x in self.moved:
+            print(x)
+            print(x.team_name)
+            if x in self.allCredits:
+                if self.allCredits[x.team_name] / self.moved[x] > max_efficient:
+                    ship_efficient = x.team_name
 
         return [ship_efficient, max_efficient]
 
@@ -173,8 +179,15 @@ class AccoladeController:
 
     # The Most Pirate-y Pirate (for the moment, most notoriety)
     def have_notoriety(self, ship):
-        if ship.notoriety > self.notorious[list(self.notorious)[0]]:
-            self.notorious = {ship.team_name: ship.notoriety}
+        if ship.notoriety > self.notorious["notoriety"]:
+            self.notorious = {"name": ship.team_name, "notoriety": ship.notoriety}
 
     def most_notorious(self):
         return self.notorious
+
+    def update_ships(self, ships):
+        self.allShips = ships
+
+    def final_scores(self):
+        self.allShips = sorted(self.allCredits)
+        return self.allShips

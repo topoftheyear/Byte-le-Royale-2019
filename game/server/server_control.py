@@ -38,7 +38,7 @@ class ServerControl:
             self.turn_time = 0.01
 
         self.game_tick_no = 0
-        self.max_game_tick = 1000
+        self.max_game_tick = 500 #CHANGE THIS BACK
         self.turn_data = []
 
     def initialize(self):
@@ -143,6 +143,22 @@ class ServerControl:
             print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_notoriety, most_ruthless)
             input()
 
+            with open("game_log/results.json", "w") as f:
+                # json_leaderboard = json.dump(self.accolade_controller.final_scores)
+                # print(json_leaderboard)
+                accolades = dict()
+                accolades["Most Mined"] = self.accolade_controller.most_ore_mined()[0]
+                accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
+                accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
+                accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
+                accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
+                accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
+                accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
+                accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
+
+                #json_accolades = json.dump(accolades)
+
+                json.dump({"leaderboard": self.accolade_controller.final_scores(), "accolades": accolades}, f)
 
             # Dump Game log manifest
             with open("game_log/manifest.json", "w") as f:
