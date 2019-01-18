@@ -1,13 +1,6 @@
 import sys
 import math
 
-from game.common.enums import *
-from game.common.stats import *
-from game.common.name_helpers import *
-from game.common.asteroid_field import AsteroidField
-from game.common.ship import Ship
-from game.server.bounty_controller import *
-
 class AccoladeController:
 
     __instance = None
@@ -29,6 +22,7 @@ class AccoladeController:
         self.credits = dict() #credits earned NOT salvage
         self.moved = dict()
         self.upgrades = dict()
+        self.kInnocent = dict() #killed an innocent
 
 
 
@@ -66,7 +60,7 @@ class AccoladeController:
         for x in self.ore:
             if self.ore[x] > most:
                 most = self.ore[x]
-                ship = x
+                ship = x.team_name
 
         return [ship, most]
 
@@ -83,7 +77,7 @@ class AccoladeController:
         for x in self.bounties:
             if self.bounties[x] > most:
                 most = self.bounties[x]
-                ship = x
+                ship = x.team_name
 
         return [ship, most]
 
@@ -100,7 +94,7 @@ class AccoladeController:
         for x in self.salvage:
             if self.salvage[x] > most:
                 most = self.salvage[x]
-                ship = x
+                ship = x.team_name
 
         return [ship, most]
 
@@ -117,7 +111,7 @@ class AccoladeController:
         for x in self.credits:
             if self.credits[x] > most:
                 most = self.credits[x]
-                ship = x
+                ship = x.team_name
 
         return [ship, most]
 
@@ -130,10 +124,10 @@ class AccoladeController:
 
     def ships_credits(self, ship):
         max_efficient = -1
-        ship_efficient = {}
+        ship_efficient = ""
         for x in ship:
             if ship.credits / self.moved[x] > max_efficient:
-                ship_efficient = x
+                ship_efficient = x.team_name
 
         return [ship_efficient, max_efficient]
 
@@ -146,9 +140,25 @@ class AccoladeController:
 
     def most_upgrades(self):
         most = -1
-        ship = {}
+        ship = ""
         for x in self.upgrades:
             if self.upgrades[x] > most:
-                ship = x
+                ship = x.team_name
                 most = self.upgrades[x]
         return [ship, most]
+
+    # Most Innocents Killed (innocent is dealt no damage back)
+    def kill_innocent(self, ship):
+        if ship in self.kInnocent():
+            self.kInnocent[ship] += 1
+        else:
+            self.kInnocent[ship] = 1
+
+    def most_innocents_killed(self):
+        most = -1
+        shipName = ""
+        for ship in self.kInnocent:
+            if self.kInnocent[ship] > most:
+                shipName = ship.team_name
+                most = self.kInnocent[ship]
+        return [shipName, most]

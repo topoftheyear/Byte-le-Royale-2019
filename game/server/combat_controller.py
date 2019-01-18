@@ -90,6 +90,9 @@ class CombatController:
                 self.notoriety_controller.update_standing(ship)
                 self.notoriety_controller.update_standing(target)
 
+                if ship.current_hull == ship.max_hull:
+                    self.accolade_controller.kill_innocent(ship)
+
                 if ship.object_type is ObjectType.ship:
                     # don't attribute notoriety to police or enforcers
 
