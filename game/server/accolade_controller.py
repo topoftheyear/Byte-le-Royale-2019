@@ -24,7 +24,7 @@ class AccoladeController:
         self.moved = dict()
         self.upgrades = dict()
         self.kInnocent = dict() #killed an innocent
-
+        self.notorious = {"": 4}
 
 
     @staticmethod
@@ -170,3 +170,11 @@ class AccoladeController:
                 shipName = ship.team_name
                 most = self.kInnocent[ship]
         return [shipName, most]
+
+    # The Most Pirate-y Pirate (for the moment, most notoriety)
+    def have_notoriety(self, ship):
+        if ship.notoriety > self.notorious[list(self.notorious)[0]]:
+            self.notorious = {ship.team_name: ship.notoriety}
+
+    def most_notorious(self):
+        return self.notorious

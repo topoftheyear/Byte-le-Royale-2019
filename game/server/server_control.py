@@ -139,7 +139,8 @@ class ServerControl:
             most_efficient = self.accolade_controller.most_efficient()
             most_upgraded = self.accolade_controller.most_upgrades()
             most_ruthless = self.accolade_controller.most_innocents_killed()
-            print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_ruthless)
+            most_notoriety = self.accolade_controller.most_notorious()
+            print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_notoriety, most_ruthless)
             input()
 
 
