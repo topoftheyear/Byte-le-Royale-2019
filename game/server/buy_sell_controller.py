@@ -123,6 +123,7 @@ class BuySellController:
             get_material_name(material)
         ))
         self.accolade_controller.redeem_salvage(ship, amount)
+        self.accolade_controller.all_credits_earned(ship, sale)
 
         # Apply bounty for selling scrap
         # TODO determine balanced value for this, current 1:1
@@ -243,6 +244,7 @@ class BuySellController:
                     bid.ship.inventory[bid.material] -= quantity
 
                     self.accolade_controller.credits_earned(bid.ship, price)
+                    self.accolade_controller.all_credits_earned(bid.ship, price)
 
                     self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
                         bid.ship.team_name, quantity, price
