@@ -6,6 +6,7 @@ from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.config import *
+from game.common.stats import GameStats
 
 from game.server.notoriety_controller import NotorietyController
 from game.server.accolade_controller import AccoladeController
@@ -18,6 +19,8 @@ class CombatController:
         self.debug = False
         self.events = []
         self.stats = []
+
+        self.combat_counters = {}
 
         self.notoriety_controller = NotorietyController.get_instance()
         self.accolade_controller = AccoladeController.get_instance()
@@ -77,6 +80,13 @@ class CombatController:
             elif target.object_type is ObjectType.enforcer:
                 self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.attack_police)
 
+            # record the most recent time these ships was in combat
+            self.record_combat(target)
+            self.record_combat(ship)
+
+            # reset passive repair for attacker
+            ship.passive_repair_counter = GameStats.passive_repair_counter
+
             if target.current_hull == 0:
                 self.print("Target destroyed, hiding ship.")
 
@@ -128,9 +138,27 @@ class CombatController:
                     elif target.object_type is ObjectType.enforcer:
                         self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_enforcer)
 
+        # increment combat counters
+        self.increment_combat_counters()
+
     def get_ship(self, id, universe):
         for obj in universe.get("ships"):
             if obj.id == id:
                 return obj
         return None
+
+    def record_combat(self, ship):
+        # start at -1 so we can blindly increment everyone
+        # and then this ship's count will be 1
+        self.combat_counters[ship.id] = -1
+
+
+    def increment_combat_counters(self):
+        for ship_id in self.combat_counters.keys():
+            self.combat_counters[ship_id] += 1
+
+    def get_combat_counts(self):
+        return self.combat_counters
+
+
 
