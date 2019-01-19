@@ -267,7 +267,7 @@ Submission State: {}
             submission_data["upload_date"],
             submission_data["submission_state"])
 
-    for run in submission_data["runs"][::-1]*5:
+    for run in submission_data["runs"][::-1]:
         output_field.text += ("-"*100) + "\n"
         output_field.text += "Match Number: {}\n".format(run["run_number"])
         output_field.text += "~~ | LOG | ~~\n"
