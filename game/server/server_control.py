@@ -6,26 +6,34 @@ import sys
 from datetime import datetime
 from datetime import datetime, timedelta
 from tqdm import tqdm
+from game.server.accolade_controller import AccoladeController
 
 
 
 class ServerControl:
 
-    def __init__(self, wait_on_client, verbose):
+    def __init__(
+            self,
+            wait_on_client,
+            connection_wait_timer,
+            wait_timer,
+            verbose):
 
         self._loop = None
         self._socket_client = None
         self.verbose = verbose
         self.wait_on_client = wait_on_client
+        self.wait_timer = wait_timer
 
         self._clients_connected = 0
-        self.connection_wait_timer = 3
+        self.connection_wait_timer = connection_wait_timer
 
         self._client_ids = []
         self._quit = False
 
         self._est_time = []
         self._last_time = None
+        self.accolade_controller = AccoladeController.get_instance()
 
 
         # Game Configuration options
@@ -54,7 +62,17 @@ class ServerControl:
             print("Waiting for clients...")
 
         if self._clients_connected == 0:
-            self.schedule(self.wait_for_clients, 2)
+            if self.wait_timer != -1:
+                if self.wait_timer > 0:
+                    self.wait_timer -= 1
+                else:
+                    sys.exit(1)
+
+
+            self.schedule(self.wait_for_clients, 1)
+
+
+
         elif  self.connection_wait_timer > 0:
             # this will slowly count down every  second and then start the game
             self.connection_wait_timer -= 1
@@ -120,9 +138,9 @@ class ServerControl:
                     self.percent_display = None
 
                 # Dump Game log manifest
+                toJSON = self.game_over()
                 with open("game_log/manifest.json", "w") as f:
-                    json.dump({"ticks": self.game_tick_no}, f)
-
+                    json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
                 self._socket_client.close()
                 self.schedule(lambda : sys.exit(0), 3)
 
@@ -130,8 +148,9 @@ class ServerControl:
             print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
 
             # Dump Game log manifest
+            toJSON = self.game_over()
             with open("game_log/manifest.json", "w") as f:
-                json.dump({"ticks": self.game_tick_no}, f)
+                json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
 
             self._socket_client.close()
             self.schedule(lambda : sys.exit(1), 3)
@@ -167,7 +186,6 @@ class ServerControl:
     def log(self):
         """Override. Dumps state to a file """
         return {}
-
 
     def dump_log(self, data):
         if not os.path.exists("game_log"):

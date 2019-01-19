@@ -2,7 +2,7 @@ import sys
 import math
 
 from game.utils.helpers import *
-
+from game.server.accolade_controller import AccoladeController
 
 class BountyController:
 
@@ -11,6 +11,7 @@ class BountyController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.accolade_controller = AccoladeController.get_instance()
 
     def print(self, msg):
         if self.debug:

@@ -1,5 +1,6 @@
 import json
 import random
+from math import sqrt
 
 from game.server.server_control import ServerControl
 from game.common.enums import *
@@ -11,6 +12,8 @@ from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
 from game.common.npc.unlock_npc import UnlockNPC
 from game.common.npc.cargo_drop_npc import CargoDropNPC
 from game.common.npc.salvage_collector_npc import SalvageNPC
+from game.common.npc.lazy_npc import LazyNPC
+from game.common.npc.repair_npc import RepairNPC
 from game.common.npc.bounty_redeemer import BountyRedeemerNPC
 from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
 from game.common.npc.test_miner_npc import TestMinerNPC
@@ -27,6 +30,7 @@ from game.server.police_controller import PoliceController
 from game.server.module_controller import ModuleController
 from game.server.buy_sell_controller import BuySellController
 from game.server.illegal_salvage_controller import IllegalSalvageController
+from game.server.repair_controller import RepairController
 from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
@@ -35,8 +39,17 @@ from game.config import *
 
 class CustomServer(ServerControl):
 
-    def __init__(self, verbose=False, wait_on_client=False):
-        super().__init__(wait_on_client, verbose)
+    def __init__(
+            self,
+            verbose=False,
+            wait_on_client=False,
+            connection_wait_timer=3,
+            wait_timer=None):
+        super().__init__(
+                wait_on_client,
+                connection_wait_timer,
+                wait_timer,
+                verbose)
 
         self.verbose = verbose
 
@@ -61,6 +74,7 @@ class CustomServer(ServerControl):
         self.module_controller = ModuleController()
         self.buy_sell_controller = BuySellController()
         self.illegal_salvage_controller = IllegalSalvageController()
+        self.repair_controller = RepairController()
         self.bounty_controller = BountyController()
 
         # prep police
@@ -116,8 +130,6 @@ class CustomServer(ServerControl):
             "payload": payload
         })
 
-
-
     def post_turn(self):
         self.print("SERVER POST TURN")
 
@@ -135,7 +147,6 @@ class CustomServer(ServerControl):
 
         # handle response if we got one
         for data in self.turn_data:
-            print(data, MessageType.team_name)
             client_id = data["client_id"]
 
             if "message_type" not in data:
@@ -145,20 +156,20 @@ class CustomServer(ServerControl):
 
             if not self.started:
                 if message_type == MessageType.team_name:
-                    print("Register team name")
+                   self.print("Register team name")
 
-                    team_name = data["team_name"]
-                    team_color = data["team_color"]
+                   team_name = data["team_name"]
+                   team_color = data["team_color"]
 
-                    ship = Ship()
-                    ship.init(team_name, team_color)
+                   ship = Ship()
+                   ship.init(team_name, team_color)
 
-                    self.universe.add_object(ship)
+                   self.universe.add_object(ship)
 
-                    self.teams[client_id] = {
-                        "team_name": team_name,
-                        "ship": ship
-                    }
+                   self.teams[client_id] = {
+                       "team_name": team_name,
+                       "ship": ship
+                   }
             else:
 
                 if message_type == MessageType.take_turn:
@@ -232,8 +243,7 @@ class CustomServer(ServerControl):
 
         self.turn_data = []
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
-
-
+        #self.accolade_controller.update_ships(self.teams)
 
     def log(self):
         # saves the turn log to this turn's log file.
@@ -241,7 +251,6 @@ class CustomServer(ServerControl):
         return {
             "turn_result": self.turn_log
         }
-
 
     def deserialize_turn_data(self):
         # Deserialize a message from a client
@@ -263,24 +272,28 @@ class CustomServer(ServerControl):
         if self.verbose:
             print(msg)
 
-
     def game_over(self):
-
-        # print game exit info
-
-        self.turn_log["events"].append({
-            "type": LogEvent.demo,
-        })
-
-        self._quit = True # die safely
-        return
+        accolades = dict()
+        accolades["Most Mined"] = self.accolade_controller.most_ore_mined()[0]
+        accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
+        accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
+        accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
+        accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
+        accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
+        accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
+        accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
+        toJSON = {"leaderboard": self.accolade_controller.final_scores(self.universe), "accolades": accolades}
+        with open("results.json", "w") as f:
+            json.dump(toJSON, f)
+        return toJSON
 
     def claim_npcs(self):
         self.npcs = []
 
         '''for ship in self.universe.get(ObjectType.ship):
             npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
-                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC])
+                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC,  LazyNPC, RepairNPC])
+
             new_npc_controller = npc_type(ship)
 
             self.npc_teams[ship.id] = {
@@ -304,9 +317,6 @@ class CustomServer(ServerControl):
                 "ship": ship
             }
 
-
-
-
     def process_actions(self):
 
         # check if ships still alive
@@ -321,6 +331,7 @@ class CustomServer(ServerControl):
         self.module_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.buy_sell_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
         self.illegal_salvage_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
+        self.repair_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams, self.combat_controller.get_combat_counts())
 
         dead_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.NOT(filters.alive()))
         self.death_controller.handle_actions(dead_ships, self.universe)
@@ -346,6 +357,8 @@ class CustomServer(ServerControl):
 
         self.turn_log["events"].extend( self.bounty_controller.get_events() )
 
+        self.turn_log["events"].extend( self.repair_controller.get_events() )
+
     def process_move_actions(self):
 
         for team, data in { **self.teams, **self.npc_teams}.items():
@@ -358,7 +371,6 @@ class CustomServer(ServerControl):
 
         for ship in self.universe.get("police"):
             self.move_ship(ship)
-
 
     def move_ship(self, ship):
 
@@ -376,6 +388,8 @@ class CustomServer(ServerControl):
             x_move = min(ship.engine_speed, x_magnitude)
             y_move = min(ship.engine_speed, y_magnitude)
 
+            self.accolade_controller.ship_moved(ship, sqrt(x_move**2 + y_move**2) )
+
             ship.position = (
                 x_direction*x_move + ship.position[0],
                 y_direction*y_move + ship.position[1]
@@ -387,7 +401,6 @@ class CustomServer(ServerControl):
                 "pos": ship.position,
                 "target_pos": ship.move_action
             })
-
 
     def serialize_universe(self, security_level):
         serialized_universe = []

@@ -10,7 +10,7 @@ echo "Generate";
 ./br_launcher.pyz generate; 
 printf "\n\n"
 echo "Run";
-./br_launcher.pyz run; 
+./br_launcher.pyz run $@; 
 printf "\n\n"
 echo "Visualizer";
-./br_launcher.pyz visualizer
+./br_launcher.pyz visualizer --team-name Derp

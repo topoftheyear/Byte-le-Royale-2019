@@ -1,0 +1,16 @@
+FROM python:3.7
+MAINTAINER jghibiki <jghibiki.games@gmail.com>
+
+ENV PYTHONUNBUFFERED 1
+RUN mkdir -p /code
+RUN pip install pipenv
+
+# We copy the Pipfile.lock first to avoid cache invalidations
+COPY Pipfile /code
+COPY Pipfile.lock /code
+WORKDIR /code
+RUN pwd && ls && cd /code && pipenv install --system --deploy
+COPY br_launcher.pyz /code
+COPY scripts/run_server.sh /code
+RUN echo "{}" > /code/results.json
+CMD ["/code/run_server.sh"]
