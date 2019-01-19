@@ -81,7 +81,11 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         if ship is None:
             return
 
+        if ShipSpriteSheet.focus_team is not None and ship.team_name == ShipSpriteSheet.focus_team:
+            self.reload_color = True
+
         if self.reload_color and ship.color is not None:
+            self.raw_color = pygame.Color(*ship.color)
             self.load_sprite()
             self.reload_color = False
 

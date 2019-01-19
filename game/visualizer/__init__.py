@@ -21,6 +21,7 @@ global_surf = None
 fpsClock = None
 universe = None
 events = None
+focus_team_color = None
 
 debug = False
 
@@ -336,7 +337,7 @@ def handle_events():
                 sys.exit()
             if event.key == K_s:
                 n = 3000
-                show_station_stats_display({
+                show_station_stats_display("Stats Demo", {
                     "a": [math.sin(i/100)+1 for i in range(n)],
                     "b": [math.cos(i/100)+1 for i in range(n)],
                     "c": [math.cos(i/100 + math.pi)+1 for i in range(n)],
