@@ -247,7 +247,9 @@ def show_end_screen(focus_team_name):
         global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
         currentHeight += gap*2
         # for teams...
-        for idx, team, credits in enumerate(log_parser.results["leaderboard"].items()):
+        for idx, team_data in enumerate(log_parser.results["leaderboard"]):
+            team = team_data["team_name"]
+            credits = team_data["credits"]
             text = "#{} This is team {} with {} credits".format(idx+1, team, credits)
             renderText = font.render(text, True, (0, 155, 0))
             global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
