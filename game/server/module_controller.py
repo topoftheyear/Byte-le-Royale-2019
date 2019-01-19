@@ -85,7 +85,7 @@ class ModuleController:
 
 
                     # Check if ship has the funds and reduce them
-                    cost = 100 * (upgrade_level ** 2)  # TODO replace temp formula with actual ship costs (or formula)
+                    cost = get_module_price(universe, upgrade_level)
                     if ship.credits < cost:
                         self.print('Ship does not have adequate funds (have: ' + str(ship.credits) + ', need: ' + str(cost) + ')')
                         continue
@@ -152,38 +152,38 @@ class ModuleController:
                     if ship.module_0 == ModuleType.locked:
                         ship_slot = ShipSlot.zero
                         # Check if ship has the funds
-                        if ship.credits < GameStats.unlock_slot_cost_0:
+                        if ship.credits < get_module_unlock_price(universe, ship_slot):
                             continue
                         # Make purchase
-                        ship.credits -= GameStats.unlock_slot_cost_0
+                        ship.credits -= get_module_unlock_price(ship_slot)
                         ship.module_0 = ModuleType.empty
                     elif ship.module_1 == ModuleType.locked:
                         ship_slot = ShipSlot.one
                         # Check if ship has the funds
-                        if ship.credits < GameStats.unlock_slot_cost_1:
+                        if ship.credits < get_module_unlock_price(universe, ship_slot):
                             continue
                         # Make purchase
-                        ship.credits -= GameStats.unlock_slot_cost_1
+                        ship.credits -= get_module_unlock_price(universe, ship_slot)
                         ship.module_1 = ModuleType.empty
                     elif ship.module_2 == ModuleType.locked:
                         ship_slot = ShipSlot.two
 
                         # Check if ship has the funds
-                        if ship.credits < GameStats.unlock_slot_cost_2:
+                        if ship.credits < get_module_unlock_price(universe, ship_slot):
                             continue
 
                         # Make purchase
-                        ship.credits -= GameStats.unlock_slot_cost_2
+                        ship.credits -= get_module_unlock_price(universe, ship_slot)
                         ship.module_2 = ModuleType.empty
                     elif ship.module_3 == ModuleType.locked:
                         ship_slot = ShipSlot.three
 
                         # Check if ship has the funds
-                        if ship.credits < GameStats.unlock_slot_cost_3:
+                        if ship.credits < get_module_unlock_price(universe, ship_slot):
                             continue
 
                         # Make purchase
-                        ship.credits -= GameStats.unlock_slot_cost_3
+                        ship.credits -= get_module_unlock_price(universe, ship_slot)
                         ship.module_3 = ModuleType.empty
                     else:  # All already unlocked
                         continue
