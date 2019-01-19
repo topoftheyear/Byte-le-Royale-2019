@@ -143,17 +143,17 @@ class GameStats:
     pay_off_bounty = -1
 
     # module prices ( figured in helper method )
-    module_level_0_materials_cost = 100
-    module_level_0_adjustment = 1.0
-
-    module_level_1_materials_cost = 400
+    module_level_1_materials_cost = 100
     module_level_1_adjustment = 1.0
 
-    module_level_2_materials_cost = 900
+    module_level_2_materials_cost = 400
     module_level_2_adjustment = 1.0
 
-    module_level_3_materials_cost = 1600
+    module_level_3_materials_cost = 900
     module_level_3_adjustment = 1.0
+
+    module_level_4_materials_cost = 1600
+    module_level_4_adjustment = 1.0
 
     # module unlock prices ( figured in helper method )
     unlock_slot_0_materials_cost = 100
