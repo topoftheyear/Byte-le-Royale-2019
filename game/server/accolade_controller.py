@@ -63,7 +63,6 @@ class AccoladeController:
             if self.ore[x] > most:
                 most = self.ore[x]
                 ship = x.team_name
-
         return [ship, most]
 
     # Bounties claimed
@@ -83,7 +82,7 @@ class AccoladeController:
 
         return [ship, most]
 
-    # How much salavge redeemed
+    # How much salvage redeemed
     def redeem_salvage(self, ship, salvageAdd):
         if ship in self.salvage:
             self.salvage[ship] += salvageAdd
@@ -93,6 +92,7 @@ class AccoladeController:
     def most_salvage_redeemed(self):
         most = -1
         ship = ""
+        print("Salvage Redeemed: \n", self.salvage)
         for x in self.salvage:
             if self.salvage[x] > most:
                 most = self.salvage[x]

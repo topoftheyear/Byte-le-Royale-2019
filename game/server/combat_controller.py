@@ -117,8 +117,6 @@ class CombatController:
 
                                     self.accolade_controller.bounty_claim(ship)
 
-
-
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
 

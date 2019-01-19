@@ -132,16 +132,16 @@ class ServerControl:
             print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
 
             # Start accolades
-            most_mined = self.accolade_controller.most_ore_mined()
-            most_bounties = self.accolade_controller.most_bounties_claimed()
+            most_mined = self.accolade_controller.most_ore_mined()  # Fixed
+            most_bounties = self.accolade_controller.most_bounties_claimed()  # Fixed
             most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()
             most_credits_earned = self.accolade_controller.most_credits_earned()
             most_efficient = self.accolade_controller.most_efficient()
             most_upgraded = self.accolade_controller.most_upgrades()
             most_ruthless = self.accolade_controller.most_innocents_killed()
             most_notoriety = self.accolade_controller.most_notorious()
+            input("Most mined:")
             print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_notoriety, most_ruthless)
-            input()
 
             with open("game_log/results.json", "w") as f:
                 # json_leaderboard = json.dump(self.accolade_controller.final_scores)
