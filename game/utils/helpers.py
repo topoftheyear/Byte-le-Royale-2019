@@ -144,6 +144,8 @@ def get_material_name(material_type):
         return "Weaponry"
     elif material_type == MaterialType.wire:
         return "Wire"
+    elif material_type == MaterialType.salvage:
+        return "Salvage"
     return "N/A"
 
 def separate_universe(flat_universe):
@@ -180,5 +182,34 @@ def get_material_prices(universe):
     price_list[MaterialType.salvage] = ILLEGAL_SCRAP_VALUE
 
     return price_list
+
+
+def get_best_station_purchasing_prices_by_material(universe):
+    all_prices = {}
+    for station in universe.get(ObjectType.station):
+        if station.primary_import is not None:
+            if station.primary_import not in all_prices:
+                all_prices[station.primary_import] = {"price": 0, "station": None}
+
+            if station.primary_buy_price > all_prices[station.primary_import]["price"]:
+                all_prices[station.primary_import]["price"] = station.primary_buy_price
+                all_prices[station.primary_import]["station"] = station
+
+        if station.secondary_import is not None:
+            if station.secondary_import not in all_prices:
+                all_prices[station.primary_import] = {"price": 0, "station": None}
+
+            if station.secondary_buy_price > all_prices[station.secondary_import]["price"]:
+                all_prices[station.secondary_import]["price"] = station.secondary_buy_price
+                all_prices[station.secondary_import]["station"] = station
+
+    for material, contents in all_prices.items():
+        print(material, contents["price"], contents["station"])
+
+    all_prices[MaterialType.salvage]["price"] = ILLEGAL_SCRAP_VALUE
+    all_prices[MaterialType.salvage]["station"] = "you are asking for black markets literally just get those directly"
+
+    return all_prices
+
 
 
