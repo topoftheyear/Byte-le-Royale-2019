@@ -161,6 +161,16 @@ class UserClient:
         self._action = PlayerAction.buy_material
         self._action_param_1 = amount
 
+    def repair(self, hull_to_repair):
+        self.reset_player_action()
+
+        # returns if not a valid payment
+        if hull_to_repair <= 0:
+            return
+
+        self._action = PlayerAction.repair
+        self._action_param_1 = hull_to_repair
+
     def pay_off_bounty(self):
         self.reset_player_action()
 
