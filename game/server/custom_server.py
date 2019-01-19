@@ -154,20 +154,20 @@ class CustomServer(ServerControl):
 
             if not self.started:
                 if message_type == MessageType.team_name:
-                    print("Register team name")
+                   self.print("Register team name")
 
-                    team_name = data["team_name"]
-                    team_color = data["team_color"]
+                   team_name = data["team_name"]
+                   team_color = data["team_color"]
 
-                    ship = Ship()
-                    ship.init(team_name, team_color)
+                   ship = Ship()
+                   ship.init(team_name, team_color)
 
-                    self.universe.add_object(ship)
+                   self.universe.add_object(ship)
 
-                    self.teams[client_id] = {
-                        "team_name": team_name,
-                        "ship": ship
-                    }
+                   self.teams[client_id] = {
+                       "team_name": team_name,
+                       "ship": ship
+                   }
             else:
 
                 if message_type == MessageType.take_turn:
