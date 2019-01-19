@@ -6,6 +6,7 @@ import sys
 from datetime import datetime
 from datetime import datetime, timedelta
 from tqdm import tqdm
+from game.server.accolade_controller import AccoladeController
 
 
 
@@ -32,6 +33,7 @@ class ServerControl:
 
         self._est_time = []
         self._last_time = None
+        self.accolade_controller = AccoladeController.get_instance()
 
 
         # Game Configuration options
@@ -136,9 +138,9 @@ class ServerControl:
                     self.percent_display = None
 
                 # Dump Game log manifest
+                toJSON = self.game_over()
                 with open("game_log/manifest.json", "w") as f:
-                    json.dump({"ticks": self.game_tick_no}, f)
-
+                    json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
                 self._socket_client.close()
                 self.schedule(lambda : sys.exit(0), 3)
 
@@ -146,8 +148,9 @@ class ServerControl:
             print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
 
             # Dump Game log manifest
+            toJSON = self.game_over()
             with open("game_log/manifest.json", "w") as f:
-                json.dump({"ticks": self.game_tick_no}, f)
+                json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
 
             self._socket_client.close()
             self.schedule(lambda : sys.exit(1), 3)
@@ -183,7 +186,6 @@ class ServerControl:
     def log(self):
         """Override. Dumps state to a file """
         return {}
-
 
     def dump_log(self, data):
         if not os.path.exists("game_log"):
