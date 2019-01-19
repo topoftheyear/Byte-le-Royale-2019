@@ -3,6 +3,7 @@ import click
 import requests
 from requests.auth import HTTPBasicAuth
 
+from validate import validate
 
 
 @click.group()
@@ -14,22 +15,23 @@ def cli():
 @click.option("--server-verbose", is_flag=True)
 @click.option("--port", default=8080)
 @click.option("--no-wait", is_flag=True, help="Prevents server from waiting on client response for longer than configured turn time.")
-def server(server_verbose, port, no_wait):
+@click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server after the first has connected.")
+@click.option("--wait-timeout", default=-1, help="Number of seconds to wait for the first client to connect to the server.")
+def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout):
     from game.server import start
 
     if server_verbose:
         print("Server Verbosity: ON")
 
-    start(server_verbose, port, no_wait)
-
-
+    start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout)
 
 
 @cli.command()
 @click.option("--client-verbose", is_flag=True)
 @click.option("--script", default="custom_client")
 @click.option("--port", default=8080)
-def client(client_verbose, script, port):
+@click.option("--host", default="127.0.0.1")
+def client(client_verbose, script, port, host):
     import importlib
 
     from game.client import start
@@ -43,6 +45,13 @@ def client(client_verbose, script, port):
 
     script = os.getcwd() + "/" + script + ".py"
 
+    with open(script, "r") as f:
+        script_text = f.read()
+    if not validate(script_text):
+        print("Client script failed to validate. Please fix any illegal imports and try again.")
+        exit()
+
+
     spec = importlib.util.spec_from_file_location("custom_client", script)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)
@@ -50,7 +59,7 @@ def client(client_verbose, script, port):
     #mod = importlib.import_module(script)
 
 
-    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port)
+    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
 
 
 @cli.command()
@@ -78,8 +87,8 @@ def update():
     current_version = version.v
 
     # check latest release version
-    auth = HTTPBasicAuth("jghibiki", "386b4b36cbcc13a8c4e0b14b7d0a08a6bcc74200")
-    payload = requests.get("https://api.github.com/repos/jghibiki/Byte-le-Royale-2019/releases/latest", auth=auth)
+    auth = HTTPBasicAuth("byte-le-royale-slave", "21b9b335294445199026eda76431621251886775")
+    payload = requests.get("https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases/latest", auth=auth)
 
 
     if payload.status_code == 200:
@@ -110,7 +119,7 @@ def update():
     if not os.path.exists("br_updates"):
         os.makedirs("br_updates")
 
-    remote_url = "https://api.github.com/repos/jghibiki/Byte-le-Royale-2019/releases/assets/{0}".format(asset_id)
+    remote_url = "https://api.github.com/repos/topoftheyear/Byte-le-Royale-2019/releases/assets/{0}".format(asset_id)
     local_file = "br_updates/v{0}.pyz".format(remote_version)
 
     if not download_file(local_file, remote_url, auth):
@@ -201,27 +210,6 @@ host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
 @cli.group()
 def scrim():
     pass
-
-@scrim.command()
-def announcements():
-    payload = requests.get("http://" + host + "/announcements")
-
-    if payload.status_code != 200:
-        click.echo("An error occurred: " + payload.raw)
-
-    data = payload.json()["announcements"]
-
-    click.echo("Announcements:")
-
-    for announcement in sorted(data, key=lambda e: e["posted_date"]):
-        title = announcement["title"]
-        message = announcement["message"]
-        date = announcement["posted_date"]
-        click.echo()
-        click.echo(("-"*50) + f"\n*{title}*\nPosted at: {date}\n\n{message}\n" + ("-"*50) + "\n")
-
-    if len(data) == 0:
-        click.echo("\n No available announcements.")
 
 
 @scrim.command()
