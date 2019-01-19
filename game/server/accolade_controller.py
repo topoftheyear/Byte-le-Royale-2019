@@ -1,5 +1,6 @@
 import sys
 import math
+from game.common.enums import *
 
 class AccoladeController:
 
@@ -25,7 +26,6 @@ class AccoladeController:
         self.upgrades = dict()
         self.kInnocent = dict() #killed an innocent
         self.notorious = {"name": "", "notoriety": 4}
-        self.allShips = dict()
 
 
     @staticmethod
@@ -117,12 +117,11 @@ class AccoladeController:
         return [ship, most]
 
     # all credits
-    def all_credits_earned(self, shipName, creditAdd):
-        print(shipName, " has earned ", creditAdd, " credits.")
-        if shipName in self.allCredits:
-            self.allCredits[shipName] += creditAdd
+    def all_credits_earned(self, ship, creditAdd):
+        if ship in self.allCredits:
+            self.allCredits[ship] += creditAdd
         else:
-            self.allCredits[shipName] = creditAdd
+            self.allCredits[ship] = creditAdd
 
     # Fuel Efficient
     def ship_moved(self, ship, distance):
@@ -135,11 +134,8 @@ class AccoladeController:
         max_efficient = -1
         ship_efficient = ""
         for x in self.moved:
-            print(x.team_name, " has moved.")
-            if x.team_name in self.allCredits:
-                print(x.team_name, "is also in allCredits.")
-                efficiency = self.allCredits[x.team_name] / self.moved[x]
-                print("Efficiency: ", efficiency, "\nMax Efficiency: ", max_efficient)
+            if x in self.allCredits:
+                efficiency = self.allCredits[x] / self.moved[x]
                 if efficiency > max_efficient:
                     ship_efficient = x.team_name
                     max_efficient = efficiency
@@ -186,9 +182,14 @@ class AccoladeController:
     def most_notorious(self):
         return self.notorious
 
-    def update_ships(self, ships):
-        self.allShips = ships
-
-    def final_scores(self):
-        self.allShips = sorted(self.allCredits)
-        return self.allShips
+    def final_scores(self, universe):
+        toSort = dict()
+        for ship in universe.get(ObjectType.ship):
+            toSort[ship.team_name] = ship.credits
+        toSort = sorted(toSort.items(), key=lambda item: (item[1], item[0]), reverse=True)
+        toReturn = list()
+        i = 1
+        for k, v in toSort:
+            toReturn.append({"team_name": k, "credits": v})
+            i += 1
+        return toReturn

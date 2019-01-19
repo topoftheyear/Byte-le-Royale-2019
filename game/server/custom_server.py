@@ -127,8 +127,6 @@ class CustomServer(ServerControl):
             "payload": payload
         })
 
-
-
     def post_turn(self):
         self.print("SERVER POST TURN")
 
@@ -244,15 +242,12 @@ class CustomServer(ServerControl):
         self.turn_log["universe"] = self.serialize_universe(security_level=SecurityLevel.engine)
         #self.accolade_controller.update_ships(self.teams)
 
-
-
     def log(self):
         # saves the turn log to this turn's log file.
         # This is what the visualizer reads
         return {
             "turn_result": self.turn_log
         }
-
 
     def deserialize_turn_data(self):
         # Deserialize a message from a client
@@ -274,17 +269,20 @@ class CustomServer(ServerControl):
         if self.verbose:
             print(msg)
 
-
     def game_over(self):
-
-        # print game exit info
-
-        self.turn_log["events"].append({
-            "type": LogEvent.demo,
-        })
-
-        self._quit = True # die safely
-        return
+        accolades = dict()
+        accolades["Most Mined"] = self.accolade_controller.most_ore_mined()[0]
+        accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
+        accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
+        accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
+        accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
+        accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
+        accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
+        accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
+        toJSON = {"leaderboard": self.accolade_controller.final_scores(self.universe), "accolades": accolades}
+        with open("results.json", "w") as f:
+            json.dump(toJSON, f)
+        return toJSON
 
     def claim_npcs(self):
         self.npcs = []
@@ -299,7 +297,6 @@ class CustomServer(ServerControl):
                 "controller": new_npc_controller,
                 "ship": ship
             }
-
 
     def process_actions(self):
 
@@ -343,7 +340,6 @@ class CustomServer(ServerControl):
 
         self.turn_log["events"].extend( self.repair_controller.get_events() )
 
-
     def process_move_actions(self):
 
         for team, data in { **self.teams, **self.npc_teams}.items():
@@ -356,7 +352,6 @@ class CustomServer(ServerControl):
 
         for ship in self.universe.get("police"):
             self.move_ship(ship)
-
 
     def move_ship(self, ship):
 
@@ -387,7 +382,6 @@ class CustomServer(ServerControl):
                 "pos": ship.position,
                 "target_pos": ship.move_action
             })
-
 
     def serialize_universe(self, security_level):
         serialized_universe = []

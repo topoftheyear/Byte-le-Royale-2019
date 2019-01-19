@@ -138,47 +138,19 @@ class ServerControl:
                     self.percent_display = None
 
                 # Dump Game log manifest
+                toJSON = self.game_over()
                 with open("game_log/manifest.json", "w") as f:
-                    json.dump({"ticks": self.game_tick_no}, f)
-
+                    json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
                 self._socket_client.close()
                 self.schedule(lambda : sys.exit(0), 3)
 
         else:
             print("Exiting - MAX Ticks: {0} exceeded".format(self.max_game_tick))
 
-            # Start accolades
-            most_mined = self.accolade_controller.most_ore_mined()  # Fixed
-            most_bounties = self.accolade_controller.most_bounties_claimed()  # Fixed
-            most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()  # Fixed
-            most_credits_earned = self.accolade_controller.most_credits_earned()  # Fixed
-            most_efficient = self.accolade_controller.most_efficient() # Fixed
-            most_upgraded = self.accolade_controller.most_upgrades()
-            most_ruthless = self.accolade_controller.most_innocents_killed()
-            most_notoriety = self.accolade_controller.most_notorious()
-            input("Most mined:")  # Delete This
-            print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_notoriety, most_ruthless)
-
-            with open("game_log/results.json", "w") as f:
-                # json_leaderboard = json.dump(self.accolade_controller.final_scores)
-                # print(json_leaderboard)
-                accolades = dict()
-                accolades["Most Mined"] = self.accolade_controller.most_ore_mined()[0]
-                accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
-                accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
-                accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
-                accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
-                accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
-                accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
-                accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
-
-                #json_accolades = json.dump(accolades)
-
-                json.dump({"leaderboard": self.accolade_controller.final_scores(), "accolades": accolades}, f)
-
             # Dump Game log manifest
+            toJSON = self.game_over()
             with open("game_log/manifest.json", "w") as f:
-                json.dump({"ticks": self.game_tick_no}, f)
+                json.dump({"ticks": self.game_tick_no, "results": toJSON}, f)
 
             self._socket_client.close()
             self.schedule(lambda : sys.exit(1), 3)
@@ -214,7 +186,6 @@ class ServerControl:
     def log(self):
         """Override. Dumps state to a file """
         return {}
-
 
     def dump_log(self, data):
         if not os.path.exists("game_log"):
