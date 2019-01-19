@@ -1,3 +1,4 @@
+from game.utils.helpers import *
 from game.common.enums import *
 
 class GameStats:
@@ -8,7 +9,6 @@ class GameStats:
     hull_3 = 4000
     hull_4 = 5000
 
-    import random
     engine_speed_0 = 5
     engine_speed_1 = 7
     engine_speed_2 = 9
@@ -142,19 +142,43 @@ class GameStats:
     destroy_pirate = -2
     pay_off_bounty = -1
 
-    # module unlock prices
-    unlock_slot_cost_0 = 500
-    unlock_slot_cost_1 = 1000
-    unlock_slot_cost_2 = 2000
-    unlock_slot_cost_3 = 3000
+    # module prices ( figured in helper method )
+    module_level_0_materials_cost = 100
+    module_level_0_adjustment = 1.0
+
+    module_level_1_materials_cost = 400
+    module_level_1_adjustment = 1.0
+
+    module_level_2_materials_cost = 900
+    module_level_2_adjustment = 1.0
+
+    module_level_3_materials_cost = 1600
+    module_level_3_adjustment = 1.0
+
+    # module unlock prices ( figured in helper method )
+    unlock_slot_0_materials_cost = 100
+    unlock_slot_0_adjustment = 0.75
+
+    unlock_slot_1_materials_cost = 200
+    unlock_slot_1_adjustment = 0.75
+
+    unlock_slot_2_materials_cost = 300
+    unlock_slot_2_adjustment = 0.75
+
+    unlock_slot_3_materials_cost = 400
+    unlock_slot_3_adjustment = 0.75
 
     # repair stats
     passive_repair_counter = 10
     passive_repair_amount = 500
 
-    repair_cost = 10
+    # stats to determine repair price ( figured in helper method )
+    repair_adjustment = 0.75
+    repair_materials_cost = 50
+
     repair_discount = 0.5
     repair_markup = 2
 
     healing_combat_cooldown = 20
+
 
