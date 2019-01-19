@@ -17,6 +17,7 @@ from game.common.npc.bounty_redeemer import BountyRedeemerNPC
 from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
+from game.utils.helpers import *
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -116,8 +117,8 @@ class CustomServer(ServerControl):
                 # send game specific data in payload
                 payload[i] = {
                     "message_type": MessageType.take_turn,
-                    "ship": self.teams[i]["ship"].to_dict(),
-                    "universe": serialized_universe # TODO refactor to use serialize_visible_objects()
+                    "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
+                    "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
                 }
 
         # actually send the data to the client
@@ -393,8 +394,17 @@ class CustomServer(ServerControl):
             serialized_universe.append(serialized_obj)
         return serialized_universe
 
-    def serialize_visible_objects(self, pos, radius):
-        pass # serialize only objects in visible range of player ship
+    def serialize_visible_objects(self, security_level, ship_id):
+        serialized_visible_universe = []
+        own_ship = self.teams[ship_id]["ship"]
+
+        for obj in self.universe.dump():
+            if obj.object_type is ObjectType.ship:
+                if obj.id == own_ship.id or not in_radius(own_ship, obj, own_ship.sensor_range, lambda e:e.position):
+                    continue
+            serialized_obj = obj.to_dict(security_level=security_level)
+            serialized_visible_universe.append(serialized_obj)
+        return serialized_visible_universe
 
 
 

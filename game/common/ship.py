@@ -205,10 +205,10 @@ class Ship(GameObject):
 
             self.passive_repair_counter = data["passive_repair_counter"]
 
+
         if security_level <= SecurityLevel.player_owned:
             # properties that the owner of a ship can update
             #   prevents other players from tampering with our ship
-
             self.action = data["action"]
             self.move_action = data["move_action"]
             self.action_param_1 = data["action_param_1"]
