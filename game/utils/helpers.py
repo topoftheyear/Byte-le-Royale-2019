@@ -3,6 +3,7 @@ from itertools import groupby
 from game.utils.filters import in_radius as pred_in_radius
 from game.utils.filters import AND, EQ, NOT
 import types
+import statistics
 
 from game.config import *
 from game.common.enums import *
@@ -181,4 +182,6 @@ def get_material_prices(universe):
 
     return price_list
 
+def get_median_material_price(universe):
+    return statistics.median(get_material_prices(universe))
 
