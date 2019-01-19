@@ -192,20 +192,20 @@ def get_median_material_price(universe):
 #  Applies adjustments based on median material prices to find repair cost
 def get_repair_price(universe):
     median_price = get_median_material_price(universe)
-    return GameStats.repair_adjustment * GameStats.repair_materials_cost * median_price
+    return math.floor(GameStats.repair_adjustment * GameStats.repair_materials_cost * median_price)
 
 
 #  Determine module price
 def get_module_price(universe, level):
     median_price = get_median_material_price(universe)
     if level == ModuleLevel.one:
-        return GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost
+        return math.floor(GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost)
     elif level == ModuleLevel.two:
-        return GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost
+        return math.floor(GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost)
     elif level == ModuleLevel.three:
-        return GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost
+        return math.floor(GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost)
     elif level == ModuleLevel.illegal:
-        return GameStats.module_level_4_adjustment * median_price * GameStats.module_level_4_materials_cost
+        return math.floor(GameStats.module_level_4_adjustment * median_price * GameStats.module_level_4_materials_cost)
     else:
         return
 
@@ -216,13 +216,13 @@ def get_module_unlock_price(universe, ship_slot):
     median_price = get_median_material_price(universe)
 
     if ship_slot == ShipSlot.zero:
-        return GameStats.unlock_slot_0_adjustment * median_price * GameStats.unlock_slot_0_materials_cost
+        return math.floor(GameStats.unlock_slot_0_adjustment * median_price * GameStats.unlock_slot_0_materials_cost)
     elif ship_slot == ShipSlot.one:
-        return GameStats.unlock_slot_1_adjustment * median_price * GameStats.unlock_slot_1_materials_cost
+        return math.floor(GameStats.unlock_slot_1_adjustment * median_price * GameStats.unlock_slot_1_materials_cost)
     elif ship_slot == ShipSlot.two:
-        return GameStats.unlock_slot_2_adjustment * median_price * GameStats.unlock_slot_2_materials_cost
+        return math.floor(GameStats.unlock_slot_2_adjustment * median_price * GameStats.unlock_slot_2_materials_cost)
     elif ship_slot == ShipSlot.three:
-        return GameStats.unlock_slot_3_adjustment * median_price * GameStats.unlock_slot_3_materials_cost
+        return math.floor(GameStats.unlock_slot_3_adjustment * median_price * GameStats.unlock_slot_3_materials_cost)
     else:
         return
 
