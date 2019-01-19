@@ -9,6 +9,7 @@ from game.config import *
 from game.common.stats import GameStats
 
 from game.server.notoriety_controller import NotorietyController
+from game.server.accolade_controller import AccoladeController
 
 
 class CombatController:
@@ -18,10 +19,12 @@ class CombatController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.attacker_attackee = dict()
 
         self.combat_counters = {}
 
         self.notoriety_controller = NotorietyController.get_instance()
+        self.accolade_controller = AccoladeController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -38,7 +41,6 @@ class CombatController:
         self.stats = []
         return s
 
-
     def handle_actions(self, living_ships, universe, teams, npc_teams):
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
@@ -46,12 +48,11 @@ class CombatController:
             # Check for ships that are attempting to attack
             if not ship.action is PlayerAction.attack: continue
 
-
             # get attack target
             target = self.get_ship(ship.action_param_1, universe)
             self.print(f"Ship {ship.team_name} attempting to attack ship {ship.team_name}")
 
-            #verify target is in weapon range
+            # verify target is in weapon range
             result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
             if not (result < ship.weapon_range**2):
                 self.print("Target not in range.")
@@ -62,6 +63,9 @@ class CombatController:
             target.current_hull = max(target.current_hull-ship.weapon_damage, 0)
             self.print(f"Target hull now at {target.current_hull}")
 
+            # Adds to list of attacker and attackee
+            if ship not in self.attacker_attackee.keys():
+                self.attacker_attackee[ship] = target
 
             self.events.append({
                 "type": LogEvent.ship_attack,
@@ -93,10 +97,15 @@ class CombatController:
                     "ship": target.id,
                 })
 
-                target.respawn_counter = RESPAWN_TIME + 1 #+1 to account for this turn
+                target.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
 
                 self.notoriety_controller.update_standing(ship)
                 self.notoriety_controller.update_standing(target)
+
+                if target not in self.attacker_attackee.keys():
+                    self.accolade_controller.kill_innocent(ship)
+
+                self.attacker_attackee.pop(ship)
 
                 if ship.object_type is ObjectType.ship:
                     # don't attribute notoriety to police or enforcers
@@ -119,6 +128,8 @@ class CombatController:
                                 if ship.notoriety <= 0:
                                     ship.credits += target.bounty
                                     self.print(f"Bounty of {target.bounty} given to ship {ship.id}")
+
+                                    self.accolade_controller.bounty_claim(ship)
 
                         elif target.legal_standing == LegalStanding.bounty_hunter:
                             self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_bounty_hunter)
