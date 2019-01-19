@@ -120,7 +120,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
         if not pause:
 
             if log_parser.check_finished():
-                print("Finished log playback")
+                # print("Finished log playback")
                 show_end_screen()
 
             # should we get the next turn event list
@@ -131,7 +131,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
 
                 if universe == None and events == None:
                     # game is over, go to end screen
-                    print("Finished playback!")
+                    # print("Finished playback!")
 
                     pygame.quit()
                     sys.exit()
@@ -226,16 +226,29 @@ def show_end_screen():
     global universe
     global events
     global global_surf
-    print("What the hell", flush=True)
+    # print("What the hell", flush=True)
     while True:
         # Show leaderboard before exit
-        print("Reached the end of the match", flush=True)
+        # print("Reached the end of the match", flush=True)
         global_surf.fill(pygame.Color(0, 0, 0))
-        font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
-        text = ("TEEEEEEEST")
-        renderText = font.render(text, True, (0, 50, 0))
-        global_surf.blit(renderText, (10, 695))
 
+        titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 48, True)
+        font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
+        currentHeight = 10
+        gap = 20
+        screenCenter = pygame.display.get_surface().get_size()[0] / 2
+
+        renderText = titleFont.render("Final results", True, (0, 155, 0))
+        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+        currentHeight += gap*2
+        renderText = font.render("Press escape to exit", True, (0, 155, 0))
+        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+        currentHeight += gap*2
+        # for teams...
+        for i in range(10):
+            renderText = font.render("#" + str(i+1) + " This is ship number " + str(i), True, (0, 155, 0))
+            global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+            currentHeight += gap
 
         # Handle Events
         for event in pygame.event.get():
