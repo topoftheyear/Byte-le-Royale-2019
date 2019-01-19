@@ -136,7 +136,7 @@ class RepairController:
                 else:
                     price_adjustment = 1.0
 
-                repair_cost = math.floor(GameStats.repair_cost * price_adjustment)
+                repair_cost = math.floor(get_repair_price(universe) * price_adjustment)
 
                 payment = hull_to_repair * repair_cost
 
