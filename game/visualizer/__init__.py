@@ -122,7 +122,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
 
             if log_parser.check_finished():
                 # print("Finished log playback")
-                show_end_screen()
+                show_end_screen(focus_team_name)
 
             # should we get the next turn event list
             # or should we wait for some animation to
@@ -221,33 +221,35 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
             handle_events()
 
 
-def show_end_screen():
+def show_end_screen(focus_team_name):
     global fpsClock
     global log_parser
     global universe
     global events
     global global_surf
     # print("What the hell", flush=True)
-    while True:
+    while True:  # Leaderboard
         # Show leaderboard before exit
         # print("Reached the end of the match", flush=True)
         global_surf.fill(pygame.Color(0, 0, 0))
 
+        # Set up variables used in display
         titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 48, True)
         font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
         currentHeight = 10
         gap = 20
         screenCenter = pygame.display.get_surface().get_size()[0] / 2
 
-        renderText = titleFont.render("Final results", True, (0, 155, 0))
+        renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
         global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
         currentHeight += gap*2
         renderText = font.render("Press escape to exit", True, (0, 155, 0))
         global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
         currentHeight += gap*2
         # for teams...
-        for i in range(10):
-            renderText = font.render("#" + str(i+1) + " This is ship number " + str(i), True, (0, 155, 0))
+        for idx, team, credits in enumerate(log_parser.results["leaderboard"].items()):
+            text = "#{} This is team {} with {} credits".format(idx+1, team, credits)
+            renderText = font.render(text, True, (0, 155, 0))
             global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
             currentHeight += gap
 

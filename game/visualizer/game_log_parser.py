@@ -23,7 +23,7 @@ class GameLogParser:
         with open("{}/manifest.json".format(log_dir), "r") as f:
             manifest = json.load(f)
             self.max_ticks = manifest["ticks"] 
-
+            self.results = manifest["results"]
         self.turns = []
 
 
