@@ -22,7 +22,7 @@ class GameLogParser:
         # parse manifest
         with open("{}/manifest.json".format(log_dir), "r") as f:
             manifest = json.load(f)
-            self.max_ticks = manifest["ticks"] - 1
+            self.max_ticks = manifest["ticks"] 
 
         self.turns = []
 
@@ -40,7 +40,7 @@ class GameLogParser:
             self.turns.append(events)
 
     def get_turn(self):
-        if self.tick <= self.max_ticks:
+        if self.tick < self.max_ticks:
             turn = self.turns[self.tick]
             self.tick += 1
             return turn
@@ -49,7 +49,7 @@ class GameLogParser:
 
     def check_finished(self):
 
-        return self.tick > self.max_ticks
+        return self.tick >= self.max_ticks
 
 
     def _parse_turn(self, turn):

@@ -15,13 +15,6 @@ from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
-def pause_exit(e):
-    print("%"*200, flush=True)
-    pygame.quit()
-    a =input()
-    exit()
-sys.exit = pause_exit
-
 pause = False
 log_parser = None
 global_surf = None
