@@ -8,6 +8,7 @@ from game.common.ship import Ship
 from game.utils.helpers import *
 from game.common.stats import *
 from game.utils.stat_utils import get_material_name
+from game.server.accolade_controller import AccoladeController
 
 class Bid:
     def __init__(self, ship, material, quantity):
@@ -18,13 +19,14 @@ class Bid:
 
 class BuySellController:
 
-
     def __init__(self):
 
         self.debug = False
         self.events = []
         self.stats = []
         self.station_bids = {}
+
+        self.accolade_controller = AccoladeController.get_instance()
 
         self.buy_bids = {}
         self.sell_bids = {}
@@ -44,13 +46,12 @@ class BuySellController:
         self.stats = []
         return s
 
-
     def handle_actions(self, living_ships, universe, teams, npc_teams):
         self.print("#"*100)
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
-            #check if ship is alive
+            # check if ship is alive
             if not ship.is_alive():
                 continue
 
@@ -99,14 +100,12 @@ class BuySellController:
         self.sell_bids = {}
         self.buy_bids = {}
 
-
     def process_sell_salvage(self, ship, station):
 
         self.print('Ship in range of a black market to sell salvage')
         material = MaterialType.salvage
 
-
-        # Check if material  is in ships inventory
+        # Check if material is in ship's inventory
         if material not in ship.inventory:
             self.print("Ship does not have salvage in inventory")
             return
@@ -119,6 +118,8 @@ class BuySellController:
             amount,
             get_material_name(material)
         ))
+        self.accolade_controller.redeem_salvage(ship, amount)
+        self.accolade_controller.all_credits_earned(ship, sale)
 
         # Apply bounty for selling scrap
         # TODO determine balanced value for this, current 1:1
@@ -143,7 +144,7 @@ class BuySellController:
         # Check if material and the amount is in ships inventory, if not set amount to max held in inventory
         if material not in ship.inventory:
             self.print("Ship does not have material {} in inventory".format(material))
-            return  # don't submit a bid with no availiable material
+            return  # don't submit a bid with no available material
         amount = min(amount, ship.inventory[material])
 
         # Check if station accepts material
@@ -173,7 +174,7 @@ class BuySellController:
         # to what the ship can afford
         cost = station.sell_price * quantity
         diff = ship.credits - cost
-        if not diff: # if cost > ship.credits
+        if not diff:  # if cost > ship.credits
             to_remove = math.ceil(diff/station.sell_price)
             self.print(
                 "cost greater than ship can afford. cost: {} ship credits: {}, reducing qty from {} to {}".format(
@@ -197,15 +198,12 @@ class BuySellController:
             ship.credits
         ))
 
-
-
     def process_sell_bids(self):
         for station, bids in self.sell_bids.items():
             self.print("Processing sell bids for station {}".format(station.name))
             # get number of bids
             primary_bids =  [ bid for bid in bids if bid.material is station.primary_import ]
             secondary_bids = [ bid for bid in bids if bid.material is station.secondary_import ]
-
 
             num_primary_bids = len(primary_bids)
             num_secondary_bids = len(secondary_bids)
@@ -237,6 +235,9 @@ class BuySellController:
                     price = quantity * station.primary_buy_price
                     bid.ship.credits += price
                     bid.ship.inventory[bid.material] -= quantity
+
+                    self.accolade_controller.credits_earned(bid.ship, price)
+                    self.accolade_controller.all_credits_earned(bid.ship, price)
 
                     self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
                         bid.ship.team_name, quantity, price
@@ -300,8 +301,6 @@ class BuySellController:
                         "amount": quantity,
                         "total_sale": price
                     })
-
-
 
     def process_buy_bids(self):
 
@@ -371,13 +370,3 @@ class BuySellController:
 
             # make sure we don't go below zero quantity
             station.cargo[station.production_material] = max(0, station.cargo[station.production_material])
-
-
-
-
-
-
-
-
-
-
