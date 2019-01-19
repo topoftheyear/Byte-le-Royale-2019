@@ -48,7 +48,9 @@ class LogEvent:
     despawn_enforcer = 17
     salvage_sold = 18
     illegal_salvage_picked_up = 19
-    ship_pay_off_bounty = 20
+    passive_repair = 20
+    manual_repair = 21
+    ship_pay_off_bounty = 22
 
 class MessageType:
     null = 0
@@ -70,7 +72,8 @@ class PlayerAction:
     drop_cargo = 7
     sell_salvage = 8
     collect_illegal_salvage = 9
-    pay_off_bounty = 10
+    repair = 10
+    pay_off_bounty = 11
 
 class SecurityLevel:
     engine = 0 # visible by server and visualizer
