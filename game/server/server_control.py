@@ -44,7 +44,7 @@ class ServerControl:
             self.turn_time = 0.01
 
         self.game_tick_no = 0
-        self.max_game_tick = 500 #CHANGE THIS BACK
+        self.max_game_tick = 1000
         self.turn_data = []
 
     def initialize(self):
@@ -150,13 +150,13 @@ class ServerControl:
             # Start accolades
             most_mined = self.accolade_controller.most_ore_mined()  # Fixed
             most_bounties = self.accolade_controller.most_bounties_claimed()  # Fixed
-            most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()
-            most_credits_earned = self.accolade_controller.most_credits_earned()
-            most_efficient = self.accolade_controller.most_efficient()
+            most_salvage_redeemed = self.accolade_controller.most_salvage_redeemed()  # Fixed
+            most_credits_earned = self.accolade_controller.most_credits_earned()  # Fixed
+            most_efficient = self.accolade_controller.most_efficient() # Fixed
             most_upgraded = self.accolade_controller.most_upgrades()
             most_ruthless = self.accolade_controller.most_innocents_killed()
             most_notoriety = self.accolade_controller.most_notorious()
-            input("Most mined:")
+            input("Most mined:")  # Delete This
             print(most_mined, most_bounties, most_salvage_redeemed, most_credits_earned, most_efficient, most_upgraded, most_notoriety, most_ruthless)
 
             with open("game_log/results.json", "w") as f:

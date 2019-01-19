@@ -92,7 +92,6 @@ class AccoladeController:
     def most_salvage_redeemed(self):
         most = -1
         ship = ""
-        print("Salvage Redeemed: \n", self.salvage)
         for x in self.salvage:
             if self.salvage[x] > most:
                 most = self.salvage[x]
@@ -117,12 +116,13 @@ class AccoladeController:
 
         return [ship, most]
 
-    # credits not from salvage
-    def all_credits_earned(self, ship, creditAdd):
-        if ship in self.allCredits:
-            self.allCredits[ship] += creditAdd
+    # all credits
+    def all_credits_earned(self, shipName, creditAdd):
+        print(shipName, " has earned ", creditAdd, " credits.")
+        if shipName in self.allCredits:
+            self.allCredits[shipName] += creditAdd
         else:
-            self.allCredits[ship] = creditAdd
+            self.allCredits[shipName] = creditAdd
 
     # Fuel Efficient
     def ship_moved(self, ship, distance):
@@ -134,14 +134,15 @@ class AccoladeController:
     def most_efficient(self):
         max_efficient = -1
         ship_efficient = ""
-        print("Moved: ", self.moved)
-        print("AllCredits: ", self.allCredits)
         for x in self.moved:
-            print(x)
-            print(x.team_name)
-            if x in self.allCredits:
-                if self.allCredits[x.team_name] / self.moved[x] > max_efficient:
+            print(x.team_name, " has moved.")
+            if x.team_name in self.allCredits:
+                print(x.team_name, "is also in allCredits.")
+                efficiency = self.allCredits[x.team_name] / self.moved[x]
+                print("Efficiency: ", efficiency, "\nMax Efficiency: ", max_efficient)
+                if efficiency > max_efficient:
                     ship_efficient = x.team_name
+                    max_efficient = efficiency
 
         return [ship_efficient, max_efficient]
 
