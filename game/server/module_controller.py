@@ -7,6 +7,7 @@ from game.common.station import *
 from game.common.ship import Ship
 from game.utils.helpers import *
 from game.common.stats import *
+from game.server.accolade_controller import AccoladeController
 
 class ModuleController:
 
@@ -15,6 +16,7 @@ class ModuleController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.accolade_controller = AccoladeController.get_instance()
 
     def print(self, msg):
         if self.debug:
@@ -93,6 +95,8 @@ class ModuleController:
                     self.print('Ship has funds for the module')
                     self.print(str(ship.credits) + ' - ' + str(cost) + ' = ' + str(ship.credits - cost))
                     ship.credits -= cost
+
+                    self.accolade_controller.ship_upgraded(ship, cost)
 
                     # Apply purchase to ship
                     if ship_slot == ShipSlot.zero:

@@ -13,4 +13,4 @@ echo "Run";
 ./br_launcher.pyz run $@; 
 printf "\n\n"
 echo "Visualizer";
-./br_launcher.pyz visualizer
+./br_launcher.pyz visualizer --team-name Derp

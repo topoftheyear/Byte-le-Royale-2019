@@ -7,6 +7,7 @@ from game.common.name_helpers import *
 from game.common.asteroid_field import AsteroidField
 from game.common.ship import Ship
 from game.server.bounty_controller import *
+from game.server.accolade_controller import AccoladeController
 
 class NotorietyController:
 
@@ -22,6 +23,7 @@ class NotorietyController:
         self.debug = False
         self.events = []
         self.stats = []
+        self.accolade_controller = AccoladeController.get_instance()
 
 
     @staticmethod
@@ -73,6 +75,8 @@ class NotorietyController:
         # pay off your own bounty
         elif change_reason is NotorietyChangeReason.pay_off_bounty:
             ship.notoriety = LegalStanding.pirate - 1
+
+        self.accolade_controller.have_notoriety(ship)
 
         self.events.append({
             "type": LogEvent.notoriety_change,
