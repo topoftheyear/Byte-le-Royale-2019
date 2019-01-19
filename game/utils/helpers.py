@@ -2,14 +2,16 @@ import math
 from itertools import groupby
 from game.utils.filters import in_radius as pred_in_radius
 from game.utils.filters import AND, EQ, NOT
+from game.common.stats import *
+
 import types
+import statistics
 
 from game.config import *
 from game.common.enums import *
 
 
 def get_ships(universe, callback=None):
-
     if callback is not None:
         return [obj
                 for obj in universe.get("ships")
@@ -24,11 +26,12 @@ def get_ships(universe, callback=None):
 def ships_in_attack_range(universe, ship):
     def is_visible_wrapper(t):
         return in_radius(ship, t, ship.weapon_range, lambda e: e.position, verify_instance=True)
+
     return get_ships(universe, is_visible_wrapper)
 
 
 def get_stations(universe):
-    return [ obj for obj in universe if obj.object_type == ObjectType.station ]
+    return [obj for obj in universe if obj.object_type == ObjectType.station]
 
 
 def get_asteroid_fields(universe):
@@ -56,9 +59,9 @@ def distance_to(source, target, accessor, target_accessor=None):
         target_pos = accessor(target)
 
     return (
-        (source_pos[0] - target_pos[0])**2 +
-        (source_pos[1] - target_pos[1])**2
-    )**(1/2)
+                   (source_pos[0] - target_pos[0]) ** 2 +
+                   (source_pos[1] - target_pos[1]) ** 2
+           ) ** (1 / 2)
 
 
 def in_radius(source, target, radius, accessor, target_accessor=None, verify_instance=True):
@@ -77,12 +80,12 @@ def in_radius(source, target, radius, accessor, target_accessor=None, verify_ins
     else:
         target_pos = accessor(target)
 
-    result = (source_pos[0] - target_pos[0])**2 + (source_pos[1] - target_pos[1])**2
+    result = (source_pos[0] - target_pos[0]) ** 2 + (source_pos[1] - target_pos[1]) ** 2
 
     if isinstance(radius, types.FunctionType):
         radius = radius(source, target)
 
-    in_range = result < radius**2
+    in_range = result < radius ** 2
 
     if verify_instance:
         return in_range and source.id != target.id
@@ -109,8 +112,8 @@ def in_secure_zone(source, accessor):
     """
 
     center_of_world = (
-        WORLD_BOUNDS[0]/2.0,
-        WORLD_BOUNDS[1]/2.0
+        WORLD_BOUNDS[0] / 2.0,
+        WORLD_BOUNDS[1] / 2.0
     )
 
     return in_radius(source, center_of_world, SECURE_ZONE_RADIUS, accessor, target_accessor=lambda e: e)
@@ -148,8 +151,8 @@ def get_material_name(material_type):
         return "Salvage"
     return "N/A"
 
-def separate_universe(flat_universe):
 
+def separate_universe(flat_universe):
     universe = {}
 
     for key, group in groupby(flat_universe, lambda e: e.object_type):
@@ -183,6 +186,47 @@ def get_material_prices(universe):
 
     return price_list
 
+#  Finds median price of all materials in the universe
+def get_median_material_price(universe):
+    return statistics.median(get_material_prices(universe))
+
+
+#  Applies adjustments based on median material prices to find repair cost
+def get_repair_price(universe):
+    median_price = get_median_material_price(universe)
+    return math.floor(GameStats.repair_adjustment * GameStats.repair_materials_cost * median_price)
+
+
+#  Determine module price
+def get_module_price(universe, level):
+    median_price = get_median_material_price(universe)
+    if level == ModuleLevel.one:
+        return math.floor(GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost)
+    elif level == ModuleLevel.two:
+        return math.floor(GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost)
+    elif level == ModuleLevel.three:
+        return math.floor(GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost)
+    elif level == ModuleLevel.illegal:
+        return math.floor(GameStats.module_level_4_adjustment * median_price * GameStats.module_level_4_materials_cost)
+    else:
+        return
+
+
+
+#  Determine module unlock price given ship_slot
+def get_module_unlock_price(universe, ship_slot):
+    median_price = get_median_material_price(universe)
+
+    if ship_slot == ShipSlot.zero:
+        return math.floor(GameStats.unlock_slot_0_adjustment * median_price * GameStats.unlock_slot_0_materials_cost)
+    elif ship_slot == ShipSlot.one:
+        return math.floor(GameStats.unlock_slot_1_adjustment * median_price * GameStats.unlock_slot_1_materials_cost)
+    elif ship_slot == ShipSlot.two:
+        return math.floor(GameStats.unlock_slot_2_adjustment * median_price * GameStats.unlock_slot_2_materials_cost)
+    elif ship_slot == ShipSlot.three:
+        return math.floor(GameStats.unlock_slot_3_adjustment * median_price * GameStats.unlock_slot_3_materials_cost)
+    else:
+        return
 
 def get_best_station_purchasing_prices_by_material(universe):
     all_prices = {}
