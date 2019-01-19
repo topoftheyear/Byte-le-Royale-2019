@@ -1,5 +1,8 @@
 import json
 import os
+import sys
+
+
 
 from game.common.enums import *
 from game.common.ship import Ship
@@ -10,7 +13,6 @@ from game.common.asteroid_field_types import load_asteroid_field
 
 class GameLogParser:
     def __init__(self, log_dir):
-
         if not os.path.exists(log_dir):
             raise Exception("Invalid log directory: {}".format(log_dir))
 
@@ -30,7 +32,7 @@ class GameLogParser:
         self.load_turns()
 
     def load_turns(self):
-        for tick in range(1,self.max_ticks):
+        for tick in range(1,self.max_ticks+1):
             with open("{0}/{1:05d}.json".format(self.log_dir, tick), "r") as f:
                 turn = json.load(f)
 
@@ -38,7 +40,7 @@ class GameLogParser:
             self.turns.append(events)
 
     def get_turn(self):
-        if self.tick < self.max_ticks-1:
+        if self.tick <= self.max_ticks:
             turn = self.turns[self.tick]
             self.tick += 1
             return turn
@@ -46,6 +48,7 @@ class GameLogParser:
             return None, None
 
     def check_finished(self):
+
         return self.tick > self.max_ticks
 
 

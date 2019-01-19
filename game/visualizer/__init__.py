@@ -15,6 +15,13 @@ from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
 
+def pause_exit(e):
+    print("%"*200, flush=True)
+    pygame.quit()
+    a =input()
+    exit()
+sys.exit = pause_exit
+
 pause = False
 log_parser = None
 global_surf = None
@@ -120,7 +127,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
         if not pause:
 
             if log_parser.check_finished():
-                sys.exit()
+                print("Finished log playback")
+                show_end_screen()
 
             # should we get the next turn event list
             # or should we wait for some animation to
@@ -217,6 +225,39 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
                     fpsClock.tick(FPS)
         else:
             handle_events()
+
+
+def show_end_screen():
+    global fpsClock
+    global log_parser
+    global universe
+    global events
+    global global_surf
+    print("What the hell", flush=True)
+    while True:
+        # Show leaderboard before exit
+        print("Reached the end of the match", flush=True)
+        global_surf.fill(pygame.Color(0, 0, 0))
+        font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
+        text = ("TEEEEEEEST")
+        renderText = font.render(text, True, (0, 50, 0))
+        global_surf.blit(renderText, (10, 695))
+
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+        pygame.display.update()
+        fpsClock.tick(_FPS)
+
 
 
 def update_groups(intermediate):
