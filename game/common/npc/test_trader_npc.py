@@ -116,14 +116,61 @@ class TestTraderNPC(NPC):
                 chosenSell = thirdSell
                 chosenBuy = thirdBuy
 
-            for tempStation in stations:
-                if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
-                    chosenSellStation = tempStation
-                elif tempStation.secondary_buy_price == chosenSell and tempStation.secondary_import == chosenMaterial:
-                    chosenSellStation = tempStation
+            # for tempStation in stations:
+            #     if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
+            #         chosenSellStation = tempStation
+            #     elif tempStation.secondary_buy_price == chosenSell and tempStation.secondary_import == chosenMaterial:
+            #         chosenSellStation = tempStation
+            #
+            #     if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
+            #         chosenBuyStation = tempStation
+            done = False
+            trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
+            while not done:
+                chosenMaterial = random.choice(trade_materials)
+                sell = False
+                for tempStation in stations:
+                    if tempStation.primary_import == chosenMaterial and not sell:
+                        chosenSellStation = tempStation
+                        sell = True
+                        break
+                if sell == True:
+                    for tempStation in stations:
+                        if tempStation.production_material == chosenMaterial:
+                            chosenBuyStation = tempStation
+                            done = True
+                            break
+                else:
+                    continue
 
-                if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
-                    chosenBuyStation = tempStation
+            # done = False
+            # trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
+            # while not done:
+            #     chosenMaterial = random.choice(trade_materials)
+            #     buy_found = False
+            #     for tempStation in stations:
+            #         if tempStation.cargo[tempStation.production_material] == 0:
+            #             if tempStation.production_material in trade_materials:
+            #                 trade_materials.remove(tempStation.production_material)
+            #                 chosenBuyStation = tempStation
+            #             break
+            #         if tempStation.production_material == chosenMaterial:
+            #             chosenBuyStation = tempStation
+            #             buy_found = True
+            #             break
+            #     for tempStation in stations:
+            #         if tempStation.primary_import == chosenMaterial:
+            #             chosenSellStation = tempStation
+            #         if buy_found == True:
+            #             done = True
+            #             break
+            #     if buy_found == False:
+            #         if chosenMaterial in trade_materials:
+            #             trade_materials.remove(chosenMaterial)
+            #         if len(trade_materials) == 0:
+            #             done = True
+            #             print("EEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRR")
+
             self.sellStation = chosenSellStation.position
             self.buyStation = chosenBuyStation.position
             self.material = chosenMaterial
@@ -133,14 +180,12 @@ class TestTraderNPC(NPC):
 
         elif self.doing == 1:  # buying
             self.heading = self.buyStation
+            self.buy_material(self.ship.cargo_space)
             # Gather as much of the material determined as possible
             if self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]:
-                self.buy_material(self.ship.cargo_space)
-
-            if self.material in self.ship.inventory and self.ship.inventory[self.material] > 0:
                 self.doing = 2
                 self.heading = self.sellStation
-                self.print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
+                #self.print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
 
 
         elif self.doing == 2:  # selling
@@ -148,7 +193,7 @@ class TestTraderNPC(NPC):
             # Sell material when possible
             self.sell_material(self.material, self.ship.inventory[self.material])
             self.print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
-            if self.ship.inventory[self.material] == 0:
+            if self.ship.inventory[self.material] == 0 or (self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]):
                 self.print("successfully sold")
                 self.doing = 0
                 self.heading = self.ship.position

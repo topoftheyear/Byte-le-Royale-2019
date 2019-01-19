@@ -292,10 +292,10 @@ class CustomServer(ServerControl):
         for ship in self.universe.get(ObjectType.ship):
             x += 1
             npc_type = None
-            if x < 15:
-                npc_type = TestTraderNPC
-            else:
+            if x < 10:
                 npc_type = TestMinerNPC
+            else:
+                npc_type = TestTraderNPC
 
             new_npc_controller = npc_type(ship)
 
