@@ -196,15 +196,15 @@ def get_repair_price(universe):
 
 
 #  Determine module price
-def get_module_price(universe, module, ship_slot):
+def get_module_price(universe, level):
     median_price = get_median_material_price(universe)
-    if ship_slot == ShipSlot.zero:
+    if level == ShipSlot.zero:
         return GameStats.module_level_0_adjustment * median_price * GameStats.module_level_0_materials_cost
-    elif ship_slot == ShipSlot.one:
+    elif level == ShipSlot.one:
         return GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost
-    elif ship_slot == ShipSlot.two:
+    elif level == ShipSlot.two:
         return GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost
-    elif ship_slot == ShipSlot.three:
+    elif level == ShipSlot.three:
         return GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost
     else:
         return
