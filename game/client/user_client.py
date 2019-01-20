@@ -175,3 +175,49 @@ class UserClient:
         self.reset_player_action()
 
         self._action = PlayerAction.pay_off_bounty
+
+    # Helper class wrappers start here
+    def distance_to(self, yourself, target):
+        return distance_to(yourself, target, lambda e:e.position)
+
+    def in_radius_of_station(self, yourself, station):
+        return in_radius(yourself, station, station.accessibility_radius, lambda e:e.position)
+
+    def in_radius_of_asteroid_field(self, yourself, field):
+        return in_radius(yourself, field, field.accessibility_radius, lambda e:e.position)
+
+    def in_radius_of_illegal_salvage(self, yourself, salvage):
+        return in_radius(yourself, salvage, yourself.weapon_range, lambda e:e.position)
+
+    def get_salvage_equivalent_of_material(self, quantity, value):
+        return convert_material_to_scrap(quantity, value)
+
+    def in_secure_zone(self, check):
+        return in_secure_zone(check, lambda e:e.position)
+
+    def get_material_name(self, material_type):
+        return get_material_name(material_type)
+
+    def separate_universe(self, flat_universe):
+        return separate_universe(flat_universe)
+
+    def get_median_material_price(self, universe):
+        return get_median_material_price(universe)
+
+    def get_repair_price(self, universe):
+        return get_repair_price(universe)
+
+    def get_module_price(self, universe, level):
+        return get_module_price(universe, level)
+
+    def get_module_unlock_price(self, universe, ship_slot):
+        return get_module_unlock_price(self, universe, ship_slot)
+
+    def get_material_price_info(self, universe):
+        """
+        Creates a dictionary object of format prices[Material]{Price:#,Station:Object} containing highest prices you
+        can sell the given material to.
+        :param universe:
+        :return:
+        """
+        return get_best_station_purchasing_prices_by_material(universe)
