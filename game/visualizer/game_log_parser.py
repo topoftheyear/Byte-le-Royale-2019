@@ -22,10 +22,17 @@ class GameLogParser:
         # parse manifest
         with open("{}/manifest.json".format(log_dir), "r") as f:
             manifest = json.load(f)
-            self.max_ticks = manifest["ticks"] 
+            self.max_ticks = manifest["ticks"]
             self.results = manifest["results"]
-        self.turns = []
+        self.v_man = manifest["version"]
+        with open("wrapper/version.py", "r") as f:
+            text = f.read().strip()
+        self.v_cur = text.split("=")[1]
+        self.outdated_manifest = False
+       self.outdated_manifest = elf.v_man < self.v_cur:
+            self.outdated_manifest = True
 
+        self.turns = []
 
         self.tick = 1
 
