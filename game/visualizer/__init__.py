@@ -121,7 +121,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
         if not pause:
 
             if log_parser.check_finished():
-                sys.exit()
+                # print("Finished log playback")
+                show_end_screen(focus_team_name)
 
             # should we get the next turn event list
             # or should we wait for some animation to
@@ -131,7 +132,7 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
 
                 if universe == None and events == None:
                     # game is over, go to end screen
-                    print("Finished playback!")
+                    # print("Finished playback!")
 
                     pygame.quit()
                     sys.exit()
@@ -218,6 +219,77 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
                     fpsClock.tick(FPS)
         else:
             handle_events()
+
+
+def show_end_screen(focus_team_name):
+    global fpsClock
+    global log_parser
+    global universe
+    global events
+    global global_surf
+    # print("What the hell", flush=True)
+    while True:  # Leaderboard
+        # Show leaderboard before exit
+        # print("Reached the end of the match", flush=True)
+        global_surf.fill(pygame.Color(0, 0, 0))
+
+        # Set up variables used in display
+        titleFont = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 32)
+        font = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 16)
+        currentHeight = 10
+        gap = 20
+        left_allign_leaderboard = 50
+        left_allign_accolades = 720
+        screenCenter = pygame.display.get_surface().get_size()[0] / 2
+
+        renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
+        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+        currentHeight += gap*2
+        renderText = font.render("Press escape to exit", True, (0, 155, 0))
+        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+        currentHeight += gap*2
+
+        # Show team leaderboard
+        for idx, team_data in enumerate(log_parser.results["leaderboard"]):
+            team = team_data["team_name"]
+            credits = team_data["credits"]
+            if team == focus_team_name:
+                text = " -> {0:>2}) {1:<7} Team {2}".format(idx + 1, int(credits), team[:20])
+                renderText = font.render(text, True, (0, 255, 0))
+                global_surf.blit(renderText, [left_allign_leaderboard - 40, currentHeight])
+            else:
+                text = "{0:>2}) {1:<7} Team {2}".format(idx+1, int(credits), team[:20])
+                renderText = font.render(text, True, (0, 155, 0))
+                global_surf.blit(renderText, [left_allign_leaderboard, currentHeight])
+            currentHeight += gap
+
+        currentHeight = 90
+        # Show accolades
+        for accolade, team in log_parser.results["accolades"].items():
+            if team == focus_team_name:
+                text = " -> {0:<25}: Team {1}".format(accolade, team[:20])
+                renderText = font.render(text, True, (0, 255, 0))
+                global_surf.blit(renderText, [left_allign_accolades, currentHeight])
+            else:
+                text = "{0:<25}: Team {1}".format(accolade, team[:20])
+                renderText = font.render(text, True, (0, 155, 0))
+                global_surf.blit(renderText, [left_allign_accolades, currentHeight])
+            currentHeight += gap
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    pygame.quit()
+                    sys.exit()
+
+        pygame.display.update()
+        fpsClock.tick(_FPS)
+
 
 
 def update_groups(intermediate):
