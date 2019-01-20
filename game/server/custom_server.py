@@ -304,7 +304,7 @@ class CustomServer(ServerControl):
         # check if ships still alive
         living_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.alive())
 
-        teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
+        teams = self.teams#{ **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
 
         # apply the results of any actions a player took if player still alive
         self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)

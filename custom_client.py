@@ -17,7 +17,7 @@ class CustomClient(UserClient):
     def team_name(self):
         print("Sending Team Name")
 
-        return "Derp"
+        return "I want to die :)"
 
     def team_color(self):
         print("Sending Team Color")
@@ -46,9 +46,9 @@ class CustomClient(UserClient):
 
         # If we have a purchase place to go to, buy a material
         if self.destination is self.purchase_station:
-            print("buying")
+            print("buying",self.material)
             # Buy its material
-            self.buy_material(self.material, 1)
+            self.buy_material(1)
 
             # If we got it, go and sell it
             if self.material in ship.inventory and ship.inventory[self.material] > 0:
