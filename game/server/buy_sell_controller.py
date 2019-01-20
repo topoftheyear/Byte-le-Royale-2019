@@ -166,6 +166,8 @@ class BuySellController:
     def process_buy_action(self, ship, station):
         quantity = ship.action_param_1
         material = station.production_material
+        self.print("STATION CHOSEN:  " + str(material) + "    "+ str(station.cargo[material]))
+        self.print("STATION PRIMARY:  " + str(station.primary_import) + "    "+ str(station.cargo[station.primary_import]))
 
         # verify station has enough material, reducing requested quantity to what the station has.
         quantity = min(station.production_qty, quantity)
@@ -174,13 +176,13 @@ class BuySellController:
         # to what the ship can afford
         cost = station.sell_price * quantity
         diff = ship.credits - cost
-        if not diff:  # if cost > ship.credits
-            to_remove = math.ceil(diff/station.sell_price)
+        if diff < 0:  # if cost > ship.credits
+            to_remove = math.floor(diff/station.sell_price) #will be negative
             self.print(
                 "cost greater than ship can afford. cost: {} ship credits: {}, reducing qty from {} to {}".format(
                 cost, ship.credits, quantity, quantity-to_remove
             ))
-            quantity = to_remove
+            quantity += to_remove
 
         if quantity < 0:
             self.print("Ship could not afford any product.")

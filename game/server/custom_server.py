@@ -16,6 +16,9 @@ from game.common.npc.lazy_npc import LazyNPC
 from game.common.npc.repair_npc import RepairNPC
 from game.common.npc.bounty_redeemer import BountyRedeemerNPC
 from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
+from game.common.npc.test_miner_npc import TestMinerNPC
+from game.common.npc.test_trader_npc import TestTraderNPC
+from game.common.npc.test_priority_trader_npc import TestPriorityTraderNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 from game.utils.helpers import *
@@ -33,6 +36,7 @@ from game.server.repair_controller import RepairController
 from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
+from game.config import *
 from game.utils.projection import *
 
 
@@ -293,9 +297,27 @@ class CustomServer(ServerControl):
     def claim_npcs(self):
         self.npcs = []
 
-        for ship in self.universe.get(ObjectType.ship):
+        '''for ship in self.universe.get(ObjectType.ship):
             npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
                                       BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC,  LazyNPC, RepairNPC])
+
+            new_npc_controller = npc_type(ship)
+
+            self.npc_teams[ship.id] = {
+                "controller": new_npc_controller,
+                "ship": ship
+            }'''
+
+        x = -1
+        for ship in self.universe.get(ObjectType.ship):
+            x += 1
+            npc_type = None
+            if x < 10:
+                npc_type = TestMinerNPC
+            elif x < 30:
+                npc_type = TestTraderNPC
+            else:
+                npc_type = TestPriorityTraderNPC
 
             new_npc_controller = npc_type(ship)
 
