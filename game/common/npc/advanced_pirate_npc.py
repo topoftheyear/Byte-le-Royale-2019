@@ -3,16 +3,23 @@ import random
 from game.common.enums import *
 from game.common.npc.npc import NPC
 from game.utils.helpers import *
+from game.client.user_client import UserClient
 from game.config import *
 import game.utils.filters as F
 
 
 class AdvancedPirateNPC(NPC):
 
-    target_ship = None
-    is_hunting = True
-    is_gathering = False
-    is_selling = False
+    def __init__(self, ship):
+        UserClient.__init__(self)
+        self.ship = ship
+        self.ship_id = ship.id
+
+        self.target_ship = None
+        self.is_hunting = True
+        self.is_gathering = False
+        self.is_selling = False
+        self.heading = None
 
     def take_turn(self, universe):
         # if at heading, clear heading
@@ -21,12 +28,12 @@ class AdvancedPirateNPC(NPC):
                 and self.heading[1] == self.ship.position[1]):
             self.heading = None
 
-        while AdvancedPirateNPC.target_ship is None or not AdvancedPirateNPC.target_ship.is_alive:
+        while self.target_ship is None or not self.target_ship.is_alive:
             ships = self.get_ships(universe)
-            AdvancedPirateNPC.target_ship = random.choice(ships)
+            self.target_ship = random.choice(ships)
 
         salvage_list = universe.get(ObjectType.illegal_salvage)
-        target_scrap = None
+        scrap_nearby = False
         for scrap in salvage_list:
             scrap_in_radius = in_radius(
                 self.ship,
@@ -34,25 +41,30 @@ class AdvancedPirateNPC(NPC):
                 self.ship.weapon_range,
                 lambda e: e.position)
             if scrap_in_radius:
-                target_scrap = scrap
+                scrap_nearby = True
 
-        if AdvancedPirateNPC.is_hunting and AdvancedPirateNPC.target_ship.is_alive:
-            AdvancedPirateNPC.is_hunting = False
-            AdvancedPirateNPC.is_gathering = True
-        elif AdvancedPirateNPC.is_gathering and target_scrap is None:
-            AdvancedPirateNPC.is_gathering = False
-            AdvancedPirateNPC.is_selling = True
+        if self.is_hunting and not self.target_ship.is_alive:
+            self.is_hunting = False
+            self.is_gathering = True
 
-        elif AdvancedPirateNPC.is_selling and not (MaterialType.salvage in self.ship.inventory and self.ship.inventory[MaterialType.salvage] >= 50):
-            AdvancedPirateNPC.is_selling = False
-            AdvancedPirateNPC.is_hunting = True
+        elif self.is_gathering and not scrap_nearby:
+            self.is_gathering = False
+            self.is_selling = True
 
+        elif self.is_selling and not (MaterialType.salvage in self.ship.inventory and self.ship.inventory[MaterialType.salvage] >= 50):
+            self.is_selling = False
+            self.is_hunting = True
 
-        if AdvancedPirateNPC.is_gathering:
+        else:
+            self.is_hunting = True
+            self.is_gathering = False
+            self.is_selling = False
+
+        if self.is_gathering:
             self.heading = self.ship.position
             self.collect_illegal_salvage()
 
-        elif AdvancedPirateNPC.is_selling:
+        elif self.is_selling:
             for thing in universe.get(ObjectType.black_market_station):
                 if thing.object_type is ObjectType.black_market_station:
                     station = thing
@@ -61,9 +73,9 @@ class AdvancedPirateNPC(NPC):
 
             self.sell_salvage()
         else:
-            AdvancedPirateNPC.is_hunting = True
-            self.heading = AdvancedPirateNPC.target_ship.position
-            self.attack(AdvancedPirateNPC.target_ship)
+            self.is_hunting = True
+            self.heading = self.target_ship.position
+            self.attack(self.target_ship)
 
         # move towards heading
         self.move(*self.heading)
