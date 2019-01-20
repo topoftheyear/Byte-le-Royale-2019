@@ -75,7 +75,10 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         pa.replace(pygame.Color("#3c3c3c"), self.color_3)
         del pa
 
+
     def update(self, universe, events, intermediate=-1):
+
+        self.rotate(round(0))
 
         ship = self.find_self(universe)
         if ship is None:
