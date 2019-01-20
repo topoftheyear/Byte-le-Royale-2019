@@ -251,9 +251,14 @@ def show_end_screen(focus_team_name):
         for idx, team_data in enumerate(log_parser.results["leaderboard"]):
             team = team_data["team_name"]
             credits = team_data["credits"]
-            text = "{0:>2}) {1:<7} Team {2}".format(idx+1, int(credits), team[:20])
-            renderText = font.render(text, True, (0, 155, 0))
-            global_surf.blit(renderText, [left_allign_leaderboard, currentHeight])
+            if team == focus_team_name:
+                text = " -> {0:>2}) {1:<7} Team {2}".format(idx + 1, int(credits), team[:20])
+                renderText = font.render(text, True, (0, 255, 0))
+                global_surf.blit(renderText, [left_allign_leaderboard - 40, currentHeight])
+            else:
+                text = "{0:>2}) {1:<7} Team {2}".format(idx+1, int(credits), team[:20])
+                renderText = font.render(text, True, (0, 155, 0))
+                global_surf.blit(renderText, [left_allign_leaderboard, currentHeight])
             currentHeight += gap
 
         # Handle Events
