@@ -234,10 +234,11 @@ def show_end_screen(focus_team_name):
         global_surf.fill(pygame.Color(0, 0, 0))
 
         # Set up variables used in display
-        titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 48, True)
-        font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
+        titleFont = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 32)
+        font = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 16)
         currentHeight = 10
         gap = 20
+        left_allign_leaderboard = 50
         screenCenter = pygame.display.get_surface().get_size()[0] / 2
 
         renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
@@ -250,9 +251,9 @@ def show_end_screen(focus_team_name):
         for idx, team_data in enumerate(log_parser.results["leaderboard"]):
             team = team_data["team_name"]
             credits = team_data["credits"]
-            text = "#{} This is team {} with {} credits".format(idx+1, team, credits)
+            text = "{0:>2}) {1:<7} Team {2}".format(idx+1, int(credits), team[:20])
             renderText = font.render(text, True, (0, 155, 0))
-            global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+            global_surf.blit(renderText, [left_allign_leaderboard, currentHeight])
             currentHeight += gap
 
         # Handle Events
