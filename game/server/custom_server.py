@@ -4,21 +4,7 @@ from math import sqrt
 
 from game.server.server_control import ServerControl
 from game.common.enums import *
-from game.common.npc.mining_npc import MiningNPC
-from game.common.npc.combat_npc import CombatNPC
-from game.common.npc.module_npc import ModuleNPC
-from game.common.npc.buy_sell_npc import BuySellNPC
-from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
-from game.common.npc.unlock_npc import UnlockNPC
-from game.common.npc.cargo_drop_npc import CargoDropNPC
-from game.common.npc.salvage_collector_npc import SalvageNPC
-from game.common.npc.lazy_npc import LazyNPC
-from game.common.npc.repair_npc import RepairNPC
-from game.common.npc.bounty_redeemer import BountyRedeemerNPC
-from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
-from game.common.npc.test_miner_npc import TestMinerNPC
-from game.common.npc.test_trader_npc import TestTraderNPC
-from game.common.npc.test_priority_trader_npc import TestPriorityTraderNPC
+from game.common.npc.test import *
 from game.common.ship import Ship
 from game.utils.generate_game import load
 from game.utils.helpers import *
