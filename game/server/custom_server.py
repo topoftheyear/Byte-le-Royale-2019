@@ -174,13 +174,14 @@ class CustomServer(ServerControl):
                 if message_type == MessageType.take_turn:
                     if "action_type" in data:
                         # get action
-                        self.teams[client_id]["action_type"] = data["action_type"]
+                        self.teams[client_id]["action"] = data["action_type"]
 
                         # get action params
                         for i in range(1, 4):
-                            param = f"action_param{i}"
+                            param = f"action_param_{i}"
                             if param in data:
                                 self.teams[client_id][param] = data[param]
+
 
                     if "move_action" in data:
                         self.teams[client_id]["move_action"] = data["move_action"]
