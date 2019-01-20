@@ -53,7 +53,7 @@ class UserClient:
     def attack(self, target):
         self.reset_player_action()
 
-        if not isinstance(target, GameObject) and target.object_type is not ObjectType.ship:
+        if not isinstance(target, GameObject) or target.object_type is not ObjectType.ship or target is None:
             return
 
         self._action = PlayerAction.attack
