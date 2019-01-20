@@ -21,10 +21,12 @@ def validate(script):
     import_lines = []
     for line in script.split("\n"):
         if _import in line:
-            import_lines.append(line.strip())
+            import_lines.append(line)
 
 
-    for line_no,line in enumerate(import_lines):
+    for line in import_lines:
+        line_no = script.split("\n").index(line)
+        line = line.strip()
         tokens = line.split()
 
         from_result = check_from(line_no+1, line, tokens)
@@ -43,7 +45,10 @@ def check_from(line_no, line, tokens):
     result = True
 
     if _from in line:
-        from_idx = tokens.index(_from)
+        try:
+            from_idx = tokens.index(_from)
+        except ValueError:
+            return True
 
         if len(tokens) <= from_idx+1:
             print("Line No {}: Split line \"from\" statements are not allowed".format(line_no))
@@ -66,7 +71,14 @@ def check_import(line_no, line, tokens):
 
     if _import in line and _from not in line:
 
-        import_idx = tokens.index(_import)
+        try:
+            import_idx = tokens.index(_import)
+        except ValueError:
+            return True
+
+        if import_idx != 0:
+            return True
+
         for token in tokens[import_idx+1:]:
 
             mod_name = token.replace(",", "")

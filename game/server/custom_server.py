@@ -35,6 +35,7 @@ from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
 from game.config import *
+from game.utils.projection import *
 
 
 class CustomServer(ServerControl):
@@ -162,7 +163,7 @@ class CustomServer(ServerControl):
                    team_color = data["team_color"]
 
                    ship = Ship()
-                   ship.init(team_name, team_color)
+                   ship.init(team_name, team_color, position=percent_world(0.5, 0.5))
 
                    self.universe.add_object(ship)
 
