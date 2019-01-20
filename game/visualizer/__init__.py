@@ -274,6 +274,14 @@ def draw_screen():
     illegal_salvage_group.draw(global_surf)
     ship_group.draw(global_surf)
 
+    # If the version is old, draw text to warn of playback errors
+    if log_parser.outdated_manifest:
+        font = pygame.font.SysFont(pygame.font.get_default_font(), 24, True)
+        text = f"The visualizer is a higher version number ({str(log_parser.v_cur)}) than the game being simulated ({str(log_parser.v_man)}). Playback Errors may occur."
+        renderText = font.render(text, True, (255, 50, 50))
+        global_surf.blit(renderText, (150, 10))
+
+    # This is the turn counter
     font = pygame.font.SysFont(pygame.font.get_default_font(),24,True)
     text = ("Turn " + str(log_parser.tick - 1).rjust(6, "0"))
     renderText = font.render(text, True, (0, 155, 0))
