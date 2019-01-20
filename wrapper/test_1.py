@@ -34,3 +34,9 @@ import test
 
 from math import \
   test
+
+
+hello import world
+
+
+testing_import_in_line
