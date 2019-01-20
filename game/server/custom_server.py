@@ -18,6 +18,7 @@ from game.common.npc.bounty_redeemer import BountyRedeemerNPC
 from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
 from game.common.npc.test_miner_npc import TestMinerNPC
 from game.common.npc.test_trader_npc import TestTraderNPC
+from game.common.npc.test_priority_trader_npc import TestPriorityTraderNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
 
@@ -308,8 +309,10 @@ class CustomServer(ServerControl):
             npc_type = None
             if x < 10:
                 npc_type = TestMinerNPC
-            else:
+            elif x < 30:
                 npc_type = TestTraderNPC
+            else:
+                npc_type = TestPriorityTraderNPC
 
             new_npc_controller = npc_type(ship)
 

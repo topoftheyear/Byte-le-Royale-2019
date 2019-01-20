@@ -42,7 +42,8 @@ class TestMinerNPC(NPC):
 
         # Mine until full
         elif self.heading in universe.get("asteroid_fields"):
-            if self.chosen_mineral not in self.ship.inventory or self.ship.inventory[self.chosen_mineral] < self.ship.cargo_space:
+            total_items = sum(self.ship.inventory.values())
+            if self.chosen_mineral not in self.ship.inventory or total_items < self.ship.cargo_space:
                 self.mine()
                 self.move(*self.heading.position)
             else:

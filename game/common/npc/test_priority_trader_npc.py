@@ -29,33 +29,26 @@ class TestPriorityTraderNPC(NPC):
         stations = universe.get(ObjectType.station)
         sellPrices = get_material_prices(universe)
         buyPrices = get_material_buy_prices(universe)
+        trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry,
+                           MaterialType.copper, MaterialType.drones, MaterialType.pylons, MaterialType.wire, MaterialType.machinery]
 
-        firstBuy = 0
-        firstSell = 0
         firstHighest = 0
         firstMaterial = ""
 
-        secondBuy = 0
-        secondSell = 0
         secondHighest = 0
         secondMaterial = ""
 
-        thirdBuy = 0
-        thirdSell = 0
         thirdHighest = 0
         thirdMaterial = ""
 
-        chosenSell = 0
-        chosenBuy = 0
-        chosenPrice = 0
-        chosenMaterial = ""
+        chosenMaterial = None
         chosenSellStation = None
         chosenBuyStation = None
 
         if self.doing is 0:
             self.heading = self.ship.position
             for key,sellPrice in sellPrices.items():
-                if key is MaterialType.salvage:
+                if key not in trade_materials:
                     continue
                 if key not in buyPrices:
                     continue
@@ -70,88 +63,54 @@ class TestPriorityTraderNPC(NPC):
                     thirdMaterial = secondMaterial
                     secondMaterial = firstMaterial
                     firstMaterial = key
-
-                    thirdBuy = secondBuy
-                    secondBuy = firstBuy
-                    firstBuy = buyPrice
-
-                    thirdSell = secondSell
-                    secondSell = firstSell
-                    firstSell = sellPrice
                 elif difference > secondHighest:
                     thirdHighest = secondHighest
                     secondHighest = difference
 
                     thirdMaterial = secondMaterial
                     secondMaterial = key
-
-                    thirdBuy = secondBuy
-                    secondBuy = buyPrice
-
-                    thirdSell = secondSell
-                    secondSell = sellPrice
                 elif difference > thirdHighest:
                     thirdHighest = difference
 
                     thirdMaterial = key
 
-                    thirdBuy = buyPrice
+            if firstMaterial == "":
+                chosenMaterial = 9
+                rand = 0
+                print("No ideal material")
+            elif secondMaterial == "":
+                rand = 1
+            elif thirdMaterial == "":
+                rand = random.choice([1,2])
+            else:
+                rand = random.choice([1,2,3])
 
-                    thirdSell = sellPrice
-
-            rand = random.choice([1,2,3])
             if rand == 1:
-                chosenPrice = firstHighest
                 chosenMaterial = firstMaterial
-                chosenSell = firstSell
-                chosenBuy = firstBuy
             elif rand == 2:
-                chosenPrice = secondHighest
                 chosenMaterial = secondMaterial
-                chosenSell = secondSell
-                chosenBuy = secondBuy
-            if rand == 3:
-                chosenPrice = thirdHighest
+            elif rand == 3:
                 chosenMaterial = thirdMaterial
-                chosenSell = thirdSell
-                chosenBuy = thirdBuy
+
 
             for tempStation in stations:
-                if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
-                    chosenSellStation = tempStation
-                elif tempStation.secondary_buy_price == chosenSell and tempStation.secondary_import == chosenMaterial:
-                    chosenSellStation = tempStation
+                if tempStation.primary_import == chosenMaterial:
+                    if chosenSellStation is None:
+                        chosenSellStation = tempStation
+                    elif chosenSellStation.primary_import == chosenMaterial and chosenSellStation.primary_buy_price < tempStation.primary_buy_price:
+                        chosenSellStation = tempStation
+                    elif chosenSellStation.secondary_import == chosenMaterial and chosenSellStation.secondary_buy_price < tempStation.primary_buy_price:
+                        chosenSellStation = tempStation
+                elif tempStation.secondary_import == chosenMaterial:
+                    if chosenSellStation is None:
+                        chosenSellStation = tempStation
+                    elif chosenSellStation.primary_import == chosenMaterial and chosenSellStation.primary_buy_price < tempStation.secondary_buy_price:
+                        chosenSellStation = tempStation
+                    elif chosenSellStation.secondary_import == chosenMaterial and chosenSellStation.secondary_buy_price < tempStation.secondary_buy_price:
+                        chosenSellStation = tempStation
 
-                if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
+                if tempStation.production_material == chosenMaterial:
                     chosenBuyStation = tempStation
-
-            # done = False
-            # trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
-            # while not done:
-            #     chosenMaterial = random.choice(trade_materials)
-            #     buy_found = False
-            #     for tempStation in stations:
-            #         if tempStation.cargo[tempStation.production_material] == 0:
-            #             if tempStation.production_material in trade_materials:
-            #                 trade_materials.remove(tempStation.production_material)
-            #                 chosenBuyStation = tempStation
-            #             break
-            #         if tempStation.production_material == chosenMaterial:
-            #             chosenBuyStation = tempStation
-            #             buy_found = True
-            #             break
-            #     for tempStation in stations:
-            #         if tempStation.primary_import == chosenMaterial:
-            #             chosenSellStation = tempStation
-            #         if buy_found == True:
-            #             done = True
-            #             break
-            #     if buy_found == False:
-            #         if chosenMaterial in trade_materials:
-            #             trade_materials.remove(chosenMaterial)
-            #         if len(trade_materials) == 0:
-            #             done = True
-            #             print("EEEEEEEEEEEEEEEEEEEEEEERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOORRRRRRRRRRRRRRRR")
 
             self.sellStation = chosenSellStation.position
             self.buyStation = chosenBuyStation.position
@@ -171,14 +130,18 @@ class TestPriorityTraderNPC(NPC):
 
 
         elif self.doing == 2:  # selling
-            self.heading = self.sellStation
-            # Sell material when possible
-            self.sell_material(self.material, self.ship.inventory[self.material])
-            self.print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
-            if self.ship.inventory[self.material] == 0 or (self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]):
-                self.print("successfully sold")
+            if self.material not in self.ship.inventory:
                 self.doing = 0
                 self.heading = self.ship.position
+            else:
+                self.heading = self.sellStation
+                # Sell material when possible
+                self.sell_material(self.material, self.ship.inventory[self.material])
+                self.print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
+                if self.ship.inventory[self.material] == 0 or (self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]):
+                    self.print("successfully sold")
+                    self.doing = 0
+                    self.heading = self.ship.position
 
         self.move(self.heading[0], self.heading[1])
         # move towards heading

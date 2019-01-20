@@ -129,7 +129,7 @@ class StationController:
         for station in stations:
 
             value_max_mult = 100
-            increase_mult = 0.01
+            increase_mult = 0.001
             decrease_mult = 0.01
             if station.production_material in station.cargo:
                 percentage_production = station.cargo[station.production_material] / (station.production_max)
@@ -142,9 +142,9 @@ class StationController:
             if min_price > percentage_max:
                 percentage_max = min_price
             if station.sell_price < percentage_max:
-                station.sell_price += int(min(station.base_sell_price * increase_mult, percentage_max - station.sell_price) + random.randint(0, jitter_thresh) * jitter)
-            elif station.sell_price > percentage_max:
                 station.sell_price -= int(min(station.base_sell_price * decrease_mult, station.sell_price - percentage_max) + random.randint(0, jitter_thresh) * jitter)
+            elif station.sell_price > percentage_max:
+                station.sell_price += int(min(station.base_sell_price * increase_mult, percentage_max - station.sell_price) + random.randint(0, jitter_thresh) * jitter)
 
             primary_max_price = station.base_primary_buy_price * value_max_mult
             primary_percentage_max = math.floor(primary_max_price * percentage_production)
@@ -162,7 +162,7 @@ class StationController:
             if secondary_min_price > secondary_max_price:
                 secondary_percentage_max = secondary_min_price
             if station.secondary_buy_price < secondary_percentage_max:
-                station.secondary_buy_price += int(min(station.base_primary_buy_price * increase_mult, secondary_percentage_max - station.secondary_buy_price) + random.randint(0, jitter_thresh) * jitter)
+                station.secondary_buy_price += int(min(station.base_secondary_buy_price * increase_mult, secondary_percentage_max - station.secondary_buy_price) + random.randint(0, jitter_thresh) * jitter)
             elif station.secondary_buy_price > secondary_percentage_max:
                 station.secondary_buy_price -= int(min(station.base_secondary_buy_price * decrease_mult, station.secondary_buy_price - secondary_percentage_max) + random.randint(0, jitter_thresh) * jitter)
 

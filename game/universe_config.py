@@ -12,7 +12,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.05, 0.9),
 
         "primary_import": MaterialType.cuprite,
-        "primary_consumption_qty": 6,
+        "primary_consumption_qty": 50,
         "primary_max": 2000,
 
         "secondary_import": MaterialType.drones,
@@ -24,12 +24,12 @@ STATION_DEFINITIONS = [
         "production_qty": 10,
         "production_max": 15000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 85,
+        "primary_buy_price": 30,
+        "secondary_buy_price": 45,
 
         "base_sell_price": 85,
-        "base_primary_buy_price": 100,
+        "base_primary_buy_price": 30,
         "base_secondary_buy_price": 45,
 
 
@@ -58,9 +58,9 @@ STATION_DEFINITIONS = [
         "production_qty": 5,
         "production_max": 4500,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 150,
+        "primary_buy_price": 250,
+        "secondary_buy_price": 0,
 
         "base_sell_price": 150,
         "base_primary_buy_price": 250,
@@ -90,9 +90,9 @@ STATION_DEFINITIONS = [
         "production_qty": 2,
         "production_max": 5500,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 650,
+        "primary_buy_price": 300,
+        "secondary_buy_price": 0,
 
         "base_sell_price": 650,
         "base_primary_buy_price": 300,
@@ -122,9 +122,9 @@ STATION_DEFINITIONS = [
         "production_qty": 4,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 200,
+        "primary_buy_price": 240,
+        "secondary_buy_price": 370,
 
         "base_sell_price": 200,
         "base_primary_buy_price": 240,
@@ -155,9 +155,9 @@ STATION_DEFINITIONS = [
         "production_qty": 15,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 100,
+        "primary_buy_price": 130,
+        "secondary_buy_price": 100,
 
         "base_sell_price": 100,
         "base_primary_buy_price": 130,
@@ -175,7 +175,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.6, 0.80),
 
         "primary_import": MaterialType.goethite,
-        "primary_consumption_qty": 4,
+        "primary_consumption_qty": 55,
         "primary_max": 1800,
 
         "secondary_import": MaterialType.machinery,
@@ -187,12 +187,12 @@ STATION_DEFINITIONS = [
         "production_qty": 10,
         "production_max": 15000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 122,
+        "primary_buy_price": 25,
+        "secondary_buy_price": 30,
 
         "base_sell_price": 122,
-        "base_primary_buy_price": 140,
+        "base_primary_buy_price": 25,
         "base_secondary_buy_price": 30,
 
         "cargo": {
@@ -220,9 +220,9 @@ STATION_DEFINITIONS = [
         "production_qty": 7,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 266,
+        "primary_buy_price": 350,
+        "secondary_buy_price": 100,
 
         "base_sell_price": 266,
         "base_primary_buy_price": 350,
@@ -240,8 +240,8 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.90, 0.38),
 
         "primary_import": MaterialType.gold,
-        "primary_consumption_qty": 8,
-        "primary_max": 1000,
+        "primary_consumption_qty": 70,
+        "primary_max": 3000,
 
         "secondary_import": MaterialType.wire,
         "secondary_consumption_qty": 1,
@@ -252,12 +252,12 @@ STATION_DEFINITIONS = [
         "production_qty": 3,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 237,
+        "primary_buy_price": 40,
+        "secondary_buy_price": 100,
 
         "base_sell_price": 237,
-        "base_primary_buy_price": 200,
+        "base_primary_buy_price": 40,
         "base_secondary_buy_price": 100,
 
         "cargo": {
@@ -285,9 +285,9 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 900,
+        "primary_buy_price": 800,
+        "secondary_buy_price": 100,
 
         "base_sell_price": 900,
         "base_primary_buy_price": 800,
@@ -317,9 +317,9 @@ STATION_DEFINITIONS = [
         "production_qty": 5,
         "production_max": 10000,
 
-        "sell_price": 1000,
-        "primary_buy_price": 1000,
-        "secondary_buy_price": 1000,
+        "sell_price": 180,
+        "primary_buy_price": 150,
+        "secondary_buy_price": 100,
 
         "base_sell_price": 180,
         "base_primary_buy_price": 150,

@@ -176,13 +176,13 @@ class BuySellController:
         # to what the ship can afford
         cost = station.sell_price * quantity
         diff = ship.credits - cost
-        if not diff:  # if cost > ship.credits
-            to_remove = math.ceil(diff/station.sell_price)
+        if diff < 0:  # if cost > ship.credits
+            to_remove = math.floor(diff/station.sell_price) #will be negative
             self.print(
                 "cost greater than ship can afford. cost: {} ship credits: {}, reducing qty from {} to {}".format(
                 cost, ship.credits, quantity, quantity-to_remove
             ))
-            quantity = to_remove
+            quantity += to_remove
 
         if quantity < 0:
             self.print("Ship could not afford any product.")
