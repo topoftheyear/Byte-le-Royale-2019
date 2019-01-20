@@ -26,6 +26,7 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         self.new_vec = None
         self.move_target = None
         self.reload_color = True
+        self.last_angle = 0
 
         self.first = False
 
@@ -75,7 +76,10 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
         pa.replace(pygame.Color("#3c3c3c"), self.color_3)
         del pa
 
+
     def update(self, universe, events, intermediate=-1):
+
+        self.rotate(round(self.last_angle))
 
         ship = self.find_self(universe)
         if ship is None:
@@ -116,6 +120,7 @@ class ShipSpriteSheet(pygame.sprite.DirtySprite):
                 self.rect.center[0]-self.new_vec[0],
                 self.rect.center[1]-self.new_vec[1]))
 
+            self.last_angle = angle_to
             self.rotate(round(angle_to))
 
         # lerp

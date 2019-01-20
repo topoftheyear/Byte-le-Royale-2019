@@ -53,8 +53,8 @@ class PoliceController:
     def setup_police(self, universe):
         for _ in range(NUM_POLICE):
             pos = [
-                random.randint(0, WORLD_BOUNDS[0]),
-                random.randint(0, WORLD_BOUNDS[1])
+                random.randint(100, WORLD_BOUNDS[0]-100),
+                random.randint(100, WORLD_BOUNDS[1]-100)
             ]
             new_police = PoliceShip()
             new_police.init(level=1, position=pos)
@@ -76,7 +76,7 @@ class PoliceController:
                 PoliceVariant.guarding,
             ],
                 [
-                    0.50, # waiting
+                    0.5, # waiting
                     0.25, # patrolling
                     0.25 # guarding
                 ]
