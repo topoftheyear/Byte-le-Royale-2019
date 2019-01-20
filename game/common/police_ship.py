@@ -8,14 +8,14 @@ from game.common.stats import GameStats
 
 class PoliceShip(Ship):
 
-    def init(self, level=1, position=(0,0)):
+    def init(self, level=1, position=None):
         if level == 1:
             name = "Police"
         elif level == 2:
             name = "Police Elite"
         elif level == 3:
             name = "Enforcer"
-        super().init(name, True, position)
+        super().init(team_name=name, is_npc=True, position=position)
 
         if level == 3:
             self.object_type = ObjectType.enforcer

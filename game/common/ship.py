@@ -13,7 +13,7 @@ class Ship(GameObject):
     def __init__(self):
         pass
 
-    def init(self, team_name, color=None, is_npc=False, position=(0,0)):
+    def init(self, team_name, color=[255, 255, 255], is_npc=False, position=None):
         GameObject.init(self, ObjectType.ship)
 
         # used by engine to track ships
