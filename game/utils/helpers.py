@@ -2,7 +2,7 @@ import math
 from itertools import groupby
 from game.utils.filters import in_radius as pred_in_radius
 from game.utils.filters import AND, EQ, NOT
-from game.common.stats import *
+from game.common.stats import GameStats
 
 import types
 import statistics
