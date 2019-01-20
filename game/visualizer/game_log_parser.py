@@ -28,9 +28,7 @@ class GameLogParser:
         with open("wrapper/version.py", "r") as f:
             text = f.read().strip()
         self.v_cur = text.split("=")[1]
-        self.outdated_manifest = False
-       self.outdated_manifest = elf.v_man < self.v_cur:
-            self.outdated_manifest = True
+        self.outdated_manifest = self.v_man < self.v_cur
 
         self.turns = []
 
