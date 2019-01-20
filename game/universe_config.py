@@ -20,13 +20,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 500,
 
         "production_material": MaterialType.copper,
-        "production_frequency": 20,
+        "production_frequency": 1,
         "production_qty": 10,
         "production_max": 15000,
 
-        "sell_price": 85,
-        "primary_buy_price": 100,
-        "secondary_buy_price": 59,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 85,
         "base_primary_buy_price": 100,
@@ -54,13 +54,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.pylons,
-        "production_frequency": 10,
+        "production_frequency": 1,
         "production_qty": 5,
         "production_max": 4500,
 
-        "sell_price": 150,
-        "primary_buy_price": 250,
-        "secondary_buy_price": 0,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 150,
         "base_primary_buy_price": 250,
@@ -86,13 +86,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.weaponry,
-        "production_frequency": 5,
+        "production_frequency": 1,
         "production_qty": 2,
         "production_max": 5500,
 
-        "sell_price": 590,
-        "primary_buy_price": 300,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 650,
         "base_primary_buy_price": 300,
@@ -118,13 +118,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 1000,
 
         "production_material": MaterialType.machinery,
-        "production_frequency": 8,
+        "production_frequency": 1,
         "production_qty": 4,
         "production_max": 10000,
 
-        "sell_price": 200,
-        "primary_buy_price": 240,
-        "secondary_buy_price": 370,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 200,
         "base_primary_buy_price": 240,
@@ -151,13 +151,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.wire,
-        "production_frequency": 12,
+        "production_frequency": 1,
         "production_qty": 15,
         "production_max": 10000,
 
-        "sell_price": 100,
-        "primary_buy_price": 130,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 100,
         "base_primary_buy_price": 130,
@@ -183,13 +183,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 1400,
 
         "production_material": MaterialType.iron,
-        "production_frequency": 18,
+        "production_frequency": 1,
         "production_qty": 10,
         "production_max": 15000,
 
-        "sell_price": 122,
-        "primary_buy_price": 140,
-        "secondary_buy_price": 30,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 122,
         "base_primary_buy_price": 140,
@@ -216,13 +216,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.computers,
-        "production_frequency": 3,
+        "production_frequency": 1,
         "production_qty": 7,
         "production_max": 10000,
 
-        "sell_price": 266,
-        "primary_buy_price": 350,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 266,
         "base_primary_buy_price": 350,
@@ -248,13 +248,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 1000,
 
         "production_material": MaterialType.circuitry,
-        "production_frequency": 10,
+        "production_frequency": 1,
         "production_qty": 3,
         "production_max": 10000,
 
-        "sell_price": 237,
-        "primary_buy_price": 200,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 237,
         "base_primary_buy_price": 200,
@@ -285,9 +285,9 @@ STATION_DEFINITIONS = [
         "production_qty": 1,
         "production_max": 10000,
 
-        "sell_price": 100,
-        "primary_buy_price": 800,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 900,
         "base_primary_buy_price": 800,
@@ -313,13 +313,13 @@ STATION_DEFINITIONS = [
         "secondary_max": 1000,
 
         "production_material": MaterialType.steel,
-        "production_frequency": 14,
+        "production_frequency": 1,
         "production_qty": 5,
         "production_max": 10000,
 
-        "sell_price": 180,
-        "primary_buy_price": 150,
-        "secondary_buy_price": 100,
+        "sell_price": 1000,
+        "primary_buy_price": 1000,
+        "secondary_buy_price": 1000,
 
         "base_sell_price": 180,
         "base_primary_buy_price": 150,

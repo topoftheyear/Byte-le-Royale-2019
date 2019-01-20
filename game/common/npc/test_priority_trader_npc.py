@@ -7,7 +7,7 @@ from game.common.npc.npc import NPC
 from game.config import *
 from game.utils.helpers import *
 
-class TestTraderNPC(NPC):
+class TestPriorityTraderNPC(NPC):
 
     def __init__(self, ship):
         UserClient.__init__(self)
@@ -116,32 +116,14 @@ class TestTraderNPC(NPC):
                 chosenSell = thirdSell
                 chosenBuy = thirdBuy
 
-            # for tempStation in stations:
-            #     if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
-            #         chosenSellStation = tempStation
-            #     elif tempStation.secondary_buy_price == chosenSell and tempStation.secondary_import == chosenMaterial:
-            #         chosenSellStation = tempStation
-            #
-            #     if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
-            #         chosenBuyStation = tempStation
-            done = False
-            trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
-            while not done:
-                chosenMaterial = random.choice(trade_materials)
-                sell = False
-                for tempStation in stations:
-                    if tempStation.primary_import == chosenMaterial and not sell:
-                        chosenSellStation = tempStation
-                        sell = True
-                        break
-                if sell == True:
-                    for tempStation in stations:
-                        if tempStation.production_material == chosenMaterial:
-                            chosenBuyStation = tempStation
-                            done = True
-                            break
-                else:
-                    continue
+            for tempStation in stations:
+                if tempStation.primary_buy_price == chosenSell and tempStation.primary_import == chosenMaterial:
+                    chosenSellStation = tempStation
+                elif tempStation.secondary_buy_price == chosenSell and tempStation.secondary_import == chosenMaterial:
+                    chosenSellStation = tempStation
+
+                if tempStation.sell_price == chosenBuy and tempStation.production_material == chosenMaterial:
+                    chosenBuyStation = tempStation
 
             # done = False
             # trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
@@ -173,7 +155,6 @@ class TestTraderNPC(NPC):
 
             self.sellStation = chosenSellStation.position
             self.buyStation = chosenBuyStation.position
-            self.bStation = chosenBuyStation
             self.material = chosenMaterial
             self.print("Action 0:" + str(self.material) + ":" + str(self.sellStation) + ":" + str(self.buyStation))
             self.doing = 1
@@ -187,17 +168,14 @@ class TestTraderNPC(NPC):
                 self.doing = 2
                 self.heading = self.sellStation
                 #self.print("Action 1: Ship Bought: " + str(self.ship.inventory[self.material]) + " " + str(self.material))
-            if self.bStation.cargo[self.material] == 0:
-                self.doing = 0
-                self.heading = self.ship.position
 
 
         elif self.doing == 2:  # selling
             self.heading = self.sellStation
             # Sell material when possible
+            self.sell_material(self.material, self.ship.inventory[self.material])
             self.print("Action 2: ship has " + str(self.ship.inventory[self.material]) + " " + str(self.material))
             if self.ship.inventory[self.material] == 0 or (self.heading[0] == self.ship.position[0] and self.heading[1] == self.ship.position[1]):
-                self.sell_material(self.material, self.ship.inventory[self.material])
                 self.print("successfully sold")
                 self.doing = 0
                 self.heading = self.ship.position

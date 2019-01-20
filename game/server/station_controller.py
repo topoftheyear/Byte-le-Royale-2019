@@ -39,23 +39,20 @@ class StationController:
             if self.debug and station.production_material != MaterialType.copper:
                 continue
 
-            data = self.station_data[station.id]
+            station_id = station.id
 
-            if "primary_consumed" not in data:
-                data["primary_consumed"] = 0
+            self.station_data[station_id]["primary_consumed"] = 0
 
-            if "secondary_consumed" not in data:
-                if station.secondary_import != -1:
-                    data["secondary_consumed"] = 0
-                else:
-                    data["secondary_consumed"] = -1
+            if station.secondary_import != -1:
+                self.station_data[station_id]["secondary_consumed"] = 0
+            else:
+                self.station_data[station_id]["secondary_consumed"] = -1
 
-            if "production_produced" not in data:
-                data["production_produced"] = 0
+            self.station_data[station_id]["production_produced"] = 0
 
             self.print(f"Update Station {station.name} ({station.id}), produces: {station.production_material}")
             self.print(f"station.cargo: {station.cargo}")
-            self.print(f"production counter: {data['production_counter']}")
+            self.print(f"production counter: {self.station_data[station_id]['production_counter']}")
 
 
             sufficient_primary_in_cargo = (
@@ -72,7 +69,7 @@ class StationController:
             )
             self.print(f"Sufficient secondary in cargo: {sufficient_secondary_in_cargo}")
 
-            consume_inputs = data["production_counter"] >= station.production_frequency
+            consume_inputs = self.station_data[station_id]["production_counter"] >= station.production_frequency
             self.print(f"Consume inputs: {consume_inputs}")
 
             not_at_max_production = (
@@ -89,7 +86,7 @@ class StationController:
 
             if sufficient_primary_in_cargo and consume_inputs and not_at_max_production:
                 station.cargo[station.primary_import] -= station.primary_consumption_qty
-                data["primary_consumed"] += station.primary_consumption_qty
+                self.station_data[station_id]["primary_consumed"] += station.primary_consumption_qty
 
                 if(has_secondary and
                     sufficient_secondary_in_cargo and
@@ -104,10 +101,10 @@ class StationController:
                         qty = min(station.cargo[station.production_material] + qty, station.production_max)
                         station.cargo[station.production_material] = qty
 
-                    data["production_produced"] += qty
+                    self.station_data[station_id]["production_produced"] += qty
 
                     self.print(f"Created x{station.production_qty}*2 material {station.production_material}")
-                    data["secondary_consumed"] += station.secondary_consumption_qty
+                    self.station_data[station_id]["secondary_consumed"] += station.secondary_consumption_qty
 
                 else:
                     qty = station.production_qty
@@ -117,13 +114,13 @@ class StationController:
                         qty = min(station.cargo[station.production_material] + qty, station.production_max)
                         station.cargo[station.production_material] = qty
 
-                    data["production_produced"] += qty
+                    self.station_data[station_id]["production_produced"] += qty
 
                     self.print(f"Created x{station.production_qty} material {station.production_material}")
 
             elif sufficient_primary_in_cargo and not consume_inputs:
                 # increment counter if we have enough in cargo to do work, but havn't reached the counter
-                data["production_counter"] += 1
+                self.station_data[station_id]["production_counter"] += 1
 
         # update prices
         jitter = 1
@@ -132,8 +129,8 @@ class StationController:
         for station in stations:
 
             value_max_mult = 100
-            increase_mult = 0.2
-            decrease_mult = 0.2
+            increase_mult = 0.01
+            decrease_mult = 0.01
             if station.production_material in station.cargo:
                 percentage_production = station.cargo[station.production_material] / (station.production_max)
             else:

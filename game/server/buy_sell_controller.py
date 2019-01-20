@@ -166,6 +166,8 @@ class BuySellController:
     def process_buy_action(self, ship, station):
         quantity = ship.action_param_1
         material = station.production_material
+        self.print("STATION CHOSEN:  " + str(material) + "    "+ str(station.cargo[material]))
+        self.print("STATION PRIMARY:  " + str(station.primary_import) + "    "+ str(station.cargo[station.primary_import]))
 
         # verify station has enough material, reducing requested quantity to what the station has.
         quantity = min(station.production_qty, quantity)

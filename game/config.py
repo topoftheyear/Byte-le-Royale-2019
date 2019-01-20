@@ -1,7 +1,7 @@
 import platform
 ## Config
 
-NPCS_TO_GENERATE = 30
+NPCS_TO_GENERATE = 40
 
 NUM_POLICE = 8
 

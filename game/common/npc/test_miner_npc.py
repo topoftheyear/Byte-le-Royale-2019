@@ -31,7 +31,8 @@ class TestMinerNPC(NPC):
 
             sorted_minerals = sorted(mineral_prices.items(), key=operator.itemgetter(1))
             sorted_minerals.reverse()
-            self.chosen_mineral = sorted_minerals[random.randint(0, 1)][0]
+            # self.chosen_mineral = sorted_minerals[random.randint(0, 1)][0]
+            self.chosen_mineral = random.choice(minerals)
 
             for field in fields:
                 if field.material_type is not self.chosen_mineral:
