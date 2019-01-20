@@ -2,8 +2,11 @@ import os
 import click
 import requests
 from requests.auth import HTTPBasicAuth
+import traceback
+
 
 from validate import validate
+
 
 
 @click.group()
@@ -23,7 +26,12 @@ def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout):
     if server_verbose:
         print("Server Verbosity: ON")
 
-    start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout)
+    server_log = open("server_log.txt", "w")
+
+    try:
+        start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout)
+    except:
+        traceback.print_exc(file=server_log)
 
 
 @cli.command()
@@ -58,8 +66,12 @@ def client(client_verbose, script, port, host):
 
     #mod = importlib.import_module(script)
 
+    client_log = open("client_log.txt", "w")
 
-    start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
+    try:
+        start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
+    except:
+        traceback.print_exc(file=client_log)
 
 
 @cli.command()
@@ -77,7 +89,13 @@ def generate():
 @click.option("--team-name", default=None)
 def visualizer(verbose, log_path, gamma, dont_wait, fullscreen, team_name):
     from game.visualizer import start
-    start(verbose, log_path, gamma, dont_wait, fullscreen, team_name)
+
+    visualizer_log = open("visualizer_log.txt", "w")
+
+    try:
+        start(verbose, log_path, gamma, dont_wait, fullscreen, team_name)
+    except:
+        traceback.print_exc(file=visualizer_log)
 
 
 @cli.command()
