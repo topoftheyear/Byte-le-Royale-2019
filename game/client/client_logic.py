@@ -2,6 +2,11 @@ import os
 import sys
 
 from game.common.enums import *
+from game.common.ship import Ship
+from game.common.station import *
+from game.common.asteroid_field_types import *
+from game.common.police_ship import PoliceShip
+from game.common.illegal_salvage import IllegalSalvage
 
 
 
@@ -36,7 +41,7 @@ class ClientLogic:
     def tick(self, turn_data):
         self.tick_no += 1
 
-        turn_data = self.deserialize(turn_data)
+        #turn_data = self.deserialize(turn_data)
 
         try:
             turn_result = self.turn(turn_data)
@@ -55,7 +60,6 @@ class ClientLogic:
         })
 
     def turn(self, turn_data):
-
         if turn_data["message_type"] == MessageType.team_name:
             team_name = self.player_client.team_name()
             team_color = self.player_client.team_color()
@@ -71,7 +75,12 @@ class ClientLogic:
             }
         elif turn_data["message_type"] == MessageType.take_turn:
             self.player_client.reset_actions()
-            self.player_client.take_turn()
+
+            deserialized_universe = self.deserialize(turn_data["universe"])
+            ship = Ship()
+            ship.from_dict(turn_data["ship"], security_level=SecurityLevel.player_owned)
+
+            self.player_client.take_turn(ship, deserialized_universe)
             return self.player_client.get_turn_result()
         else:
             return{
@@ -86,11 +95,49 @@ class ClientLogic:
             print("Game Started")
         self.started_game = True
 
-    def deserialize(self, turn_data):
-
+    def deserialize(self, data_to_unpack):
         # deserialize any objects the client is going to need to work with and replace serialized copy with object
+        deserialized_universe = []
+        for serialized_obj in data_to_unpack:
+            obj_type = serialized_obj["object_type"]
 
-        return turn_data
+            obj = None
+
+            if obj_type == ObjectType.ship:
+                obj = Ship()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.station:
+                obj = Station()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.black_market_station:
+                obj = BlackMarketStation()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.secure_station:
+                obj = SecureStation()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type in [ObjectType.goethite_field, ObjectType.gold_field, ObjectType.cuprite_field]:
+                obj = load_asteroid_field(obj_type, serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.material:
+                obj = Material()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.police or obj_type == ObjectType.enforcer:
+                obj = PoliceShip()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            elif obj_type == ObjectType.illegal_salvage:
+                obj = IllegalSalvage()
+                obj.from_dict(serialized_obj, security_level=SecurityLevel.other_player)
+
+            if obj is not None:
+                deserialized_universe.append(obj)
+
+        return deserialized_universe
 
     def serialize(self, turn_result):
 

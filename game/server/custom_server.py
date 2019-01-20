@@ -21,6 +21,7 @@ from game.common.npc.test_trader_npc import TestTraderNPC
 from game.common.npc.test_priority_trader_npc import TestPriorityTraderNPC
 from game.common.ship import Ship
 from game.utils.generate_game import load
+from game.utils.helpers import *
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -122,8 +123,8 @@ class CustomServer(ServerControl):
                 # send game specific data in payload
                 payload[i] = {
                     "message_type": MessageType.take_turn,
-                    "ship": self.teams[i]["ship"].to_dict(),
-                    "universe": serialized_universe # TODO refactor to use serialize_visible_objects()
+                    "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
+                    "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
                 }
 
         # actually send the data to the client
@@ -172,18 +173,22 @@ class CustomServer(ServerControl):
                        "team_name": team_name,
                        "ship": ship
                    }
+
             else:
 
                 if message_type == MessageType.take_turn:
                     if "action_type" in data:
                         # get action
-                        self.teams[client_id]["action_type"] = data["action_type"]
+                        self.teams[client_id]["action"] = data["action_type"]
+                        setattr(self.teams[client_id]["ship"], "action", data["action_type"])
 
                         # get action params
                         for i in range(1, 4):
-                            param = f"action_param{i}"
+                            param = f"action_param_{i}"
                             if param in data:
                                 self.teams[client_id][param] = data[param]
+                                setattr(self.teams[client_id]["ship"], param, data[param])
+
 
                     if "move_action" in data:
                         self.teams[client_id]["move_action"] = data["move_action"]
@@ -326,7 +331,7 @@ class CustomServer(ServerControl):
         # check if ships still alive
         living_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.alive())
 
-        teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
+        teams = self.teams#{ **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
 
         # apply the results of any actions a player took if player still alive
         self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)
@@ -414,8 +419,17 @@ class CustomServer(ServerControl):
             serialized_universe.append(serialized_obj)
         return serialized_universe
 
-    def serialize_visible_objects(self, pos, radius):
-        pass # serialize only objects in visible range of player ship
+    def serialize_visible_objects(self, security_level, ship_id):
+        serialized_visible_universe = []
+        own_ship = self.teams[ship_id]["ship"]
+
+        for obj in self.universe.dump():
+            if obj.object_type is ObjectType.ship:
+                if obj.id == own_ship.id or not in_radius(own_ship, obj, own_ship.sensor_range, lambda e:e.position):
+                    continue
+            serialized_obj = obj.to_dict(security_level=security_level)
+            serialized_visible_universe.append(serialized_obj)
+        return serialized_visible_universe
 
 
 

@@ -87,10 +87,9 @@ class Ship(GameObject):
             # fields that only the engine (server, visualizer, logs) should
             #   be able to access
             engine = {
-                "id": self.id,
-                "team_name": self.team_name,
                 "is_npc": self.is_npc,
-                "color": self.color,
+
+                "bounty_list": self.bounty_list
             }
 
 
@@ -99,36 +98,20 @@ class Ship(GameObject):
         if security_level <= SecurityLevel.player_owned:
             # fields that the player who owns the object can view
             player_owned = {
-                "engine_speed": self.engine_speed,
-                "weapon_damage": self.weapon_damage,
-                "weapon_range": self.weapon_range,
-                "cargo_space": self.cargo_space,
-                "mining_yield": self.mining_yield,
-                "sensor_range": self.sensor_range,
+                "id": self.id,
 
-                "module_0": self.module_0,
-                "module_1": self.module_1,
-                "module_2": self.module_2,
-                "module_3": self.module_3,
+                "team_name": self.team_name,
+                "color": self.color,
 
-                "module_0_level": self.module_0_level,
-                "module_1_level": self.module_1_level,
-                "module_2_level": self.module_2_level,
-                "module_3_level": self.module_3_level,
+                "respawn_counter": self.respawn_counter,
+
+                "credits": self.credits,
 
                 "action": self.action,
                 "action_param_1": self.action_param_1,
                 "action_param_2": self.action_param_2,
                 "action_param_3": self.action_param_3,
                 "move_action": self.move_action,
-
-                "bounty_list": self.bounty_list,
-
-                "respawn_counter": self.respawn_counter,
-
-                "credits": self.credits,
-
-                "passive_repair_counter": self.passive_repair_counter,
             }
 
             data = { **data, **player_owned }
@@ -148,6 +131,27 @@ class Ship(GameObject):
                 "legal_standing": self.legal_standing,
 
                 "bounty": self.bounty,
+
+                "engine_speed": self.engine_speed,
+                "weapon_damage": self.weapon_damage,
+                "weapon_range": self.weapon_range,
+                "cargo_space": self.cargo_space,
+                "mining_yield": self.mining_yield,
+                "sensor_range": self.sensor_range,
+
+                "module_0": self.module_0,
+                "module_1": self.module_1,
+                "module_2": self.module_2,
+                "module_3": self.module_3,
+
+                "module_0_level": self.module_0_level,
+                "module_1_level": self.module_1_level,
+                "module_2_level": self.module_2_level,
+                "module_3_level": self.module_3_level,
+
+                "bounty_list": self.bounty_list,
+
+                "passive_repair_counter": self.passive_repair_counter,
             }
 
 
@@ -162,11 +166,31 @@ class Ship(GameObject):
         if security_level is SecurityLevel.engine:
             # properties that will only be populated by the engine,
             #   prevents user tampering with variables
+            self.is_npc = data["is_npc"]
 
+            self.bounty_list = data["bounty_list"]
+
+        if security_level <= SecurityLevel.player_owned:
+            # properties that the owner of a ship can update
+            #   prevents other players from tampering with our ship
             self.id = data["id"]
-            self.public_id = data["public_id"]
+
             self.team_name = data["team_name"]
             self.color = data["color"]
+
+            self.respawn_counter = data["respawn_counter"]
+
+            self.credits = data["credits"]
+
+            self.action = data["action"]
+            self.move_action = data["move_action"]
+            self.action_param_1 = data["action_param_1"]
+            self.action_param_2 = data["action_param_2"]
+            self.action_param_3 = data["action_param_3"]
+
+
+        if security_level <= SecurityLevel.other_player:
+            self.public_id = data["public_id"]
 
             self.max_hull = data["max_hull"]
             self.current_hull = data["current_hull"]
@@ -192,32 +216,11 @@ class Ship(GameObject):
 
             self.inventory = data["inventory"]
 
-            self.is_npc = data["is_npc"]
-
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]
             self.bounty = data["bounty"]
-            self.bounty_list = data["bounty_list"]
-
-            self.respawn_counter = data["respawn_counter"]
-
-            self.credits = data["credits"]
 
             self.passive_repair_counter = data["passive_repair_counter"]
-
-        if security_level <= SecurityLevel.player_owned:
-            # properties that the owner of a ship can update
-            #   prevents other players from tampering with our ship
-
-            self.action = data["action"]
-            self.move_action = data["move_action"]
-            self.action_param_1 = data["action_param_1"]
-            self.action_param_2 = data["action_param_2"]
-            self.action_param_3 = data["action_param_3"]
-
-
-        if security_level <= SecurityLevel.other_player:
-            pass
 
     def is_alive(self):
         return self.current_hull > 0
