@@ -23,6 +23,7 @@ fpsClock = None
 universe = None
 events = None
 focus_team_color = None
+team_name = None
 
 debug = False
 
@@ -45,6 +46,8 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
     global log_parser
     global universe
     global events
+    global team_name
+    team_name = focus_team_name
 
     log_parser = GameLogParser(log_path)
     universe, events = log_parser.get_turn()
@@ -401,7 +404,7 @@ def handle_events():
             if event.key == K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if event.key == K_s:
+            if event.key == K_t:
                 n = 3000
                 show_station_stats_display("Stats Demo", {
                     "a": [math.sin(i/100)+1 for i in range(n)],
@@ -413,6 +416,16 @@ def handle_events():
                     "g": [(i/n)*2 for i in range(n)],
                     "h": [(1-(i/n))*2 for i in range(n)],
                 }, global_surf, fpsClock)
+
+            if event.key == K_s and team_name != None:
+                ship = None
+                for o in universe:
+                    if o.object_type == ObjectType.ship and o.team_name == team_name:
+                        ship = o
+                        break
+
+                if ship is not None:
+                    show_ship_stats_display(ship, global_surf, fpsClock)
 
             if event.key == K_1 :
                 stats = log_parser.get_stats()

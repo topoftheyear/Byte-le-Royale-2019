@@ -17,7 +17,7 @@ class CustomClient(UserClient):
     def team_name(self):
         print("Sending Team Name")
 
-        return "I want to die :)"
+        return "NoChangeMe"
 
     def team_color(self):
         print("Sending Team Color")
