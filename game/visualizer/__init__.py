@@ -14,6 +14,7 @@ from game.config import *
 from game.visualizer.stats_display import *
 import game.utils.stat_utils as stat_utils
 import game.utils.click_utils as click_utils
+import game.utils.helpers as helpers
 
 pause = False
 log_parser = None
@@ -122,7 +123,16 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
 
             if log_parser.check_finished():
                 # print("Finished log playback")
-                show_end_screen(focus_team_name)
+                if focus_team_name is not None:
+                    stats_ship = None
+                    for item in universe:
+                        if item.object_type == ObjectType.ship and item.team_name == focus_team_name:
+                            stats_ship = item
+                            break
+                    show_ship_stats_display(stats_ship, global_surf, fpsClock)
+                    show_end_screen(focus_team_name)
+                else:
+                    show_end_screen(focus_team_name)
 
             # should we get the next turn event list
             # or should we wait for some animation to
@@ -245,7 +255,10 @@ def show_end_screen(focus_team_name):
         renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
         global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
         currentHeight += gap*2
-        renderText = font.render("Press escape to exit", True, (0, 155, 0))
+        if focus_team_name is not None:
+            renderText = font.render("Press escape to exit, press S to show stats screen again", True, (0, 155, 0))
+        else:
+            renderText = font.render("Press escape to exit", True, (0, 155, 0))
         global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
         currentHeight += gap*2
 
@@ -286,6 +299,13 @@ def show_end_screen(focus_team_name):
                 if event.key == K_ESCAPE:
                     pygame.quit()
                     sys.exit()
+                if event.key == K_s and focus_team_name is not None:
+                    stats_ship = None
+                    for item in universe:
+                        if item.object_type == ObjectType.ship and item.team_name == focus_team_name:
+                            stats_ship = item
+                            break
+                    show_ship_stats_display(stats_ship, global_surf, fpsClock)
 
         pygame.display.update()
         fpsClock.tick(_FPS)
