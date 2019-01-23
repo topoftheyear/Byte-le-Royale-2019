@@ -163,7 +163,52 @@ def separate_universe(flat_universe):
     return universe
 
 
-def get_material_prices(universe):
+#  Finds median price of all materials in the universe
+def get_median_material_price(material_prices):
+    return statistics.median(material_prices)
+
+
+#  Applies adjustments based on median material prices to find repair cost
+def get_repair_price(median_price):
+    return math.floor(GameStats.repair_adjustment * GameStats.repair_materials_cost * median_price)
+
+
+#  Determine module price
+def get_module_price(median_price, level):
+    if level == ModuleLevel.one:
+        return math.floor(GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost)
+    elif level == ModuleLevel.two:
+        return math.floor(GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost)
+    elif level == ModuleLevel.three:
+        return math.floor(GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost)
+    elif level == ModuleLevel.illegal:
+        return math.floor(GameStats.module_level_4_adjustment * median_price * GameStats.module_level_4_materials_cost)
+    else:
+        return
+
+
+
+#  Determine module unlock price given ship_slot
+def get_module_unlock_price(median_price, ship_slot):
+    if ship_slot == ShipSlot.zero:
+        return math.floor(GameStats.unlock_slot_0_adjustment * median_price * GameStats.unlock_slot_0_materials_cost)
+    elif ship_slot == ShipSlot.one:
+        return math.floor(GameStats.unlock_slot_1_adjustment * median_price * GameStats.unlock_slot_1_materials_cost)
+    elif ship_slot == ShipSlot.two:
+        return math.floor(GameStats.unlock_slot_2_adjustment * median_price * GameStats.unlock_slot_2_materials_cost)
+    elif ship_slot == ShipSlot.three:
+        return math.floor(GameStats.unlock_slot_3_adjustment * median_price * GameStats.unlock_slot_3_materials_cost)
+    else:
+        return
+
+def get_material_buy_prices(universe):
+    all_prices = {}
+    for station in universe.get(ObjectType.station):
+        if station.production_material is not None:
+            all_prices[station.production_material] = station.sell_price
+    return all_prices
+
+def get_material_sell_prices(universe):
     price_list = {}
     all_prices = {}
     for station in universe.get(ObjectType.station):
@@ -186,80 +231,40 @@ def get_material_prices(universe):
 
     return price_list
 
-#  Finds median price of all materials in the universe
-def get_median_material_price(universe):
-    return statistics.median(get_material_prices(universe))
-
-
-#  Applies adjustments based on median material prices to find repair cost
-def get_repair_price(universe):
-    median_price = get_median_material_price(universe)
-    return math.floor(GameStats.repair_adjustment * GameStats.repair_materials_cost * median_price)
-
-
-#  Determine module price
-def get_module_price(universe, level):
-    median_price = get_median_material_price(universe)
-    if level == ModuleLevel.one:
-        return math.floor(GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost)
-    elif level == ModuleLevel.two:
-        return math.floor(GameStats.module_level_2_adjustment * median_price * GameStats.module_level_2_materials_cost)
-    elif level == ModuleLevel.three:
-        return math.floor(GameStats.module_level_3_adjustment * median_price * GameStats.module_level_3_materials_cost)
-    elif level == ModuleLevel.illegal:
-        return math.floor(GameStats.module_level_4_adjustment * median_price * GameStats.module_level_4_materials_cost)
-    else:
-        return
-
-
-
-#  Determine module unlock price given ship_slot
-def get_module_unlock_price(universe, ship_slot):
-    median_price = get_median_material_price(universe)
-
-    if ship_slot == ShipSlot.zero:
-        return math.floor(GameStats.unlock_slot_0_adjustment * median_price * GameStats.unlock_slot_0_materials_cost)
-    elif ship_slot == ShipSlot.one:
-        return math.floor(GameStats.unlock_slot_1_adjustment * median_price * GameStats.unlock_slot_1_materials_cost)
-    elif ship_slot == ShipSlot.two:
-        return math.floor(GameStats.unlock_slot_2_adjustment * median_price * GameStats.unlock_slot_2_materials_cost)
-    elif ship_slot == ShipSlot.three:
-        return math.floor(GameStats.unlock_slot_3_adjustment * median_price * GameStats.unlock_slot_3_materials_cost)
-    else:
-        return
-
-def get_material_buy_prices(universe):
-    all_prices = {}
+def get_best_material_prices(universe):
+    """Cache result and only call once per turn"""
+    best_import_prices = {}
+    best_export_prices = {}
     for station in universe.get(ObjectType.station):
-        if station.production_material is not None:
-            all_prices[station.production_material] = station.sell_price
-    return all_prices
+        if not just_current:
+            # get best import prices
+            if station.primary_import is not None:
+                if station.primary_import not in best_import_prices:
+                    best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
 
-def get_best_station_purchasing_prices_by_material(universe):
-    all_prices = {}
-    for station in universe.get(ObjectType.station):
-        if station.primary_import is not None:
-            if station.primary_import not in all_prices:
-                all_prices[station.primary_import] = {"price": 0, "station": None}
+                if station.primary_buy_price > best_import_prices[station.primary_import]["import_price"]:
+                    best_import_prices[station.primary_import]["import_price"] = station.primary_buy_price
+                    best_import_prices[station.primary_import]["station"] = station
 
-            if station.primary_buy_price > all_prices[station.primary_import]["price"]:
-                all_prices[station.primary_import]["price"] = station.primary_buy_price
-                all_prices[station.primary_import]["station"] = station
+            if station.secondary_import is not None:
+                if station.secondary_import not in best_import_prices:
+                    best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
 
-        if station.secondary_import is not None:
-            if station.secondary_import not in all_prices:
-                all_prices[station.primary_import] = {"price": 0, "station": None}
+                if station.secondary_buy_price > best_import_prices[station.secondary_import]["import_price"]:
+                    best_import_prices[station.secondary_import]["import_price"] = station.secondary_buy_price
+                    best_import_prices[station.secondary_import]["station"] = station
 
-            if station.secondary_buy_price > all_prices[station.secondary_import]["price"]:
-                all_prices[station.secondary_import]["price"] = station.secondary_buy_price
-                all_prices[station.secondary_import]["station"] = station
+            # get best export prices
+            if station.production_material not in best_export_prices:
+                best_export_prices[station.production_material] = { "export_price": 9999999, "station": None }
 
-    for material, contents in all_prices.items():
-        print(material, contents["price"], contents["station"])
+            if station.sell_price < best_export_prices[station.production_material]["export_price"]:
+                best_export_prices[station.production_material] = { "import_price": station.sell_price, station: station}
 
-    all_prices[MaterialType.salvage]["price"] = ILLEGAL_SCRAP_VALUE
-    all_prices[MaterialType.salvage]["station"] = "you are asking for black markets literally just get those directly"
 
-    return all_prices
+    return {
+        "best_import_prices": best_import_prices,
+        "best_export_prices": best_export_prices
+    }
 
 

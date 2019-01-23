@@ -22,7 +22,7 @@ class TestMinerNPC(NPC):
             mineral_prices = {}
             minerals = [MaterialType.cuprite, MaterialType.goethite, MaterialType.gold]
             fields = universe.get("asteroid_fields")
-            prices = get_material_prices(universe)
+            prices = get_material_sell_prices(universe)
 
             for key, item in prices.items():
                 if key not in minerals:
