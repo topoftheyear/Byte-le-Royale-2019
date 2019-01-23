@@ -186,18 +186,31 @@ class UserClient:
 
     # Helper class wrappers start here
     def distance_to_object(self, your_ship, target):
+        """Returns the distance between `your_ship` an an object in the game"""
         return distance_to(your_ship, target, lambda e:e.position)
 
     def distance_to_coordinate(self, your_ship, xy_coords):
+        """Returns the distance between `your_ship` an xy coordinate."""
         return distance_to(your_ship, xy_coords, lambda e:e.position, lambda e:e)
 
     def in_radius_of_station(self, your_ship, station):
+        """Determins if you are within range of a station. If `True` you may perform any interactions
+        with the station such as:
+        - buying materials
+        - selling materials
+        - repairing (at select stations)
+        - unlocking module slots (at select stations)
+        - buying modules (at select stations)
+        """
         return in_radius(your_ship, station, station.accessibility_radius, lambda e:e.position)
 
     def in_radius_of_asteroid_field(self, your_ship, field):
+        """Determines if you are within range of an asteroid field. If `True`, mining will
+        yeild results."""
         return in_radius(your_ship, field, field.accessibility_radius, lambda e:e.position)
 
     def in_radius_of_illegal_salvage(self, your_ship, salvage):
+        """Returns `True` if your ship is in range to gather from a pile of illegal salvage."""
         return in_radius(your_ship, salvage, your_ship.weapon_range, lambda e:e.position)
 
     def in_weapons_range(self, your_ship, target_ship):
@@ -205,7 +218,9 @@ class UserClient:
         is in range."""
         return in_radius(your_ship, target_ship, your_ship.weapon_range, lambda e:e.position)
 
-    def get_salvage_equivalent_of_material(self, quantity, value):
+    def get_material_to_scrap_conversion(self, quantity, value):
+        """Given a quantity and a material value, returns the amount of illegal scrap
+        that would be created by destroying a  ship carrying this quantity of material."""
         return convert_material_to_scrap(quantity, value)
 
     def in_secure_zone(self, check):
@@ -219,8 +234,8 @@ class UserClient:
         { ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]}"""
         return separate_universe(flat_universe)
 
-    def get_median_material_price(self, universe):
-        return get_median_material_price(universe)
+    def get_median_material_price(self, material_prices):
+        return get_median_material_price(material_prices)
 
     def get_repair_price(self, median_price):
         return get_repair_price(median_price)
