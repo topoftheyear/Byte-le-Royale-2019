@@ -39,23 +39,24 @@ class CustomClient(UserClient):
 
         # If we aren't doing anything, determine a station to purchase from
         if self.destination is None:
-            print("new interaction generated")
             self.purchase_station = random.choice(stations)
             self.destination = self.purchase_station
             self.material = self.purchase_station.production_material
+            print("new interaction generated: ", str(self.material))
 
         # If we have a purchase place to go to, buy a material
         if self.destination is self.purchase_station:
-            print("buying",self.material)
             # Buy its material
+            print("buying")
             self.buy_material(1)
 
             # If we got it, go and sell it
-            if self.material in ship.inventory and ship.inventory[self.material] > 0:
+            if str(self.material) in ship.inventory and ship.inventory[str(self.material)] > 0:
 
                 # Then we find a station that will buy it
                 for station in stations:
                     if self.material in [station.primary_import, station.secondary_import]:
+                        print("switching to selling selling at ", station)
                         self.sell_station = station
                         self.destination = station
                         break
@@ -64,10 +65,14 @@ class CustomClient(UserClient):
         elif self.destination is self.sell_station:
             print("selling")
             # Sell the material when possible
-            self.sell_material(self.material, ship.inventory[self.material])
+            self.sell_material(self.material, ship.inventory[str(self.material)])
 
             # If we sold it, then we completed our task
-            self.destination = None
+            if str(self.material) in ship.inventory and ship.inventory[str(self.material)] <= 0:
+                self.destination = None
 
-        # Always move towards our destination
-        self.move(*self.destination.position)
+        # Always move towards our destination unless it doesn't exist
+        if self.destination is not None:
+            self.move(*self.destination.position)
+        else:
+            self.move(0,0)
