@@ -48,7 +48,7 @@ class ServerControl:
         self.max_turn_wait = self.turn_time*5
 
         self.game_tick_no = 0
-        self.max_game_tick = 1000
+        self.max_game_tick = 500
         self.turn_data = []
 
     def initialize(self):

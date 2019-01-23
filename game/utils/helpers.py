@@ -228,6 +228,13 @@ def get_module_unlock_price(universe, ship_slot):
     else:
         return
 
+def get_material_buy_prices(universe):
+    all_prices = {}
+    for station in universe.get(ObjectType.station):
+        if station.production_material is not None:
+            all_prices[station.production_material] = station.sell_price
+    return all_prices
+
 def get_best_station_purchasing_prices_by_material(universe):
     all_prices = {}
     for station in universe.get(ObjectType.station):
@@ -254,6 +261,5 @@ def get_best_station_purchasing_prices_by_material(universe):
     all_prices[MaterialType.salvage]["station"] = "you are asking for black markets literally just get those directly"
 
     return all_prices
-
 
 
