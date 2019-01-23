@@ -27,7 +27,7 @@ class TestPriorityTraderNPC(NPC):
     def take_turn(self, universe):
 
         stations = universe.get(ObjectType.station)
-        sellPrices = get_material_prices(universe)
+        sellPrices = get_material_sell_prices(universe)
         buyPrices = get_material_buy_prices(universe)
         trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry,
                            MaterialType.copper, MaterialType.drones, MaterialType.pylons, MaterialType.wire, MaterialType.machinery]

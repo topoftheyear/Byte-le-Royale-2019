@@ -32,6 +32,10 @@ class RepairController:
 
 
     def handle_actions(self, living_ships, universe, teams, npc_teams, combat_timeouts):
+
+        self.median_sell_price = None
+        self.sell_prices = None
+
         for team, data in { **teams, **npc_teams}.items():
             ship = data["ship"]
 
@@ -136,7 +140,12 @@ class RepairController:
                 else:
                     price_adjustment = 1.0
 
-                repair_cost = math.floor(get_repair_price(universe) * price_adjustment)
+                if self.sell_prices is None:
+                    self.sell_prices = get_material_sell_prices(universe)
+                if self.median_sell_price is None:
+                    self.median_sell_price = get_median_material_price(self.sell_prices)
+
+                repair_cost = math.floor(get_repair_price(self.median_sell_price) * price_adjustment)
 
                 payment = hull_to_repair * repair_cost
 

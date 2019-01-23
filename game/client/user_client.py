@@ -40,6 +40,10 @@ class UserClient:
     def team_name(self):
         return "ForgotToSetAName"
 
+    ################
+    # Game Actions #
+    ################
+
     def move(self, x, y):
 
         self._move_action = (x, y)
@@ -176,18 +180,30 @@ class UserClient:
 
         self._action = PlayerAction.pay_off_bounty
 
+    ##################
+    # Helper Methods #
+    ##################
+
     # Helper class wrappers start here
-    def distance_to(self, yourself, target):
-        return distance_to(yourself, target, lambda e:e.position)
+    def distance_to_object(self, your_ship, target):
+        return distance_to(your_ship, target, lambda e:e.position)
 
-    def in_radius_of_station(self, yourself, station):
-        return in_radius(yourself, station, station.accessibility_radius, lambda e:e.position)
+    def distance_to_coordinate(self, your_ship, xy_coords):
+        return distance_to(your_ship, xy_coords, lambda e:e.position, lambda e:e)
 
-    def in_radius_of_asteroid_field(self, yourself, field):
-        return in_radius(yourself, field, field.accessibility_radius, lambda e:e.position)
+    def in_radius_of_station(self, your_ship, station):
+        return in_radius(your_ship, station, station.accessibility_radius, lambda e:e.position)
 
-    def in_radius_of_illegal_salvage(self, yourself, salvage):
-        return in_radius(yourself, salvage, yourself.weapon_range, lambda e:e.position)
+    def in_radius_of_asteroid_field(self, your_ship, field):
+        return in_radius(your_ship, field, field.accessibility_radius, lambda e:e.position)
+
+    def in_radius_of_illegal_salvage(self, your_ship, salvage):
+        return in_radius(your_ship, salvage, your_ship.weapon_range, lambda e:e.position)
+
+    def in_weapons_range(self, your_ship, target_ship):
+        """Note: prefer in_weapons_range() over distance_to() for checking if another ship
+        is in range."""
+        return in_radius(your_ship, target_ship, your_ship.weapon_range, lambda e:e.position)
 
     def get_salvage_equivalent_of_material(self, quantity, value):
         return convert_material_to_scrap(quantity, value)
@@ -198,26 +214,40 @@ class UserClient:
     def get_material_name(self, material_type):
         return get_material_name(material_type)
 
-    def separate_universe(self, flat_universe):
+    def universe_by_object_type(self, flat_universe):
+        """Returns the universe as a dictionary of object types. e.g.
+        { ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]}"""
         return separate_universe(flat_universe)
 
     def get_median_material_price(self, universe):
         return get_median_material_price(universe)
 
-    def get_repair_price(self, universe):
-        return get_repair_price(universe)
+    def get_repair_price(self, median_price):
+        return get_repair_price(median_price)
 
-    def get_module_price(self, universe, level):
-        return get_module_price(universe, level)
+    def get_module_price(self, median_price, level):
+        return get_module_price(median_price, level)
 
-    def get_module_unlock_price(self, universe, ship_slot):
-        return get_module_unlock_price(self, universe, ship_slot)
+    def get_module_unlock_price(self, median_price, ship_slot):
+        return get_module_unlock_price(self, median_price, ship_slot)
 
     def get_material_price_info(self, universe):
-        """
-        Creates a dictionary object of format prices[Material]{Price:#,Station:Object} containing highest prices you
-        can sell the given material to.
+        """Cache this result at most once per turn, otherwise your client will be very slow.
+
+        Returns a dictionary containing:
+        - "sell_prices": The sell prices of each material
+        - "buy_prices": The buy prices of each material
+        - "best_import_prices": The best import price by material, and the corresponding station
+        - "best_export_prices": The best export price by material, and the corresponding station
+
         :param universe:
         :return:
         """
-        return get_best_station_purchasing_prices_by_material(universe)
+        return {
+                "sell_prices": get_material_sell_price(universe),
+                "buy_prices": get_material_buy_price(universe),
+                **get_best_material_prices
+        }
+
+
+
