@@ -31,6 +31,8 @@ def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout, g
 
     try:
         start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout, game_length)
+    except SystemExit:
+        pass
     except:
         traceback.print_exc(file=server_log)
         traceback.print_exc()
@@ -72,6 +74,8 @@ def client(client_verbose, script, port, host):
 
     try:
         start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
+    except SystemExit:
+        pass
     except:
         traceback.print_exc(file=client_log)
         traceback.print_exc()
@@ -97,6 +101,8 @@ def visualizer(verbose, log_path, gamma, dont_wait, fullscreen, team_name):
 
     try:
         start(verbose, log_path, gamma, dont_wait, fullscreen, team_name)
+    except SystemExit:
+        pass
     except:
         traceback.print_exc(file=visualizer_log)
         traceback.print_exc()
