@@ -14,13 +14,15 @@ class CustomClient(UserClient):
         self.destination = None
         self.material = None
 
+        self.debug = False
+
     def team_name(self):
-        print("Sending Team Name")
+        self.print("Sending Team Name")
 
         return "NoChangeMe"
 
     def team_color(self):
-        print("Sending Team Color")
+        self.print("Sending Team Color")
 
         # list of [ red, green, blue ] values or
         # hex color "#333aaa"
@@ -39,6 +41,7 @@ class CustomClient(UserClient):
 
         # If we aren't doing anything, determine a station to purchase from
         if self.destination is None:
+            self.print("new interaction generated")
             self.purchase_station = random.choice(stations)
             self.destination = self.purchase_station
             self.material = self.purchase_station.production_material
@@ -46,6 +49,7 @@ class CustomClient(UserClient):
 
         # If we have a purchase place to go to, buy a material
         if self.destination is self.purchase_station:
+            self.print("buying",self.material)
             # Buy its material
             print("buying")
             self.buy_material(1)
@@ -63,7 +67,7 @@ class CustomClient(UserClient):
 
         # If we have a sell place to go to, go and sell it
         elif self.destination is self.sell_station:
-            print("selling")
+            self.print("selling")
             # Sell the material when possible
             self.sell_material(self.material, ship.inventory[str(self.material)])
 
@@ -76,3 +80,7 @@ class CustomClient(UserClient):
             self.move(*self.destination.position)
         else:
             self.move(0,0)
+
+    def print(self, *args, **kwargs):
+        if self.debug:
+            print(*args, **kwargs)
