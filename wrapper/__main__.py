@@ -20,18 +20,20 @@ def cli():
 @click.option("--no-wait", is_flag=True, help="Prevents server from waiting on client response for longer than configured turn time.")
 @click.option("--connection-wait-timer", default=3, help="Number of seconds to wait for clients to connect to server after the first has connected.")
 @click.option("--wait-timeout", default=-1, help="Number of seconds to wait for the first client to connect to the server.")
-def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout):
+@click.option("--game-length", default=1000, help="Configures the number of ticks to run the game for.")
+def server(server_verbose, port, no_wait, connection_wait_timer, wait_timeout, game_length):
     from game.server import start
 
     if server_verbose:
         print("Server Verbosity: ON")
 
-    server_log = open("server_log.txt", "w")
+    server_log = open("_server_log.txt", "w")
 
     try:
-        start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout)
+        start(server_verbose, port, no_wait, connection_wait_timer, wait_timeout, game_length)
     except:
         traceback.print_exc(file=server_log)
+        traceback.print_exc()
 
 
 @cli.command()
@@ -66,12 +68,13 @@ def client(client_verbose, script, port, host):
 
     #mod = importlib.import_module(script)
 
-    client_log = open("client_log.txt", "w")
+    client_log = open("_client_log.txt", "w")
 
     try:
         start(ClientLogic(client_verbose, module.CustomClient()), client_verbose, port, host)
     except:
         traceback.print_exc(file=client_log)
+        traceback.print_exc()
 
 
 @cli.command()
@@ -90,12 +93,13 @@ def generate():
 def visualizer(verbose, log_path, gamma, dont_wait, fullscreen, team_name):
     from game.visualizer import start
 
-    visualizer_log = open("visualizer_log.txt", "w")
+    visualizer_log = open("_visualizer_log.txt", "w")
 
     try:
         start(verbose, log_path, gamma, dont_wait, fullscreen, team_name)
     except:
         traceback.print_exc(file=visualizer_log)
+        traceback.print_exc()
 
 
 @cli.command()
@@ -164,7 +168,8 @@ def version():
 @click.option("--client-script", default="custom_client")
 @click.option("--port", default=8080)
 @click.option("--server-no-wait", is_flag=True)
-def run(client_verbose, server_verbose, client_script, port, server_no_wait):
+@click.option("--game-length", default=1000)
+def run(client_verbose, server_verbose, client_script, port, server_no_wait, game_length):
     import subprocess
 
     import signal
@@ -181,6 +186,7 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait):
     if server_no_wait:
         server_args.append("--no_wait")
     server_args.extend(["--port", str(port)])
+    server_args.extend(["--game-length", str(game_length)])
 
 
     # Prep client args

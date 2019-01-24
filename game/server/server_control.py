@@ -17,6 +17,7 @@ class ServerControl:
             wait_on_client,
             connection_wait_timer,
             wait_timer,
+            max_game_tick,
             verbose):
 
         self._loop = None
@@ -48,7 +49,7 @@ class ServerControl:
         self.max_turn_wait = self.turn_time*5
 
         self.game_tick_no = 0
-        self.max_game_tick = 500
+        self.max_game_tick = max_game_tick
         self.turn_data = []
 
     def initialize(self):
@@ -123,8 +124,8 @@ class ServerControl:
 
         # wait for turn data before handling post tick
         # TODO refactor to check to see if we have the same number of responses as clients, and wait only so long before continuing
-        if (len(self.turn_data) < self._clients_connected and 
-                self.wait_on_client and 
+        if (len(self.turn_data) < self._clients_connected and
+                self.wait_on_client and
                 not self.turn_wait >= self.max_turn_wait):
             self.turn_wait += self.turn_time
             self.schedule(self.post_tick)
