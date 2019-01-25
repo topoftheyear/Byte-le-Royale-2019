@@ -132,10 +132,10 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
                         if item.object_type == ObjectType.ship and item.team_name == focus_team_name:
                             stats_ship = item
                             break
-                    show_ship_stats_display(stats_ship, global_surf, fpsClock)
-                    show_end_screen(focus_team_name)
+                    show_ship_stats_display(stats_ship, global_surf, fpsClock, dont_wait)
+                    show_end_screen(focus_team_name, dont_wait)
                 else:
-                    show_end_screen(focus_team_name)
+                    show_end_screen(focus_team_name, dont_wait)
 
             # should we get the next turn event list
             # or should we wait for some animation to
@@ -234,13 +234,15 @@ def start(verbose, log_path, gamma, dont_wait, fullscreen, focus_team_name=None)
             handle_events()
 
 
-def show_end_screen(focus_team_name):
+def show_end_screen(focus_team_name, dont_wait):
     global fpsClock
     global log_parser
     global universe
     global events
     global global_surf
-    # print("What the hell", flush=True)
+
+    wait_timer = 0
+
     while True:  # Leaderboard
         # Show leaderboard before exit
         # print("Reached the end of the match", flush=True)
@@ -255,15 +257,16 @@ def show_end_screen(focus_team_name):
         left_allign_accolades = 720
         screenCenter = pygame.display.get_surface().get_size()[0] / 2
 
-        renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
-        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
-        currentHeight += gap*2
-        if focus_team_name is not None:
-            renderText = font.render("Press escape to exit, press S to show stats screen again", True, (0, 155, 0))
-        else:
-            renderText = font.render("Press escape to exit", True, (0, 155, 0))
-        global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
-        currentHeight += gap*2
+        if not dont_wait:
+            renderText = titleFont.render("Final results", True, (0, 155, 0))  # Title
+            global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+            currentHeight += gap*2
+            if focus_team_name is not None:
+                renderText = font.render("Press escape to exit, press S to show stats screen again", True, (0, 155, 0))
+            else:
+                renderText = font.render("Press escape to exit", True, (0, 155, 0))
+            global_surf.blit(renderText, [screenCenter - renderText.get_rect().width / 2, currentHeight])
+            currentHeight += gap*2
 
         # Show team leaderboard
         for idx, team_data in enumerate(log_parser.results["leaderboard"]):
@@ -292,6 +295,7 @@ def show_end_screen(focus_team_name):
                 global_surf.blit(renderText, [left_allign_accolades, currentHeight])
             currentHeight += gap
 
+
         # Handle Events
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -310,8 +314,15 @@ def show_end_screen(focus_team_name):
                             break
                     show_ship_stats_display(stats_ship, global_surf, fpsClock)
 
+
         pygame.display.update()
         fpsClock.tick(_FPS)
+
+        if dont_wait:
+            # don't wait on anything requiring user input
+            wait_timer += fpsClock.get_time()
+            if wait_timer > 5000:
+                sys.exit(0)
 
 
 
