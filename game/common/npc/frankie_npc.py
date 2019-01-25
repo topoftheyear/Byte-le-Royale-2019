@@ -27,7 +27,7 @@ class FrankieNPC(NPC):
             self.fields = universe.get("asteroid fields")
         if self.stations is None:
             self.stations = universe.get("stations")
-            
+
         # select new action if not currently in one
         if self.transaction is None:
             self.transaction = random.choice(["mine", "mine", "trade", "trade", "trade", "pirate", "module"])
