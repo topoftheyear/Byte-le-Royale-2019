@@ -9,6 +9,8 @@ from game.common.ship import Ship
 from game.utils.generate_game import load
 from game.utils.helpers import *
 
+from game.common.npc.frankie_npc import FrankieNPC
+
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
 from game.server.notoriety_controller import NotorietyController
@@ -300,12 +302,13 @@ class CustomServer(ServerControl):
         for ship in self.universe.get(ObjectType.ship):
             x += 1
             npc_type = None
-            if x < 10:
+            '''if x < 10:
                 npc_type = TestMinerNPC
             elif x < 30:
                 npc_type = TestTraderNPC
             else:
-                npc_type = TestPriorityTraderNPC
+                npc_type = TestPriorityTraderNPC'''
+            npc_type = FrankieNPC
 
             new_npc_controller = npc_type(ship)
 
