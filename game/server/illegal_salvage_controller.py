@@ -56,7 +56,7 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                self.material_prices = get_material_prices(universe)
+                self.material_prices = get_material_sell_prices(universe)
                 material_amount = self.material_prices[material_type]
 
                 random_position = (
