@@ -45,13 +45,12 @@ class CustomClient(UserClient):
             self.purchase_station = random.choice(stations)
             self.destination = self.purchase_station
             self.material = self.purchase_station.production_material
-            print("new interaction generated: ", str(self.material))
+            self.print("new interaction generated: ", str(self.material))
 
         # If we have a purchase place to go to, buy a material
         if self.destination is self.purchase_station:
             self.print("buying",self.material)
             # Buy its material
-            print("buying")
             self.buy_material(1)
 
             # If we got it, go and sell it
