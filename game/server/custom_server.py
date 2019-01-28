@@ -287,42 +287,34 @@ class CustomServer(ServerControl):
     def claim_npcs(self):
         self.npcs = []
 
-        '''for ship in self.universe.get(ObjectType.ship):
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
-                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC,  LazyNPC, RepairNPC])
+        npc_options = {
+                FrankieNPC: 0.25,
+                TestMinerNPC: 0.25,
+                TestTraderNPC: 0.30,
+                CombatNPC: 0.10,
+        }
+
+        for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
+            npc_type = random.choices(
+                    list(npc_options.keys()),
+                    weights=list(npc_options.values()),
+                    k=1)[0]
 
             new_npc_controller = npc_type(ship)
-
-            self.npc_teams[ship.id] = {
-                "controller": new_npc_controller,
-                "ship": ship
-            }'''
-
-        x = -1
-        for ship in self.universe.get(ObjectType.ship):
-            x += 1
-            npc_type = None
-            '''if x < 10:
-                npc_type = TestMinerNPC
-            elif x < 30:
-                npc_type = TestTraderNPC
-            else:
-                npc_type = TestPriorityTraderNPC'''
-            npc_type = FrankieNPC
-
-            new_npc_controller = npc_type(ship)
+            ship.team_name = new_npc_controller.team_name()
 
             self.npc_teams[ship.id] = {
                 "controller": new_npc_controller,
                 "ship": ship
             }
 
+
     def process_actions(self):
 
         # check if ships still alive
         living_ships = self.universe.get_filtered(ObjectType.ship, filter=filters.alive())
 
-        teams = self.teams#{ **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
+        teams = { **self.teams, **{ship.team_name: {"ship": ship} for ship in self.universe.get("police") }}
 
         # apply the results of any actions a player took if player still alive
         self.bounty_controller.handle_actions(living_ships, self.universe, teams, self.npc_teams)

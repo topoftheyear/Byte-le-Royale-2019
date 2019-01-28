@@ -45,7 +45,7 @@ class CustomClient(UserClient):
             self.purchase_station = random.choice(stations)
             self.destination = self.purchase_station
             self.material = self.purchase_station.production_material
-            print("new interaction generated: ", str(self.material))
+            self.print("new interaction generated: ", str(self.material))
             self.print("buying", self.material)
 
         # If we have a purchase place to go to, buy a material
@@ -59,8 +59,7 @@ class CustomClient(UserClient):
                 # Then we find a station that will buy it
                 for station in stations:
                     if self.material in [station.primary_import, station.secondary_import]:
-                        print("switching to selling selling at ", station)
-                        self.print("selling")
+                        self.print("switching to selling selling at ", station)
                         self.sell_station = station
                         self.destination = station
                         break

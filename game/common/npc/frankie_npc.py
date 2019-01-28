@@ -12,6 +12,7 @@ class FrankieNPC(NPC):
 
     def __init__(self, ship):
         UserClient.__init__(self)
+        self.name = "FrankieNPC"
         self.ship = ship
         self.ship_id = ship.id
 
@@ -21,10 +22,13 @@ class FrankieNPC(NPC):
         self.fields = None
         self.stations = None
 
+    def team_name(self):
+        return f"FrankieNPC"
+
     def take_turn(self, universe):
         # initialize empty variables
         if self.fields is None:
-            self.fields = universe.get("asteroid fields")
+            self.fields = universe.get("asteroid_fields")
         if self.stations is None:
             self.stations = universe.get("stations")
 
@@ -38,14 +42,14 @@ class FrankieNPC(NPC):
             if self.target is None:
                 self.target = random.choice(self.fields)
 
-            if self.target in get_asteroid_fields():
+            if self.target in self.fields:
                 self.mine()
                 self.move(*self.target.position)
 
                 if sum(self.ship.inventory.values()) >= self.ship.cargo_space:
                     prices = get_best_material_prices(universe)
 
-                    self.target = prices[self.target.material_type]["station"]
+                    self.target = prices["best_import_prices"][self.target.material_type]["station"]
 
 
             elif self.target.object_type is ObjectType.station:
