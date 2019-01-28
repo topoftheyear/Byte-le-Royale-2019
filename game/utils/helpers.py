@@ -11,36 +11,12 @@ from game.config import *
 from game.common.enums import *
 
 
-def get_ships(universe, callback=None):
-    if callback is not None:
-        return [obj
-                for obj in universe.get("ships")
-                if obj.is_alive()
-                and callback(obj)]
-
-    return [obj
-            for obj in universe.get("ships")
-            if obj.is_alive()]
-
 
 def ships_in_attack_range(universe, ship):
     def is_visible_wrapper(t):
         return in_radius(ship, t, ship.weapon_range, lambda e: e.position, verify_instance=True)
 
-    return get_ships(universe, is_visible_wrapper)
-
-
-def get_stations(universe):
-    return [obj for obj in universe if obj.object_type == ObjectType.station]
-
-
-def get_asteroid_fields(universe):
-    return [obj
-            for obj in universe
-            if obj.object_type in [
-                ObjectType.cuprite_field,
-                ObjectType.goethite_field,
-                ObjectType.gold_field]]
+    return list(filter(is_visible_wrapper, universe.get("ships")))
 
 
 def distance_to(source, target, accessor, target_accessor=None):
@@ -236,30 +212,29 @@ def get_best_material_prices(universe):
     best_import_prices = {}
     best_export_prices = {}
     for station in universe.get(ObjectType.station):
-        if not just_current:
-            # get best import prices
-            if station.primary_import is not None:
-                if station.primary_import not in best_import_prices:
-                    best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
+        # get best import prices
+        if station.primary_import is not None:
+            if station.primary_import not in best_import_prices:
+                best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
 
-                if station.primary_buy_price > best_import_prices[station.primary_import]["import_price"]:
-                    best_import_prices[station.primary_import]["import_price"] = station.primary_buy_price
-                    best_import_prices[station.primary_import]["station"] = station
+            if station.primary_buy_price > best_import_prices[station.primary_import]["import_price"]:
+                best_import_prices[station.primary_import]["import_price"] = station.primary_buy_price
+                best_import_prices[station.primary_import]["station"] = station
 
-            if station.secondary_import is not None:
-                if station.secondary_import not in best_import_prices:
-                    best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
+        if station.secondary_import is not None:
+            if station.secondary_import not in best_import_prices:
+                best_import_prices[station.secondary_import] = {"import_price": 0, "station": None}
 
-                if station.secondary_buy_price > best_import_prices[station.secondary_import]["import_price"]:
-                    best_import_prices[station.secondary_import]["import_price"] = station.secondary_buy_price
-                    best_import_prices[station.secondary_import]["station"] = station
+            if station.secondary_buy_price > best_import_prices[station.secondary_import]["import_price"]:
+                best_import_prices[station.secondary_import]["import_price"] = station.secondary_buy_price
+                best_import_prices[station.secondary_import]["station"] = station
 
-            # get best export prices
-            if station.production_material not in best_export_prices:
-                best_export_prices[station.production_material] = { "export_price": 9999999, "station": None }
+        # get best export prices
+        if station.production_material not in best_export_prices:
+            best_export_prices[station.production_material] = { "export_price": 9999999, "station": None }
 
-            if station.sell_price < best_export_prices[station.production_material]["export_price"]:
-                best_export_prices[station.production_material] = { "import_price": station.sell_price, station: station}
+        if station.sell_price < best_export_prices[station.production_material]["export_price"]:
+            best_export_prices[station.production_material] = { "import_price": station.sell_price, station: station}
 
 
     return {

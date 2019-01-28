@@ -70,7 +70,7 @@ class DeathController:
         value_to_drop = 100
         if ship.object_type is ObjectType.ship:
             for material_type in ship.inventory:
-                self.material_prices = get_material_prices(universe)
+                self.material_prices = get_material_sell_prices(universe)
 
                 material_value = self.material_prices[material_type]
                 value_to_drop += convert_material_to_scrap(ship.inventory[material_type], material_value)
