@@ -10,7 +10,7 @@ ACM retains the right to review and rule on a case-by-case basis.
 2. Keep your area clean.
 3. No forming alliances with other teams (i.e. the teams involved all write their AI to assist each other)
 4. Maintain appropriate behavior throughout the event and on any forms of communication used therein.
-4. Any attempts to disrupt, interfere, or otherwise adversely affect any aspect of the event will result in a disqualification, including, but not limited to:
+5. Any attempts to disrupt, interfere, or otherwise adversely affect any aspect of the event will result in a disqualification, including, but not limited to:
   * Forums
   * Scrimmage Server
   * Event staff
