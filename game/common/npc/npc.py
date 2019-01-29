@@ -15,7 +15,7 @@ class NPC(UserClient):
         self.heading = None
 
     def team_name(self):
-        return f"~AI ({self.ship_id})"
+        return f"NPC AI"
 
     def take_turn(self, universe):
         raise Exception("NPC.take_turn must be overriden")
