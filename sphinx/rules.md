@@ -31,8 +31,8 @@ Note: there is no 'right' or 'wrong' way to write your AI. There are however som
   Usage of any other import will not allow your code to run on the scrimmage server.
 * Do not attempt to collect information on your opponent's ship that can't be directly observed.
 * Do not attempt to access the game's source code.
-* Avoid processes and procedures that will take an abnormally long time per turn. If the time to take a turn becomes too long, your ship will automatically take a turn.
+* Avoid processes and procedures that will take an abnormally long time per turn. If your AI takes more than 0.05 seconds to take a turn, it not do anything that turn.
 * If you are unsure of an action, first check the documentation.
   If the documented output does not match the expected output,
   please contact an event staff member to determine what potential problem has arisen and how to fix it.
-* The code written must be your own (don't copy/paste code from other competitors)
+* The code written must be your own (don't share code with other competitors)
