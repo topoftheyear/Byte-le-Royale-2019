@@ -275,7 +275,7 @@ class CustomServer(ServerControl):
         accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
         accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
         accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
-        accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
+        accolades["Most Fuel Efficient"] = self.accolade_controller.most_efficient()[0]
         accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
         accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
         accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
