@@ -3,7 +3,7 @@ import random
 from game.common.enums import *
 from game.common.npc.npc import NPC
 from game.utils.helpers import *
-from game.client.user_client import UserClient
+from game.client.user_client import *
 from game.config import *
 import game.utils.filters as F
 
@@ -28,22 +28,16 @@ class AdvancedPirateNPC(NPC):
                 and self.heading[1] == self.ship.position[1]):
             self.heading = None
 
-        while self.target_ship is None or not self.target_ship.is_alive:
-            ships = self.get_ships(universe)
-            self.target_ship = random.choice(ships)
+        ships = self.get_ships(universe)
 
         salvage_list = universe.get(ObjectType.illegal_salvage)
         scrap_nearby = False
+
         for scrap in salvage_list:
-            scrap_in_radius = in_radius(
-                self.ship,
-                scrap,
-                self.ship.weapon_range,
-                lambda e: e.position)
-            if scrap_in_radius:
+            if self.in_radius_of_illegal_salvage(self.ship, scrap):
                 scrap_nearby = True
 
-        if self.is_hunting and not self.target_ship.is_alive:
+        if self.is_hunting and (self.target_ship is None or not self.target_ship.is_alive):
             self.is_hunting = False
             self.is_gathering = True
 
@@ -55,10 +49,8 @@ class AdvancedPirateNPC(NPC):
             self.is_selling = False
             self.is_hunting = True
 
-        else:
-            self.is_hunting = True
-            self.is_gathering = False
-            self.is_selling = False
+        while self.is_hunting and (self.target_ship is None or not self.target_ship.is_alive):
+            self.target_ship = random.choice(ships)
 
         if self.is_gathering:
             self.heading = self.ship.position
