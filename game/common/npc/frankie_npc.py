@@ -42,7 +42,10 @@ class FrankieNPC(NPC):
         # select new action if not currently in one
         if self.action is None:
             self.action = random.choice(["mine", "mine", "trade", "trade", "trade", "pirate", "module"])
-            print(self.action)
+
+        # initial overrides --------------------------------------------------------------------------------------------
+        if self.ship.credits <= 100:
+            self.action = "mine"
 
         # mining action ------------------------------------------------------------------------------------------------
         if self.action is "mine":

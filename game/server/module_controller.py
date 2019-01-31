@@ -261,22 +261,22 @@ class ModuleController:
 
             elif module is ModuleType.cargo_and_mining:
                 ship.cargo_space = GameStats.get_ship_stat(
-                        ModuleLevel.cargo_space,
+                        ShipStat.cargo_space,
                         level)
 
                 ship.mining_yield = GameStats.get_ship_stat(
-                        ModuleLevel.mining_yield,
+                        ShipStat.mining_yield,
                         level)
 
             elif module is ModuleType.hull:
                 ship.max_hull = GameStats.get_ship_stat(
-                        ModuleLevel.hull,
+                        ShipStat.hull,
                         level)
                 ship.current_hull = ship.max_hull
 
             elif module is ModuleType.sensors:
                 ship.sensor_range = GameStats.get_ship_stat(
-                        ModuleLevel.sensor_range,
+                        ShipStat.sensor_range,
                         level)
 
 
