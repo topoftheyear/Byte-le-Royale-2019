@@ -109,8 +109,8 @@ class IllegalSalvageController:
                     self.print('Found illegal salvage has no amount')
                     continue
 
-                # TODO determine balanced pickup rate
-                pickup_rate = random.randint(1, 11) // 1
+                # pickup rate is 10% of the ships weapon damage plus a constant 50
+                pickup_rate = math.floor(ship.weapon_damage * 0.1 + 50)
 
                 pickup_amount = 0
                 if salvage.amount >= pickup_rate:
