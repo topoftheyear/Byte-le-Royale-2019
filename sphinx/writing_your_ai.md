@@ -42,10 +42,17 @@ Functions that can be utilized by the ship: (further indented ones are helper me
 * `pay_off_bounty()` - Pay off your bounty if you can afford to pay off all of it.
   * `in_secure_zone(check)` - Returns `True` if `check` is in secure zone.
 
+## Imports and Rules
 
-
-
-
+ONLY the following imports are allowed:
+  * math
+  * itertools
+  * collections
+  * random
+  * game.common.enums
+  * game.client.user_client
+  
+Any other import statements will prevent the AI from running.
 
 
 There are some [rules that your AI must follow](rules.md).

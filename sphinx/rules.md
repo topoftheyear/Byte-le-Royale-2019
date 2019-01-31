@@ -16,7 +16,7 @@ ACM retains the right to review and rule on a case-by-case basis.
   * Event staff
   * Other competitors
 
-##Competition Rules
+## Competition Rules
 
 Note: there is no 'right' or 'wrong' way to write your AI. There are however some important rules to follow:
 
