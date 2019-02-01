@@ -2,7 +2,6 @@ import random
 
 from game.common.enums import *
 from game.common.npc.npc import NPC
-from game.utils.helpers import *
 from game.client.user_client import *
 from game.config import *
 import game.utils.filters as F

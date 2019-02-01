@@ -5,6 +5,7 @@ from math import sqrt
 from game.server.server_control import ServerControl
 from game.common.enums import *
 from game.common.npc.test import *
+from game.common.npc.test.advanced_pirate_npc import *
 from game.common.ship import Ship
 from game.utils.generate_game import load
 from game.utils.helpers import *
@@ -288,10 +289,11 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
-                FrankieNPC: 0.99,
+                FrankieNPC: 0.85,
                 TestMinerNPC: 0.0,
                 TestTraderNPC: 0.01,
                 CombatNPC: 0.0,
+                AdvancedPirateNPC: 0.15,
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
