@@ -71,6 +71,7 @@ class FrankieNPC(NPC):
 
                 if self.material not in self.ship.inventory or self.ship.inventory[self.material] <= 0:
                     # mining action has been fulfilled
+                    print('mining fulfilled')
                     self.action = None
                     self.target = None
                     self.material = None
@@ -93,7 +94,8 @@ class FrankieNPC(NPC):
                                           math.floor(self.ship.credits / self.target.sell_price)))
 
                     # find the station that'll buy it for the most
-                    self.target = get_best_material_prices(universe)["best_import_prices"][self.material]["station"]
+                    prices = get_best_material_prices(universe)
+                    self.target = prices["best_import_prices"][self.material]["station"]
 
             # otherwise, sell all materials in the inventory
             elif self.target in self.stations:
@@ -104,6 +106,7 @@ class FrankieNPC(NPC):
 
                 if self.material not in self.ship.inventory or self.ship.inventory[self.material] <= 0:
                     # trade action has been fulfilled
+                    print('trade fulfilled')
                     self.action = None
                     self.target = None
                     self.material = None
@@ -145,6 +148,7 @@ class FrankieNPC(NPC):
                     self.sell_salvage()
 
                     # pirate action has been fulfilled
+                    print('piracy fulfilled')
                     self.action = None
                     self.target = None
                     self.material = None
@@ -175,8 +179,10 @@ class FrankieNPC(NPC):
                     if self.ship.credits > price:
                         self.target = universe.get(ObjectType.secure_station)[0]
                     else:
+                        print('module too expensive')
                         self.action = None
                 else:
+                    print('cannot buy module')
                     self.action = None
 
             # go out and buy the module
@@ -186,6 +192,7 @@ class FrankieNPC(NPC):
                     self.buy_module(self.type, self.level, ShipSlot.zero)
                 else:
                     # module action has been fulfilled
+                    print('module fulfilled')
                     self.action = None
                     self.target = None
 
@@ -196,14 +203,19 @@ class FrankieNPC(NPC):
             self.repair(self.ship.max_hull - self.ship.current_hull)
 
         # inactive tracker
-        if self.ship.position == self.previous_position:
+        if self.previous_position is not None and \
+                self.ship.position[0] == self.previous_position[0] and \
+                self.ship.position[1] == self.previous_position[1]:
+
             self.inactive_counter += 1
+
         self.previous_position = self.ship.position
 
-        # if standing still too long or dead, turn off and on again
-        if self.inactive_counter >= 75 or self.ship.respawn_counter > 0:
+        # if standing still too long, turn off and on again
+        if self.inactive_counter >= 150:
             self.inactive_counter = 0
 
+            print('inactive reset')
             self.action = None
             self.target = None
             self.material = None
