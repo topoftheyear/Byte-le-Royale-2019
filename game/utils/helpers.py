@@ -234,7 +234,7 @@ def get_best_material_prices(universe):
             best_export_prices[station.production_material] = { "export_price": 9999999, "station": None }
 
         if station.sell_price < best_export_prices[station.production_material]["export_price"]:
-            best_export_prices[station.production_material] = { "import_price": station.sell_price, station: station}
+            best_export_prices[station.production_material] = { "export_price": station.sell_price, "station": station}
 
 
     return {

@@ -26,8 +26,8 @@ class PoliceShip(Ship):
         if level >= 1:
             self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.base)
             self.current_hull = self.max_hull
-            self.engine_speed = math.floor(GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.base) * 0.75)
-            self.weapon_damage = math.floor(GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.base) * 0.4)
+            self.engine_speed = math.floor(GameStats.get_ship_stat(ShipStat.engine_speed, ModuleLevel.base) * 0.8)
+            self.weapon_damage = math.floor(GameStats.get_ship_stat(ShipStat.weapon_damage, ModuleLevel.base) * 0.5)
             self.weapon_range = math.floor(GameStats.get_ship_stat(ShipStat.weapon_range, ModuleLevel.base) * 1.25)
             self.cargo_space = math.floor(GameStats.get_ship_stat(ShipStat.cargo_space, ModuleLevel.base) * 0.9)
             self.mining_yield = 0
