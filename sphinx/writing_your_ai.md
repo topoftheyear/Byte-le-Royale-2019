@@ -55,7 +55,7 @@ ONLY the following imports are allowed:
 Any other import statements will prevent the AI from running.
 
 
-There are some [rules that your AI must follow](rules.md).
+There are some [rules that your AI must follow](rules.html).
 
 ## Related Links
-* [Using the Visualizer](using_the_visualizer.md)
+* [Using the Visualizer](using_the_visualizer.html)

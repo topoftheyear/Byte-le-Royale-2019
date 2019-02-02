@@ -74,4 +74,4 @@ If private citizens, bounty hunters and police are unable to curb an especially 
 
 ## Related Links
 
-[Combat](combat.md)
+[Combat](combat.html)

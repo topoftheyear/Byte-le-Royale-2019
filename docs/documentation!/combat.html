@@ -28,9 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Ships" href="ships.html" />
-    <link rel="prev" title="Bounty Hunting, Lawfulness, and Piracy" href="bounty_hunting_lawfulness_and_piracy.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,32 +82,23 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/running_the_game.html">Running The Game</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/writing_your_ai.html">Writing Your AI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/helpful_links.html">Helpful Links</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Combat</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#list-of-modules">List of Modules</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#how-to-upgrade">How To Upgrade</a></li>
-<li class="toctree-l2"><a class="reference internal" href="ship_upgrades.html#module-table-revise-illegal-numbers-when-completed">Module Table (Revise Illegal Numbers When Completed)</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="ship_upgrades.html#related-links">Related Links</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Combat</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/stations.html">Stations</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/trading.html">Trading</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/combat.html">Combat</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ships.html">Ships</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -175,10 +164,23 @@
            <div itemprop="articleBody">
             
   <div class="section" id="combat">
-<span id="combat"></span><h1>Combat<a class="headerlink" href="#combat" title="Permalink to this headline">¶</a></h1>
-<p>Combat is a common occurrence in space, whether you initiate it or get attacked. Combat occurs simultaneously to allow
+<h1>Combat<a class="headerlink" href="#combat" title="Permalink to this headline">¶</a></h1>
+<p>Combat is a common occurrence in space, whether you initiate it or get attacked.</p>
+<p>Combat occurs simultaneously to allow
 both ships to destroy each other in the same step.</p>
-<p>To attack another ship, call <code class="docutils literal notranslate"><span class="pre">self.attack(ship_to_attack)</span></code>, where <code class="docutils literal notranslate"><span class="pre">ship_to_attack</span></code> is the target. If the target is in range, you will attack them.</p>
+<p>To attack another ship, call <code class="docutils literal notranslate"><span class="pre">self.attack(ship_to_attack)</span></code>, where <code class="docutils literal notranslate"><span class="pre">ship_to_attack</span></code> is the target.</p>
+<p>While in battle, you can check your help by looking at the <code class="docutils literal notranslate"><span class="pre">self.current_hull</span></code>. If this is 0, your ship is dead.</p>
+<p>If the target is in range, you will attack them.</p>
+<div class="section" id="respawning">
+<h2>Respawning<a class="headerlink" href="#respawning" title="Permalink to this headline">¶</a></h2>
+<p>When your ship dies, the following events happen:</p>
+<ul class="simple">
+<li>Your cargo is destroyed and converted to salvage.</li>
+<li>Your ship will respawn in the Secure Station in 10 turns.</li>
+<li>If you were a pirate, your notoriety is reduced to +4 (1 below Pirate threshold).</li>
+<li>Any illegal modules are removed from your ship.</li>
+</ul>
+</div>
 </div>
 
 
@@ -186,15 +188,6 @@ both ships to destroy each other in the same step.</p>
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="ships.html" class="btn btn-neutral float-right" title="Ships" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="bounty_hunting_lawfulness_and_piracy.html" class="btn btn-neutral" title="Bounty Hunting, Lawfulness, and Piracy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

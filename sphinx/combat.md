@@ -11,7 +11,7 @@ While in battle, you can check your help by looking at the `self.current_hull`. 
 
 If the target is in range, you will attack them.
 
-## Respawn
+## Respawning
 
 When your ship dies, the following events happen:
 * Your cargo is destroyed and converted to salvage.

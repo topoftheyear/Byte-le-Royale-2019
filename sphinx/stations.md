@@ -1,7 +1,7 @@
 # Stations
 
 Stations are the places where you will buy, sell, and trade resources. When you get in range, you can 
-use your action for the turn to [trade](trading.md) with the station.
+use your action for the turn to [trade](trading.html) with the station.
 The stations will take the primary imports and use them to produce the stated output.
 In addition, the amount of secondary product will help speed up the production.
 
