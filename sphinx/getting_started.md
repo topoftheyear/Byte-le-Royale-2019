@@ -21,7 +21,21 @@ To initialize each component, run br_launcher.pyz in CMD with the corresponding 
 Once the client has finished, the visualizer can be run. The visualizer takes the log of the game session
 and presents it in a visual format. This is useful for seeing where the AI's weaknesses and strengths are.
 
+## Scrimmage UI
+
+`br_launcher.pyz scrim ui`
+This is how to access the Scrimmage Server. A separate terminal will open with the following commands available:
+* `announcements`: Displays the recent announcements from the server. This updates automatically.
+* `registration`: This will display a form for team registration. If you have already registered your team, you will be warned
+that your team is already registered and to send your teammates the registration code you receive. ONLY SEND THIS TO YOUR TEAMMATES
+* `leaderboard`: Displays the leaderboard from the server. This also updates automatically.
+* `submit`: This is where you submit your client to the server.
+* `results`: View the results of submitted clients. While in the results panel, press the backtick key to toggle between the results panel and input prompt,
+ and use `up`, `down`, `page_up`, and `page_down` to navigate the results panel.
+* `help`: Displays the help page.
+
+When you are finished, press `Control` and `C` to exit the scrimmage UI.
 
 ## Related Links
 
-* [Running the Game](running_the_game.md)
+* [Running the Game](running_the_game.html)

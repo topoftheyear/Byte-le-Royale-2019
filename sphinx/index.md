@@ -3,27 +3,27 @@
 
 # Welcome to Byte-le Royale 2019!
 
-* [Overview](overview.md)
-* [Installing](installation.md)
-* [Getting Started](getting_started.md)
-* [Running The Game](running_the_game.md)
-* [Using the Visualizer](using_the_visualizer.md)
-* [Writing Your AI](writing_your_ai.md)
-* [Rules](rules.md)
-* [Helpful Links](helpful_links.md)
+* [Overview](overview.html)
+* [Installing](installation.html)
+* [Getting Started](getting_started.html)
+* [Running The Game](running_the_game.html)
+* [Using the Visualizer](using_the_visualizer.html)
+* [Writing Your AI](writing_your_ai.html)
+* [Rules](rules.html)
+* [Helpful Links](helpful_links.html)
 
 
 # Game Topics:
 
-* [Stations](stations.md)
-* [Asteroid Fields And Mining](asteroid_fields_and_mining.md)
-* [Trading](trading.md)
+* [Stations](stations.html)
+* [Asteroid Fields And Mining](asteroid_fields_and_mining.html)
+* [Trading](trading.html)
 
-* [Bounty Hunting, Piracy, and Lawfulness](bounty_hunting_lawfulness_and_piracy.md)
-* [Combat](combat.md)
+* [Bounty Hunting, Piracy, and Lawfulness](bounty_hunting_lawfulness_and_piracy.html)
+* [Combat](combat.html)
 
-* [Ships](ships.md)
-* [Ship Upgrades](ship_upgrades.md)
+* [Ships](ships.html)
+* [Ship Upgrades](ship_upgrades.html)
 
 
 ## Helpful Links

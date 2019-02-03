@@ -28,4 +28,4 @@ Then, the following conditions are checked:
 
 ## Related Items
 
-[Mining](asteroid_fields_and_mining.md)
+[Mining](asteroid_fields_and_mining.html)
