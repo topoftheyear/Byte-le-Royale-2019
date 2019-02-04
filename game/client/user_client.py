@@ -126,16 +126,6 @@ class UserClient:
 
         self._action = PlayerAction.collect_illegal_salvage
 
-    def get_ships(self, universe, callback=None):
-        return get_ships(universe, callback)
-
-    def get_stations(self, universe):
-        return get_stations(universe)
-
-    def get_asteroid_fields(self, universe):
-        return get_asteroid_fields(universe)
-
-
     def ships_in_attack_range(self, universe):
         return ships_in_attack_range(universe, self.ship)
 

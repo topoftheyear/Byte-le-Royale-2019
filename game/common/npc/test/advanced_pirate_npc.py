@@ -27,7 +27,7 @@ class AdvancedPirateNPC(NPC):
                 and self.heading[1] == self.ship.position[1]):
             self.heading = None
 
-        ships = self.get_ships(universe)
+        ships = universe.get(ObjectType.ship)
 
         salvage_list = universe.get(ObjectType.illegal_salvage)
         scrap_nearby = False
