@@ -43,10 +43,6 @@ class FrankieNPC(NPC):
         if self.action is None:
             self.action = random.choice(["mine", "mine", "trade", "trade", "trade", "pirate", "module"])
 
-        # initial overrides --------------------------------------------------------------------------------------------
-        if self.ship.credits <= 100:
-            self.action = "mine"
-
         # mining action ------------------------------------------------------------------------------------------------
         if self.action is "mine":
             # if we don't have a field to mine from, pick one
@@ -59,21 +55,34 @@ class FrankieNPC(NPC):
                 self.mine()
                 self.move(*self.target.position)
 
-                if sum(self.ship.inventory.values()) >= self.ship.cargo_space:
-                    prices = get_best_material_prices(universe)
-                    self.target = prices["best_import_prices"][self.material]["station"]
+                if sum(self.ship.inventory.values()) >= self.ship.cargo_space * 7 / 8:
+                    self.target = universe.get(ObjectType.secure_station)[0]
 
-            # if we have a station to sell to, go and sell the materials
-            elif self.target in self.stations:
-                if self.material in self.ship.inventory:
-                    self.sell_material(self.material, self.ship.inventory[self.material])
-                self.move(*self.target.position)
+            # if we have things in our inventory, sell them all
+            elif sum(self.ship.inventory.values()) > 0:
+                if self.target.object_type is not ObjectType.station:
+                    for thing, amount in self.ship.inventory.items():
+                        if amount <= 0:
+                            continue
+                        self.material = thing
+                        prices = get_best_material_prices(universe)
+                        self.target = prices["best_import_prices"][self.material]["station"]
+                        break
+                if self.target is not None:
+                    self.move(*self.target.position)
 
-                if self.material not in self.ship.inventory or self.ship.inventory[self.material] <= 0:
-                    # mining action has been fulfilled
-                    self.action = None
-                    self.target = None
-                    self.material = None
+                    if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position):
+                        self.sell_material(self.material, self.ship.inventory[self.material])
+                        self.target = self.ship
+
+            elif sum(self.ship.inventory.values()) <= 0:
+                # mining action has been fulfilled
+                self.action = None
+                self.target = None
+                self.material = None
+
+                if self.ship.credits <= 100:
+                    self.action = "mine"
 
         # trade action -------------------------------------------------------------------------------------------------
         elif self.action is "trade":
@@ -93,7 +102,8 @@ class FrankieNPC(NPC):
                                           math.floor(self.ship.credits / self.target.sell_price)))
 
                     # find the station that'll buy it for the most
-                    self.target = get_best_material_prices(universe)["best_import_prices"][self.material]["station"]
+                    prices = get_best_material_prices(universe)
+                    self.target = prices["best_import_prices"][self.material]["station"]
 
             # otherwise, sell all materials in the inventory
             elif self.target in self.stations:
@@ -107,6 +117,9 @@ class FrankieNPC(NPC):
                     self.action = None
                     self.target = None
                     self.material = None
+
+                    if self.ship.credits <= 100:
+                        self.action = "mine"
 
         # pirate action ------------------------------------------------------------------------------------------------
         elif self.action is "pirate":
@@ -149,6 +162,9 @@ class FrankieNPC(NPC):
                     self.target = None
                     self.material = None
 
+                    if self.ship.credits <= 100:
+                        self.action = "mine"
+
         # module action ------------------------------------------------------------------------------------------------
         elif self.action is "module":
             # determine if a relevant module can be purchased
@@ -189,6 +205,9 @@ class FrankieNPC(NPC):
                     self.action = None
                     self.target = None
 
+                    if self.ship.credits <= 100:
+                        self.action = "mine"
+
         # override actions----------------------------------------------------------------------------------------------
         # healing
         if self.ship.current_hull / self.ship.max_hull <= 0.25:
@@ -196,12 +215,16 @@ class FrankieNPC(NPC):
             self.repair(self.ship.max_hull - self.ship.current_hull)
 
         # inactive tracker
-        if self.ship.position == self.previous_position:
+        if self.previous_position is not None and \
+                self.ship.position[0] == self.previous_position[0] and \
+                self.ship.position[1] == self.previous_position[1]:
+
             self.inactive_counter += 1
+
         self.previous_position = self.ship.position
 
-        # if standing still too long or dead, turn off and on again
-        if self.inactive_counter >= 75 or self.ship.respawn_counter > 0:
+        # if standing still too long, turn off and on again
+        if self.inactive_counter >= 150:
             self.inactive_counter = 0
 
             self.action = None
@@ -213,7 +236,5 @@ class FrankieNPC(NPC):
 
             self.fields = None
             self.stations = None
-
-
 
         return self.action_digest()

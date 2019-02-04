@@ -28,9 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Trading" href="trading.html" />
-    <link rel="prev" title="Stations" href="stations.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -84,26 +82,23 @@
             
             
               <ul>
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/running_the_game.html">Running The Game</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/writing_your_ai.html">Writing Your AI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/helpful_links.html">Helpful Links</a></li>
 </ul>
-<ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Asteroid Fields And Mining</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#mining">Mining</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
+<ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/stations.html">Stations</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/trading.html">Trading</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/combat.html">Combat</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ships.html">Ships</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -169,9 +164,9 @@
            <div itemprop="articleBody">
             
   <div class="section" id="asteroid-fields">
-<span id="asteroid-fields"></span><h1>Asteroid Fields<a class="headerlink" href="#asteroid-fields" title="Permalink to this headline">¶</a></h1>
+<h1>Asteroid Fields<a class="headerlink" href="#asteroid-fields" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="mining">
-<span id="mining"></span><h2>Mining<a class="headerlink" href="#mining" title="Permalink to this headline">¶</a></h2>
+<h2>Mining<a class="headerlink" href="#mining" title="Permalink to this headline">¶</a></h2>
 <p>Asteroid fields are where players can mine various resources which they can then sell to a <code class="docutils literal notranslate"><span class="pre">station</span></code>. On our map there are three different types of fields, <code class="docutils literal notranslate"><span class="pre">cuprite</span></code>, <code class="docutils literal notranslate"><span class="pre">goethite</span></code>, and <code class="docutils literal notranslate"><span class="pre">gold</span></code>.There are a few variables that players can view for each of the fields:</p>
 <ul class="simple">
 <li>Name: <code class="docutils literal notranslate"><span class="pre">field.name</span></code></li>
@@ -180,7 +175,7 @@
 <li>Mining Rate: <code class="docutils literal notranslate"><span class="pre">field.mining_rate</span></code></li>
 <li>Accessibility Radius: <code class="docutils literal notranslate"><span class="pre">field.accessibility_radius</span></code></li>
 </ul>
-<p>The following shows what <a class="reference external" href="stations.md">Stations</a> these fields resources can be used and the secondaries that boost the output:</p>
+<p>The following shows what <a class="reference external" href="stations.html">Stations</a> these fields resources can be used and the secondaries that boost the output:</p>
 <ul class="simple">
 <li>Cuprite<ul>
 <li>S6: makes Copper, secondary is Drones</li>
@@ -204,15 +199,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="trading.html" class="btn btn-neutral float-right" title="Trading" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="stations.html" class="btn btn-neutral" title="Stations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

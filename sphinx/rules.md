@@ -16,10 +16,9 @@ ACM retains the right to review and rule on a case-by-case basis.
   * Event staff
   * Other competitors
 
-##Competition Rules
+## Competition Rules
 
-Note: there is no 'right' or 'wrong' way to write your AI. There are however some important rules to follow:
-
+Below are the official competition rules, failure to abide by these rules may result in disqualification. We reserve the right to ask anyone to leave for violating these rules or other [NDSU code of conduct](https://www.ndsu.edu/fileadmin/policy/601.pdf) rules.
 * ONLY the following imports are allowed:
   * math
   * itertools

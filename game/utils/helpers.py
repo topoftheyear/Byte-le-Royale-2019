@@ -215,7 +215,7 @@ def get_best_material_prices(universe):
         # get best import prices
         if station.primary_import is not None:
             if station.primary_import not in best_import_prices:
-                best_import_prices[station.primary_import] = {"import_price": 0, "station": None}
+                best_import_prices[station.primary_import] = {"import_price": -1, "station": None}
 
             if station.primary_buy_price > best_import_prices[station.primary_import]["import_price"]:
                 best_import_prices[station.primary_import]["import_price"] = station.primary_buy_price
@@ -223,7 +223,7 @@ def get_best_material_prices(universe):
 
         if station.secondary_import is not None:
             if station.secondary_import not in best_import_prices:
-                best_import_prices[station.secondary_import] = {"import_price": 0, "station": None}
+                best_import_prices[station.secondary_import] = {"import_price": -1, "station": None}
 
             if station.secondary_buy_price > best_import_prices[station.secondary_import]["import_price"]:
                 best_import_prices[station.secondary_import]["import_price"] = station.secondary_buy_price
@@ -234,8 +234,11 @@ def get_best_material_prices(universe):
             best_export_prices[station.production_material] = { "export_price": 9999999, "station": None }
 
         if station.sell_price < best_export_prices[station.production_material]["export_price"]:
-            best_export_prices[station.production_material] = { "import_price": station.sell_price, station: station}
+            best_export_prices[station.production_material] = { "export_price": station.sell_price, "station": station}
 
+    # Add salvage to import prices
+    best_import_prices[MaterialType.salvage] = {"import_price": ILLEGAL_SCRAP_VALUE,
+                                                "station":      universe.get(ObjectType.black_market_station)[0]}
 
     return {
         "best_import_prices": best_import_prices,

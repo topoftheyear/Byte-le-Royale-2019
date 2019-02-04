@@ -9,7 +9,7 @@ Asteroid fields are where players can mine various resources which they can then
 * Mining Rate: ```field.mining_rate```
 * Accessibility Radius: ```field.accessibility_radius```
 
-The following shows what [Stations](stations.md) these fields resources can be used and the secondaries that boost the output:
+The following shows what [Stations](stations.html) these fields resources can be used and the secondaries that boost the output:
 * Cuprite
     * S6: makes Copper, secondary is Drones
 * Goethite

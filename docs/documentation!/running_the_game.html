@@ -28,9 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Using the Visualizer" href="using_the_visualizer.html" />
-    <link rel="prev" title="Getting Started" href="getting_started.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,27 +81,24 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Running The Game</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-<li class="toctree-l1"><a class="reference internal" href="writing_your_ai.html">Writing Your AI</a></li>
-<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/running_the_game.html">Running The Game</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/writing_your_ai.html">Writing Your AI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/helpful_links.html">Helpful Links</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/stations.html">Stations</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/trading.html">Trading</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/combat.html">Combat</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ships.html">Ships</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -149,8 +144,6 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-          <li><a href="getting_started.html">Getting Started</a> &raquo;</li>
-        
       <li>Running The Game</li>
     
     
@@ -171,7 +164,7 @@
            <div itemprop="articleBody">
             
   <div class="section" id="running-the-game">
-<span id="running-the-game"></span><h1>Running The Game<a class="headerlink" href="#running-the-game" title="Permalink to this headline">¶</a></h1>
+<h1>Running The Game<a class="headerlink" href="#running-the-game" title="Permalink to this headline">¶</a></h1>
 <p>Basic flow of how a game works:</p>
 <ol class="simple">
 <li>A game map is generated.</li>
@@ -179,11 +172,11 @@
 <li>Start a client. Your client will connect to the server.</li>
 <li>The server then orchestrates the game based on the <code class="docutils literal notranslate"><span class="pre">game_data.json</span></code> file and responses from the client. The server also generates a <code class="docutils literal notranslate"><span class="pre">game_log/</span></code> directory which contains the game log which is used by the visualizer to visualize the game after it has finished running.</li>
 <li>Wait for the client and server to finish running.</li>
-<li><a class="reference external" href="using_the_visualizer.md">Run the visualizer</a> to visualize how the game played out.</li>
+<li><a class="reference external" href="using_the_visualizer.html">Run the visualizer</a> to visualize how the game played out.</li>
 </ol>
 <div class="section" id="related-links">
-<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
-<p><a class="reference external" href="writing_your_ai.md">Writing Your AI</a></p>
+<h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="writing_your_ai.html">Writing Your AI</a></p>
 </div>
 </div>
 
@@ -192,15 +185,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="using_the_visualizer.html" class="btn btn-neutral float-right" title="Using the Visualizer" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="getting_started.html" class="btn btn-neutral" title="Getting Started" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
