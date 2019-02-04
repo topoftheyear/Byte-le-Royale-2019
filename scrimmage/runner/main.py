@@ -70,13 +70,13 @@ class ScrimmageRunner:
         self.wait_for_server()
 
         print("Pulling server data")
-        results = self.pull_server_data()
+        game_data, results = self.pull_server_data()
 
         print("Pulling client's data")
         self.pull_client_data()
 
         print("Sending results")
-        self.send_results(results)
+        self.send_results(game_data, results)
 
         self.docker_remove_container("br_server")
 
@@ -178,12 +178,20 @@ class ScrimmageRunner:
 
         results = json.loads(results)
 
+        # copy game_data file out
+        game_data = self.docker_get_file(
+                self.server_node,
+                "/code/" + "game_data.json")
+
+        game_data = json.loads(game_data)
+
+
         self.docker_get_dir(
                 self.server_node,
                 "/code/game_log",
                 Config.GAME_LOG_LOCATION)
 
-        return results
+        return game_data, results
 
 
     def pull_client_data(self):
@@ -192,7 +200,7 @@ class ScrimmageRunner:
             self.client_metadata[team_name]["log"] = text
 
 
-    def send_results(self, results):
+    def send_results(self, game_data, results):
         requests.post(
                 Config.API_HOST + "/report/run",
                 auth=self.auth)
@@ -211,6 +219,7 @@ class ScrimmageRunner:
                 Config.API_HOST + "/report/game_logs",
                 auth=self.auth,
                 json={
+                    "game_data": game_data,
                     "game_log": data,
                     "results": results
                 })

@@ -165,9 +165,7 @@ class ServerControl:
 
             # Dump Game log manifest
             toJSON = self.game_over()
-            with open("wrapper/version.py", "r") as f:
-                text = f.read().strip()
-            v = text.split("=")[1]
+            from version import v
             with open("game_log/manifest.json", "w") as f:
                 json.dump({"version": v, "ticks": self.game_tick_no, "results": toJSON}, f)
 
