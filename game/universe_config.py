@@ -13,8 +13,8 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.05, 0.9),
 
         "primary_import": MaterialType.cuprite,
-        "primary_consumption_qty": 50,
-        "primary_max": 1100,
+        "primary_consumption_qty": 80,
+        "primary_max": 1250,
 
         "secondary_import": MaterialType.drones,
         "secondary_consumption_qty": 10,
@@ -22,16 +22,16 @@ STATION_DEFINITIONS = [
 
         "production_material": MaterialType.copper,
         "production_frequency": frequency_addition + 20,
-        "production_qty": 100,
+        "production_qty": 35,
         "production_max": 1000,
 
         "sell_price": 16,
         "primary_buy_price": 7,
-        "secondary_buy_price": 69,
+        "secondary_buy_price": 56,
 
         "base_sell_price": 16,
         "base_primary_buy_price": 7,
-        "base_secondary_buy_price": 69,
+        "base_secondary_buy_price": 56,
 
 
         "cargo": {
@@ -91,11 +91,11 @@ STATION_DEFINITIONS = [
         "production_qty": 20,
         "production_max": 260,
 
-        "sell_price": 58,
+        "sell_price": 42,
         "primary_buy_price": 30,
         "secondary_buy_price": 0,
 
-        "base_sell_price": 58,
+        "base_sell_price": 42,
         "base_primary_buy_price": 30,
         "base_secondary_buy_price": 0,
 
@@ -144,7 +144,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.4, 0.10),
 
         "primary_import": MaterialType.copper,
-        "primary_consumption_qty": 20,
+        "primary_consumption_qty": 42,
         "primary_max": 800,
 
         "secondary_import": MaterialType.null,
@@ -152,16 +152,16 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.wire,
-        "production_frequency": frequency_addition + 32,
-        "production_qty": 90,
+        "production_frequency": frequency_addition + 18,
+        "production_qty": 38,
         "production_max": 900,
 
         "sell_price": 10,
-        "primary_buy_price": 13,
+        "primary_buy_price": 19,
         "secondary_buy_price": 10,
 
         "base_sell_price": 10,
-        "base_primary_buy_price": 13,
+        "base_primary_buy_price": 19,
         "base_secondary_buy_price": 10,
 
         "cargo": {
@@ -185,7 +185,7 @@ STATION_DEFINITIONS = [
 
         "production_material": MaterialType.iron,
         "production_frequency": frequency_addition + 22,
-        "production_qty": 80,
+        "production_qty": 40,
         "production_max": 800,
 
         "sell_price": 12,
@@ -249,20 +249,20 @@ STATION_DEFINITIONS = [
         "secondary_max": 420,
 
         "production_material": MaterialType.circuitry,
-        "production_frequency": frequency_addition + 18,
-        "production_qty": 60,
-        "production_max": 360,
+        "production_frequency": frequency_addition + 30,
+        "production_qty": 30,
+        "production_max": 450,
 
         "sell_price": 23,
         "primary_buy_price": 10,
-        "secondary_buy_price": 11,
+        "secondary_buy_price": 12,
 
         "base_sell_price": 23,
         "base_primary_buy_price": 10,
-        "base_secondary_buy_price": 11,
+        "base_secondary_buy_price": 12,
 
         "cargo": {
-            MaterialType.gold: 700,
+            MaterialType.gold: 350,
             MaterialType.wire: 75,
             MaterialType.circuitry: 0
         }
@@ -286,12 +286,12 @@ STATION_DEFINITIONS = [
         "production_qty": 30,
         "production_max": 240,
 
-        "sell_price": 65,
-        "primary_buy_price": 60,
+        "sell_price": 49,
+        "primary_buy_price": 45,
         "secondary_buy_price": 10,
 
-        "base_sell_price": 65,
-        "base_primary_buy_price": 60,
+        "base_sell_price": 49,
+        "base_primary_buy_price": 45,
         "base_secondary_buy_price": 10,
 
         "cargo": {
@@ -320,11 +320,11 @@ STATION_DEFINITIONS = [
 
         "sell_price": 18,
         "primary_buy_price": 15,
-        "secondary_buy_price": 68,
+        "secondary_buy_price": 54,
 
         "base_sell_price": 18,
         "base_primary_buy_price": 15,
-        "base_secondary_buy_price": 68,
+        "base_secondary_buy_price": 54,
 
         "cargo": {
             MaterialType.iron: 100,
