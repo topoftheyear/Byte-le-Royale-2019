@@ -101,14 +101,12 @@ class TestTraderNPC(NPC):
                         chosenSellStation = tempStation
                         sell = True
                         break
-                if sell == True:
+                if sell is True:
                     for tempStation in stations:
                         if tempStation.production_material == chosenMaterial:
                             chosenBuyStation = tempStation
                             done = True
                             break
-                else:
-                    continue
 
             # done = False
             # trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]
