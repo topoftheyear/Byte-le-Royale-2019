@@ -289,11 +289,11 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
-                FrankieNPC: 0.85,
+                FrankieNPC: 1.0,
                 TestMinerNPC: 0.0,
-                TestTraderNPC: 0.01,
+                TestTraderNPC: 0.00,
                 CombatNPC: 0.0,
-                AdvancedPirateNPC: 0.15,
+                AdvancedPirateNPC: 0.0,
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):

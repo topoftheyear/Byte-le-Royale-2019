@@ -36,7 +36,7 @@ class GoldField(AsteroidField):
                 name="Gold Field",
                 position=position,
                 material_type=MaterialType.gold,
-                mining_rate=0.8)
+                mining_rate=0.4)
 
 class GeothiteField(AsteroidField):
     def init(self, position):
@@ -45,7 +45,7 @@ class GeothiteField(AsteroidField):
                 name="Geothite Field",
                 position=position,
                 material_type=MaterialType.goethite,
-                mining_rate=1.0)
+                mining_rate=0.55)
 
 class CuperiteField(AsteroidField):
     def init(self, position):
@@ -54,4 +54,4 @@ class CuperiteField(AsteroidField):
                 name="Cuprite Field",
                 position=position,
                 material_type=MaterialType.cuprite,
-                mining_rate=1.2)
+                mining_rate=0.7)

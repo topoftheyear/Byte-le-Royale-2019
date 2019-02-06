@@ -214,6 +214,11 @@ class FrankieNPC(NPC):
             self.move(*universe.get(ObjectType.secure_station)[0].position)
             self.repair(self.ship.max_hull - self.ship.current_hull)
 
+        # if piracy has gotten out of hand
+        if self.action != "pirate" and self.ship.notoriety > 5:
+            self.move(*universe.get(ObjectType.secure_station)[0].position)
+            self.pay_off_bounty()
+
         # inactive tracker
         if self.previous_position is not None and \
                 self.ship.position[0] == self.previous_position[0] and \
