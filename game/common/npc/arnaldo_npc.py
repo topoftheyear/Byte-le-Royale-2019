@@ -38,11 +38,13 @@ class ArnaldoNPC(NPC):
         self.next_module_price = 0
         self.get_module = False
         self.get_trade = False
+        self.random_turn = True
+        self.pacifist = False
     def team_name(self):
         return f"{self.name}#{random.randint(1,1000)}"
 
     def take_turn(self, universe):
-        # initialize empty variables
+        # initialize variables
         if self.fields is None:
             self.fields = universe.get("asteroid_fields")
         if self.stations is None:
@@ -52,82 +54,69 @@ class ArnaldoNPC(NPC):
 
         # select new action if not currently in one
         if self.action is None:
-            if self.get_module:
+            if self.random_turn:
+                self.action = random.choice(self.action_choices)
+                self.random_turn = False
+                self.pacifist = random.choice([True, False, True, True, True])
+            elif self.get_module:
                 self.action = "module"
             elif self.get_trade:
                 self.action = "trade"
             else:
                 self.action = "mine"
-
-        # mining action ------------------------------------------------------------------------------------------------
+        # Time to be the coal-ition and mine
         if self.action is "mine":
-            # Start off by mining. This is the base state we will have.
+            # If no target, choose one
+            if self.target is None:
+                self.target = random.choice(self.fields)
+                self.material = self.target.material_type
+            # if we have a field to mine from, go to it and mine until inventory is full
+            if self.target in self.fields:
+                self.mine()
+                self.move(*self.target.position)
+            # When inventory is full, sell it at the best place
+            if sum(self.ship.inventory.values()) >= self.ship.cargo_space * 0.9:
+                if self.target.object_type is not ObjectType.station:
+                    for thing, amount in self.ship.inventory.items():
+                        if amount <= 0:
+                            continue
+                        self.material = thing
+                        prices = get_best_material_prices(universe)
+                        self.target = prices["best_import_prices"][self.material]["station"]
+                        break
 
-            # If we can afford a module, get an upgrade
-            if self.next_module_price < self.ship.credits:
-                self.action = "module"
-            # if not, attempt to take prey on nearby weakened ships
-            else:
-                # Sets a ship as the target if less health
-                for otherShip in self.other_ships:
-                    if otherShip.current_hull < self.ship.current_hull:
-                        self.action = "pirate"
-                # if there is no suitable ships to pirate, then mine enough to begin trading
-                if self.action is not "pirate":
-                    if self.target is None:
-                        self.target = random.choice(self.fields)
-                        self.material = self.target.material_type
-                    # if we have a field to mine from, go to it and mine until inventory is full
-                    if self.target in self.fields:
-                        self.mine()
-                        self.move(*self.target.position)
-                    # When inventory is full, sell it at the best place
-                    if sum(self.ship.inventory.values()) >= self.ship.cargo_space * 0.9:
-                        if self.target.object_type is not ObjectType.station:
-                            for thing, amount in self.ship.inventory.items():
-                                if amount <= 0:
-                                    continue
-                                self.material = thing
-                                prices = get_best_material_prices(universe)
-                                self.target = prices["best_import_prices"][self.material]["station"]
-                                break
                 # If a target exists, move there and attempt to sell
-                if self.target is not None and self.material is not None:
+                elif self.target.object_type is ObjectType.station and self.material is not None:
                     self.move(*self.target.position)
-
-                    if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position):
+                    if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position) and self.material in self.ship.inventory:
                         self.sell_material(self.material, self.ship.inventory[self.material])
-                        self.target = self.ship
-                # if still broke, keep mining
-                if self.ship.credits <= 100:
-                    self.action = "mine"
+                        self.target = None
+                        self.random_turn = True
+                        if self.next_module_price < self.ship.credits:
+                            self.action = "module"
+                            self.get_module = True
+                            self.target = universe.get(ObjectType.secure_station)[0]
+                        # if still broke, keep mining
+                        elif self.ship.credits <= 1000:
+                            self.action = "mine"
 
         # Yarr harr, pirate here
-        if self.action is "pirate":
+        elif self.action is "pirate":
 
             # Who's next on the chopping block?
             if self.target is None:
                 self.target = random.choice(self.other_ships)
-
             # if we have a target, pursue only while we are healthier and they are alive.
-            elif self.target.object_type is ObjectType.ship:
-                if self.ship.current_hull >= self.target.current_hull > 0:
+            if self.target.object_type is ObjectType.ship:
+                if self.target.current_hull > 0:
                     self.move(*self.target.position)
                     self.attack(self.target)
                 elif self.target.current_hull <= 0:  # Target dead
-
-                    # the more ships nearby, the less likely to gather scrap
-                    self.next_list = ["gather", "gather"]
-                    for other_ship in self.other_ships:
-                        if other_ship.current_hull > 0:
-                            self.next_list.append("no gather")
-                    # if chooses to gather, get scrap, otherwise go back to pirating
-                    if random.choice(self.next_list) is "gather":
-                        scrap_list = universe.get(ObjectType.illegal_salvage)
-                        distance_list = [distance_to(self.ship, x, lambda e:e.position) for x in scrap_list]
-                        self.target = scrap_list[distance_list.index(min(distance_list))]
-                        self.move(*self.target.position)
-                        self.collect_illegal_salvage()
+                    scrap_list = universe.get(ObjectType.illegal_salvage)
+                    distance_list = [distance_to(self.ship, x, lambda e:e.position) for x in scrap_list]
+                    self.target = scrap_list[distance_list.index(min(distance_list))]
+                    self.move(*self.target.position)
+                    self.collect_illegal_salvage()
             # Raid their salvage, they didn't want it anyways
             elif self.target.object_type is ObjectType.illegal_salvage:
                 if self.target.amount <= 1 or sum(self.ship.inventory.values()) >= self.ship.cargo_space:
@@ -145,13 +134,15 @@ class ArnaldoNPC(NPC):
                     # If successful: try to get an upgrade next turn; if not, try to trade, else, mine
                     if self.next_module_price < self.ship.credits:
                         self.get_module = True
-                    elif self.ship.credits > 100:
+                    elif self.ship.credits > 1000:
                         self.get_trade = True
                     else:
                         self.action = None
+            else:
+                self.target = random.choice(self.other_ships)
 
         # module action ------------------------------------------------------------------------------------------------
-        if self.action is "module":
+        elif self.action is "module":
             # determine if a relevant module can be purchased
             if self.target is None:
                 # decide on what module to get
@@ -172,8 +163,8 @@ class ArnaldoNPC(NPC):
                         if self.ship.credits - self.module_unlock_price > 400:
                             self.unlock_module()
                             self.next_locked_slot = ShipSlot.zero # Done unlocking
-                else:
-                    self.type = random.choice(self.module_choices)
+
+                self.type = random.choice(self.module_choices)
                 # if we have a type of module to get, get it
                 if self.type is not None:
                     # check if it is within budget
@@ -188,18 +179,28 @@ class ArnaldoNPC(NPC):
             # go out and buy the module
             else:
                 self.move(*self.target.position)
-                if self.ship.module_0 is ModuleType.empty and self.ship.module_0_level <= 0:
+                if self.ship.module_0 is ModuleType.empty and self.ship.module_0_level <= 4:
                     self.buy_module(self.type, self.next_module_level, ShipSlot.zero)
-                if self.ship.module_1 is ModuleType.empty and self.ship.module_0_level <= 0:
+                    self.get_module = False
+                if self.ship.module_1 is ModuleType.empty and self.ship.module_0_level <= 4:
                     self.buy_module(self.type, self.next_module_level, ShipSlot.one)
-                if self.ship.module_2 is ModuleType.empty and self.ship.module_0_level <= 0:
+                    self.get_module = False
+                if self.ship.module_2 is ModuleType.empty and self.ship.module_0_level <= 4:
                     self.buy_module(self.type, self.next_module_level, ShipSlot.two)
-                if self.ship.module_3 is ModuleType.empty and self.ship.module_0_level <= 0:
+                    self.get_module = False
+                if self.ship.module_3 is ModuleType.empty and self.ship.module_0_level <= 4:
                     self.buy_module(self.type, self.next_module_level, ShipSlot.three)
+                    self.get_module = False
                 else:
                     # module action has been fulfilled
-                    self.action = None
-                    self.target = None
+                    self.get_module = False
+                    if self.ship.credits < 300:
+                        self.action = "mine"
+                        self.target = random.choice(self.fields)
+                    else:
+                        self.action_choices.remove("mine")
+                        self.action = random.choice(self.action_choices)
+                        self.action_choices.append("mine")
 
         # trade action -------------------------------------------------------------------------------------------------
         elif self.action is "trade":
@@ -228,12 +229,14 @@ class ArnaldoNPC(NPC):
                 if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                     if self.material in self.ship.inventory:
                         self.sell_material(self.material, self.ship.inventory[self.material])
+                        self.get_trade = False
 
                 if self.material not in self.ship.inventory or self.ship.inventory[self.material] <= 0:
                     # trade action has been fulfilled
                     self.action = None
                     self.target = None
                     self.material = None
+                    self.get_trade = False
 
         # override actions----------------------------------------------------------------------------------------------
         # healing
