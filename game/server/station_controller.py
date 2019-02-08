@@ -129,7 +129,6 @@ class StationController:
                 self.station_data[station_id]["production_counter"] += 1
 
         # update prices
-<<<<<<< HEAD
         for station in stations:
 
             # selling material price modification
@@ -159,7 +158,7 @@ class StationController:
                     station.sell_price = self.min_price
 
                     # dynamically changing the price frame down with a poor economy
-                    self.max_price_multiplier -= 0.05
+                    self.max_price_multiplier -= 0.04
                     if self.max_price_multiplier < 1:
                         self.max_price_multiplier = 1
 
@@ -171,7 +170,7 @@ class StationController:
                     station.sell_price = max_price
 
                     # dynamically changing the price frame up with a good economy
-                    self.max_price_multiplier += 0.04
+                    self.max_price_multiplier += 0.035
 
             # ceiling function so price is always an integer
             station.sell_price = math.ceil(station.sell_price)
@@ -213,67 +212,6 @@ class StationController:
 
                 station.secondary_buy_price = math.ceil(sorted([self.min_price, station.secondary_buy_price, max_price])[1])
 
-=======
-        jitter = 1
-        jitter_thresh = 4
-
-        for station in stations:
-            # variables to change for balance
-
-            value_max_mult = 25 #a multiplier for the max value prices will approach
-            min_value_ratio = 0.3 #a ratio used on the base_price to determine the minimum a price will go to
-            increase_mult = 0.0000001 #a multiplier multiplied to the base price to determine number to add to price when scaling
-            decrease_mult = 0.0000001 #ditto to line above
-
-            # the ratios of the three different materials in a station compared to the max they can hold of it
-
-            percentage_production = None
-            percentage_primary = None
-            percentage_secondary = None
-            no_sec = False
-            percentage_production = station.cargo[station.production_material] / station.production_max
-            percentage_primary = station.cargo[station.primary_import] / station.primary_max
-            if station.secondary_import is MaterialType.null:
-                no_sec = True
-            else:
-                percentage_secondary = station.cargo[station.secondary_import] / station.secondary_max
-
-            # the logic for changing sell price
-            max_price = station.base_sell_price * value_max_mult # the max price the value will approach
-            sell_percentage_max = math.floor(max_price * (1-percentage_production)) # used for a dynamic max price, the less of the production material it has the higher the price can go at that time
-            min_sell = math.ceil(station.base_sell_price * min_value_ratio) # the minimum sell price
-            if station.sell_price > sell_percentage_max: # the price will decrease to approach the min_sell value
-                station.sell_price -= math.ceil(station.base_sell_price * decrease_mult + random.randint(0, jitter_thresh) * jitter)
-                if station.sell_price < min_sell:
-                    station.sell_price = min_sell
-            elif station.sell_price < sell_percentage_max: # the price will increase to approach the percentage_max value
-                station.sell_price += math.ceil(station.base_sell_price * increase_mult + random.randint(0, jitter_thresh) * jitter)
-
-            # the logic for changing primary price
-            primary_max_price = station.base_primary_buy_price * value_max_mult # the max price the value will approach
-            primary_percentage_max = math.floor(primary_max_price * (1 - percentage_primary)) # used for a dynamic max price, the less of the primary material it has the higher the price can go at that time
-            primary_min_price = math.ceil(station.base_primary_buy_price * min_value_ratio) # the minimum sell price
-            if station.primary_buy_price < primary_percentage_max: # the price will increase to approach the percentage_max value
-                station.primary_buy_price += math.ceil(station.base_primary_buy_price * increase_mult + random.randint(0, jitter_thresh) * jitter)
-            elif station.primary_buy_price > primary_percentage_max: # the price will decrease to approach the primary_min_price value
-
-                station.primary_buy_price -= math.ceil(station.base_primary_buy_price * decrease_mult + random.randint(0, jitter_thresh) * jitter)
-                if station.primary_buy_price < primary_min_price:
-                    station.primary_buy_price = primary_min_price
-
-
-            # the logic for changing secondary price
-            if not no_sec:
-                secondary_max_price = station.base_secondary_buy_price * value_max_mult # the max price the value will approach
-                secondary_percentage_max = math.floor(secondary_max_price * (1 - percentage_secondary)) # used for a dynamic max price, the less of the secondary material it has the higher the price can go at that time
-                secondary_min_price = math.ceil(station.base_secondary_buy_price * min_value_ratio) # the minimum sell price
-                if station.secondary_buy_price < secondary_percentage_max: # the price will increase to approach the percentage_max value
-                    station.secondary_buy_price += math.ceil(station.base_secondary_buy_price * increase_mult + random.randint(0, jitter_thresh) * jitter)
-                elif station.secondary_buy_price > secondary_percentage_max: # the price will decrease to approach the secondary_min_price value
-                    station.secondary_buy_price -= math.ceil(station.base_secondary_buy_price * decrease_mult + random.randint(0, jitter_thresh) * jitter)
-                    if station.secondary_buy_price < secondary_min_price:
-                        station.secondary_buy_price = secondary_min_price
->>>>>>> master
 
             # for debugging
             self.print(f"Station {station.name} Primary Buy: {station.primary_buy_price} Secondary Buy: {station.secondary_buy_price} Production Sell: {station.sell_price}")
