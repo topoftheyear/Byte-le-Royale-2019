@@ -8,7 +8,7 @@ from game.config import *
 from game.utils.helpers import *
 
 class TestTraderNPC(NPC):
-
+    # NPC will choose a random trade material, buy as much of it as possible, then go to sell it
     def __init__(self, ship):
         UserClient.__init__(self)
         self.ship = ship
