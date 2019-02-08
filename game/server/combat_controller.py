@@ -76,8 +76,6 @@ class CombatController:
                 "target_position": target.position,
             })
 
-            if ship.object_type == ObjectType.police:
-                print("POLICE ATTACKED")
 
             # if target was a police or enforcer give notoriety
             if target.object_type is ObjectType.police:
