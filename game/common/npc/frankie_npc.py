@@ -12,7 +12,6 @@ class FrankieNPC(NPC):
 
     def __init__(self, ship):
         UserClient.__init__(self)
-        self.name = "FrankieNPC"
         self.ship = ship
         self.ship_id = ship.id
 
@@ -23,6 +22,8 @@ class FrankieNPC(NPC):
         self.type = None
         self.level = None
 
+        self.bought = False
+
         self.fields = None
         self.stations = None
 
@@ -30,7 +31,7 @@ class FrankieNPC(NPC):
         self.inactive_counter = 0
 
     def team_name(self):
-        return f"FrankieNPC#{random.randint(1,1000)}"
+        return f"FrankieNPC# {random.randint(1,1000)}"
 
     def take_turn(self, universe):
         # initialize empty variables
@@ -95,31 +96,44 @@ class FrankieNPC(NPC):
                 self.material = self.target.production_material
 
             # if we have a station to buy from, go to it and purchase some
-            elif sum(self.ship.inventory.values()) <= 0:
+            elif not self.bought:
                 self.move(*self.target.position)
                 if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position):
                     self.buy_material(min(self.ship.cargo_space - sum(self.ship.inventory.values()),
                                           math.floor(self.ship.credits / self.target.sell_price)))
+                    self.bought = True
+                    self.target = universe.get(ObjectType.secure_station)[0]
 
-                    # find the station that'll buy it for the most
-                    prices = get_best_material_prices(universe)
-                    self.target = prices["best_import_prices"][self.material]["station"]
+            # once done, sell all materials in the inventory (just in case)
+            elif sum(self.ship.inventory.values()) > 0:
+                if self.target.object_type is not ObjectType.station:
+                    for thing, amount in self.ship.inventory.items():
+                        if amount <= 0:
+                            continue
+                        self.material = thing
+                        prices = get_best_material_prices(universe)
+                        self.target = prices["best_import_prices"][self.material]["station"]
+                        break
+                elif self.target.object_type is ObjectType.station:
+                    self.move(*self.target.position)
 
-            # otherwise, sell all materials in the inventory
-            elif self.target in self.stations:
-                self.move(*self.target.position)
-                if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position):
-                    if self.material in self.ship.inventory:
-                        self.sell_material(self.material, self.ship.inventory[self.material])
+                    if self.material in self.ship.inventory.keys():
+                        if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e:e.position):
+                            self.sell_material(self.material, self.ship.inventory[self.material])
+                            self.target = self.ship
+                    else:
+                        self.target = self.ship
 
-                if self.material not in self.ship.inventory or self.ship.inventory[self.material] <= 0:
-                    # trade action has been fulfilled
-                    self.action = None
-                    self.target = None
-                    self.material = None
+            elif sum(self.ship.inventory.values()) <= 0:
+                # trade action has been fulfilled
+                self.action = None
+                self.target = None
+                self.material = None
 
-                    if self.ship.credits <= 100:
-                        self.action = "mine"
+                self.bought = False
+
+                if self.ship.credits <= 100:
+                    self.action = "mine"
 
         # pirate action ------------------------------------------------------------------------------------------------
         elif self.action is "pirate":
@@ -214,6 +228,11 @@ class FrankieNPC(NPC):
             self.move(*universe.get(ObjectType.secure_station)[0].position)
             self.repair(self.ship.max_hull - self.ship.current_hull)
 
+        # if piracy has gotten out of hand
+        if self.action != "pirate" and self.ship.notoriety > 5:
+            self.move(*universe.get(ObjectType.secure_station)[0].position)
+            self.pay_off_bounty()
+
         # inactive tracker
         if self.previous_position is not None and \
                 self.ship.position[0] == self.previous_position[0] and \
@@ -233,6 +252,8 @@ class FrankieNPC(NPC):
 
             self.type = None
             self.level = None
+
+            self.bought = False
 
             self.fields = None
             self.stations = None

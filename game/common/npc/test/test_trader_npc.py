@@ -8,7 +8,7 @@ from game.config import *
 from game.utils.helpers import *
 
 class TestTraderNPC(NPC):
-
+    # NPC will choose a random trade material, buy as much of it as possible, then go to sell it
     def __init__(self, ship):
         UserClient.__init__(self)
         self.ship = ship
@@ -101,14 +101,12 @@ class TestTraderNPC(NPC):
                         chosenSellStation = tempStation
                         sell = True
                         break
-                if sell == True:
+                if sell is True:
                     for tempStation in stations:
                         if tempStation.production_material == chosenMaterial:
                             chosenBuyStation = tempStation
                             done = True
                             break
-                else:
-                    continue
 
             # done = False
             # trade_materials = [MaterialType.iron, MaterialType.steel, MaterialType.circuitry, MaterialType.computers, MaterialType.weaponry, MaterialType.copper]

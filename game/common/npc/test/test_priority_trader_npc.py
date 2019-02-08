@@ -8,7 +8,7 @@ from game.config import *
 from game.utils.helpers import *
 
 class TestPriorityTraderNPC(NPC):
-
+    # NPC that will take the top 3 current most profitable materials, select one, then go buy as much of it as possible and go to sell it
     def __init__(self, ship):
         UserClient.__init__(self)
         self.ship = ship

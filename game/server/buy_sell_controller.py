@@ -170,7 +170,7 @@ class BuySellController:
         self.print("STATION PRIMARY:  " + str(station.primary_import) + "    "+ str(station.cargo[station.primary_import]))
 
         # verify station has enough material, reducing requested quantity to what the station has.
-        quantity = min(station.production_qty, quantity)
+        quantity = min(station.cargo[material], quantity)
 
         # verify that the ship has enough credits for the requested materials, otherwise reduce order
         # to what the ship can afford
