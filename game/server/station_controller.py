@@ -21,6 +21,10 @@ class StationController:
         self.stats = []
         self.initialized = False
 
+        self.max_price_multiplier = 20
+        self.min_price = 5
+        self.rate_of_change_multiplier = 0.03
+
         self.debug = False
 
     def init(self, stations):
@@ -125,6 +129,91 @@ class StationController:
                 self.station_data[station_id]["production_counter"] += 1
 
         # update prices
+<<<<<<< HEAD
+        for station in stations:
+
+            # selling material price modification
+            # maximum price is a dynamic multiplier by the base price
+            max_price = math.ceil(station.base_sell_price * self.max_price_multiplier)
+
+            # percent of how full the cargo is
+            cargo_ratio = station.cargo[station.production_material] / station.production_max
+
+            # percent of where the price stands between the highest and lowest it can be
+            price_ratio = (station.sell_price - self.min_price) / (max_price - self.min_price)
+
+            # what the price should be given supply / demand laws
+            destination = (1 - cargo_ratio) * (max_price - self.min_price) + self.min_price
+
+            # rate at which the price shall change, determined by distance to destination and current price
+            rate_of_change = math.ceil(abs(destination - station.sell_price) * self.rate_of_change_multiplier)
+
+            # prevent the rate from being too high
+            rate_of_change = min(rate_of_change, 5)
+
+            # if the cargo ratio is larger than the price ratio, reduce the price
+            if cargo_ratio > 1 - price_ratio:
+                station.sell_price -= rate_of_change
+
+                if station.sell_price <= self.min_price:
+                    station.sell_price = self.min_price
+
+                    # dynamically changing the price frame down with a poor economy
+                    self.max_price_multiplier -= 0.05
+                    if self.max_price_multiplier < 1:
+                        self.max_price_multiplier = 1
+
+            # if the cargo ratio is smaller than the price ratio, increase the price
+            elif cargo_ratio < 1 - price_ratio:
+                station.sell_price += rate_of_change
+
+                if station.sell_price >= max_price:
+                    station.sell_price = max_price
+
+                    # dynamically changing the price frame up with a good economy
+                    self.max_price_multiplier += 0.04
+
+            # ceiling function so price is always an integer
+            station.sell_price = math.ceil(station.sell_price)
+
+
+            # primary material price modification
+            max_price = math.ceil(station.base_primary_buy_price * self.max_price_multiplier)
+
+            cargo_ratio = station.cargo[station.primary_import] / station.primary_max
+            price_ratio = (station.primary_buy_price - self.min_price) / (max_price - self.min_price)
+
+            destination = (1 - cargo_ratio) * (max_price - self.min_price)
+            rate_of_change = math.ceil(abs(destination - station.primary_buy_price) * self.rate_of_change_multiplier)
+            rate_of_change = min(rate_of_change, 5)
+
+            if cargo_ratio > 1 - price_ratio:
+                station.primary_buy_price -= rate_of_change
+            elif cargo_ratio < 1 - price_ratio:
+                station.primary_buy_price += rate_of_change
+
+            station.primary_buy_price = math.ceil(sorted([self.min_price, station.primary_buy_price, max_price])[1])
+
+
+            # secondary material price modification if need be
+            if station.secondary_import is not None and station.secondary_import is not MaterialType.null:
+                max_price = math.ceil(station.base_secondary_buy_price * self.max_price_multiplier)
+
+                cargo_ratio = station.cargo[station.secondary_import] / station.secondary_max
+                price_ratio = (station.secondary_buy_price - self.min_price) / (max_price - self.min_price)
+
+                destination = (1 - cargo_ratio) * (max_price - self.min_price)
+                rate_of_change = math.ceil(abs(destination - station.secondary_buy_price) * self.rate_of_change_multiplier)
+                rate_of_change = min(rate_of_change, 5)
+
+                if cargo_ratio > 1 - price_ratio:
+                    station.secondary_buy_price -= rate_of_change
+                elif cargo_ratio < 1 - price_ratio:
+                    station.secondary_buy_price += rate_of_change
+
+                station.secondary_buy_price = math.ceil(sorted([self.min_price, station.secondary_buy_price, max_price])[1])
+
+=======
         jitter = 1
         jitter_thresh = 4
 
@@ -184,9 +273,10 @@ class StationController:
                     station.secondary_buy_price -= math.ceil(station.base_secondary_buy_price * decrease_mult + random.randint(0, jitter_thresh) * jitter)
                     if station.secondary_buy_price < secondary_min_price:
                         station.secondary_buy_price = secondary_min_price
+>>>>>>> master
 
             # for debugging
-            self.print(f"Primary Buy: {station.primary_buy_price} Secondary Buy: {station.secondary_buy_price} Production Sell: {station.sell_price}")
+            self.print(f"Station {station.name} Primary Buy: {station.primary_buy_price} Secondary Buy: {station.secondary_buy_price} Production Sell: {station.sell_price}")
 
             self.stats.append({
                 "station_id": station.id,

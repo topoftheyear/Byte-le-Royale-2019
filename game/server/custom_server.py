@@ -290,6 +290,7 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
+
                 ArnaldoNPC: 0.425,
                 FrankieNPC: 0.425,
                 TestMinerNPC: 0.0,

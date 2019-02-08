@@ -8,6 +8,7 @@ from game.common.ship import Ship
 from game.config import *
 from game.common.stats import GameStats
 
+from game.utils.helpers import in_radius
 from game.server.notoriety_controller import NotorietyController
 from game.server.accolade_controller import AccoladeController
 
@@ -53,13 +54,18 @@ class CombatController:
             self.print(f"Ship {ship.team_name} attempting to attack ship {ship.team_name}")
 
             # verify target is in weapon range
-            result = (ship.position[0] - target.position[0])**2 + (ship.position[1] - target.position[1])**2
-            if not (result < ship.weapon_range**2):
+            result = in_radius(ship, target, ship.weapon_range, lambda s:s.position)
+            if not result:
                 self.print("Target not in range.")
                 # the target is not in range
                 continue
 
+            if not target.is_alive():
+                self.print("Target is not alive.")
+                continue
+
             self.print(f"Target is in range. Dealing {ship.weapon_damage} to target.")
+            self.print(f"Target location {target.position}")
             target.current_hull = max(target.current_hull-ship.weapon_damage, 0)
             self.print(f"Target hull now at {target.current_hull}")
 
