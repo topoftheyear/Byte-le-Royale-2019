@@ -102,7 +102,7 @@ def generate():
 
     for i in range(NPCS_TO_GENERATE):
         new_npc_ship = Ship()
-        new_npc_ship.init("~AI", is_npc=True, position=percent_world(0.5, 0.5))
+        new_npc_ship.init("AI #{}".format(i), is_npc=True, position=percent_world(0.5, 0.5))
 
         universe.append(new_npc_ship)
 

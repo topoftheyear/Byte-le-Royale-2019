@@ -3,6 +3,7 @@ import click
 import requests
 from requests.auth import HTTPBasicAuth
 import traceback
+import sys
 
 
 from validate import validate
@@ -185,7 +186,7 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait, gam
 
 
     # Prep server args
-    server_args = ["./br_launcher.pyz", "server"]
+    server_args = [sys.executable, "./br_launcher.pyz", "server"]
 
     if server_verbose:
         server_args.append("--server-verbose")
@@ -196,7 +197,7 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait, gam
 
 
     # Prep client args
-    client_args = ["./br_launcher.pyz", "client"]
+    client_args = [sys.executable, "./br_launcher.pyz", "client"]
 
     if client_verbose:
         client_args.append("--client-verbose")
