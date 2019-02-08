@@ -11,6 +11,7 @@ from game.utils.generate_game import load
 from game.utils.helpers import *
 
 from game.common.npc.frankie_npc import FrankieNPC
+from game.common.npc.arnaldo_npc import ArnaldoNPC
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -289,11 +290,12 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
-                FrankieNPC: 0.85,
+                ArnaldoNPC: 0.425,
+                FrankieNPC: 0.425,
                 TestMinerNPC: 0.0,
                 TestTraderNPC: 0.01,
                 CombatNPC: 0.0,
-                AdvancedPirateNPC: 0.15,
+                AdvancedPirateNPC: 0.14,
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
