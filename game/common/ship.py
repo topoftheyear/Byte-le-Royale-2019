@@ -25,12 +25,11 @@ class Ship(GameObject):
         # allows players to track ships by random id
         #   could be changed to be more readable.
         self.public_id = str(uuid4())
+        self.team_name = team_name
 
         if self.is_npc:
-            self.team_name = team_name + f" ({self.id})"
             self.color = None
         else:
-            self.team_name = team_name
             self.color = color
 
         self.max_hull = GameStats.get_ship_stat(ShipStat.hull, ModuleLevel.base)

@@ -12,7 +12,6 @@ class FrankieNPC(NPC):
 
     def __init__(self, ship):
         UserClient.__init__(self)
-        self.name = "FrankieNPC"
         self.ship = ship
         self.ship_id = ship.id
 
@@ -32,7 +31,7 @@ class FrankieNPC(NPC):
         self.inactive_counter = 0
 
     def team_name(self):
-        return f"FrankieNPC#{random.randint(1,1000)}"
+        return f"FrankieNPC# {random.randint(1,1000)}"
 
     def take_turn(self, universe):
         # initialize empty variables
