@@ -293,7 +293,7 @@ class CustomServer(ServerControl):
                 ArnaldoNPC: 0.425,
                 FrankieNPC: 0.425,
                 TestMinerNPC: 0.0,
-                TestTraderNPC: 0.01,
+                TestTraderNPC: 0.00,
                 CombatNPC: 0.0,
                 AdvancedPirateNPC: 0.14,
         }

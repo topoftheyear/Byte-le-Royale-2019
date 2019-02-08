@@ -130,12 +130,14 @@ class StationController:
 
         for station in stations:
             # variables to change for balance
+
             value_max_mult = 25 #a multiplier for the max value prices will approach
             min_value_ratio = 0.3 #a ratio used on the base_price to determine the minimum a price will go to
             increase_mult = 0.0000001 #a multiplier multiplied to the base price to determine number to add to price when scaling
             decrease_mult = 0.0000001 #ditto to line above
 
             # the ratios of the three different materials in a station compared to the max they can hold of it
+
             percentage_production = None
             percentage_primary = None
             percentage_secondary = None
@@ -165,9 +167,11 @@ class StationController:
             if station.primary_buy_price < primary_percentage_max: # the price will increase to approach the percentage_max value
                 station.primary_buy_price += math.ceil(station.base_primary_buy_price * increase_mult + random.randint(0, jitter_thresh) * jitter)
             elif station.primary_buy_price > primary_percentage_max: # the price will decrease to approach the primary_min_price value
+
                 station.primary_buy_price -= math.ceil(station.base_primary_buy_price * decrease_mult + random.randint(0, jitter_thresh) * jitter)
                 if station.primary_buy_price < primary_min_price:
                     station.primary_buy_price = primary_min_price
+
 
             # the logic for changing secondary price
             if not no_sec:

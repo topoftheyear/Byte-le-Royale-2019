@@ -41,7 +41,7 @@ class ServerControl:
         # Game Configuration options
         system = platform.system()
         if system == "Windows":
-            self.turn_time = 0.025
+            self.turn_time = 0.01
         else:
             self.turn_time = 0.01
 
