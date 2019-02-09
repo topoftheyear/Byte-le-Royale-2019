@@ -13,7 +13,7 @@ class BarattaNPC(NPC):
     # Set up the system.
     def __init__(self, ship):
         UserClient.__init__(self)
-        self.name = "MaynardNPC"
+        self.name = "BarattaNPC"
         self.ship = ship
         self.ship_id = ship.id
 
