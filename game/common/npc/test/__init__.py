@@ -12,5 +12,6 @@ from game.common.npc.test.test_trader_npc import *
 from game.common.npc.test.unlock_npc import *
 from game.common.npc.test.test_priority_trader_npc import *
 from game.common.npc.test.buy_sell_npc import *
+from game.common.npc.test.boundary_break import *
 
 

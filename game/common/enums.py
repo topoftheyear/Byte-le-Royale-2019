@@ -51,6 +51,7 @@ class LogEvent:
     passive_repair = 20
     manual_repair = 21
     ship_pay_off_bounty = 22
+    ship_abandoned = 23
 
 class MessageType:
     null = 0
