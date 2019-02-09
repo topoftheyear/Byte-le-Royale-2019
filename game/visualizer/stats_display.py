@@ -182,6 +182,60 @@ def material_stats_selection_screen(stats, window_surf, clock):
     pygame.display.update()
     clock.tick(30)
 
+def material_stats_selection_screen_2(stats, window_surf, clock):
+    initial_screen = window_surf.copy()
+    window_surf.fill(pygame.Color(0,0,0))
+
+    font_name = pygame.font.get_default_font()
+    font = pygame.font.Font(font_name, 20)
+
+    y_offset = 25
+    y_margin = 150
+    x_margin = 525
+    char_lut = {}
+
+
+    text_surf = font.render(f"Select a material to view statistics on.", True, pygame.Color(0, 155, 0))
+    window_surf.blit(text_surf, (x_margin-100, y_margin+(-2*y_offset)))
+
+    for i, material in enumerate(stats.keys()):
+
+        char = chr(97+i)
+        char_lut[char] = material
+
+        text_surf = font.render(f"{char}) {material}", True, pygame.Color(0, 155, 0))
+        window_surf.blit(text_surf, (x_margin, y_margin+(i*y_offset)))
+
+    text_surf = font.render(f"Esc to go back", True, pygame.Color(0, 155, 0))
+    window_surf.blit(text_surf, (550, 700))
+
+    close = False
+    while not close:
+        # draw here
+
+        # Handle Events
+        for event in pygame.event.get():
+            if event.type == QUIT:
+                pygame.quit()
+                sys.exit()
+
+            if event.type == KEYUP:
+                if event.key == K_ESCAPE:
+                    close = True
+                    break
+
+                for k in char_lut.keys():
+                    if event.key == eval(f"K_{k}"):
+                        material = char_lut[k]
+                        show_material_stats_display(f"{material} Consumed vs Produced", stats[material], window_surf, clock)
+
+        pygame.display.update()
+        clock.tick(30)
+
+    # show initial screen to transition back to game
+    window_surf.blit(initial_screen, (0,0))
+    pygame.display.update()
+    clock.tick(30)
 
 class Histogram(pygame.sprite.Sprite):
 
