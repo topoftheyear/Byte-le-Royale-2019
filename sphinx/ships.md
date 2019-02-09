@@ -14,6 +14,7 @@ Every turn, each ship will first use their action, then they will move.
   - `Buy material`
   - `Sell material` (more on buying and selling [Here](trading.html))
 - Movement
+  - **NOTE**: if your ship leaves the world bounds `(1000, 700)`, your ship will die.
 
 ## Ship Attributes
 
