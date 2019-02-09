@@ -13,20 +13,7 @@ class BoundaryBreak(NPC):
         UserClient.__init__(self)
         self.ship = ship
         self.ship_id = ship.id
-
-        self.action = None
-        self.target = None
-        self.material = None
-
-        self.type = None
-        self.level = None
-
-        self.bought = False
-
-        self.fields = None
-        self.stations = None
-
-        self.previous_position = None
+        
         self.edition = random.randint(0, 1)
         self.subedition = random.randint(0, 1)
 
