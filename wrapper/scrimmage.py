@@ -517,7 +517,7 @@ def clear_floats():
 input_field.accept_handler = input_parser
 
 
-host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
+host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org:5000")
 
 
 update_announcements_enabled= False
