@@ -14,11 +14,11 @@ STATION_DEFINITIONS = [
 
         "primary_import": MaterialType.cuprite,
         "primary_consumption_qty": 80,
-        "primary_max": 1250,
+        "primary_max": 2000,
 
         "secondary_import": MaterialType.drones,
         "secondary_consumption_qty": 10,
-        "secondary_max": 200,
+        "secondary_max": 1000,
 
         "production_material": MaterialType.copper,
         "production_frequency": frequency_addition + 20,
@@ -116,7 +116,7 @@ STATION_DEFINITIONS = [
 
         "secondary_import": MaterialType.pylons,
         "secondary_consumption_qty": 30,
-        "secondary_max": 500,
+        "secondary_max": 1500,
 
         "production_material": MaterialType.machinery,
         "production_frequency": frequency_addition + 23,
@@ -177,11 +177,11 @@ STATION_DEFINITIONS = [
 
         "primary_import": MaterialType.goethite,
         "primary_consumption_qty": 55,
-        "primary_max": 1200,
+        "primary_max": 1600,
 
         "secondary_import": MaterialType.machinery,
         "secondary_consumption_qty": 10,
-        "secondary_max": 200,
+        "secondary_max": 1200,
 
         "production_material": MaterialType.iron,
         "production_frequency": frequency_addition + 22,
@@ -246,7 +246,7 @@ STATION_DEFINITIONS = [
 
         "secondary_import": MaterialType.wire,
         "secondary_consumption_qty": 30,
-        "secondary_max": 420,
+        "secondary_max": 1420,
 
         "production_material": MaterialType.circuitry,
         "production_frequency": frequency_addition + 30,
@@ -284,7 +284,7 @@ STATION_DEFINITIONS = [
         "production_material": MaterialType.drones,
         "production_frequency": frequency_addition + 23,
         "production_qty": 30,
-        "production_max": 240,
+        "production_max": 300,
 
         "sell_price": 49,
         "primary_buy_price": 45,
@@ -311,7 +311,7 @@ STATION_DEFINITIONS = [
 
         "secondary_import": MaterialType.drones,
         "secondary_consumption_qty": 10,
-        "secondary_max": 100,
+        "secondary_max": 1100,
 
         "production_material": MaterialType.steel,
         "production_frequency": frequency_addition + 21,

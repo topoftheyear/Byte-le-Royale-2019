@@ -158,7 +158,7 @@ class StationController:
                     station.sell_price = self.min_price
 
                     # dynamically changing the price frame down with a poor economy
-                    self.max_price_multiplier -= 0.05
+                    self.max_price_multiplier -= 0.04
                     if self.max_price_multiplier < 1:
                         self.max_price_multiplier = 1
 
@@ -170,7 +170,7 @@ class StationController:
                     station.sell_price = max_price
 
                     # dynamically changing the price frame up with a good economy
-                    self.max_price_multiplier += 0.04
+                    self.max_price_multiplier += 0.035
 
             # ceiling function so price is always an integer
             station.sell_price = math.ceil(station.sell_price)

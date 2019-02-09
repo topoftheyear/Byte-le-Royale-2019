@@ -11,9 +11,9 @@ To initialize each component, run br_launcher.pyz in CMD with the corresponding 
 / argument. Here are the steps for setting up the server:
 1. Open a command prompt / PowerShell / terminal in the folder that `br_launcher.pyz` is located in.
 2. Run `by_launcher.pyz update` to check if any updates have occurred since last runtime and automatically update.
-2. Use `br_launcher.pyz run` to run the client and server.
-  - When the client and server are running, watch the 2 prompts for potential output.
-3. Once the client has completed, run `br_launcher.pyz visualizer` to watch the match.
+3. Use `br_launcher.pyz run` to run the client and server. Alternatively you can run them in separate windows by running `br_launcher.pyz server` in one prompt followed by `br_launcher.pyz client` in another.
+    - When the client and server are running, watch the 2 prompts for potential output.
+4. Once the run has completed, run `br_launcher.pyz visualizer` to watch the match.
 
 ## Visualizer
 
