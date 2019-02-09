@@ -15,8 +15,8 @@ Note: the Black Market Stations and the Secure Station don't have imports or pro
 
 - `primary_import` - the station's primary import
 - `secondary_import` - the station's secondary import
-- `primary_consumption_qty` - quantity of primary import that is consumed at each output
-- `secondary_consumption_qty` - quantity of secondary import that is consumed at each output
+- `primary_consumption_qty` - quantity of primary import that is consumed each time a new `production_material` is produced
+- `secondary_consumption_qty` - quantity of secondary import that is consumed each time a new `production_material` is produced
 - `primary_max` - The total amount of the station's primary import that a station can store
 - `secondary_max` - The total amount of the station's secondary import that a station can store
 
