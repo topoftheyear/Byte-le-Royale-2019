@@ -236,7 +236,7 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait, gam
     server_proc.wait()
 
 
-host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org")
+host = os.getenv("BL_ROYALE_HOST",  "http://scrimmage.royale.ndacm.org")
 
 @cli.group()
 def scrim():

@@ -11,7 +11,7 @@ from requests.auth import HTTPBasicAuth
 
 UNITY_VIS = False
 FINALS = False
-API_URL = "http://localhost:5000"
+API_URL = "http://scrimmage.royale.ndacm.org:5000"
 auth = HTTPBasicAuth("BL_ROYALE_ADMIN", "bl_royale_admin_123")
 
 def main():
@@ -30,9 +30,9 @@ def main():
     if UNITY_VIS:
         visualizer_args = ["visualizer"]
     else:
-        #visualizer_args = [sys.executable, ]
+        visualizer_args = ["vis/vis.exe" ]
         #visualizer_args = [sys.executable, "br_launcher.pyz", "visualizer", "--dont-wait", ]
-        visualizer_args = [sys.executable, "br_launcher.pyz", "visualizer", "--dont-wait", "--fullscreen", ]
+        #visualizer_args = [sys.executable, "br_launcher.pyz", "visualizer", "--dont-wait", "--fullscreen", ]
 
     while True:
 
