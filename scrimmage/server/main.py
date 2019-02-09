@@ -300,6 +300,7 @@ def upload_game_logs():
 
     # insert into db
     result_file = "runs/{}_result.json".format(run_no)
+    game_data_file = "runs/{}_game_data.json".format(run_no)
     log_files = "runs/{}.tar".format(run_no)
     with open(log_files, "w") as f:
         f.write(data["game_log"])
@@ -307,26 +308,35 @@ def upload_game_logs():
     with open(result_file, "w") as f:
         json.dump(data["results"], f)
 
+    with open(game_data_file, "w") as f:
+        json.dump(data["game_data"], f)
+
     return "ok"
 
+@app.route('/report/game_logs', methods=["GET"])
 @app.route("/report/game_logs/<int:run>", methods=["GET"])
 @requires_admin
-def get_game_logs(run=-1):
+def get_game_logs(run=None):
 
-    if run < 0:
+    if run is None:
         run = get_latest_run_no()
 
-    result_file = "runs/{}_result.py".format(run)
-    log_files = "runs/{}.py".format(run)
+    result_file = "runs/{}_result.json".format(run)
+    log_files = "runs/{}.tar".format(run)
+    game_data_file = "runs/{}_game_data.json".format(run)
     with open(log_files, "rb") as f:
         log_data = f.read()
 
     with open(result_file, "r") as f:
         results_data = f.read()
 
+    with open(game_data_file, "r") as f:
+        game_data = f.read()
+
     return jsonify({
         "results": results_data,
-        "log_data": log_data
+        "game_data": game_data,
+        "log_data": log_data.decode("utf-8")
     })
 
 @app.route("/report/client_log", methods=["POST"])

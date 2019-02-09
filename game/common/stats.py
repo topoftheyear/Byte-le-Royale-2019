@@ -1,31 +1,31 @@
-from game.utils.helpers import *
+
 from game.common.enums import *
 
 class GameStats:
 
     hull_0 = 1000
-    hull_1 = 2000
-    hull_2 = 3000
-    hull_3 = 4000
-    hull_4 = 5000
+    hull_1 = 3645
+    hull_2 = 4506
+    hull_3 = 6243
+    hull_4 = 10000
 
     engine_speed_0 = 5
     engine_speed_1 = 7
     engine_speed_2 = 9
     engine_speed_3 = 11
-    engine_speed_4 = 666  # Hail satan
+    engine_speed_4 = 15
 
-    weapon_damage_0 = 10
-    weapon_damage_1 = 20
-    weapon_damage_2 = 30
-    weapon_damage_3 = 40
-    weapon_damage_4 = 50
+    weapon_damage_0 = 83
+    weapon_damage_1 = 270
+    weapon_damage_2 = 458
+    weapon_damage_3 = 645
+    weapon_damage_4 = 2081
 
-    weapon_range_0 = 50
-    weapon_range_1 = 75
-    weapon_range_2 = 100
-    weapon_range_3 = 125
-    weapon_range_4 = 150
+    weapon_range_0 = 25
+    weapon_range_1 = 50
+    weapon_range_2 = 75
+    weapon_range_3 = 100
+    weapon_range_4 = 125
 
     cargo_space_0 = 500
     cargo_space_1 = 600

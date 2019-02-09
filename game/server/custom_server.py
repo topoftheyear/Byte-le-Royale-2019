@@ -4,20 +4,14 @@ from math import sqrt
 
 from game.server.server_control import ServerControl
 from game.common.enums import *
-from game.common.npc.mining_npc import MiningNPC
-from game.common.npc.combat_npc import CombatNPC
-from game.common.npc.module_npc import ModuleNPC
-from game.common.npc.buy_sell_npc import BuySellNPC
-from game.common.npc.repeat_purchase_npc import RepeatPurchaseNPC
-from game.common.npc.unlock_npc import UnlockNPC
-from game.common.npc.cargo_drop_npc import CargoDropNPC
-from game.common.npc.salvage_collector_npc import SalvageNPC
-from game.common.npc.lazy_npc import LazyNPC
-from game.common.npc.repair_npc import RepairNPC
-from game.common.npc.bounty_redeemer import BountyRedeemerNPC
-from game.common.npc.bounty_accumulator import BountyAccumulatorNPC
+from game.common.npc.test import *
+from game.common.npc.test.advanced_pirate_npc import *
 from game.common.ship import Ship
 from game.utils.generate_game import load
+from game.utils.helpers import *
+
+from game.common.npc.frankie_npc import FrankieNPC
+from game.common.npc.arnaldo_npc import ArnaldoNPC
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -32,6 +26,7 @@ from game.server.repair_controller import RepairController
 from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
+from game.config import *
 from game.utils.projection import *
 
 
@@ -42,11 +37,13 @@ class CustomServer(ServerControl):
             verbose=False,
             wait_on_client=False,
             connection_wait_timer=3,
-            wait_timer=None):
+            wait_timer=None,
+            max_game_tick=1000):
         super().__init__(
                 wait_on_client,
                 connection_wait_timer,
                 wait_timer,
+                max_game_tick,
                 verbose)
 
         self.verbose = verbose
@@ -118,8 +115,8 @@ class CustomServer(ServerControl):
                 # send game specific data in payload
                 payload[i] = {
                     "message_type": MessageType.take_turn,
-                    "ship": self.teams[i]["ship"].to_dict(),
-                    "universe": serialized_universe # TODO refactor to use serialize_visible_objects()
+                    "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
+                    "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
                 }
 
         # actually send the data to the client
@@ -168,18 +165,22 @@ class CustomServer(ServerControl):
                        "team_name": team_name,
                        "ship": ship
                    }
+
             else:
 
                 if message_type == MessageType.take_turn:
                     if "action_type" in data:
                         # get action
-                        self.teams[client_id]["action_type"] = data["action_type"]
+                        self.teams[client_id]["action"] = data["action_type"]
+                        setattr(self.teams[client_id]["ship"], "action", data["action_type"])
 
                         # get action params
                         for i in range(1, 4):
-                            param = f"action_param{i}"
+                            param = f"action_param_{i}"
                             if param in data:
                                 self.teams[client_id][param] = data[param]
+                                setattr(self.teams[client_id]["ship"], param, data[param])
+
 
                     if "move_action" in data:
                         self.teams[client_id]["move_action"] = data["move_action"]
@@ -276,7 +277,7 @@ class CustomServer(ServerControl):
         accolades["Most Bounties Claimed"] = self.accolade_controller.most_bounties_claimed()[0]
         accolades["Most Salvage Redeemed"] = self.accolade_controller.most_salvage_redeemed()[0]
         accolades["Most Credits Earned"] = self.accolade_controller.most_credits_earned()[0]
-        accolades["Most Efficient"] = self.accolade_controller.most_efficient()[0]
+        accolades["Most Fuel Efficient"] = self.accolade_controller.most_efficient()[0]
         accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
         accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
         accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
@@ -288,16 +289,30 @@ class CustomServer(ServerControl):
     def claim_npcs(self):
         self.npcs = []
 
-        for ship in self.universe.get(ObjectType.ship):
-            npc_type = random.choice([CombatNPC, MiningNPC, ModuleNPC, RepeatPurchaseNPC, UnlockNPC, CargoDropNPC,
-                                      BuySellNPC, SalvageNPC, BountyRedeemerNPC, BountyAccumulatorNPC,  LazyNPC, RepairNPC])
+        npc_options = {
+
+                ArnaldoNPC: 0.425,
+                FrankieNPC: 0.425,
+                TestMinerNPC: 0.0,
+                TestTraderNPC: 0.00,
+                CombatNPC: 0.0,
+                AdvancedPirateNPC: 0.14,
+        }
+
+        for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
+            npc_type = random.choices(
+                    list(npc_options.keys()),
+                    weights=list(npc_options.values()),
+                    k=1)[0]
 
             new_npc_controller = npc_type(ship)
+            ship.team_name = new_npc_controller.team_name()
 
             self.npc_teams[ship.id] = {
                 "controller": new_npc_controller,
                 "ship": ship
             }
+
 
     def process_actions(self):
 
@@ -397,8 +412,17 @@ class CustomServer(ServerControl):
             serialized_universe.append(serialized_obj)
         return serialized_universe
 
-    def serialize_visible_objects(self, pos, radius):
-        pass # serialize only objects in visible range of player ship
+    def serialize_visible_objects(self, security_level, ship_id):
+        serialized_visible_universe = []
+        own_ship = self.teams[ship_id]["ship"]
+
+        for obj in self.universe.dump():
+            if obj.object_type is ObjectType.ship:
+                if obj.id == own_ship.id or not in_radius(own_ship, obj, own_ship.sensor_range, lambda e:e.position):
+                    continue
+            serialized_obj = obj.to_dict(security_level=security_level)
+            serialized_visible_universe.append(serialized_obj)
+        return serialized_visible_universe
 
 
 

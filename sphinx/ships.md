@@ -8,11 +8,11 @@ move around to the various points,
 
 Every turn, each ship will first use their action, then they will move.
 - Actions
-  - `Combat` (more info [Here](combat.md))
-  - `Mining` (more info [Here](asteroid_fields_and_mining.md))
-  - `Buy module` (more info [Here](ship_upgrades.md))
+  - `Combat` (more info [Here](combat.html))
+  - `Mining` (more info [Here](asteroid_fields_and_mining.html))
+  - `Buy module` (more info [Here](ship_upgrades.html))
   - `Buy material`
-  - `Sell material` (more on buying and selling [Here](trading.md))
+  - `Sell material` (more on buying and selling [Here](trading.html))
 - Movement
 
 ## Ship Attributes

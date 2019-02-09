@@ -131,8 +131,14 @@ class Station(GameObject):
         if security_level is SecurityLevel.engine:
             # properties that will only be populated by the engine,
             #   prevents user tampering with variables
+            pass
 
+        if security_level <= SecurityLevel.player_owned:
+            pass
+
+        if security_level <= SecurityLevel.other_player:
             self.id = data["id"]
+
             self.name = data["name"]
 
             self.position = data["position"]
@@ -150,7 +156,7 @@ class Station(GameObject):
             self.production_qty = data["production_qty"]
             self.production_max = data["production_max"]
 
-            self.cargo = { int(k): v for k, v in data["cargo"].items() }
+            self.cargo = {int(k): v for k, v in data["cargo"].items()}
 
             self.accessibility_radius = data["accessibility_radius"]
 
@@ -161,12 +167,6 @@ class Station(GameObject):
             self.base_sell_price = data["base_sell_price"]
             self.base_primary_buy_price = data["base_primary_buy_price"]
             self.base_secondary_buy_price = data["base_primary_buy_price"]
-
-        if security_level <= SecurityLevel.player_owned:
-            pass
-
-        if security_level <= SecurityLevel.other_player:
-            pass
 
 
 class BlackMarketStation(Station):

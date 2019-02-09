@@ -338,7 +338,7 @@ class Histogram(pygame.sprite.Sprite):
 
 
 
-def show_ship_stats_display(ship, window_surf, clock):
+def show_ship_stats_display(ship, window_surf, clock, dont_wait=False):
     initial_screen = window_surf.copy()
     window_surf.fill(pygame.Color(0,0,0))
 
@@ -348,6 +348,8 @@ def show_ship_stats_display(ship, window_surf, clock):
 
     parts = []
     little_parts = []
+
+    wait_timer = 0
 
     x = 200
     parts.append((
@@ -564,10 +566,11 @@ def show_ship_stats_display(ship, window_surf, clock):
         ))
 
 
-    little_parts.append((
-        "Esc to go back",
-        (550,700)
-    ))
+    if not dont_wait:
+        little_parts.append((
+            "Esc to go back",
+            (550,700)
+        ))
 
     for part in parts:
         window_surf.blit(
@@ -595,6 +598,11 @@ def show_ship_stats_display(ship, window_surf, clock):
 
         pygame.display.update()
         clock.tick(30)
+
+        if dont_wait:
+            wait_timer += clock.get_time()
+            if wait_timer > 5000:
+                return
 
 
     # show initial screen to transition back to game

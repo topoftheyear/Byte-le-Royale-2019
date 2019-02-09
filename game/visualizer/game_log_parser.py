@@ -25,12 +25,9 @@ class GameLogParser:
             self.max_ticks = manifest["ticks"]
             self.results = manifest["results"]
         self.v_man = manifest["version"]
-        with open("wrapper/version.py", "r") as f:
-            text = f.read().strip()
-        self.v_cur = text.split("=")[1]
-        self.outdated_manifest = False
-       self.outdated_manifest = elf.v_man < self.v_cur:
-            self.outdated_manifest = True
+        from version import v
+        self.v_cur = v
+        self.outdated_manifest = self.v_man < self.v_cur
 
         self.turns = []
 
@@ -82,9 +79,9 @@ class GameLogParser:
 
         return universe, events
 
+
     def get_stats(self):
         return self.stats[0:self.tick]
-
 
     def deserialize_universe(self, data):
         objs = []

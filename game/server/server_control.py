@@ -17,6 +17,7 @@ class ServerControl:
             wait_on_client,
             connection_wait_timer,
             wait_timer,
+            max_game_tick,
             verbose):
 
         self._loop = None
@@ -24,6 +25,7 @@ class ServerControl:
         self.verbose = verbose
         self.wait_on_client = wait_on_client
         self.wait_timer = wait_timer
+
 
         self._clients_connected = 0
         self.connection_wait_timer = connection_wait_timer
@@ -39,12 +41,15 @@ class ServerControl:
         # Game Configuration options
         system = platform.system()
         if system == "Windows":
-            self.turn_time = 0.025
+            self.turn_time = 0.01
         else:
             self.turn_time = 0.01
 
+        self.turn_wait = 0
+        self.max_turn_wait = self.turn_time*5
+
         self.game_tick_no = 0
-        self.max_game_tick = 1000
+        self.max_game_tick = max_game_tick
         self.turn_data = []
 
     def initialize(self):
@@ -119,11 +124,19 @@ class ServerControl:
 
         # wait for turn data before handling post tick
         # TODO refactor to check to see if we have the same number of responses as clients, and wait only so long before continuing
-        if self.turn_data is None and self.wait_on_client:
+        if (len(self.turn_data) < self._clients_connected and
+                self.wait_on_client and
+                not self.turn_wait >= self.max_turn_wait):
+            self.turn_wait += self.turn_time
             self.schedule(self.post_tick)
             return
+        else:
+            #print("turn wait", self.turn_wait)
+            self.turn_wait = 0
 
         self.post_turn()
+
+        self.turn_data = []
 
         log_data = self.log()
         self.dump_log(log_data)
@@ -152,9 +165,7 @@ class ServerControl:
 
             # Dump Game log manifest
             toJSON = self.game_over()
-            with open("wrapper/version.py", "r") as f:
-                text = f.read().strip()
-            v = text.split("=")[1]
+            from version import v
             with open("game_log/manifest.json", "w") as f:
                 json.dump({"version": v, "ticks": self.game_tick_no, "results": toJSON}, f)
 

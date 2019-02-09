@@ -28,9 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
   <link rel="stylesheet" href="_static/accordion.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Rules" href="rules.html" />
-    <link rel="prev" title="Using the Visualizer" href="using_the_visualizer.html" /> 
+    <link rel="search" title="Search" href="search.html" /> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -83,31 +81,24 @@
               
             
             
-              <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installing</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
-<li class="toctree-l1"><a class="reference internal" href="running_the_game.html">Running The Game</a></li>
-<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Writing Your AI</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#functions-to-use">Functions to Use</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#related-links">Related Links</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="rules.html">Rules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="helpful_links.html">Helpful Links</a></li>
+              <ul>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/installation.html">Installing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/getting_started.html">Getting Started</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/running_the_game.html">Running The Game</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/writing_your_ai.html">Writing Your AI</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/rules.html">Rules</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/helpful_links.html">Helpful Links</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="stations.html">Stations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="trading.html">Trading</a></li>
-<li class="toctree-l1"><a class="reference internal" href="bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="combat.html">Combat</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ships.html">Ships</a></li>
-<li class="toctree-l1"><a class="reference internal" href="ship_upgrades.html">Ship Upgrades</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/stations.html">Stations</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/asteroid_fields_and_mining.html">Asteroid Fields And Mining</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/trading.html">Trading</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/bounty_hunting_lawfulness_and_piracy.html">Bounty Hunting, Piracy, and Lawfulness</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/combat.html">Combat</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ships.html">Ships</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/ship_upgrades.html">Ship Upgrades</a></li>
 </ul>
 
             
@@ -173,31 +164,89 @@
            <div itemprop="articleBody">
             
   <div class="section" id="writing-your-ai">
-<span id="writing-your-ai"></span><h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
+<h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
 <p>There is a base AI that will have a structure of how the AI should work.</p>
 <div class="section" id="functions-to-use">
-<span id="functions-to-use"></span><h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
-<p>Functions that can be utilized by the ship:</p>
+<h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
+<p>Functions that can be utilized by the ship: (further indented ones are helper methods)</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y)</li>
-<li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Set’s action to mine</li>
-<li><code class="docutils literal notranslate"><span class="pre">attack</span> <span class="pre">(target)</span></code> - Set ship action to target</li>
-<li><code class="docutils literal notranslate"><span class="pre">buy_module</span> <span class="pre">(module,</span> <span class="pre">upgrade_level,</span> <span class="pre">ship_slot)</span></code> - buy module <code class="docutils literal notranslate"><span class="pre">module</span></code> at level <code class="docutils literal notranslate"><span class="pre">upgrade_level</span></code> in slot <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer)</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_stations(universe)</span></code> - get list of stations in the universe</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_asteroid_fields(universe)</span></code> - get list of asteroid fields in the universe</li>
-<li><code class="docutils literal notranslate"><span class="pre">ships_in_attack_range(universe)</span></code> - list of ships in attack range</li>
-<li><code class="docutils literal notranslate"><span class="pre">sell_material(material,</span> <span class="pre">amount)</span></code> - sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range</li>
-<li><code class="docutils literal notranslate"><span class="pre">buy_material(material,</span> <span class="pre">amount)</span></code> - buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range</li>
-<li><code class="docutils literal notranslate"><span class="pre">unlock_module()</span></code> - unlock the module slot</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y).<ul>
+<li><code class="docutils literal notranslate"><span class="pre">distance_to_object(your_ship,</span> <span class="pre">target)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">distance_to_coordinate(your_ship,</span> <span class="pre">xy_coords)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">xy_coords</span></code>.</li>
 </ul>
-<p>There are some <a class="reference external" href="rules.md">rules that your AI must follow</a>.</p>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_asteroid_fields(universe)</span></code> - Get list of asteroid fields in the universe.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_asteroid_field(your_ship,</span> <span class="pre">field)</span></code> - Determines if your ship is in range of asteroid field. Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if mining would yield results.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Sets action to mine.</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).<ul>
+<li><code class="docutils literal notranslate"><span class="pre">universt_by_object_type(flat_universe)</span></code> - Return a dictionary of object types ex: <code class="docutils literal notranslate"><span class="pre">({</span> <span class="pre">ObjectType.ship:</span> <span class="pre">[&lt;list</span> <span class="pre">of</span> <span class="pre">ships&gt;],</span> <span class="pre">ObjectType.stations:[&lt;list</span> <span class="pre">of</span> <span class="pre">stations&gt;]})</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">ships_in_attack_range(universe)</span></code> - Return list of ships in attack range.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">in_weapons_range(self,</span> <span class="pre">your_ship,</span> <span class="pre">target_ship)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">target_ship</span></code> is in range.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">attack</span> <span class="pre">(target)</span></code> - Sets ship action to attack <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_stations(universe)</span></code> - Get list of stations in the universe.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_station(your_ship,</span> <span class="pre">station)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if in range of <code class="docutils literal notranslate"><span class="pre">station</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, can do the following actions:</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">repair(hull_to_repair)</span></code> - Repair <code class="docutils literal notranslate"><span class="pre">hull_to_repair</span></code> amount of hull for the current market rate.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">buy_material(material,</span> <span class="pre">amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_median_price_info(universe)</span></code> - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">sell_material(material,</span> <span class="pre">amount)</span></code> - Sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_material_name(material_type)</span></code> - Return name of <code class="docutils literal notranslate"><span class="pre">material_type</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_median_material_price(material_prices)</span></code> - Provide</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">buy_module</span> <span class="pre">(module,</span> <span class="pre">upgrade_level,</span> <span class="pre">ship_slot)</span></code> - Attempt to buy module <code class="docutils literal notranslate"><span class="pre">module</span></code> at level <code class="docutils literal notranslate"><span class="pre">upgrade_level</span></code> in slot <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code>.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_module_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">unlock_module()</span></code> - Unlock a module slot.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_module_unlock_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module slot price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">drop_cargo(material_type,</span> <span class="pre">amount)</span></code> - Drop <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> as illegal salvage (amount must be more than 10).<ul>
+<li><code class="docutils literal notranslate"><span class="pre">get_material_to_scrap_conversion(quantity,</span> <span class="pre">value)</span></code> - Given <code class="docutils literal notranslate"><span class="pre">quantity</span></code> of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>, returns amount of illegal scrap created by destroying a ship with this amount of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">collect_illegal_salvage()</span></code> - Attempt to collect some illegal salvage in the area.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_illegal_salvage(your_ship,</span> <span class="pre">salvage)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if your ship can gather from the pile of salvage.</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">pay_off_bounty()</span></code> - Pay off your bounty if you can afford to pay off all of it.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">in_secure_zone(check)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">check</span></code> is in secure zone.</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="imports-and-rules">
+<h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
+<p>ONLY the following imports are allowed:</p>
+<ul class="simple">
+<li>math</li>
+<li>itertools</li>
+<li>collections</li>
+<li>random</li>
+<li>game.common.enums</li>
+<li>game.client.user_client</li>
+</ul>
+<p>Any other import statements will prevent the AI from running.</p>
+<p>There are some <a class="reference external" href="rules.html">rules that your AI must follow</a>.</p>
 </div>
 <div class="section" id="related-links">
-<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="using_the_visualizer.html">Using the Visualizer</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
 </ul>
 </div>
 </div>
@@ -208,15 +257,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="rules.html" class="btn btn-neutral float-right" title="Rules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="using_the_visualizer.html" class="btn btn-neutral" title="Using the Visualizer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

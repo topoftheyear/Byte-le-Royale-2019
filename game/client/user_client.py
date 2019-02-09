@@ -40,6 +40,10 @@ class UserClient:
     def team_name(self):
         return "ForgotToSetAName"
 
+    ################
+    # Game Actions #
+    ################
+
     def move(self, x, y):
 
         self._move_action = (x, y)
@@ -53,7 +57,7 @@ class UserClient:
     def attack(self, target):
         self.reset_player_action()
 
-        if not isinstance(target, GameObject) and target.object_type is not ObjectType.ship:
+        if not isinstance(target, GameObject) or target.object_type is not ObjectType.ship or target is None:
             return
 
         self._action = PlayerAction.attack
@@ -122,16 +126,6 @@ class UserClient:
 
         self._action = PlayerAction.collect_illegal_salvage
 
-    def get_ships(self, universe, callback=None):
-        return get_ships(universe, callback)
-
-    def get_stations(self, universe):
-        return get_stations(universe)
-
-    def get_asteroid_fields(self, universe):
-        return get_asteroid_fields(universe)
-
-
     def ships_in_attack_range(self, universe):
         return ships_in_attack_range(universe, self.ship)
 
@@ -175,3 +169,90 @@ class UserClient:
         self.reset_player_action()
 
         self._action = PlayerAction.pay_off_bounty
+
+    ##################
+    # Helper Methods #
+    ##################
+
+    # Helper class wrappers start here
+    def distance_to_object(self, your_ship, target):
+        """Returns the distance between `your_ship` an an object in the game"""
+        return distance_to(your_ship, target, lambda e:e.position)
+
+    def distance_to_coordinate(self, your_ship, xy_coords):
+        """Returns the distance between `your_ship` an xy coordinate."""
+        return distance_to(your_ship, xy_coords, lambda e:e.position, lambda e:e)
+
+    def in_radius_of_station(self, your_ship, station):
+        """Determins if you are within range of a station. If `True` you may perform any interactions
+        with the station such as:
+        - buying materials
+        - selling materials
+        - repairing (at select stations)
+        - unlocking module slots (at select stations)
+        - buying modules (at select stations)
+        """
+        return in_radius(your_ship, station, station.accessibility_radius, lambda e:e.position)
+
+    def in_radius_of_asteroid_field(self, your_ship, field):
+        """Determines if you are within range of an asteroid field. If `True`, mining will
+        yeild results."""
+        return in_radius(your_ship, field, field.accessibility_radius, lambda e:e.position)
+
+    def in_radius_of_illegal_salvage(self, your_ship, salvage):
+        """Returns `True` if your ship is in range to gather from a pile of illegal salvage."""
+        return in_radius(your_ship, salvage, your_ship.weapon_range, lambda e:e.position)
+
+    def in_weapons_range(self, your_ship, target_ship):
+        """Note: prefer in_weapons_range() over distance_to() for checking if another ship
+        is in range."""
+        return in_radius(your_ship, target_ship, your_ship.weapon_range, lambda e:e.position)
+
+    def get_material_to_scrap_conversion(self, quantity, value):
+        """Given a quantity and a material value, returns the amount of illegal scrap
+        that would be created by destroying a  ship carrying this quantity of material."""
+        return convert_material_to_scrap(quantity, value)
+
+    def in_secure_zone(self, check):
+        return in_secure_zone(check, lambda e:e.position)
+
+    def get_material_name(self, material_type):
+        return get_material_name(material_type)
+
+    def universe_by_object_type(self, flat_universe):
+        """Returns the universe as a dictionary of object types. e.g.
+        { ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]}"""
+        return separate_universe(flat_universe)
+
+    def get_median_material_price(self, material_prices):
+        return get_median_material_price(material_prices)
+
+    def get_repair_price(self, median_price):
+        return get_repair_price(median_price)
+
+    def get_module_price(self, median_price, level):
+        return get_module_price(median_price, level)
+
+    def get_module_unlock_price(self, median_price, ship_slot):
+        return get_module_unlock_price(self, median_price, ship_slot)
+
+    def get_material_price_info(self, universe):
+        """Cache this result at most once per turn, otherwise your client will be very slow.
+
+        Returns a dictionary containing:
+        - "sell_prices": The sell prices of each material
+        - "buy_prices": The buy prices of each material
+        - "best_import_prices": The best import price by material, and the corresponding station
+        - "best_export_prices": The best export price by material, and the corresponding station
+
+        :param universe:
+        :return:
+        """
+        return {
+                "sell_prices": get_material_sell_prices(universe),
+                "buy_prices": get_material_buy_prices(universe),
+                **get_best_material_prices
+        }
+
+
+

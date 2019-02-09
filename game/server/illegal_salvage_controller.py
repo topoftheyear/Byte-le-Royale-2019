@@ -56,7 +56,7 @@ class IllegalSalvageController:
 
                 ship.inventory[material_type] = amount_left
 
-                self.material_prices = get_material_prices(universe)
+                self.material_prices = get_material_sell_prices(universe)
                 material_amount = self.material_prices[material_type]
 
                 random_position = (
@@ -109,8 +109,8 @@ class IllegalSalvageController:
                     self.print('Found illegal salvage has no amount')
                     continue
 
-                # TODO determine balanced pickup rate
-                pickup_rate = random.randint(1, 11) // 1
+                # pickup rate is 10% of the ships weapon damage plus a constant 50
+                pickup_rate = math.floor(ship.weapon_damage * 0.1 + 50)
 
                 pickup_amount = 0
                 if salvage.amount >= pickup_rate:
