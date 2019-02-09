@@ -8,7 +8,7 @@ from game.config import *
 import game.utils.filters as F
 
 
-class MaynardNPC(NPC):
+class BarattaNPC(NPC):
 
     # Set up the system.
     def __init__(self, ship):
@@ -37,7 +37,7 @@ class MaynardNPC(NPC):
         self.mod0_next_level = 1
 
     def team_name(self):
-        return f"{self.name}#{random.randint(1,1000)}"
+        return f"{self.name} #{random.randint(1,1000)}"
 
     def combat(self, other_ships):
         if self.target is None:
@@ -153,26 +153,50 @@ class MaynardNPC(NPC):
                 self.mod1_next_level = self.ship.module_1_level + 1
                 
                 self.move(*self.target.position)
-                self.action = random.choice(["mine", "pirate"])
+                self.action = random.choice(["mine", "pirate", "trade"])
+                self.target = None
             else:
                 
-                self.action = random.choice(["mine", "pirate"])
+                self.action = random.choice(["mine", "pirate", "trade"])
                 self.target = None
 
         elif self.action is "trade":
-            toScrap = get_best_material_prices(universe)
-            self.target = toScrap["best_export_prices"][(next(iter(toScrap["best_export_prices"])))]["station"]
+
+            toSell = get_best_material_prices(universe)
+            # picks one of top 3 spots
+            toChoose = random.choice([1,1,1,2,2,3])
+            mat = None
+            toSellIter = iter(toSell["best_export_prices"])
+            for x in range(toChoose):
+                mat = next(toSellIter)
+            self.target = toSell["best_export_prices"][mat]["station"]
             self.move(*self.target.position)
             if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                 self.buy_material(99999)
-                self.action = "scrap"
+                self.action = "sell"
+                self.target = None
 
-        elif self.action is "scrap":
-            for thing, amount in self.ship.inventory.items():
-                if amount > 0:
-                    convert_material_to_scrap(amount, thing)
-            self.action = None
-            self.target = None
+        elif self.action is "sell":
+            if self.target is None:
+                for thing, amount in self.ship.inventory.items():
+                    if amount > 10:
+                        self.material = thing
+                        values = get_best_material_prices(universe)
+                        self.target = values["best_import_prices"][self.material]["station"]
+                        break
+            else:
+                self.move(*self.target.position)
+                if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
+                    self.sell_material(self.material, self.ship.inventory[self.material])
+                    for thing, amount in self.ship.inventory.items():
+                        if amount > 10:
+                            self.material = thing
+                            values = get_best_material_prices(universe)
+                            self.target = values["best_import_prices"][self.material]["station"]
+                            break
+                    else:
+                        self.action = None
+                        self.target = None
 
         # healing
         if self.ship.current_hull / self.ship.max_hull <= 0.45:
