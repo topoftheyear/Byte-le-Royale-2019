@@ -5,7 +5,7 @@ use your action for the turn to [trade](trading.html) with the station.
 The stations will take the primary imports and use them to produce the stated output.
 In addition, the secondary product will help speed up the production.
 
-Note: the Black Market Stations and the Secure Station don't have imports or produce anything; they only sell modules.
+Note: the Black Market Stations and the Secure Station don't have imports or produce anything; they only sell modules. With the exception that Black Markets will also purchase illegal salvage.
 
 [](_static/simple_station.png)
 ## Station API
