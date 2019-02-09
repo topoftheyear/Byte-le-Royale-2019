@@ -164,27 +164,27 @@
            <div itemprop="articleBody">
             
   <div class="section" id="stations">
-<h1>Stations<a class="headerlink" href="#stations" title="Permalink to this headline">¶</a></h1>
+<span id="stations"></span><h1>Stations<a class="headerlink" href="#stations" title="Permalink to this headline">¶</a></h1>
 <p>Stations are the places where you will buy, sell, and trade resources. When you get in range, you can
 use your action for the turn to <a class="reference external" href="trading.html">trade</a> with the station.
 The stations will take the primary imports and use them to produce the stated output.
-In addition, the amount of secondary product will help speed up the production.</p>
-<p>Note: the Black Market Stations have imports or produce anything; they only trade modules.</p>
+In addition, the secondary product will help speed up the production.</p>
+<p>Note: the Black Market Stations and the Secure Station don’t have imports or produce anything; they only sell modules. With the exception that Black Markets will also purchase illegal salvage.</p>
 <p><a class="reference external" href="_static/simple_station.png"></a></p>
 <div class="section" id="station-api">
-<h2>Station API<a class="headerlink" href="#station-api" title="Permalink to this headline">¶</a></h2>
+<span id="station-api"></span><h2>Station API<a class="headerlink" href="#station-api" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">name</span></code> - name of station</li>
 <li><code class="docutils literal notranslate"><span class="pre">position</span></code> - x,y of station</li>
 <li><code class="docutils literal notranslate"><span class="pre">primary_import</span></code> - the station’s primary import</li>
 <li><code class="docutils literal notranslate"><span class="pre">secondary_import</span></code> - the station’s secondary import</li>
-<li><code class="docutils literal notranslate"><span class="pre">primary_consumption_qty</span></code> - quantity of primary import that is consumed in one tick</li>
-<li><code class="docutils literal notranslate"><span class="pre">secondary_consumption_qty</span></code> - quantity of secondary import that is consumed in one tick</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_consumption_qty</span></code> - quantity of primary import that is consumed each time a new <code class="docutils literal notranslate"><span class="pre">production_material</span></code> is produced</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_consumption_qty</span></code> - quantity of secondary import that is consumed each time a new <code class="docutils literal notranslate"><span class="pre">production_material</span></code> is produced</li>
 <li><code class="docutils literal notranslate"><span class="pre">primary_max</span></code> - The total amount of the station’s primary import that a station can store</li>
 <li><code class="docutils literal notranslate"><span class="pre">secondary_max</span></code> - The total amount of the station’s secondary import that a station can store</li>
 <li><code class="docutils literal notranslate"><span class="pre">production_frequency</span></code> - how often to consume inputs for creating output</li>
 <li><code class="docutils literal notranslate"><span class="pre">production_material</span></code> - what is produced</li>
-<li><code class="docutils literal notranslate"><span class="pre">production_qty</span></code> - how much is stored</li>
+<li><code class="docutils literal notranslate"><span class="pre">production_qty</span></code> - the number of produced material at each output</li>
 <li><code class="docutils literal notranslate"><span class="pre">production_max</span></code> - max amount of produced stuff to store</li>
 <li><code class="docutils literal notranslate"><span class="pre">base_sell_price</span></code> - The base selling price for the produced item.</li>
 <li><code class="docutils literal notranslate"><span class="pre">base_primary_price</span></code> - The base price the station will pay for the primary import.</li>
@@ -195,7 +195,7 @@ In addition, the amount of secondary product will help speed up the production.<
 </ul>
 </div>
 <div class="section" id="stats">
-<h2>Stats<a class="headerlink" href="#stats" title="Permalink to this headline">¶</a></h2>
+<span id="stats"></span><h2>Stats<a class="headerlink" href="#stats" title="Permalink to this headline">¶</a></h2>
 <p>Listed below are the stats for each station.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+-------------------------+----------------+----------------------+-----------+
 | Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
@@ -267,7 +267,6 @@ In addition, the amount of secondary product will help speed up the production.<
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
     
 
