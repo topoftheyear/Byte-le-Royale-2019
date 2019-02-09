@@ -25,7 +25,6 @@ on the market. Use the get_repair_price action for more information.
 Note that the station authority is the only station that provides repair at its regular price. The black market
 stations can provide repairs at a discounted price, while all other stations markup the price greatly.
 
-
 ## Respawning
 
 When your ship dies, the following events happen:
@@ -33,3 +32,10 @@ When your ship dies, the following events happen:
 * Your ship will respawn in the Secure Station in 10 turns.
 * If you were a pirate, your notoriety is reduced to +4 (1 below Pirate threshold).
 * Any illegal modules are removed from your ship.
+
+
+## Abandoning the battlefield
+
+Deserters will not be welcomed back! Leaving the bounds of the game area will immediately cause destruction of your
+ship, which will cause you to drop all of your cargo and have you respawn. Note: this will also cause scrap to spawn
+at the edges of the game area, so be wary while collecting scrap near the boundaries of space!
