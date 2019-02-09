@@ -164,10 +164,10 @@
            <div itemprop="articleBody">
             
   <div class="section" id="writing-your-ai">
-<h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
+<span id="writing-your-ai"></span><h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
 <p>There is a base AI that will have a structure of how the AI should work.</p>
 <div class="section" id="functions-to-use">
-<h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
+<span id="functions-to-use"></span><h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Functions that can be utilized by the ship: (further indented ones are helper methods)</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y).<ul>
@@ -181,14 +181,14 @@
 </li>
 <li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Sets action to mine.</li>
 <li><code class="docutils literal notranslate"><span class="pre">get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).<ul>
-<li><code class="docutils literal notranslate"><span class="pre">universt_by_object_type(flat_universe)</span></code> - Return a dictionary of object types ex: <code class="docutils literal notranslate"><span class="pre">({</span> <span class="pre">ObjectType.ship:</span> <span class="pre">[&lt;list</span> <span class="pre">of</span> <span class="pre">ships&gt;],</span> <span class="pre">ObjectType.stations:[&lt;list</span> <span class="pre">of</span> <span class="pre">stations&gt;]})</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">universe_by_object_type(flat_universe)</span></code> - Return a dictionary of object types ex: <code class="docutils literal notranslate"><span class="pre">({</span> <span class="pre">ObjectType.ship:</span> <span class="pre">[&lt;list</span> <span class="pre">of</span> <span class="pre">ships&gt;],</span> <span class="pre">ObjectType.stations:[&lt;list</span> <span class="pre">of</span> <span class="pre">stations&gt;]})</span></code></li>
 </ul>
 </li>
 <li><code class="docutils literal notranslate"><span class="pre">ships_in_attack_range(universe)</span></code> - Return list of ships in attack range.<ul>
 <li><code class="docutils literal notranslate"><span class="pre">in_weapons_range(self,</span> <span class="pre">your_ship,</span> <span class="pre">target_ship)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">target_ship</span></code> is in range.</li>
 </ul>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">attack</span> <span class="pre">(target)</span></code> - Sets ship action to attack <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">attack(target)</span></code> - Sets ship action to attack <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">get_stations(universe)</span></code> - Get list of stations in the universe.<ul>
 <li><code class="docutils literal notranslate"><span class="pre">in_radius_of_station(your_ship,</span> <span class="pre">station)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if in range of <code class="docutils literal notranslate"><span class="pre">station</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, can do the following actions:</li>
 </ul>
@@ -197,11 +197,11 @@
 <li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
 </ul>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">buy_material(material,</span> <span class="pre">amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.<ul>
 <li><code class="docutils literal notranslate"><span class="pre">get_median_price_info(universe)</span></code> - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.</li>
 </ul>
 </li>
-<li><code class="docutils literal notranslate"><span class="pre">sell_material(material,</span> <span class="pre">amount)</span></code> - Sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material</span></code> to the station in range.<ul>
+<li><code class="docutils literal notranslate"><span class="pre">sell_material(material_type,</span> <span class="pre">amount)</span></code> - Sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> to the station in range.<ul>
 <li><code class="docutils literal notranslate"><span class="pre">get_material_name(material_type)</span></code> - Return name of <code class="docutils literal notranslate"><span class="pre">material_type</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">get_median_material_price(material_prices)</span></code> - Provide</li>
 </ul>
@@ -229,7 +229,7 @@
 </ul>
 </div>
 <div class="section" id="imports-and-rules">
-<h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
+<span id="imports-and-rules"></span><h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
 <p>ONLY the following imports are allowed:</p>
 <ul class="simple">
 <li>math</li>
@@ -243,7 +243,7 @@
 <p>There are some <a class="reference external" href="rules.html">rules that your AI must follow</a>.</p>
 </div>
 <div class="section" id="related-links">
-<h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
@@ -288,7 +288,6 @@
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
     
 
