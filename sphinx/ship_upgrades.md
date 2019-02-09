@@ -26,7 +26,7 @@ For any modules, you must purchase an additional slot for the module from the se
 - For the Illegal Module Level, these are purchasable at the `Black Market 1 & 2` [Stations](stations.html).
   - Be warned, these are the illegal modules. They are lost on death and will cost you notoriety.
 
-## Module Table (Revise Illegal Numbers When Completed)
+## Module Table
 
 ```eval_rst
 +---------------+---------+---------+---------+---------+---------+
