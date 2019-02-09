@@ -224,7 +224,7 @@ class ArnaldoNPC(NPC):
                     self.target = prices["best_import_prices"][self.material]["station"]
 
             # otherwise, sell all materials in the inventory
-            elif self.target in self.stations:
+            elif self.target in self.stations and self.target.object_type not in [ObjectType.black_market_station, ObjectType.secure_station]:
                 self.move(*self.target.position)
                 if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                     if self.material in self.ship.inventory:
