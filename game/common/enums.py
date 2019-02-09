@@ -51,6 +51,7 @@ class LogEvent:
     passive_repair = 20
     manual_repair = 21
     ship_pay_off_bounty = 22
+    ship_abandoned = 23
 
 class MessageType:
     null = 0
@@ -129,6 +130,7 @@ class NotorietyChangeReason:
     # decrease notoriety
     destroy_pirate = 5
     pay_off_bounty = 6
+    pirate_death = 8
 
 class ShipSlot:
     zero = 0

@@ -7,7 +7,7 @@ both ships to destroy each other in the same step.
 
 To attack another ship, call `self.attack(ship_to_attack)`, where `ship_to_attack` is the target.
 
-While in battle, you can check your help by looking at the `self.current_hull`. If this is 0, your ship is dead.
+While in battle, you can check your health by looking at the `ship.current_hull`. If this is 0, your ship is dead.
 
 If the target is in range, you will attack them.
 

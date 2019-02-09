@@ -321,6 +321,9 @@ def get_game_logs(run=None):
     if run is None:
         run = get_latest_run_no()
 
+    if run is None:
+        return Response('No runs availaible', status=204)
+
     result_file = "runs/{}_result.json".format(run)
     log_files = "runs/{}.tar".format(run)
     game_data_file = "runs/{}_game_data.json".format(run)
@@ -332,6 +335,10 @@ def get_game_logs(run=None):
 
     with open(game_data_file, "r") as f:
         game_data = f.read()
+        
+    results_data = json.loads(results_data)
+    results_data["run_no"] = run
+    results_data = json.dumps(results_data)
 
     return jsonify({
         "results": results_data,

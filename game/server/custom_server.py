@@ -282,7 +282,7 @@ class CustomServer(ServerControl):
         accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
         accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
         accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
-        toJSON = {"leaderboard": self.accolade_controller.final_scores(self.universe), "accolades": accolades}
+        toJSON = {"leaderboard": self.accolade_controller.final_scores(self.universe), "accolades": accolades, "run_no":0}
         with open("results.json", "w") as f:
             json.dump(toJSON, f)
         return toJSON
@@ -291,11 +291,9 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
-
                 ArnaldoNPC: 0.0,
                 FrankieNPC: 0.5,
                 RoselliNPC: 0.5,
-
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
@@ -390,6 +388,16 @@ class CustomServer(ServerControl):
                 x_direction*x_move + ship.position[0],
                 y_direction*y_move + ship.position[1]
             )
+
+            # Destroy ship if destination is outside of world bounds
+            if ship.position[0] > WORLD_BOUNDS[0] or ship.position[1] > WORLD_BOUNDS[1] or ship.position[0] < 0 or ship.position[1] < 0:
+                ship.current_hull = 0  # boom
+                ship.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
+                # Log "abandoned" event
+                self.events.append({
+                    "type": LogEvent.ship_abandoned,
+                    "ship": ship.id,
+                })
 
             self.turn_log["events"].append({
                 "type": LogEvent.ship_move,

@@ -8,7 +8,7 @@ Trading is accomplished by entering the range of a station and using the `buy ma
 
 ## Buying
 
-When you buy items, you specify the item you wish to purchase in the first parameter, and the amount in the second one.
+When you buy items, you specify the amount of the station's production you want to buy.
 Then, the following conditions are checked:
 * buying more than the station possesses - will buy available amount
 * buying more than you can afford - will buy as much as you can afford

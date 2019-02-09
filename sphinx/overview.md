@@ -1,7 +1,7 @@
 # Overview
 
-Congratulations! If you are reading this, you are the newest hire for the `Pilots Federation`!
-This means that you will soon begin competing against others to see who is the best trader in the sector.
+Congratulations! If you are reading this, you are the newest member of the `Pilots Federation`!
+This means that you will soon begin competing against others to see who is the best pilot in the sector.
 Before you begin, please take note of the following concepts:
 
 ## Getting Started
@@ -15,7 +15,7 @@ Your ship is your vessel of action in the game. You control a singular ship (tha
 
 ## Modules
 
-As your ship earns more money, you can get modules to upgrade your ship. These can range from more hull strength, to increased speed, to more cargo space, and more.
+As your ship earns more money, you can get modules to upgrade your ship at black market stations or the secure station. These can range from more hull strength, to increased speed, to more cargo space, and more.
 Find out more about modules [here](ship_upgrades.html)
 
 ## Stations and Trading
@@ -40,4 +40,4 @@ You will start out 1000 credits. These credits are used to buy and sell other re
 ## Scoring
 
 At the end of the game, whoever has the most credits at the end is the winner.
-There are additional accolades for various tasks (most kills, most upgrades, most mined, etc).
+There are additional accolades for various tasks which are purely for bragging rights (most kills, most upgrades, most mined, etc).
