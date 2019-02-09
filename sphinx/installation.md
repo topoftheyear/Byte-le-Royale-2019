@@ -1,7 +1,5 @@
 # Installing
 
-[This will be the link to the actual download URL](INSERT THE LINK HERE)##################
-
 ## Introduction
 
 The installation process has been streamlined from last year. The application
