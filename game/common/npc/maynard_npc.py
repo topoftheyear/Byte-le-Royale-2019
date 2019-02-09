@@ -165,14 +165,12 @@ class MaynardNPC(NPC):
             self.move(*self.target.position)
             if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                 self.buy_material(99999)
-                print("Bought", *self.ship.inventory)
                 self.action = "scrap"
 
         elif self.action is "scrap":
             for thing, amount in self.ship.inventory.items():
                 if amount > 0:
                     convert_material_to_scrap(amount, thing)
-                    print("Scrapped")
             self.action = None
             self.target = None
 
