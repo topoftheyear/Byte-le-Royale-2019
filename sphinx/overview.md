@@ -41,3 +41,8 @@ You will start out 1000 credits. These credits are used to buy and sell other re
 
 At the end of the game, whoever has the most credits at the end is the winner.
 There are additional accolades for various tasks which are purely for bragging rights (most kills, most upgrades, most mined, etc).
+
+For final scoring, we will be running three games of 20,000 turns each. Your score from these three games will be
+averaged together to get your final competition score. The team with the highest average score wins. Please note that
+the default turn counter on your game is NOT set to 20,000. The turn counter on your game can be adjusted by running
+'''run --game-length 5000'''
