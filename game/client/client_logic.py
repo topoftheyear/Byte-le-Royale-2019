@@ -7,6 +7,7 @@ from game.common.station import *
 from game.common.asteroid_field_types import *
 from game.common.police_ship import PoliceShip
 from game.common.illegal_salvage import IllegalSalvage
+from game.common.universe_manager import UniverseManager
 
 
 
@@ -76,7 +77,7 @@ class ClientLogic:
         elif turn_data["message_type"] == MessageType.take_turn:
             self.player_client.reset_actions()
 
-            deserialized_universe = self.deserialize(turn_data["universe"])
+            deserialized_universe = UniverseManager(self.deserialize(turn_data["universe"]))
             ship = Ship()
             ship.from_dict(turn_data["ship"], security_level=SecurityLevel.player_owned)
 

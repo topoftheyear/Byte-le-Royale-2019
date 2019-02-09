@@ -29,9 +29,17 @@ Your ship may perform up to one action each turn, and one move each turn.
 ### Helper Methods
 
 #### Getting Objects of a certain type
- * `self.get_ships (universe, callback)` - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).
- * `self.get_asteroid_fields(universe)` - Get list of asteroid fields in the universe.
- * `self.get_stations(universe)` - Get list of stations in the universe.
+ * `universe.get(ObjectType.ship)` - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).
+ * `universe.get("asteroid_fields")` - Get list of asteroid fields in the universe.
+ * `universe.get("all_stations")` - Get list of stations in the universe.
+
+ Note: `universe.get()` takes any of the following object types and returns a list of objects.
+ - `ObjectType.ship`
+ - `ObjectType.cuprite_field`
+ - `ObjectType.goethite_field`
+ - `ObjectType.gold_field`
+ - `ObjectType.secure_station`
+ - `ObjectType.black_market_station`
 
 #### Finding Distances / Checking if in radius
  * `self.distance_to_object(your_ship, target)` - Return distance between your ship and `target`.
