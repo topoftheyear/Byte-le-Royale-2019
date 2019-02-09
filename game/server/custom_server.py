@@ -1,9 +1,7 @@
 import json
-import random
 from math import sqrt
 
 from game.server.server_control import ServerControl
-from game.common.enums import *
 from game.common.npc.test import *
 from game.common.npc.test.advanced_pirate_npc import *
 from game.common.ship import Ship
@@ -26,7 +24,6 @@ from game.server.repair_controller import RepairController
 from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
-from game.config import *
 from game.utils.projection import *
 
 
@@ -396,6 +393,11 @@ class CustomServer(ServerControl):
             if ship.position[0] > WORLD_BOUNDS[0] or ship.position[1] > WORLD_BOUNDS[1] or ship.position[0] < 0 or ship.position[1] < 0:
                 ship.current_hull = 0  # boom
                 ship.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
+                # Log "abandoned" event
+                self.events.append({
+                    "type": LogEvent.ship_abandoned,
+                    "ship": ship.id,
+                })
 
             self.turn_log["events"].append({
                 "type": LogEvent.ship_move,
