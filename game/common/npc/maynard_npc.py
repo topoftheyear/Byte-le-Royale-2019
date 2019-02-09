@@ -28,7 +28,7 @@ class MaynardNPC(NPC):
 
         self.previous_position = None
         self.inactive_counter = 0
-        self.action_choices = ["mine", "pirate", "module"]
+        self.action_choices = ["mine", "pirate", "module", "trade"]
         self.module_choices = [ModuleType.hull, ModuleType.weapons]
 
         # Upgrade weapons, then hull
@@ -158,6 +158,23 @@ class MaynardNPC(NPC):
                 
                 self.action = random.choice(["mine", "pirate"])
                 self.target = None
+
+        elif self.action is "trade":
+            toScrap = get_best_material_prices(universe)
+            self.target = toScrap["best_export_prices"][(next(iter(toScrap["best_export_prices"])))]["station"]
+            self.move(*self.target.position)
+            if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
+                self.buy_material(99999)
+                print("Bought", *self.ship.inventory)
+                self.action = "scrap"
+
+        elif self.action is "scrap":
+            for thing, amount in self.ship.inventory.items():
+                if amount > 0:
+                    convert_material_to_scrap(amount, thing)
+                    print("Scrapped")
+            self.action = None
+            self.target = None
 
         # healing
         if self.ship.current_hull / self.ship.max_hull <= 0.45:
