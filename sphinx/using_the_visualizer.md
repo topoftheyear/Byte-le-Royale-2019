@@ -16,6 +16,8 @@ The visualizer is invoked by running `br_launcher.pyz visualizer`.
 * `3` - Material sell price by station
 * `4` - Material Buy vs Sell
 * `5` - Material Production vs Consumption
+  * On any of the graphs for 1-5 you can hide specific graph lines with the number displayed by them
 * `Shift-Up`: Disable interpolation.
 * `Shift-Down`: Enable interpolation. Results in smoother flight paths but runs slower on windows.
 * **Click on station** - Station statistics
+* **Click on ship** - Ship statistics
