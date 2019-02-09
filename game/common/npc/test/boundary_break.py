@@ -37,17 +37,17 @@ class BoundaryBreak(NPC):
         if self.ship.is_alive():
             if self.edition:
                 if self.subedition:
-                    print("Edging zeroes")
+                    # print("Checking edge of zeroes")
                     self.move(0, 0)
                 else:
-                    print("Edging max")
+                    # print("Checking edge of max")
                     self.move(WORLD_BOUNDS[0], WORLD_BOUNDS[1])
             else:
                 if self.subedition:
-                    print("I'm leaving max!")
+                    # print("I'm leaving max!")
                     self.move(WORLD_BOUNDS[0]+1, WORLD_BOUNDS[1]+1)
                 else:
-                    print("I'm leaving min!")
+                    # print("I'm leaving min!")
                     self.move(-1, -1)
         else:
             print("D'oh, I'm dead!")
