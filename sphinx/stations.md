@@ -3,9 +3,9 @@
 Stations are the places where you will buy, sell, and trade resources. When you get in range, you can 
 use your action for the turn to [trade](trading.html) with the station.
 The stations will take the primary imports and use them to produce the stated output.
-In addition, the amount of secondary product will help speed up the production.
+In addition, the secondary product will help speed up the production.
 
-Note: the Black Market Stations have imports or produce anything; they only trade modules.
+Note: the Black Market Stations and the Secure Station don't have imports or produce anything; they only trade modules.
 
 [](_static/simple_station.png)
 ## Station API
