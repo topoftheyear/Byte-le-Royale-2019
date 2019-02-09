@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Writing Your AI &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Writing Your AI &mdash; Byte-le-Royale 2019 9 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le-Royale 201X
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2019
           
 
           
@@ -113,7 +113,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le-Royale 201X</a>
+          <a href="index.html">Byte-le-Royale 2019</a>
         
       </nav>
 
@@ -169,64 +169,106 @@
 <div class="section" id="functions-to-use">
 <h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Functions that can be utilized by the ship: (further indented ones are helper methods)</p>
+<div class="section" id="ship-actions">
+<h3>Ship Actions<a class="headerlink" href="#ship-actions" title="Permalink to this headline">¶</a></h3>
+<p>Your ship may perform up to one action each turn, and one move each turn.</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y).<ul>
-<li><code class="docutils literal notranslate"><span class="pre">distance_to_object(your_ship,</span> <span class="pre">target)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">distance_to_coordinate(your_ship,</span> <span class="pre">xy_coords)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">xy_coords</span></code>.</li>
-</ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_asteroid_fields(universe)</span></code> - Get list of asteroid fields in the universe.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_asteroid_field(your_ship,</span> <span class="pre">field)</span></code> - Determines if your ship is in range of asteroid field. Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if mining would yield results.</li>
-</ul>
-</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Sets action to mine.</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).<ul>
-<li><code class="docutils literal notranslate"><span class="pre">universe_by_object_type(flat_universe)</span></code> - Return a dictionary of object types ex: <code class="docutils literal notranslate"><span class="pre">({</span> <span class="pre">ObjectType.ship:</span> <span class="pre">[&lt;list</span> <span class="pre">of</span> <span class="pre">ships&gt;],</span> <span class="pre">ObjectType.stations:[&lt;list</span> <span class="pre">of</span> <span class="pre">stations&gt;]})</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">self.repair(hull_to_repair)</span></code> - Repair <code class="docutils literal notranslate"><span class="pre">hull_to_repair</span></code> amount of hull for the current market rate.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.attack(target)</span></code> - Sets ship action to attack <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.sell_material(material_type,</span> <span class="pre">amount)</span></code> - Sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> to the station in range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.buy_module</span> <span class="pre">(module,</span> <span class="pre">upgrade_level,</span> <span class="pre">ship_slot)</span></code> - Attempt to buy module <code class="docutils literal notranslate"><span class="pre">module</span></code> at level <code class="docutils literal notranslate"><span class="pre">upgrade_level</span></code> in slot <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.drop_cargo(material_type,</span> <span class="pre">amount)</span></code> - Drop <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> as illegal salvage (amount must be more than 10).</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.collect_illegal_salvage()</span></code> - Attempt to collect some illegal salvage in the area.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.unlock_module()</span></code> - Spend credits to unlock a module slot, fails if you do not have enough credits.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.pay_off_bounty()</span></code> - Pay off your bounty if you can afford to pay off all of it.</li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">ships_in_attack_range(universe)</span></code> - Return list of ships in attack range.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">in_weapons_range(self,</span> <span class="pre">your_ship,</span> <span class="pre">target_ship)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">target_ship</span></code> is in range.</li>
+</div>
+<div class="section" id="ship-movement">
+<h3>Ship Movement<a class="headerlink" href="#ship-movement" title="Permalink to this headline">¶</a></h3>
+<p>Your ship may perform one movement per turn</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y).</li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">attack(target)</span></code> - Sets ship action to attack <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_stations(universe)</span></code> - Get list of stations in the universe.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_station(your_ship,</span> <span class="pre">station)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if in range of <code class="docutils literal notranslate"><span class="pre">station</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, can do the following actions:</li>
+</div>
+<div class="section" id="helper-methods">
+<h3>Helper Methods<a class="headerlink" href="#helper-methods" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="getting-objects-of-a-certain-type">
+<h4>Getting Objects of a certain type<a class="headerlink" href="#getting-objects-of-a-certain-type" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">self.get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_asteroid_fields(universe)</span></code> - Get list of asteroid fields in the universe.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_stations(universe)</span></code> - Get list of stations in the universe.</li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">repair(hull_to_repair)</span></code> - Repair <code class="docutils literal notranslate"><span class="pre">hull_to_repair</span></code> amount of hull for the current market rate.<ul>
+</div>
+<div class="section" id="finding-distances-checking-if-in-radius">
+<h4>Finding Distances / Checking if in radius<a class="headerlink" href="#finding-distances-checking-if-in-radius" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">self.distance_to_object(your_ship,</span> <span class="pre">target)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.distance_to_coordinate(your_ship,</span> <span class="pre">xy_coords)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">xy_coords</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.in_radius_of_asteroid_field(your_ship,</span> <span class="pre">field)</span></code> - Determines if your ship is in range of asteroid field. Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if mining would yield results.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.in_radius_of_station(your_ship,</span> <span class="pre">station)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if in range of <code class="docutils literal notranslate"><span class="pre">station</span></code>. If <code class="docutils literal notranslate"><span class="pre">True</span></code>, can do the following actions:</li>
+<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_illegal_salvage(your_ship,</span> <span class="pre">salvage)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if your ship can gather from the pile of salvage.</li>
+<li><code class="docutils literal notranslate"><span class="pre">in_secure_zone(check)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">check</span></code> is in secure zone.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.ships_in_attack_range(universe)</span></code> - Return list of ships in attack range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.in_weapons_range(self,</span> <span class="pre">your_ship,</span> <span class="pre">target_ship)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">target_ship</span></code> is in range.</li>
+</ul>
+<div class="section" id="finding-prices">
+<h5>Finding Prices<a class="headerlink" href="#finding-prices" title="Permalink to this headline">¶</a></h5>
+<ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_median_price_info(universe)</span></code> - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_median_material_price(material_prices)</span></code> - Provide</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_module_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_module_unlock_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module slot price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">get_median_price_info(universe)</span></code> - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.</li>
-</ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">sell_material(material_type,</span> <span class="pre">amount)</span></code> - Sell <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> to the station in range.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">get_material_name(material_type)</span></code> - Return name of <code class="docutils literal notranslate"><span class="pre">material_type</span></code>.</li>
-<li><code class="docutils literal notranslate"><span class="pre">get_median_material_price(material_prices)</span></code> - Provide</li>
-</ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">buy_module</span> <span class="pre">(module,</span> <span class="pre">upgrade_level,</span> <span class="pre">ship_slot)</span></code> - Attempt to buy module <code class="docutils literal notranslate"><span class="pre">module</span></code> at level <code class="docutils literal notranslate"><span class="pre">upgrade_level</span></code> in slot <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code>.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">get_module_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
-</ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">unlock_module()</span></code> - Unlock a module slot.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">get_module_unlock_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module slot price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
-</ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">drop_cargo(material_type,</span> <span class="pre">amount)</span></code> - Drop <code class="docutils literal notranslate"><span class="pre">amount</span></code> of <code class="docutils literal notranslate"><span class="pre">material_type</span></code> as illegal salvage (amount must be more than 10).<ul>
+</div>
+</div>
+<div class="section" id="other">
+<h4>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">self.get_material_name(material_type)</span></code> - Return name of <code class="docutils literal notranslate"><span class="pre">material_type</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">get_material_to_scrap_conversion(quantity,</span> <span class="pre">value)</span></code> - Given <code class="docutils literal notranslate"><span class="pre">quantity</span></code> of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>, returns amount of illegal scrap created by destroying a ship with this amount of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>.</li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">collect_illegal_salvage()</span></code> - Attempt to collect some illegal salvage in the area.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">in_radius_of_illegal_salvage(your_ship,</span> <span class="pre">salvage)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if your ship can gather from the pile of salvage.</li>
+</div>
+</div>
+<div class="section" id="enumeration-values">
+<h3>Enumeration Values<a class="headerlink" href="#enumeration-values" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="objecttypes">
+<h4><code class="docutils literal notranslate"><span class="pre">ObjectTypes</span></code><a class="headerlink" href="#objecttypes" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.ship</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.station</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.black_market_station</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.secure_station</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.goethite_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.cuprite_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.gold_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.material</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.police</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.enforcer</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.illegal_salvage</span></code></li>
 </ul>
-</li>
-<li><code class="docutils literal notranslate"><span class="pre">pay_off_bounty()</span></code> - Pay off your bounty if you can afford to pay off all of it.<ul>
-<li><code class="docutils literal notranslate"><span class="pre">in_secure_zone(check)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">check</span></code> is in secure zone.</li>
-</ul>
-</li>
-</ul>
+</div>
+<div class="section" id="materialtypes">
+<h4><code class="docutils literal notranslate"><span class="pre">MaterialTypes</span></code><a class="headerlink" href="#materialtypes" title="Permalink to this headline">¶</a></h4>
+<p>iron = 1
+steel = 2
+copper = 3
+circuitry = 4
+pylons = 5
+weaponry = 6
+machinery = 7
+computers = 8
+drones = 9
+gold = 10
+goethite = 11
+cuprite = 12
+wire = 13
+salvage = 14</p>
+</div>
+</div>
 </div>
 <div class="section" id="imports-and-rules">
 <h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
@@ -263,7 +305,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, NDSU ACM &amp; Jordan Goetze
+        &copy; Copyright 2018-2019, NDSU ACM &amp; Jordan Goetze
 
     </p>
   </div>
