@@ -161,15 +161,15 @@ class BarattaNPC(NPC):
                 self.target = None
 
         elif self.action is "trade":
-
-            toSell = get_best_material_prices(universe)
-            # picks one of top 3 spots
-            toChoose = random.choice([1, 1, 1, 2, 2, 3])
-            mat = None
-            toSellIter = iter(toSell["best_export_prices"])
-            for x in range(toChoose):
-                mat = next(toSellIter)
-            self.target = toSell["best_export_prices"][mat]["station"]
+            if self.target is None:
+                toSell = get_best_material_prices(universe)
+                # picks one of top 3 spots
+                toChoose = random.choice([1, 1, 1, 2, 2, 3])
+                mat = None
+                toSellIter = iter(toSell["best_export_prices"])
+                for x in range(toChoose):
+                    mat = next(toSellIter)
+                self.target = toSell["best_export_prices"][mat]["station"]
             self.move(*self.target.position)
             if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                 self.buy_material(99999)
@@ -188,15 +188,16 @@ class BarattaNPC(NPC):
                 self.move(*self.target.position)
                 if in_radius(self.ship, self.target, self.target.accessibility_radius, lambda e: e.position):
                     self.sell_material(self.material, self.ship.inventory[self.material])
-                    for thing, amount in self.ship.inventory.items():
-                        if amount > 10:
-                            self.material = thing
-                            values = get_best_material_prices(universe)
-                            self.target = values["best_import_prices"][self.material]["station"]
-                            break
-                    else:
-                        self.action = None
-                        self.target = None
+                    if self.target is None:
+                        for thing, amount in self.ship.inventory.items():
+                            if amount > 10:
+                                self.material = thing
+                                values = get_best_material_prices(universe)
+                                self.target = values["best_import_prices"][self.material]["station"]
+                                break
+                        else:
+                            self.action = None
+                            self.target = None
 
         # healing
         if self.ship.current_hull / self.ship.max_hull <= 0.45:
@@ -213,7 +214,7 @@ class BarattaNPC(NPC):
         self.previous_position = self.ship.position
 
         # Well, time to go back to the mines
-        if self.inactive_counter >= 40:
+        if self.inactive_counter >= 200:
             self.inactive_counter = 0
 
             self.action = "mine"
