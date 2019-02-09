@@ -164,13 +164,13 @@
            <div itemprop="articleBody">
             
   <div class="section" id="writing-your-ai">
-<h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
+<span id="writing-your-ai"></span><h1>Writing Your AI<a class="headerlink" href="#writing-your-ai" title="Permalink to this headline">¶</a></h1>
 <p>There is a base AI that will have a structure of how the AI should work.</p>
 <div class="section" id="functions-to-use">
-<h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
+<span id="functions-to-use"></span><h2>Functions to Use<a class="headerlink" href="#functions-to-use" title="Permalink to this headline">¶</a></h2>
 <p>Functions that can be utilized by the ship: (further indented ones are helper methods)</p>
 <div class="section" id="ship-actions">
-<h3>Ship Actions<a class="headerlink" href="#ship-actions" title="Permalink to this headline">¶</a></h3>
+<span id="ship-actions"></span><h3>Ship Actions<a class="headerlink" href="#ship-actions" title="Permalink to this headline">¶</a></h3>
 <p>Your ship may perform up to one action each turn, and one move each turn.</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.mine()</span></code> - Sets action to mine.</li>
@@ -185,16 +185,16 @@
 </ul>
 </div>
 <div class="section" id="ship-movement">
-<h3>Ship Movement<a class="headerlink" href="#ship-movement" title="Permalink to this headline">¶</a></h3>
+<span id="ship-movement"></span><h3>Ship Movement<a class="headerlink" href="#ship-movement" title="Permalink to this headline">¶</a></h3>
 <p>Your ship may perform one movement per turn</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.move(x,</span> <span class="pre">y)</span></code> - Move to position (x,y).</li>
 </ul>
 </div>
 <div class="section" id="helper-methods">
-<h3>Helper Methods<a class="headerlink" href="#helper-methods" title="Permalink to this headline">¶</a></h3>
+<span id="helper-methods"></span><h3>Helper Methods<a class="headerlink" href="#helper-methods" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="getting-objects-of-a-certain-type">
-<h4>Getting Objects of a certain type<a class="headerlink" href="#getting-objects-of-a-certain-type" title="Permalink to this headline">¶</a></h4>
+<span id="getting-objects-of-a-certain-type"></span><h4>Getting Objects of a certain type<a class="headerlink" href="#getting-objects-of-a-certain-type" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.get_asteroid_fields(universe)</span></code> - Get list of asteroid fields in the universe.</li>
@@ -202,7 +202,7 @@
 </ul>
 </div>
 <div class="section" id="finding-distances-checking-if-in-radius">
-<h4>Finding Distances / Checking if in radius<a class="headerlink" href="#finding-distances-checking-if-in-radius" title="Permalink to this headline">¶</a></h4>
+<span id="finding-distances-checking-if-in-radius"></span><h4>Finding Distances / Checking if in radius<a class="headerlink" href="#finding-distances-checking-if-in-radius" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.distance_to_object(your_ship,</span> <span class="pre">target)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.distance_to_coordinate(your_ship,</span> <span class="pre">xy_coords)</span></code> - Return distance between your ship and <code class="docutils literal notranslate"><span class="pre">xy_coords</span></code>.</li>
@@ -214,7 +214,7 @@
 <li><code class="docutils literal notranslate"><span class="pre">self.in_weapons_range(self,</span> <span class="pre">your_ship,</span> <span class="pre">target_ship)</span></code> - Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if <code class="docutils literal notranslate"><span class="pre">target_ship</span></code> is in range.</li>
 </ul>
 <div class="section" id="finding-prices">
-<h5>Finding Prices<a class="headerlink" href="#finding-prices" title="Permalink to this headline">¶</a></h5>
+<span id="finding-prices"></span><h5>Finding Prices<a class="headerlink" href="#finding-prices" title="Permalink to this headline">¶</a></h5>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.</li>
@@ -226,7 +226,7 @@
 </div>
 </div>
 <div class="section" id="other">
-<h4>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h4>
+<span id="other"></span><h4>Other<a class="headerlink" href="#other" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">self.get_material_name(material_type)</span></code> - Return name of <code class="docutils literal notranslate"><span class="pre">material_type</span></code>.</li>
 <li><code class="docutils literal notranslate"><span class="pre">get_material_to_scrap_conversion(quantity,</span> <span class="pre">value)</span></code> - Given <code class="docutils literal notranslate"><span class="pre">quantity</span></code> of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>, returns amount of illegal scrap created by destroying a ship with this amount of <code class="docutils literal notranslate"><span class="pre">material_value</span></code>.</li>
@@ -234,9 +234,9 @@
 </div>
 </div>
 <div class="section" id="enumeration-values">
-<h3>Enumeration Values<a class="headerlink" href="#enumeration-values" title="Permalink to this headline">¶</a></h3>
+<span id="enumeration-values"></span><h3>Enumeration Values<a class="headerlink" href="#enumeration-values" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="objecttypes">
-<h4><code class="docutils literal notranslate"><span class="pre">ObjectTypes</span></code><a class="headerlink" href="#objecttypes" title="Permalink to this headline">¶</a></h4>
+<span id="objecttypes"></span><h4><code class="docutils literal notranslate"><span class="pre">ObjectTypes</span></code><a class="headerlink" href="#objecttypes" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">ObjectType.ship</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">ObjectType.station</span></code></li>
@@ -252,7 +252,7 @@
 </ul>
 </div>
 <div class="section" id="materialtypes">
-<h4><code class="docutils literal notranslate"><span class="pre">MaterialTypes</span></code><a class="headerlink" href="#materialtypes" title="Permalink to this headline">¶</a></h4>
+<span id="materialtypes"></span><h4><code class="docutils literal notranslate"><span class="pre">MaterialTypes</span></code><a class="headerlink" href="#materialtypes" title="Permalink to this headline">¶</a></h4>
 <p>iron = 1
 steel = 2
 copper = 3
@@ -271,7 +271,7 @@ salvage = 14</p>
 </div>
 </div>
 <div class="section" id="imports-and-rules">
-<h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
+<span id="imports-and-rules"></span><h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
 <p>ONLY the following imports are allowed:</p>
 <ul class="simple">
 <li>math</li>
@@ -285,7 +285,7 @@ salvage = 14</p>
 <p>There are some <a class="reference external" href="rules.html">rules that your AI must follow</a>.</p>
 </div>
 <div class="section" id="related-links">
-<h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/using_the_visualizer.html">Using the Visualizer</a></li>
@@ -330,7 +330,6 @@ salvage = 14</p>
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
     
 
