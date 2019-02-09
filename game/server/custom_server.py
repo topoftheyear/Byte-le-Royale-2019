@@ -291,8 +291,8 @@ class CustomServer(ServerControl):
 
         npc_options = {
 
-                ArnaldoNPC: 0.425,
-                FrankieNPC: 0.425,
+                #ArnaldoNPC: 0.425,
+                FrankieNPC: 1.,
                 TestMinerNPC: 0.0,
                 TestTraderNPC: 0.00,
                 CombatNPC: 0.0,
