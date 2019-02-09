@@ -51,12 +51,12 @@ Your ship may perform up to one action each turn, and one move each turn.
  * `self.get_module_price(median_price, ship_slot)` - Return module price at `ship_slot` with `median_price`
  * `self.get_module_unlock_price(median_price, ship_slot)` - Return module slot price at `ship_slot` with `median_price`
 
- #### Other
+#### Other
  * `self.get_material_name(material_type)` - Return name of `material_type`.
  * `get_material_to_scrap_conversion(quantity, value)` - Given `quantity` of `material_value`, returns amount of illegal scrap created by destroying a ship with this amount of `material_value`.
 
 ### Enumeration Values
-#### `ObjectTypes`
+#### `ObjectType`
 * `ObjectType.ship`
 * `ObjectType.station`
 * `ObjectType.black_market_station`
@@ -69,33 +69,47 @@ Your ship may perform up to one action each turn, and one move each turn.
 * `ObjectType.enforcer`
 * `ObjectType.illegal_salvage`
 
-#### `MaterialTypes`
-iron = 1
-steel = 2
-copper = 3
-circuitry = 4
-pylons = 5
-weaponry = 6
-machinery = 7
-computers = 8
-drones = 9
-gold = 10
-goethite = 11
-cuprite = 12
-wire = 13
-salvage = 14
+#### `MaterialType`
+* `MaterialType.iron`
+* `MaterialType.steel`
+* `MaterialType.copper`
+* `MaterialType.circuitry`
+* `MaterialType.pylons`
+* `MaterialType.weaponry`
+* `MaterialType.machinery`
+* `MaterialType.computers`
+* `MaterialType.drones`
+* `MaterialType.gold`
+* `MaterialType.goethite`
+* `MaterialType.cuprite`
+* `MaterialType.wire`
+* `MaterialType.salvage`
 
+#### `ShipSlot`
+* `ShipSlot.zero`
+* `ShipSlot.one`
+* `ShipSlot.two`
+* `ShipSlot.three`
+
+#### `ModuleType`
+* `ModuleType.locked`
+* `ModuleType.empty`
+* `ModuleType.hull`
+* `ModuleType.engine_speed`
+* `ModuleType.weapons`
+* `ModuleType.cargo_and_mining`
+* `ModuleType.sensors`
 
 
 ## Imports and Rules
 
 ONLY the following imports are allowed:
-  * math
-  * itertools
-  * collections
-  * random
-  * game.common.enums
-  * game.client.user_client
+  * `math`
+  * `itertools`
+  * `collections`
+  * `random`
+  * `game.common.enums`
+  * `game.client.user_client`
   
 Any other import statements will prevent the AI from running.
 

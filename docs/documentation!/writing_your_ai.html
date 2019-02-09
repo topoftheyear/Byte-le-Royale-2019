@@ -235,8 +235,8 @@
 </div>
 <div class="section" id="enumeration-values">
 <span id="enumeration-values"></span><h3>Enumeration Values<a class="headerlink" href="#enumeration-values" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="objecttypes">
-<span id="objecttypes"></span><h4><code class="docutils literal notranslate"><span class="pre">ObjectTypes</span></code><a class="headerlink" href="#objecttypes" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="objecttype">
+<span id="objecttype"></span><h4><code class="docutils literal notranslate"><span class="pre">ObjectType</span></code><a class="headerlink" href="#objecttype" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">ObjectType.ship</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">ObjectType.station</span></code></li>
@@ -251,22 +251,45 @@
 <li><code class="docutils literal notranslate"><span class="pre">ObjectType.illegal_salvage</span></code></li>
 </ul>
 </div>
-<div class="section" id="materialtypes">
-<span id="materialtypes"></span><h4><code class="docutils literal notranslate"><span class="pre">MaterialTypes</span></code><a class="headerlink" href="#materialtypes" title="Permalink to this headline">¶</a></h4>
-<p>iron = 1
-steel = 2
-copper = 3
-circuitry = 4
-pylons = 5
-weaponry = 6
-machinery = 7
-computers = 8
-drones = 9
-gold = 10
-goethite = 11
-cuprite = 12
-wire = 13
-salvage = 14</p>
+<div class="section" id="materialtype">
+<span id="materialtype"></span><h4><code class="docutils literal notranslate"><span class="pre">MaterialType</span></code><a class="headerlink" href="#materialtype" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.iron</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.steel</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.copper</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.circuitry</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.pylons</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.weaponry</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.machinery</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.computers</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.drones</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.gold</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.goethite</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.cuprite</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.wire</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">MaterialType.salvage</span></code></li>
+</ul>
+</div>
+<div class="section" id="shipslot">
+<span id="shipslot"></span><h4><code class="docutils literal notranslate"><span class="pre">ShipSlot</span></code><a class="headerlink" href="#shipslot" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ShipSlot.zero</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ShipSlot.one</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ShipSlot.two</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ShipSlot.three</span></code></li>
+</ul>
+</div>
+<div class="section" id="moduletype">
+<span id="moduletype"></span><h4><code class="docutils literal notranslate"><span class="pre">ModuleType</span></code><a class="headerlink" href="#moduletype" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.locked</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.empty</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.hull</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.engine_speed</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.weapons</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.cargo_and_mining</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ModuleType.sensors</span></code></li>
+</ul>
 </div>
 </div>
 </div>
@@ -274,12 +297,12 @@ salvage = 14</p>
 <span id="imports-and-rules"></span><h2>Imports and Rules<a class="headerlink" href="#imports-and-rules" title="Permalink to this headline">¶</a></h2>
 <p>ONLY the following imports are allowed:</p>
 <ul class="simple">
-<li>math</li>
-<li>itertools</li>
-<li>collections</li>
-<li>random</li>
-<li>game.common.enums</li>
-<li>game.client.user_client</li>
+<li><code class="docutils literal notranslate"><span class="pre">math</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">itertools</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">collections</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">random</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">game.common.enums</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">game.client.user_client</span></code></li>
 </ul>
 <p>Any other import statements will prevent the AI from running.</p>
 <p>There are some <a class="reference external" href="rules.html">rules that your AI must follow</a>.</p>
