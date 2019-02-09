@@ -15,19 +15,19 @@ Functions that can be utilized by the ship: (further indented ones are helper me
 * `self.mine()` - Sets action to mine.
 
 * `get_ships (universe, callback)` - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).
-  * `universt_by_object_type(flat_universe)` - Return a dictionary of object types ex: `({ ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]})`
+  * `universe_by_object_type(flat_universe)` - Return a dictionary of object types ex: `({ ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]})`
 
 * `ships_in_attack_range(universe)` - Return list of ships in attack range.
   * `in_weapons_range(self, your_ship, target_ship)` - Returns `True` if `target_ship` is in range.
-* `attack (target)` - Sets ship action to attack `target`.
+* `attack(target)` - Sets ship action to attack `target`.
 
 * `get_stations(universe)` - Get list of stations in the universe.
   * `in_radius_of_station(your_ship, station)` - Returns `True` if in range of `station`. If `True`, can do the following actions:
 * `repair(hull_to_repair)` - Repair `hull_to_repair` amount of hull for the current market rate.
   * `get_repair_price(median_price)` - get the price to repair your ship.
-* `buy_material(material, amount)` - Buy `amount` of `material` to the station in range.
+* `buy_material(amount)` - Buy `amount` of the production material of the station in range.
   * `get_median_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
-* `sell_material(material, amount)` - Sell `amount` of `material` to the station in range.
+* `sell_material(material_type, amount)` - Sell `amount` of `material_type` to the station in range.
   * `get_material_name(material_type)` - Return name of `material_type`.
   * `get_median_material_price(material_prices)` - Provide 
 * `buy_module (module, upgrade_level, ship_slot)` - Attempt to buy module `module` at level `upgrade_level` in slot `ship_slot`.

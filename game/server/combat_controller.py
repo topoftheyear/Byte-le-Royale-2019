@@ -127,7 +127,7 @@ class CombatController:
                                 self.print(f"Bounty {BountyType.ship_destroyed} given to ship {ship.id}")
 
                         elif target.legal_standing == LegalStanding.pirate:
-
+                            self.notoriety_controller.attribute_notoriety(target, NotorietyChangeReason.pirate_death)
                             if ship.legal_standing in [LegalStanding.citizen, LegalStanding.bounty_hunter]:
                                 self.notoriety_controller.attribute_notoriety(ship, NotorietyChangeReason.destroy_pirate)
 

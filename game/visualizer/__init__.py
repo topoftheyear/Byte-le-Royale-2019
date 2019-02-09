@@ -466,7 +466,7 @@ def handle_events():
                 stats = log_parser.get_stats()
                 compiled = stat_utils.format_stats(stats, stat_utils.StatsTypes.material_production_vs_consumption)
 
-                material_stats_selection_screen(compiled, global_surf, fpsClock)
+                material_stats_selection_screen_2(compiled, global_surf, fpsClock)
 
             if event.key == K_o and pygame.key.get_mods() & pygame.KMOD_SHIFT:
                 global debug
