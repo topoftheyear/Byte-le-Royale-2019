@@ -171,6 +171,18 @@ both ships to destroy each other in the same step.</p>
 <p>To attack another ship, call <code class="docutils literal notranslate"><span class="pre">self.attack(ship_to_attack)</span></code>, where <code class="docutils literal notranslate"><span class="pre">ship_to_attack</span></code> is the target.</p>
 <p>While in battle, you can check your health by looking at the <code class="docutils literal notranslate"><span class="pre">ship.current_hull</span></code>. If this is 0, your ship is dead.</p>
 <p>If the target is in range, you will attack them.</p>
+<div class="section" id="repair">
+<span id="repair"></span><h2>Repair<a class="headerlink" href="#repair" title="Permalink to this headline">¶</a></h2>
+<p>After combat, ships it will be necessary for ships to repair their hulls.</p>
+<p>The station authority provides passive repairing to ALL ships within its accessibility radius.
+This can only occur while a ship is out of combat. Passive repair will provide a certain amount of hull back
+after a certain amount of turns. To find these values, please refer to the game files.</p>
+<p>All stations provide manual repair options. uUse the repair(hull_to_repair) action and provide the amount of hull you
+want to get repaired. Manual repair comes at a fee: the price of repair is based on the median of all materials
+on the market. Use the get_repair_price action for more information.</p>
+<p>Note that the station authority is the only station that provides repair at its regular price. The black market
+stations can provide repairs at a discounted price, while all other stations markup the price greatly.</p>
+</div>
 <div class="section" id="respawning">
 <span id="respawning"></span><h2>Respawning<a class="headerlink" href="#respawning" title="Permalink to this headline">¶</a></h2>
 <p>When your ship dies, the following events happen:</p>
@@ -180,6 +192,12 @@ both ships to destroy each other in the same step.</p>
 <li>If you were a pirate, your notoriety is reduced to +4 (1 below Pirate threshold).</li>
 <li>Any illegal modules are removed from your ship.</li>
 </ul>
+</div>
+<div class="section" id="abandoning-the-battlefield">
+<span id="abandoning-the-battlefield"></span><h2>Abandoning the battlefield<a class="headerlink" href="#abandoning-the-battlefield" title="Permalink to this headline">¶</a></h2>
+<p>Deserters will not be welcomed back! Leaving the bounds of the game area will immediately cause destruction of your
+ship, which will cause you to drop all of your cargo and have you respawn. Note: this will also cause scrap to spawn
+at the edges of the game area, so be wary while collecting scrap near the boundaries of space!</p>
 </div>
 </div>
 
