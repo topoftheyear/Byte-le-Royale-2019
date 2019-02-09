@@ -377,6 +377,11 @@ class CustomServer(ServerControl):
                 y_direction*y_move + ship.position[1]
             )
 
+            # Destroy ship if destination is outside of world bounds
+            if ship.position[0] > WORLD_BOUNDS[0] or ship.position[1] > WORLD_BOUNDS[1] or ship.position[0] < 0 or ship.position[1] < 0:
+                ship.current_hull = 0  # boom
+                ship.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
+
             self.turn_log["events"].append({
                 "type": LogEvent.ship_move,
                 "ship_id": ship.id,
