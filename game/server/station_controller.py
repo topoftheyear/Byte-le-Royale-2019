@@ -123,6 +123,7 @@ class StationController:
                     self.station_data[station_id]["production_produced"] = qty
 
                     self.print(f"Created x{station.production_qty} material {station.production_material}")
+                self.station_data[station_id]["production_counter"] = 0
 
             elif sufficient_primary_in_cargo and not consume_inputs:
                 # increment counter if we have enough in cargo to do work, but havn't reached the counter

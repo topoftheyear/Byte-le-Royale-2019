@@ -196,9 +196,18 @@
 <div class="section" id="getting-objects-of-a-certain-type">
 <span id="getting-objects-of-a-certain-type"></span><h4>Getting Objects of a certain type<a class="headerlink" href="#getting-objects-of-a-certain-type" title="Permalink to this headline">¶</a></h4>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">self.get_ships</span> <span class="pre">(universe,</span> <span class="pre">callback)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).</li>
-<li><code class="docutils literal notranslate"><span class="pre">self.get_asteroid_fields(universe)</span></code> - Get list of asteroid fields in the universe.</li>
-<li><code class="docutils literal notranslate"><span class="pre">self.get_stations(universe)</span></code> - Get list of stations in the universe.</li>
+<li><code class="docutils literal notranslate"><span class="pre">universe.get(ObjectType.ship)</span></code> - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).</li>
+<li><code class="docutils literal notranslate"><span class="pre">universe.get(&quot;asteroid_fields&quot;)</span></code> - Get list of asteroid fields in the universe.</li>
+<li><code class="docutils literal notranslate"><span class="pre">universe.get(&quot;all_stations&quot;)</span></code> - Get list of stations in the universe.</li>
+</ul>
+<p>Note: <code class="docutils literal notranslate"><span class="pre">universe.get()</span></code> takes any of the following object types and returns a list of objects.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.ship</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.cuprite_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.goethite_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.gold_field</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.secure_station</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ObjectType.black_market_station</span></code></li>
 </ul>
 </div>
 <div class="section" id="finding-distances-checking-if-in-radius">
