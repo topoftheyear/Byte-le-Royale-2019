@@ -214,7 +214,7 @@ class BarattaNPC(NPC):
         self.previous_position = self.ship.position
 
         # Well, time to go back to the mines
-        if self.inactive_counter >= 40:
+        if self.inactive_counter >= 200:
             self.inactive_counter = 0
 
             self.action = "mine"
