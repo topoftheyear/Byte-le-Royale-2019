@@ -162,11 +162,11 @@ class Station(GameObject):
 
             self.sell_price = data["sell_price"]
             self.primary_buy_price = data["primary_buy_price"]
-            self.secondary_buy_price = data["primary_buy_price"]
+            self.secondary_buy_price = data["secondary_buy_price"]
 
             self.base_sell_price = data["base_sell_price"]
             self.base_primary_buy_price = data["base_primary_buy_price"]
-            self.base_secondary_buy_price = data["base_primary_buy_price"]
+            self.base_secondary_buy_price = data["base_secondary_buy_price"]
 
 
 class BlackMarketStation(Station):
