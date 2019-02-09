@@ -430,8 +430,12 @@ def show_ship_stats_display(ship, window_surf, clock, dont_wait=False):
                       pygame.Color(0,155,0),
                       (legal_standing_pos[0]+width, legal_standing_pos[1]),
                       (legal_standing_pos[0]+width, legal_standing_pos[1]+height))
-
-    marker_pos = min(((ship.notoriety/LegalStanding.pirate*2) * (width/2)) + (width/2), width)
+    if ship.notoriety <= LegalStanding.bounty_hunter*2:
+        marker_pos = 0
+    elif ship.notoriety >= LegalStanding.pirate*2:
+        marker_pos = width
+    else:
+        marker_pos = ((ship.notoriety/(LegalStanding.pirate*2)) * (width/2)) + (width/2)
 
     pygame.draw.line(window_surf,
                      pygame.Color(155,0,0),

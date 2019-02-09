@@ -76,6 +76,10 @@ class NotorietyController:
         elif change_reason is NotorietyChangeReason.pay_off_bounty:
             ship.notoriety = LegalStanding.pirate - 1
 
+        # pirate death
+        elif change_reason is NotorietyChangeReason.pirate_death:
+            ship.notoriety = LegalStanding.pirate - 1
+
         self.accolade_controller.have_notoriety(ship)
 
         self.events.append({

@@ -129,6 +129,7 @@ class NotorietyChangeReason:
     # decrease notoriety
     destroy_pirate = 5
     pay_off_bounty = 6
+    pirate_death = 8
 
 class ShipSlot:
     zero = 0
