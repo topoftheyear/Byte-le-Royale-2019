@@ -37,6 +37,7 @@ class BoundaryBreak(NPC):
                     # print("I'm leaving min!")
                     self.move(-1, -1)
         else:
-            print("D'oh, I'm dead!")
+            pass
+            # print("D'oh, I'm dead!")
 
         return self.action_digest()
