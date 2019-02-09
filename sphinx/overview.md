@@ -35,7 +35,7 @@ If you desire to be a fighter more than a trader, you can then be either a pirat
 
 ## Initial Funding
 
-You will start out 1000 credits. These credits are used to buy and sell other resources and modules.
+You will start out with 2000 credits. These credits are used to buy and sell other resources and modules.
 
 ## Scoring
 
