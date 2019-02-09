@@ -236,7 +236,7 @@ def run(client_verbose, server_verbose, client_script, port, server_no_wait, gam
     server_proc.wait()
 
 
-host = os.getenv("BL_ROYALE_HOST",  "http://scrimmage.royale.ndacm.org")
+host = os.getenv("BL_ROYALE_HOST",  "scrimmage.royale.ndacm.org:5000")
 
 @cli.group()
 def scrim():
@@ -258,6 +258,24 @@ if admin_password:
     @admin.group()
     def announcements():
         pass
+
+    @admin.group()
+    def registration():
+        pass
+
+    @registration.command("open")
+    def registration_open():
+        auth = HTTPBasicAuth("BL_ROYALE_ADMIN", admin_password)
+        payload = requests.post("http://" + host + "/registration/open", auth=auth)
+        print(payload.status_code, payload.text)
+
+
+    @registration.command("close")
+    def registration_close():
+        auth = HTTPBasicAuth("BL_ROYALE_ADMIN", admin_password)
+        payload = requests.post("http://" + host + "/registration/close", auth=auth)
+        print(payload.status_code, payload.text)
+
 
     @announcements.command("add")
     @click.argument("title")
