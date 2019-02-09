@@ -322,7 +322,7 @@ def get_game_logs(run=None):
         run = get_latest_run_no()
 
     if run is None:
-        return Response('No runs availaible', status=204gt)
+        return Response('No runs availaible', status=204)
 
     result_file = "runs/{}_result.json".format(run)
     log_files = "runs/{}.tar".format(run)
