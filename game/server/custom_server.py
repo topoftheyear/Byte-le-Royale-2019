@@ -13,10 +13,15 @@ from game.utils.helpers import *
 from game.common.npc.frankie_npc import FrankieNPC
 from game.common.npc.arnaldo_npc import ArnaldoNPC
 <<<<<<< HEAD
+<<<<<<< HEAD
 from game.common.npc.roselli_npc import RoselliNPC
 =======
 from game.common.npc.baratta_npc import BarattaNPC
 >>>>>>> ajay2
+=======
+from game.common.npc.baratta_npc import BarattaNPC
+from game.common.npc.roselli_npc import RoselliNPC
+>>>>>>> 5dd842656f0e21e64f96ae657e2608303272215c
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -295,10 +300,11 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
+
+                BarattaNPC: 0.3333,
                 ArnaldoNPC: 0.0,
-                FrankieNPC: 0.5,
-                RoselliNPC: 0.5,
-                BarattaNPC: 0.425,
+                FrankieNPC: 0.3333,
+                RoselliNPC: 0.3334,
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):

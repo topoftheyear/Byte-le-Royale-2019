@@ -164,7 +164,7 @@ class BarattaNPC(NPC):
 
             toSell = get_best_material_prices(universe)
             # picks one of top 3 spots
-            toChoose = random.choice([1,1,1,2,2,3])
+            toChoose = random.choice([1, 1, 1, 2, 2, 3])
             mat = None
             toSellIter = iter(toSell["best_export_prices"])
             for x in range(toChoose):
