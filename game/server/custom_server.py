@@ -1,7 +1,9 @@
 import json
+import random
 from math import sqrt
 
 from game.server.server_control import ServerControl
+from game.common.enums import *
 from game.common.npc.test import *
 from game.common.npc.test.advanced_pirate_npc import *
 from game.common.ship import Ship
@@ -24,6 +26,7 @@ from game.server.repair_controller import RepairController
 from game.common.universe_manager import UniverseManager
 from game.server.bounty_controller import BountyController
 import game.utils.filters as filters
+from game.config import *
 from game.utils.projection import *
 
 
