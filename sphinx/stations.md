@@ -15,14 +15,14 @@ Note: the Black Market Stations have imports or produce anything; they only trad
 
 - `primary_import` - the station's primary import
 - `secondary_import` - the station's secondary import
-- `primary_consumption_qty` - quantity of primary import that is consumed in one tick
-- `secondary_consumption_qty` - quantity of secondary import that is consumed in one tick
+- `primary_consumption_qty` - quantity of primary import that is consumed at each output
+- `secondary_consumption_qty` - quantity of secondary import that is consumed at each output
 - `primary_max` - The total amount of the station's primary import that a station can store
 - `secondary_max` - The total amount of the station's secondary import that a station can store
 
 - `production_frequency` - how often to consume inputs for creating output
 - `production_material` - what is produced
-- `production_qty` - how much is stored
+- `production_qty` - the number of produced material at each output
 - `production_max` - max amount of produced stuff to store
 
 - `base_sell_price` - The base selling price for the produced item.
