@@ -336,7 +336,9 @@ def get_game_logs(run=None):
     with open(game_data_file, "r") as f:
         game_data = f.read()
         
+    results_data = json.loads(results_data)
     results_data["run_number"] = run
+    results_data = json.dumps(results_data)
 
     return jsonify({
         "results": results_data,
