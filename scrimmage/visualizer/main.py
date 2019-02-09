@@ -30,7 +30,7 @@ def main():
     if UNITY_VIS:
         visualizer_args = ["visualizer"]
     else:
-        visualizer_args = ["vis/vis.exe" ]
+        visualizer_args = ["vis/test.exe" ]
         #visualizer_args = [sys.executable, "br_launcher.pyz", "visualizer", "--dont-wait", ]
         #visualizer_args = [sys.executable, "br_launcher.pyz", "visualizer", "--dont-wait", "--fullscreen", ]
 
@@ -71,7 +71,7 @@ def main():
 
         print("Starting scrimmage playback")
         try:
-            visualizer_proc = subprocess.Popen(visualizer_args)
+            visualizer_proc = subprocess.Popen(visualizer_args, cwd="vis")
             visualizer_proc.wait()
         except KeyboardInterrupt:
             print("Ctrl + C detected, exiting...")
