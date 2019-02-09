@@ -1,7 +1,7 @@
 # Overview
 
-Congratulations! If you are reading this, you are the newest hire for the `Market Space`!
-This means that you will soon begin competing against others to see who is the best in the sector.
+Congratulations! If you are reading this, you are the newest member of the `Pilots Federation`!
+This means that you will soon begin competing against others to see who is the best pilot in the sector.
 Before you begin, please take note of the following concepts:
 
 ## Getting Started
