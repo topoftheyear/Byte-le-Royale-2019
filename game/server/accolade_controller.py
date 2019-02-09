@@ -51,6 +51,7 @@ class AccoladeController:
 
     # Ore Mined
     def ore_mined(self, ship, oreAdd):
+        if ship.is_npc: return
         if ship in self.ore:
             self.ore[ship] += oreAdd
         else:
@@ -67,6 +68,7 @@ class AccoladeController:
 
     # Bounties claimed
     def bounty_claim(self, ship):
+        if ship.is_npc: return
         if ship in self.bounties:
             self.bounties[ship] += 1
         else:
@@ -84,6 +86,7 @@ class AccoladeController:
 
     # How much salvage redeemed
     def redeem_salvage(self, ship, salvageAdd):
+        if ship.is_npc: return
         if ship in self.salvage:
             self.salvage[ship] += salvageAdd
         else:
@@ -101,6 +104,7 @@ class AccoladeController:
 
     # credits not from salvage
     def credits_earned(self, ship, creditAdd):
+        if ship.is_npc: return
         if ship in self.credits:
             self.credits[ship] += creditAdd
         else:
@@ -118,6 +122,7 @@ class AccoladeController:
 
     # all credits
     def all_credits_earned(self, ship, creditAdd):
+        if ship.is_npc: return
         if ship in self.allCredits:
             self.allCredits[ship] += creditAdd
         else:
@@ -125,6 +130,7 @@ class AccoladeController:
 
     # Fuel Efficient
     def ship_moved(self, ship, distance):
+        if ship.is_npc: return
         if ship in self.moved:
             self.moved[ship] += distance
         else:
@@ -144,6 +150,7 @@ class AccoladeController:
 
     # Ship Upgrades
     def ship_upgraded(self, ship, cost):
+        if ship.is_npc: return
         if ship in self.upgrades:
             self.upgrades[ship] += cost
         else:
@@ -160,6 +167,7 @@ class AccoladeController:
 
     # Most Innocents Killed (innocent is dealt no damage back)
     def kill_innocent(self, ship):
+        if ship.is_npc: return
         if ship in self.kInnocent:
             self.kInnocent[ship] += 1
         else:
@@ -176,6 +184,7 @@ class AccoladeController:
 
     # The Most Pirate-y Pirate (for the moment, most notoriety)
     def have_notoriety(self, ship):
+        if ship.is_npc: return
         if ship.notoriety > self.notorious["notoriety"]:
             self.notorious = {"name": ship.team_name, "notoriety": ship.notoriety}
 
@@ -185,6 +194,7 @@ class AccoladeController:
     def final_scores(self, universe):
         toSort = dict()
         for ship in universe.get(ObjectType.ship):
+            if ship.is_npc: continue
             toSort[ship.team_name] = ship.credits
         toSort = sorted(toSort.items(), key=lambda item: (item[1], item[0]), reverse=True)
         toReturn = list()
