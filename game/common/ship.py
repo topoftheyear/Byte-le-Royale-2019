@@ -190,6 +190,7 @@ class Ship(GameObject):
             if((type(self.action_param_1) == int and self.action_param_1 > 2147483647)
                     or (type(self.action_param_2) == int  and self.action_param_2 > 2147483647)
                     or (type(self.action_param_3) == int and self.action_param_3 > 2147483647)):
+
                 print("Action parameters cannot be larter than 2147483647")
                 exit(1)
 
