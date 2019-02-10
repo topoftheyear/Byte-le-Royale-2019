@@ -413,7 +413,7 @@ class CustomServer(ServerControl):
     def serialize_universe(self, security_level):
         serialized_universe = []
 
-        for obj in self.universe.dump():
+        for obj in self.universe.flatten():
             serialized_obj = obj.to_dict(security_level=security_level)
             serialized_universe.append(serialized_obj)
         return serialized_universe
@@ -422,7 +422,7 @@ class CustomServer(ServerControl):
         serialized_visible_universe = []
         own_ship = self.teams[ship_id]["ship"]
 
-        for obj in self.universe.dump():
+        for obj in self.universe.flatten():
             if obj.object_type is ObjectType.ship:
                 if obj.id == own_ship.id or not in_radius(own_ship, obj, own_ship.sensor_range, lambda e:e.position):
                     continue
