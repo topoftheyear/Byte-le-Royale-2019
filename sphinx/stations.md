@@ -26,16 +26,14 @@ Note: the Black Market Stations and the Secure Station don't have imports or pro
 - `production_qty` - the number of produced material at each output
 - `production_max` - max amount of produced stuff to store
 
-- `primary_buy_price` - The rate at which a station will purchase it's primary import.
-- `secondary_buy_price` - The rate at which a station will purchase it's secondary import.
+- `primary_buy_price` - The price at which a station will purchase it's primary import.
+- `secondary_buy_price` - The price at which a station will purchase it's secondary import.
 
 - `base_sell_price` - The base selling price for the produced item.
 - `base_primary_buy_price` - The base price the station will pay for the primary import.
 - `base_secondary_buy_price` - The base price the station will pay for the secondary import.
 
 - `sell_price` - The station's current sell price for the produced item.
-- `primary_buy_price` - The station's current buy price for the primary import.
-- `secondary_buy_price` - The station's current buy price for the secondary import.
 
 ## Stats
 
