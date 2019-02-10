@@ -41,12 +41,12 @@ class ServerControl:
         # Game Configuration options
         system = platform.system()
         if system == "Windows":
-            self.turn_time = 0.01
+            self.turn_time = 0.04
         else:
-            self.turn_time = 0.01
+            self.turn_time = 0.04
 
         self.turn_wait = 0
-        self.max_turn_wait = self.turn_time*5
+        self.max_turn_wait = self.turn_time*3
 
         self.game_tick_no = 0
         self.max_game_tick = max_game_tick

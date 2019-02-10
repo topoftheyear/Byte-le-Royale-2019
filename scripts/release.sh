@@ -3,18 +3,19 @@
 
 echo "Bump version? [y/N]"
 read prompt
-if [[ $prompt != "y" ]]; then
-    exit
+if [[ $prompt == "y" ]]; then
+    python scripts/bump_version.py
 fi
-python bump_version.py
 
 release_version=$(cat wrapper/version.py)
 release_version=$(echo "$release_version" | cut -c 3-)
 echo $release_version
 
-git add wrapper/version.py
-git commit -m "Bump version to ${release_version}\n$@"
-git push
+if [[ $prompt == "y" ]]; then
+    git add wrapper/version.py
+    git commit -m "Bump version to ${release_version}\n$@"
+    git push
+fi
 
 
 echo "Building app..."
@@ -44,7 +45,7 @@ response=$( http --json \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes: $@" \
-    draft:=true 2>&1 )
+    draft:=false 2>&1 )
 
 echo $response
 

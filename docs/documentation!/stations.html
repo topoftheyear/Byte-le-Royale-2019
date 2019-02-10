@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Stations &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Stations &mdash; Byte-le-Royale 2019 9 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le-Royale 201X
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2019
           
 
           
@@ -113,7 +113,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le-Royale 201X</a>
+          <a href="index.html">Byte-le-Royale 2019</a>
         
       </nav>
 
@@ -174,7 +174,8 @@ In addition, the secondary product will help speed up the production.</p>
 <div class="section" id="station-api">
 <span id="station-api"></span><h2>Station API<a class="headerlink" href="#station-api" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - name of station</li>
+<li><code class="docutils literal notranslate"><span class="pre">name</span></code> - name of station
+= <code class="docutils literal notranslate"><span class="pre">station_type</span></code> - black market, station, or secure station</li>
 <li><code class="docutils literal notranslate"><span class="pre">position</span></code> - x,y of station</li>
 <li><code class="docutils literal notranslate"><span class="pre">primary_import</span></code> - the station’s primary import</li>
 <li><code class="docutils literal notranslate"><span class="pre">secondary_import</span></code> - the station’s secondary import</li>
@@ -186,46 +187,46 @@ In addition, the secondary product will help speed up the production.</p>
 <li><code class="docutils literal notranslate"><span class="pre">production_material</span></code> - what is produced</li>
 <li><code class="docutils literal notranslate"><span class="pre">production_qty</span></code> - the number of produced material at each output</li>
 <li><code class="docutils literal notranslate"><span class="pre">production_max</span></code> - max amount of produced stuff to store</li>
+<li><code class="docutils literal notranslate"><span class="pre">primary_buy_price</span></code> - The price at which a station will purchase it’s primary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">secondary_buy_price</span></code> - The price at which a station will purchase it’s secondary import.</li>
 <li><code class="docutils literal notranslate"><span class="pre">base_sell_price</span></code> - The base selling price for the produced item.</li>
-<li><code class="docutils literal notranslate"><span class="pre">base_primary_price</span></code> - The base price the station will pay for the primary import.</li>
-<li><code class="docutils literal notranslate"><span class="pre">base_secondary_price</span></code> - The base price the station will pay for the secondary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">base_primary_buy_price</span></code> - The base price the station will pay for the primary import.</li>
+<li><code class="docutils literal notranslate"><span class="pre">base_secondary_buy_price</span></code> - The base price the station will pay for the secondary import.</li>
 <li><code class="docutils literal notranslate"><span class="pre">sell_price</span></code> - The station’s current sell price for the produced item.</li>
-<li><code class="docutils literal notranslate"><span class="pre">primary_price</span></code> - The station’s current buy price for the primary import.</li>
-<li><code class="docutils literal notranslate"><span class="pre">secondary_price</span></code> - The station’s current buy price for the secondary import.</li>
 </ul>
 </div>
 <div class="section" id="stats">
 <span id="stats"></span><h2>Stats<a class="headerlink" href="#stats" title="Permalink to this headline">¶</a></h2>
 <p>Listed below are the stats for each station.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+-------------------------+----------------+----------------------+-----------+
-| Station Name            | Position (x,y) | Import (Secondary)   | Produced  |
-+=========================+================+======================+===========+
-| Wire Station            | 400, 70        | Copper (N/A)         | Wire      |
-+-------------------------+----------------+----------------------+-----------+
-| Computers Station       | 630, 56        | Circuitry (N/A)      | Computers | 
-+-------------------------+----------------+----------------------+-----------+
-| Circuitry Station       | 900, 266       | Gold (Wire)          | Circuitry | 
-+-------------------------+----------------+----------------------+-----------+
-| Drones Station          | 960, 665       | Weaponry (N/A)       | Drones    |
-+-------------------------+----------------+----------------------+-----------+
-| Pylon Station           | 25, 420        | Circuitry (N/A)      | Pylons    | 
-+-------------------------+----------------+----------------------+-----------+
-| Machinery Station       | 85, 280        | Steel (Pylons)       | Machinery | 
-+-------------------------+----------------+----------------------+-----------+
-| Copper Station          | 50, 630        | Cuprite (Drones)     | Copper    |
-+-------------------------+----------------+----------------------+-----------+
-| Steel Station           | 920, 21        | Iron (Drones)        | Steel     |
-+-------------------------+----------------+----------------------+-----------+
-| Iron Station            | 600, 560       | Goethite (Machinery) | Iron      | 
-+-------------------------+----------------+----------------------+-----------+
-| Weaponry Station        | 150, 406       | Computers (N/A)      | Weaponry  | 
-+-------------------------+----------------+----------------------+-----------+
-| `Black Market 1`        | 880, 175       | None                 | None      | 
-+-------------------------+----------------+----------------------+-----------+
-| `Black Market 2`        | 100, 560       | None                 | None      | 
-+-------------------------+----------------+----------------------+-----------+
-| Station Authority       | 500, 350       | None                 | None      |
-+-------------------------+----------------+----------------------+-----------+
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>+-------------------------+----------------+------------------------------------+-----------+
+| Station Name            | Position (x,y) | Primary Import (Secondary Import)  | Produced  |
++=========================+================+====================================+===========+
+| Wire Station            | 400, 70        | Copper (N/A)                       | Wire      |
++-------------------------+----------------+------------------------------------+-----------+
+| Computers Station       | 630, 56        | Circuitry (N/A)                    | Computers | 
++-------------------------+----------------+------------------------------------+-----------+
+| Circuitry Station       | 900, 266       | Gold (Wire)                        | Circuitry | 
++-------------------------+----------------+------------------------------------+-----------+
+| Drones Station          | 960, 665       | Weaponry (N/A)                     | Drones    |
++-------------------------+----------------+------------------------------------+-----------+
+| Pylon Station           | 25, 420        | Circuitry (N/A)                    | Pylons    | 
++-------------------------+----------------+------------------------------------+-----------+
+| Machinery Station       | 85, 280        | Steel (Pylons)                     | Machinery | 
++-------------------------+----------------+------------------------------------+-----------+
+| Copper Station          | 50, 630        | Cuprite (Drones)                   | Copper    |
++-------------------------+----------------+------------------------------------+-----------+
+| Steel Station           | 920, 21        | Iron (Drones)                      | Steel     |
++-------------------------+----------------+------------------------------------+-----------+
+| Iron Station            | 600, 560       | Goethite (Machinery)               | Iron      | 
++-------------------------+----------------+------------------------------------+-----------+
+| Weaponry Station        | 150, 406       | Computers (N/A)                    | Weaponry  | 
++-------------------------+----------------+------------------------------------+-----------+
+| `Black Market 1`        | 880, 175       | None                               | None      | 
++-------------------------+----------------+------------------------------------+-----------+
+| `Black Market 2`        | 100, 560       | None                               | None      | 
++-------------------------+----------------+------------------------------------+-----------+
+| Secure Station          | 500, 350       | None                               | None      |
++-------------------------+----------------+------------------------------------+-----------+
 </pre></div>
 </div>
 </div>
@@ -242,7 +243,7 @@ In addition, the secondary product will help speed up the production.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, NDSU ACM &amp; Jordan Goetze
+        &copy; Copyright 2018-2019, NDSU ACM &amp; Jordan Goetze
 
     </p>
   </div>

@@ -14,7 +14,7 @@ import traceback
 
 
 class Config:
-    API_HOST = "http://localhost:5000"
+    API_HOST = "http://scrimmage.royale.ndacm.org:5000"
     UPLOAD_DIR = "uploads"
     GAME_LOG_LOCATION = "game_logs.tar.gz"
     DOCKER_IMAGE_SERVER = "br_server"
@@ -154,6 +154,7 @@ class ScrimmageRunner:
                     Config.DOCKER_IMAGE_CLIENT,
                     detach=True,
                     network="br_net",
+                    cpu_shares=128,
                     mounts=[
                         docker.types.Mount(
                             target="/code/custom_client.py",

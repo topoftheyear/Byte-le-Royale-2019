@@ -289,14 +289,18 @@ def upload_game_logs():
     if not os.path.exists("runs"):
         os.makedirs("runs")
 
-    old_result_file = "runs/{}_result.json".format(run_no-1)
-    old_log_files = "runs/{}.tar".format(run_no-1)
+    old_result_file = "runs/{}_result.json".format(run_no-5)
+    old_log_files = "runs/{}.tar".format(run_no-5)
+    old_game_data_files = "runs/{}_game_data.tar".format(run_no-5)
 
     if os.path.exists(old_result_file):
         os.unlink(old_result_file)
 
     if os.path.exists(old_log_files):
         os.unlink(old_log_files)
+
+    if os.path.exists(old_game_data_files):
+        os.unlink(old_game_data_files)
 
     # insert into db
     result_file = "runs/{}_result.json".format(run_no)
@@ -368,8 +372,6 @@ def upload_client_logs():
     to_save = list(filter(
             lambda s: s["run_number"]>cutoff,
             submissions[index]["runs"]))
-
-    print(len(to_save))
 
     submissions[index]["runs"] = None
     submissions[index]["runs"] = to_save

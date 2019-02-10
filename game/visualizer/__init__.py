@@ -1,4 +1,5 @@
 import sys, math, random, time
+import zipfile
 
 import pygame
 from pygame.locals import *
@@ -249,8 +250,8 @@ def show_end_screen(focus_team_name, dont_wait):
         global_surf.fill(pygame.Color(0, 0, 0))
 
         # Set up variables used in display
-        titleFont = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 32)
-        font = pygame.font.Font("./game/visualizer/assets/DroidSansMono.ttf", 16)
+        titleFont = pygame.font.SysFont(pygame.font.get_default_font(), 32)
+        font = pygame.font.SysFont(pygame.font.get_default_font(), 16)
         currentHeight = 10
         gap = 20
         left_allign_leaderboard = 50

@@ -68,15 +68,25 @@ class ModuleController:
                     ship_slot = ship.action_param_3
 
                     # Check is the slot is available
-                    if ship_slot == ModuleType.locked:
+                    locked = False
+                    if ship_slot is ShipSlot.one:
+                        if ship.module_1 is ModuleType.locked:
+                            locked = True
+                    elif ship_slot is ShipSlot.two:
+                        if ship.module_2 is ModuleType.locked:
+                            locked = True
+                    elif ship_slot is ShipSlot.three:
+                        if ship.module_3 is ModuleType.locked:
+                            locked = True
+                    if locked:
                         self.print('Module slot selected is locked')
-                        continue
+                        break
                     self.print('Ship module slot is unlocked')
 
                     # Check if the module requested is illegal
                     if upgrade_level is ModuleLevel.illegal and current_station.object_type is not ObjectType.black_market_station:
                         self.print('Attempt to purchase illegal module from non black market station')
-                        continue
+                        break
 
                     # Check if requested module is already equipped on the ship
                     if ship_slot == 0 and module in [ship.module_1, ship.module_2, ship.module_3]\
@@ -85,7 +95,7 @@ class ModuleController:
                             or ship_slot == 3 and module in [ship.module_0, ship.module_1, ship.module_2]:
 
                         self.print('Module already exists in another slot')
-                        continue
+                        break
 
                     if self.sell_prices is None:
                         self.sell_prices = get_material_sell_prices(universe)
@@ -96,7 +106,7 @@ class ModuleController:
                     cost = get_module_price(self.median_sell_price, upgrade_level)
                     if ship.credits < cost:
                         self.print('Ship does not have adequate funds (have: ' + str(ship.credits) + ', need: ' + str(cost) + ')')
-                        continue
+                        break
 
                     self.print('Ship has funds for the module')
                     self.print(str(ship.credits) + ' - ' + str(cost) + ' = ' + str(ship.credits - cost))
@@ -168,7 +178,7 @@ class ModuleController:
                         ship_slot = ShipSlot.zero
                         # Check if ship has the funds
                         if ship.credits < get_module_unlock_price(self.median_sell_price, ship_slot):
-                            continue
+                            break
                         # Make purchase
                         ship.credits -= get_module_unlock_price(ship_slot)
                         ship.module_0 = ModuleType.empty
@@ -176,7 +186,7 @@ class ModuleController:
                         ship_slot = ShipSlot.one
                         # Check if ship has the funds
                         if ship.credits < get_module_unlock_price(self.median_sell_price, ship_slot):
-                            continue
+                            break
                         # Make purchase
                         ship.credits -= get_module_unlock_price(self.median_sell_price, ship_slot)
                         ship.module_1 = ModuleType.empty
@@ -185,7 +195,7 @@ class ModuleController:
 
                         # Check if ship has the funds
                         if ship.credits < get_module_unlock_price(self.median_sell_price, ship_slot):
-                            continue
+                            break
 
                         # Make purchase
                         ship.credits -= get_module_unlock_price(self.median_sell_price, ship_slot)
@@ -195,13 +205,13 @@ class ModuleController:
 
                         # Check if ship has the funds
                         if ship.credits < get_module_unlock_price(self.median_sell_price, ship_slot):
-                            continue
+                            break
 
                         # Make purchase
                         ship.credits -= get_module_unlock_price(self.median_sell_price, ship_slot)
                         ship.module_3 = ModuleType.empty
                     else:  # All already unlocked
-                        continue
+                        break
 
                     self.print('Ship successfully purchased module slot '+str(ship_slot))
 

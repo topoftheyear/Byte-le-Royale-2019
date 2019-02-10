@@ -90,7 +90,7 @@ class StationController:
 
             if sufficient_primary_in_cargo and consume_inputs and not_at_max_production:
                 station.cargo[station.primary_import] -= station.primary_consumption_qty
-                self.station_data[station_id]["primary_consumed"] += station.primary_consumption_qty
+                self.station_data[station_id]["primary_consumed"] = station.primary_consumption_qty
 
                 if(has_secondary and
                     sufficient_secondary_in_cargo and
@@ -99,7 +99,6 @@ class StationController:
                     station.cargo[station.secondary_import] -= station.secondary_consumption_qty
 
                     qty = station.production_qty * 2
-                    prev_cargo = None
                     if station.production_material not in station.cargo:
                         station.cargo[station.production_material] = qty
                     else:
@@ -107,22 +106,24 @@ class StationController:
                         qty = min(qty, station.production_max - prev_cargo)
                         station.cargo[station.production_material] += qty
 
-                    self.station_data[station_id]["production_produced"] += qty
+                    self.station_data[station_id]["production_produced"] = qty
 
                     self.print(f"Created x{station.production_qty}*2 material {station.production_material}")
-                    self.station_data[station_id]["secondary_consumed"] += station.secondary_consumption_qty
+                    self.station_data[station_id]["secondary_consumed"] = station.secondary_consumption_qty
 
                 else:
                     qty = station.production_qty
                     if station.production_material not in station.cargo:
                         station.cargo[station.production_material] = qty
                     else:
-                        qty = min(station.cargo[station.production_material] + qty, station.production_max)
-                        station.cargo[station.production_material] = qty
+                        prev_cargo = station.cargo[station.production_material]
+                        qty = min(qty, station.production_max - prev_cargo)
+                        station.cargo[station.production_material] += qty
 
-                    self.station_data[station_id]["production_produced"] += qty
+                    self.station_data[station_id]["production_produced"] = qty
 
                     self.print(f"Created x{station.production_qty} material {station.production_material}")
+                self.station_data[station_id]["production_counter"] = 0
 
             elif sufficient_primary_in_cargo and not consume_inputs:
                 # increment counter if we have enough in cargo to do work, but havn't reached the counter

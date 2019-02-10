@@ -63,7 +63,7 @@ class UniverseManager:
             return
         self.universe[obj.object_type].remove(obj)
 
-    def dump(self):
+    def flatten(self):
         return [obj for types in self.universe.values() for obj in types]
 
     def load(self, flat_universe):
