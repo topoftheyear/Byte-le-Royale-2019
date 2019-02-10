@@ -221,6 +221,9 @@ class Ship(GameObject):
             self.position = data["position"]
 
             self.inventory = data["inventory"]
+            for k,v in self.inventory.items():
+                del self.inventory[k]
+                self.inventory[int(k)] = v
 
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]
