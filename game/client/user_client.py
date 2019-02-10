@@ -71,9 +71,11 @@ class UserClient:
             return
 
         # upgrade_level checking, ModuleLevel type
-        if upgrade_level in [ModuleLevel.base]:
+        if upgrade_level not in [ModuleLevel.one,
+                                 ModuleLevel.two,
+                                 ModuleLevel.three,
+                                 ModuleLevel.illegal]:
             return
-
         # ship_slot checking
         if ship_slot not in [
                 ShipSlot.zero,
