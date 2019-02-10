@@ -12,6 +12,7 @@ When you buy items, you specify the amount of the station's production you want 
 Then, the following conditions are checked:
 * buying more than the station possesses - will buy available amount
 * buying more than you can afford - will buy as much as you can afford
+* buying more than your ship can hold - will buy as much as you can hold
 * if 2 or more players both try to buy a combined total more than store has in stock,
   each player will purchase (total amount / `n`) rounded up, where `n` is the number of players buying.
 
