@@ -11,6 +11,7 @@ Note: the Black Market Stations and the Secure Station don't have imports or pro
 ## Station API
 
 - `name` - name of station
+= `station_type` - black market, station, or secure station
 - `position` - x,y of station
 
 - `primary_import` - the station's primary import
@@ -26,12 +27,12 @@ Note: the Black Market Stations and the Secure Station don't have imports or pro
 - `production_max` - max amount of produced stuff to store
 
 - `base_sell_price` - The base selling price for the produced item.
-- `base_primary_price` - The base price the station will pay for the primary import.
-- `base_secondary_price` - The base price the station will pay for the secondary import.
+- `base_primary_buy_price` - The base price the station will pay for the primary import.
+- `base_secondary_buy_price` - The base price the station will pay for the secondary import.
 
 - `sell_price` - The station's current sell price for the produced item.
-- `primary_price` - The station's current buy price for the primary import.
-- `secondary_price` - The station's current buy price for the secondary import.
+- `primary_buy_price` - The station's current buy price for the primary import.
+- `secondary_buy_price` - The station's current buy price for the secondary import.
 
 ## Stats
 
