@@ -42,7 +42,7 @@ class FrankieNPC(NPC):
 
         # select new action if not currently in one
         if self.action is None:
-            self.action = random.choice(["mine", "mine", "trade", "trade", "trade", "pirate", "module"])
+            self.action = random.choice(["mine", "pirate", "trade", "trade", "trade", "pirate", "module"])
 
         # mining action ------------------------------------------------------------------------------------------------
         if self.action is "mine":

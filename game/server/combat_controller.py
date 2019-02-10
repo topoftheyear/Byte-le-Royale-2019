@@ -123,7 +123,7 @@ class CombatController:
 
                             # If attacker is a pirate apply a bounty
                             if ship.legal_standing >= LegalStanding.pirate:
-                                ship.bounty_list.append({"bounty_type": BountyType.ship_destroyed, "value": 1500, "age": 0})
+                                ship.bounty_list.append({"bounty_type": BountyType.ship_destroyed, "value": target.credits * 0.1, "age": 0})
                                 self.print(f"Bounty {BountyType.ship_destroyed} given to ship {ship.id}")
 
                         elif target.legal_standing == LegalStanding.pirate:
