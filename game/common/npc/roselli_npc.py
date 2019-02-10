@@ -146,7 +146,7 @@ class RoselliNPC(NPC):
                 self.print('couldnt find attacker')
 
         # if nearby a pirate, be a good bounty hunter maybe ------------------------------------------------------------
-        if self.target is not None and self.target.object_type is not ObjectType.ship and random.randint(1,25) == 5:
+        if self.target is not None and self.target.object_type is not ObjectType.ship and random.randint(1,15) == 5:
             for other in universe.get(ObjectType.ship):
                 if self.in_weapons_range(self.ship, other) and other.legal_standing is LegalStanding.pirate:
                     self.action = "bounty"

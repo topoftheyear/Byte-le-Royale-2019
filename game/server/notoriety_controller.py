@@ -99,7 +99,7 @@ class NotorietyController:
         if ship.notoriety >= LegalStanding.pirate:
             # If ship previously was not a pirate add a bounty
             if ship.legal_standing < LegalStanding.pirate:
-                ship.bounty_list.append({"bounty_type": BountyType.became_pirate, "value": 500, "age": 0})
+                ship.bounty_list.append({"bounty_type": BountyType.became_pirate, "value": ship.credits * 0.1, "age": 0})
                 self.print(f"Bounty {BountyType.became_pirate} given to ship {ship.id}")
 
             ship.legal_standing = LegalStanding.pirate

@@ -33,7 +33,7 @@ RESPAWN_TIME = 10
 
 SHIP_SALVAGE_CONSTANT = 500 # the value of a ship kill
 
-ILLEGAL_SCRAP_VALUE = 4.5
+ILLEGAL_SCRAP_VALUE = 150
 
 # Bounty related items
 BOUNTY_DECAY_RATE = 0.002
