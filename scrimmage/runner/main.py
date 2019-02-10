@@ -14,7 +14,7 @@ import traceback
 
 
 class Config:
-    API_HOST = "http://localhost:5000"
+    API_HOST = "http://scrimmage.royale.ndacm.org:5000"
     UPLOAD_DIR = "uploads"
     GAME_LOG_LOCATION = "game_logs.tar.gz"
     DOCKER_IMAGE_SERVER = "br_server"
