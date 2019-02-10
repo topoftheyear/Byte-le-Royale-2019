@@ -141,7 +141,7 @@ def separate_universe(flat_universe):
 
 #  Finds median price of all materials in the universe
 def get_median_material_price(material_prices):
-    return statistics.median(material_prices)
+    return statistics.median(list(material_prices.values()))
 
 
 #  Applies adjustments based on median material prices to find repair cost
@@ -205,6 +205,9 @@ def get_material_sell_prices(universe):
 
     price_list[MaterialType.salvage] = ILLEGAL_SCRAP_VALUE
 
+    if -1 in price_list:
+        del price_list[-1]
+
     return price_list
 
 def get_best_material_prices(universe):
@@ -235,6 +238,9 @@ def get_best_material_prices(universe):
 
         if station.sell_price < best_export_prices[station.production_material]["export_price"]:
             best_export_prices[station.production_material] = { "export_price": station.sell_price, "station": station}
+
+    if -1 in best_import_prices:
+        del best_import_prices[-1]
 
     # Add salvage to import prices
     best_import_prices[MaterialType.salvage] = {"import_price": ILLEGAL_SCRAP_VALUE,
