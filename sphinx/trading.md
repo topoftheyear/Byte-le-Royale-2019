@@ -21,7 +21,7 @@ Then, the following conditions are checked:
 When you sell items, you specify the item you wish to sell in the first parameter, and the amount in the second one.
 Then, the following conditions are checked:
 * selling more than the station can hold - will sell available amount
-* selling more than you can afford - will sell as much as you can afford
+* selling more than you possess - will sell what you have in cargo
 * if 2 or more players both try to sell a combined total more than store has in stock,
   each player will sell (total amount / `n`) rounded up, where `n` is the number of players selling.
 
