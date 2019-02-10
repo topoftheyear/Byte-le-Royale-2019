@@ -4,7 +4,8 @@ from game.config import *
 from game.common.enums import *
 from game.utils.projection import *
 
-frequency_addition = 10
+frequency_addition = 0
+prim_cons_addition = 20
 STATION_DEFINITIONS = [
     {
         #s6 Copper
@@ -13,12 +14,12 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.05, 0.9),
 
         "primary_import": MaterialType.cuprite,
-        "primary_consumption_qty": 80,
-        "primary_max": 2000,
+        "primary_consumption_qty": prim_cons_addition + 113,
+        "primary_max": 3200,
 
         "secondary_import": MaterialType.drones,
-        "secondary_consumption_qty": 10,
-        "secondary_max": 1000,
+        "secondary_consumption_qty": 72,
+        "secondary_max": 800,
 
         "production_material": MaterialType.copper,
         "production_frequency": frequency_addition + 20,
@@ -47,8 +48,8 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.025, 0.6),
 
         "primary_import": MaterialType.circuitry,
-        "primary_consumption_qty": 20,
-        "primary_max": 300,
+        "primary_consumption_qty": prim_cons_addition + 25,
+        "primary_max": 650,
 
         "secondary_import": MaterialType.null,
         "secondary_consumption_qty": 0,
@@ -79,7 +80,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.15, 0.58),
 
         "primary_import": MaterialType.computers,
-        "primary_consumption_qty": 20,
+        "primary_consumption_qty": prim_cons_addition + 20,
         "primary_max": 300,
 
         "secondary_import": MaterialType.null,
@@ -111,17 +112,17 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.085, 0.40),
 
         "primary_import": MaterialType.steel,
-        "primary_consumption_qty": 40,
+        "primary_consumption_qty": prim_cons_addition + 40,
         "primary_max": 500,
 
         "secondary_import": MaterialType.pylons,
-        "secondary_consumption_qty": 30,
+        "secondary_consumption_qty": 35,
         "secondary_max": 1500,
 
         "production_material": MaterialType.machinery,
-        "production_frequency": frequency_addition + 23,
-        "production_qty": 40,
-        "production_max": 400,
+        "production_frequency": frequency_addition + 21,
+        "production_qty": 26,
+        "production_max": 690,
 
         "sell_price": 20,
         "primary_buy_price": 24,
@@ -144,7 +145,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.4, 0.10),
 
         "primary_import": MaterialType.copper,
-        "primary_consumption_qty": 42,
+        "primary_consumption_qty": prim_cons_addition + 42,
         "primary_max": 800,
 
         "secondary_import": MaterialType.null,
@@ -152,8 +153,8 @@ STATION_DEFINITIONS = [
         "secondary_max": 0,
 
         "production_material": MaterialType.wire,
-        "production_frequency": frequency_addition + 18,
-        "production_qty": 38,
+        "production_frequency": frequency_addition + 21,
+        "production_qty": 25,
         "production_max": 900,
 
         "sell_price": 10,
@@ -176,17 +177,17 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.6, 0.80),
 
         "primary_import": MaterialType.goethite,
-        "primary_consumption_qty": 55,
-        "primary_max": 1600,
+        "primary_consumption_qty": prim_cons_addition + 87,
+        "primary_max": 2500,
 
         "secondary_import": MaterialType.machinery,
-        "secondary_consumption_qty": 10,
+        "secondary_consumption_qty": 52,
         "secondary_max": 1200,
 
         "production_material": MaterialType.iron,
-        "production_frequency": frequency_addition + 22,
-        "production_qty": 40,
-        "production_max": 800,
+        "production_frequency": frequency_addition + 19,
+        "production_qty": 26,
+        "production_max": 1100,
 
         "sell_price": 12,
         "primary_buy_price": 5,
@@ -209,7 +210,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.63, 0.08),
 
         "primary_import": MaterialType.circuitry,
-        "primary_consumption_qty": 30,
+        "primary_consumption_qty": prim_cons_addition + 30,
         "primary_max": 700,
 
         "secondary_import": MaterialType.null,
@@ -241,17 +242,17 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.90, 0.38),
 
         "primary_import": MaterialType.gold,
-        "primary_consumption_qty": 70,
-        "primary_max": 1500,
+        "primary_consumption_qty": prim_cons_addition + 121,
+        "primary_max": 2800,
 
         "secondary_import": MaterialType.wire,
-        "secondary_consumption_qty": 30,
+        "secondary_consumption_qty": 121,
         "secondary_max": 1420,
 
         "production_material": MaterialType.circuitry,
-        "production_frequency": frequency_addition + 30,
-        "production_qty": 30,
-        "production_max": 450,
+        "production_frequency": frequency_addition + 22,
+        "production_qty": 40,
+        "production_max": 1040,
 
         "sell_price": 23,
         "primary_buy_price": 10,
@@ -263,7 +264,7 @@ STATION_DEFINITIONS = [
 
         "cargo": {
             MaterialType.gold: 350,
-            MaterialType.wire: 75,
+            MaterialType.wire: 125,
             MaterialType.circuitry: 0
         }
     },
@@ -274,7 +275,7 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.96, 0.95),
 
         "primary_import": MaterialType.weaponry,
-        "primary_consumption_qty": 10,
+        "primary_consumption_qty": prim_cons_addition + 10,
         "primary_max": 200,
 
         "secondary_import": MaterialType.null,
@@ -283,14 +284,14 @@ STATION_DEFINITIONS = [
 
         "production_material": MaterialType.drones,
         "production_frequency": frequency_addition + 23,
-        "production_qty": 30,
-        "production_max": 300,
+        "production_qty": 60,
+        "production_max": 500,
 
-        "sell_price": 49,
+        "sell_price": 35,
         "primary_buy_price": 45,
         "secondary_buy_price": 10,
 
-        "base_sell_price": 49,
+        "base_sell_price": 35,
         "base_primary_buy_price": 45,
         "base_secondary_buy_price": 10,
 
@@ -306,11 +307,11 @@ STATION_DEFINITIONS = [
         "position": percent_world(0.92, 0.03),
 
         "primary_import": MaterialType.iron,
-        "primary_consumption_qty": 50,
+        "primary_consumption_qty": prim_cons_addition + 38,
         "primary_max": 900,
 
         "secondary_import": MaterialType.drones,
-        "secondary_consumption_qty": 10,
+        "secondary_consumption_qty": 68,
         "secondary_max": 1100,
 
         "production_material": MaterialType.steel,
@@ -328,7 +329,7 @@ STATION_DEFINITIONS = [
 
         "cargo": {
             MaterialType.iron: 100,
-            MaterialType.drones: 5,
+            MaterialType.drones: 100,
             MaterialType.steel: 0
         }
     },
