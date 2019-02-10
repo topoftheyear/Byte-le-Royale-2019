@@ -284,6 +284,7 @@ class CustomServer(ServerControl):
         accolades["Most Upgraded"] = self.accolade_controller.most_upgrades()[0]
         accolades["Most Ruthless"] = self.accolade_controller.most_innocents_killed()[0]
         accolades["Most Notorious"] = self.accolade_controller.most_notorious()["name"]
+        accolades["Most Kills"] = self.accolade_controller.most_kills()[0]
         toJSON = {"leaderboard": self.accolade_controller.final_scores(self.universe), "accolades": accolades, "run_no":0}
         with open("results.json", "w") as f:
             json.dump(toJSON, f)

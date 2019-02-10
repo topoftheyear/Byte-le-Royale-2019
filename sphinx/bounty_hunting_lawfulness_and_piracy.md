@@ -15,8 +15,10 @@ Bounty hunters have a notoriety of -5 or lower. They will appear as a light blue
 
 Piracy is the way to gain money and ill-begotten gains for yourself, at the expense of the profits of others. 
 While pirates can't return to the central station (unless they attempt to pay off their bounty),
-they can sell salvage and get illegal - but powerful - modules at the Black Market Stations.
+they can sell salvage worth `150` credits per amount and get illegal - but powerful - modules at the Black Market Stations.
 Pirates have a notoriety of 5 or higher. They will appear as an orange ship on the visualizer.
+For each non-pirate ship that a pirate kills, they have a bounty added to themselves equal to 10% of the target's credits.
+If a ship becomes a pirate, they gain a bounty on themselves equal to 10% of their credits.
 
 ## Police
 

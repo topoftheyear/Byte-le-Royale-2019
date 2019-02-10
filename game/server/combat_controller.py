@@ -112,6 +112,8 @@ class CombatController:
                 if target not in self.attacker_attackee.keys():
                     self.accolade_controller.kill_innocent(ship)
 
+                self.accolade_controller.get_kill(ship)
+
                 self.attacker_attackee.pop(ship)
 
                 if ship.object_type is ObjectType.ship:
