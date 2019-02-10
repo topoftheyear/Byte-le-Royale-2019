@@ -251,7 +251,8 @@ class UserClient:
         return {
                 "sell_prices": get_material_sell_prices(universe),
                 "buy_prices": get_material_buy_prices(universe),
-                **get_best_material_prices
+                "best_export_prices": get_best_material_prices(universe),
+                "best_import_prices": get_best_material_prices(universe)
         }
 
 
