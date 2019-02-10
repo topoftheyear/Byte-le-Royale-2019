@@ -15,6 +15,8 @@ To initialize each component, run br_launcher.pyz in CMD with the corresponding 
     - When the client and server are running, watch the 2 prompts for potential output.
 4. Once the run has completed, run `br_launcher.pyz visualizer` to watch the match.
 
+Note: You can run `br_launcher.pyz run --game-length 5000` to set the length of the game.
+
 ## Visualizer
 
 `br_launcher.pyz visualizer`

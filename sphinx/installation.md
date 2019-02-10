@@ -1,12 +1,15 @@
 # Installing
 
-[This will be the link to the actual download URL](INSERT THE LINK HERE)##################
-
 ## Introduction
 
 The installation process has been streamlined from last year. The application
 has the bonuses of update notification, an enclosed runtime environment, and a help
 function to assist in starting up the components.
+
+## Download the Launcher
+
+1. Download the [launcher](https://drive.google.com/file/d/1nIQvf_acyx-6rcEVy4S-V0P1D4vFWUBE/view?usp=sharing)
+2. Exract the launcher
 
 ## Install Dependencies
 Note: the following instructions are verified to work for installing Python 3.7 on Windows. If the installation is done in a different way, you may not be able to properly run the program.
@@ -18,6 +21,9 @@ in the command prompt)
 4. Enter the `pipenv` virtual environment: `pipenv shell`
 
 Note: you will need to enter the virtual environment for each new shell session you create.
+
+## Install latest version
+Run `./br_launcher.pyz update`
 
 From there, you can [get started](getting_started.html) with creating your AI.
 
