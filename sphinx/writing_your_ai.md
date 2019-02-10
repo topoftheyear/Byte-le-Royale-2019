@@ -52,11 +52,26 @@ Your ship may perform up to one action each turn, and one move each turn.
  * `self.in_weapons_range(self, your_ship, target_ship)` - Returns `True` if `target_ship` is in range.
 
 ##### Finding Prices
- * `get_repair_price(median_price)` - get the price to repair your ship.
+Once a turn call get `self.material_price_info(universe)`. This returns a dictionarity with the keys `"sell_prices"`, `"buy_prices"`, `"best_import_prices"`, `"best_export_prices"`. This method should be called **at most** once per turn.
+
+To get the `material_prices` for `self.get_median_material_price(material_prices)`, use the result of `self.material_price_info` like so:
+
+```python
+# Gets material price info 
+material_price_info = self.get_material_price_info(universe)
+
+# Calculates median price (serves as our market index)
+median_prices = self.get_median_material_price(material_price_info["sell_prices"])
+
+# Then, to get other prices such as the repair price, call `self.get_repair_price()` like so:
+repair_price = self.get_repair_price(median_prices)
+```
+
+ * `self.get_material_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
+ * `self.get_median_material_price(material_prices)` - Provide's the median material price to be used to calculate other prices.
  * `self.buy_material(amount)` - Buy `amount` of the production material of the station in range.
- * `self.get_median_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
- * `self.get_median_material_price(material_prices)` - Provide 
- * `self.get_module_price(median_price, module_level)` - Return module price at `module_level` with `median_price`
+ * `get_repair_price(median_price)` - get the price to repair your ship.
+ * `self.get_module_price(median_price, ship_slot)` - Return module price at `ship_slot` with `median_price`
  * `self.get_module_unlock_price(median_price, ship_slot)` - Return module slot price at `ship_slot` with `median_price`
 
 #### Other

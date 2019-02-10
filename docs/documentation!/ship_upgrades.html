@@ -194,19 +194,21 @@ For any modules, you must purchase an additional slot for the module from the se
 </li>
 </ul>
 </div>
-<div class="section" id="module-table-revise-illegal-numbers-when-completed">
-<span id="module-table-revise-illegal-numbers-when-completed"></span><h2>Module Table (Revise Illegal Numbers When Completed)<a class="headerlink" href="#module-table-revise-illegal-numbers-when-completed" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-table">
+<span id="module-table"></span><h2>Module Table<a class="headerlink" href="#module-table" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
-<col width="25%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
+<col width="33%" />
+<col width="17%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Module Name</th>
+<tr class="row-odd"><th class="head">Upgrade Enum</th>
+<th class="head">Stat Upgraded</th>
 <th class="head">Level 0</th>
 <th class="head">Level 1</th>
 <th class="head">Level 2</th>
@@ -215,49 +217,54 @@ For any modules, you must purchase an additional slot for the module from the se
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>Hull Strength</td>
+<tr class="row-even"><td>ModuleType.hull</td>
+<td>Hull Strength</td>
 <td>1000</td>
-<td>2000</td>
-<td>3000</td>
-<td>4000</td>
-<td>5000</td>
+<td>3645</td>
+<td>4506</td>
+<td>6243</td>
+<td>10000</td>
 </tr>
-<tr class="row-odd"><td>Engine Speed</td>
+<tr class="row-odd"><td>ModuleType.engine_speed</td>
+<td>Engine Speed</td>
 <td>5</td>
 <td>7</td>
 <td>9</td>
 <td>11</td>
-<td>666</td>
+<td>15</td>
 </tr>
-<tr class="row-even"><td>Weapon Damage</td>
-<td>10</td>
-<td>20</td>
-<td>30</td>
-<td>40</td>
-<td>50</td>
+<tr class="row-even"><td rowspan="2">ModuleType.weapons</td>
+<td>Weapon Damage</td>
+<td>83</td>
+<td>270</td>
+<td>458</td>
+<td>645</td>
+<td>2081</td>
 </tr>
 <tr class="row-odd"><td>Weapon Range</td>
+<td>25</td>
 <td>50</td>
 <td>75</td>
 <td>100</td>
 <td>125</td>
-<td>150</td>
 </tr>
-<tr class="row-even"><td>Cargo Space</td>
-<td>500000</td>
-<td>600000</td>
-<td>700000</td>
-<td>800000</td>
-<td>1000000</td>
+<tr class="row-even"><td rowspan="2">ModuleType.cargo_and_mining</td>
+<td>Cargo Space</td>
+<td>500</td>
+<td>600</td>
+<td>700</td>
+<td>800</td>
+<td>1000</td>
 </tr>
 <tr class="row-odd"><td>Mining Yield</td>
-<td>50000</td>
-<td>60000</td>
-<td>70000</td>
-<td>80000</td>
-<td>100000</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>10</td>
 </tr>
-<tr class="row-even"><td>Sensor Range</td>
+<tr class="row-even"><td>ModuleType.Sensors</td>
+<td>Sensor Range</td>
 <td>75</td>
 <td>100</td>
 <td>125</td>
@@ -266,6 +273,23 @@ For any modules, you must purchase an additional slot for the module from the se
 </tr>
 </tbody>
 </table>
+</div>
+<div class="section" id="module-price-table">
+<span id="module-price-table"></span><h2>Module Price Table<a class="headerlink" href="#module-price-table" title="Permalink to this headline">¶</a></h2>
+<p>Module and module slot prices are dependent on the median price of all the materials in the universe. To find the cost
+of a module or a module slot, take the price listed below and multiply it by the median price in the universe.</p>
+<p>In game, you should be using self.get_module_price(median_price, ship_slot).</p>
+<p>Please note that all ships are outfitted with the level 0 modules, and all ships start with module slot 0.
++—————-+———+———+———+———+———+
+| Module Upgrade | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
++================+=========+=========+=========+=========+=========+
+| Price          | base    | 100     | 400     | 900     | 1600    |
++—————-+———+———+———+———+———+</p>
+<p>+—————+———+———+———+———+
+| Module Slot   | Slot  0 | Slot 1  | Slot 2  | Slot 3  |
++===============+=========+=========+=========+=========+
+| Price         | base    | 150     | 225     | 300     |
++—————+———+———+———+———+</p>
 </div>
 <div class="section" id="related-links">
 <span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>

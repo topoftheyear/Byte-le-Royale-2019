@@ -1,0 +1,11 @@
+version: '3.1'
+services:
+  flaskapp:
+    build: ./
+    working_dir: /opt/services/flaskapp/src/server
+    restart: always
+    environment:
+      MONGO_DB_ROOT_USERNAME: blroyale
+      MONGO_DB_ROOT_PASSWORD: blroyale123
+    volumes:
+      - .:/opt/services/flaskapp/src
