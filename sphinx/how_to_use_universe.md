@@ -30,3 +30,15 @@
     [list_of_ships] = universe.get(ObjectType.ship)
     [list_of_trade_stations] = universe.get(ObjectType.station)
   ```
+* For Loops
+  * Instead of 
+  ```python3
+    for obj in universe.dump():
+       if obj.object_type is [Some_Object_Type]:
+        [list_of_Some_Object_Type].append(obj)
+  ```
+  use
+  ```python3
+    for obj in universe.get([Some_Object_Type]):
+        [list_of_Some_Object_Type].aplpend(obj)
+  ```
