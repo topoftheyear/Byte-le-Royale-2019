@@ -6,7 +6,7 @@ read prompt
 if [[ $prompt != "y" ]]; then
     exit
 fi
-python bump_version.py
+python scripts/bump_version.py
 
 release_version=$(cat wrapper/version.py)
 release_version=$(echo "$release_version" | cut -c 3-)
@@ -44,7 +44,7 @@ response=$( http --json \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes: $@" \
-    draft:=true 2>&1 )
+    draft:=false 2>&1 )
 
 echo $response
 

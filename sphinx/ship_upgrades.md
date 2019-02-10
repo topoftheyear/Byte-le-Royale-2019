@@ -26,27 +26,47 @@ For any modules, you must purchase an additional slot for the module from the se
 - For the Illegal Module Level, these are purchasable at the `Black Market 1 & 2` [Stations](stations.html).
   - Be warned, these are the illegal modules. They are lost on death and will cost you notoriety.
 
-## Module Table (Revise Illegal Numbers When Completed)
+## Module Table
 
 ```eval_rst
-+---------------+---------+---------+---------+---------+---------+
-| Module Name   | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
-+===============+=========+=========+=========+=========+=========+
-| Hull Strength | 1000    | 2000    | 3000    | 4000    | 5000    |
-+---------------+---------+---------+---------+---------+---------+
-| Engine Speed  | 5       | 7       | 9       | 11      | 666     |
-+---------------+---------+---------+---------+---------+---------+
-| Weapon Damage | 10      | 20      | 30      | 40      | 50      |
-+---------------+---------+---------+---------+---------+---------+
-| Weapon Range  | 50      | 75      | 100     | 125     | 150     |
-+---------------+---------+---------+---------+---------+---------+
-| Cargo Space   | 500000  | 600000  | 700000  | 800000  | 1000000 |
-+---------------+---------+---------+---------+---------+---------+
-| Mining Yield  | 50000   | 60000   | 70000   | 80000   | 100000  |
-+---------------+---------+---------+---------+---------+---------+
-| Sensor Range  | 75      | 100     | 125     | 150     | 175     |
-+---------------+---------+---------+---------+---------+---------+
++-----------------------------+---------------+---------+---------+---------+---------+---------+
+| Upgrade Enum                | Stat Upgraded | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
++=============================+===============+=========+=========+=========+=========+=========+
+| ModuleType.hull             | Hull Strength | 1000    | 3645    | 4506    | 6243    | 10000   |
++-----------------------------+---------------+---------+---------+---------+---------+---------+
+| ModuleType.engine_speed     | Engine Speed  | 5       | 7       | 9       | 11      | 15      |
++-----------------------------+---------------+---------+---------+---------+---------+---------+
+|                             | Weapon Damage | 83      | 270     | 458     | 645     | 2081    |
+| ModuleType.weapons          +---------------+---------+---------+---------+---------+---------+
+|                             | Weapon Range  | 25      | 50      | 75      | 100     | 125     |
++-----------------------------+---------------+---------+---------+---------+---------+---------+
+|                             | Cargo Space   | 500     | 600     | 700     | 800     | 1000    |
+| ModuleType.cargo_and_mining +---------------+---------+---------+---------+---------+---------+
+|                             | Mining Yield  | 5       | 6       | 7       | 8       | 10      |
++-----------------------------+---------------+---------+---------+---------+---------+---------+
+| ModuleType.Sensors          | Sensor Range  | 75      | 100     | 125     | 150     | 175     |
++-----------------------------+---------------+---------+---------+---------+---------+---------+
 ```
+
+## Module Price Table
+
+Module and module slot prices are dependent on the median price of all the materials in the universe. To find the cost
+of a module or a module slot, take the price listed below and multiply it by the median price in the universe.
+
+In game, you should be using self.get_module_price(median_price, ship_slot).
+
+Please note that all ships are outfitted with the level 0 modules, and all ships start with module slot 0.
++----------------+---------+---------+---------+---------+---------+
+| Module Upgrade | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
++================+=========+=========+=========+=========+=========+
+| Price          | base    | 100     | 400     | 900     | 1600    |
++----------------+---------+---------+---------+---------+---------+
+
++---------------+---------+---------+---------+---------+
+| Module Slot   | Slot  0 | Slot 1  | Slot 2  | Slot 3  |
++===============+=========+=========+=========+=========+
+| Price         | base    | 150     | 225     | 300     |
++---------------+---------+---------+---------+---------+
 
 ## Related Links
 

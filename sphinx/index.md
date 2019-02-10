@@ -1,5 +1,5 @@
 
-<img src="_static/dd.png"/>
+<img src="_static/try1.png"/>
 
 # Welcome to Byte-le Royale 2019!
 
@@ -29,8 +29,9 @@
 ## Helpful Links
 
 * [Website](https://royale.ndacm.org) - The event website. Contains the event schedule.
-* [Github Repository]() - The repository that holds the game code.
-* [Leaderboards]() - Submit a client and see how well you are doing compared to others.
-* [Forum]() - Please feel free to ask any questions you have here.
-* [Report a Bug]() - If you find a bug please submit a bug report here.
+* [Forum](http://forum.royale.ndacm.org) - Please feel free to ask any questions and submit any bugs you have here.
+* [Twitch](https://www.twitch.tv/ndsu_acm) - Our twitch stream of the scrimmage server.
+
+
+
 
