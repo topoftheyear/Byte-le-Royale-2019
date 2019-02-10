@@ -19,7 +19,7 @@ class CustomClient(UserClient):
     def team_name(self):
         self.print("Sending Team Name")
 
-        return "NoChangeMe"
+        return "BL Royale Staff"
 
     def team_color(self):
         self.print("Sending Team Color")
@@ -33,7 +33,7 @@ class CustomClient(UserClient):
         ships_in_scanner = []
 
         # Compile universe list into stations and scan-range ships
-        for obj in universe:
+        for obj in universe.dump():
             if obj.object_type is ObjectType.station and obj.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
                 stations.append(obj)
             elif obj.object_type is ObjectType.ship:
