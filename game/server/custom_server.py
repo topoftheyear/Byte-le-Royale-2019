@@ -115,11 +115,12 @@ class CustomServer(ServerControl):
 
             else:
                 # send game specific data in payload
-                payload[i] = {
-                    "message_type": MessageType.take_turn,
-                    "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
-                    "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
-                }
+                if i in self.teams:
+                    payload[i] = {
+                        "message_type": MessageType.take_turn,
+                        "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
+                        "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
+                    }
 
         # actually send the data to the client
         self.send({
