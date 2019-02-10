@@ -255,8 +255,8 @@ class UserClient:
     def get_module_price(self, level):
         return get_module_price(self.median_price, level)
 
-    def get_module_unlock_price(self, median_price, ship_slot):
-        return get_module_unlock_price(self, median_price, ship_slot)
+    def get_module_unlock_price(self, ship_slot):
+        return get_module_unlock_price(self.median_price, ship_slot)
 
 
     ## Hidden
