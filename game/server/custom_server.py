@@ -13,6 +13,7 @@ from game.utils.helpers import *
 from game.common.npc.frankie_npc import FrankieNPC
 from game.common.npc.arnaldo_npc import ArnaldoNPC
 from game.common.npc.roselli_npc import RoselliNPC
+from game.common.npc.baratta_npc import BarattaNPC
 
 from game.server.station_controller import StationController
 from game.server.mining_controller import MiningController
@@ -114,11 +115,12 @@ class CustomServer(ServerControl):
 
             else:
                 # send game specific data in payload
-                payload[i] = {
-                    "message_type": MessageType.take_turn,
-                    "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
-                    "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
-                }
+                if i in self.teams:
+                    payload[i] = {
+                        "message_type": MessageType.take_turn,
+                        "ship": self.teams[i]["ship"].to_dict(security_level=SecurityLevel.player_owned),
+                        "universe": self.serialize_visible_objects(SecurityLevel.other_player, i)
+                    }
 
         # actually send the data to the client
         self.send({
@@ -291,9 +293,11 @@ class CustomServer(ServerControl):
         self.npcs = []
 
         npc_options = {
+
+                BarattaNPC: 0.3333,
                 ArnaldoNPC: 0.0,
-                FrankieNPC: 0.5,
-                RoselliNPC: 0.5,
+                FrankieNPC: 0.3333,
+                RoselliNPC: 0.3334,
         }
 
         for idx, ship in enumerate(self.universe.get(ObjectType.ship)):
@@ -385,8 +389,8 @@ class CustomServer(ServerControl):
             self.accolade_controller.ship_moved(ship, sqrt(x_move**2 + y_move**2) )
 
             ship.position = (
-                x_direction*x_move + ship.position[0],
-                y_direction*y_move + ship.position[1]
+                math.floor(x_direction*x_move + ship.position[0]),
+                math.floor(y_direction*y_move + ship.position[1])
             )
 
             # Destroy ship if destination is outside of world bounds
@@ -394,7 +398,7 @@ class CustomServer(ServerControl):
                 ship.current_hull = 0  # boom
                 ship.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
                 # Log "abandoned" event
-                self.events.append({
+                self.turn_log["events"].append({
                     "type": LogEvent.ship_abandoned,
                     "ship": ship.id,
                 })
@@ -409,7 +413,7 @@ class CustomServer(ServerControl):
     def serialize_universe(self, security_level):
         serialized_universe = []
 
-        for obj in self.universe.dump():
+        for obj in self.universe.flatten():
             serialized_obj = obj.to_dict(security_level=security_level)
             serialized_universe.append(serialized_obj)
         return serialized_universe
@@ -418,7 +422,7 @@ class CustomServer(ServerControl):
         serialized_visible_universe = []
         own_ship = self.teams[ship_id]["ship"]
 
-        for obj in self.universe.dump():
+        for obj in self.universe.flatten():
             if obj.object_type is ObjectType.ship:
                 if obj.id == own_ship.id or not in_radius(own_ship, obj, own_ship.sensor_range, lambda e:e.position):
                     continue

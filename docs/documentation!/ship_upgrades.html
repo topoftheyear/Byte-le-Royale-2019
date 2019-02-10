@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Ship Upgrades &mdash; Byte-le-Royale 201X 9 documentation</title>
+  <title>Ship Upgrades &mdash; Byte-le-Royale 2019 9 documentation</title>
   
 
   
@@ -47,7 +47,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home"> Byte-le-Royale 201X
+            <a href="index.html" class="icon icon-home"> Byte-le-Royale 2019
           
 
           
@@ -113,7 +113,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">Byte-le-Royale 201X</a>
+          <a href="index.html">Byte-le-Royale 2019</a>
         
       </nav>
 
@@ -164,12 +164,12 @@
            <div itemprop="articleBody">
             
   <div class="section" id="ship-upgrades">
-<h1>Ship Upgrades<a class="headerlink" href="#ship-upgrades" title="Permalink to this headline">¶</a></h1>
+<span id="ship-upgrades"></span><h1>Ship Upgrades<a class="headerlink" href="#ship-upgrades" title="Permalink to this headline">¶</a></h1>
 <p>Your ship has ability to improve through modules. These modules can enhance different facets of the ship
 and can help your ship perform to the best of its capabilities.</p>
 <p>Your ship will only have access to 4 total slots, and the unlock cost will increase per slot, so choose your modules wisely.</p>
 <div class="section" id="list-of-modules">
-<h2>List of Modules<a class="headerlink" href="#list-of-modules" title="Permalink to this headline">¶</a></h2>
+<span id="list-of-modules"></span><h2>List of Modules<a class="headerlink" href="#list-of-modules" title="Permalink to this headline">¶</a></h2>
 <p>There are 5 groupings of modules for the ship:</p>
 <ul class="simple">
 <li><code class="docutils literal notranslate"><span class="pre">Hull</span> <span class="pre">Strength</span></code> - How much damage you can take</li>
@@ -180,7 +180,7 @@ and can help your ship perform to the best of its capabilities.</p>
 </ul>
 </div>
 <div class="section" id="how-to-upgrade">
-<h2>How To Upgrade<a class="headerlink" href="#how-to-upgrade" title="Permalink to this headline">¶</a></h2>
+<span id="how-to-upgrade"></span><h2>How To Upgrade<a class="headerlink" href="#how-to-upgrade" title="Permalink to this headline">¶</a></h2>
 <p>Your ship starts at level 0 for all categories. In order to purchase a module you must specify which module slot to place the module in.</p>
 <p>To purchase modules, go to the center station and use the <code class="docutils literal notranslate"><span class="pre">buy_module</span></code> function. If you already have the module of the type you wish to upgrade,
 it will upgrade that module in the slot. If you do not already own that module type, you will need to purchase the module itself and the module slot.
@@ -194,19 +194,21 @@ For any modules, you must purchase an additional slot for the module from the se
 </li>
 </ul>
 </div>
-<div class="section" id="module-table-revise-illegal-numbers-when-completed">
-<h2>Module Table (Revise Illegal Numbers When Completed)<a class="headerlink" href="#module-table-revise-illegal-numbers-when-completed" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-table">
+<span id="module-table"></span><h2>Module Table<a class="headerlink" href="#module-table" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
-<col width="25%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
-<col width="15%" />
+<col width="33%" />
+<col width="17%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
+<col width="10%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">Module Name</th>
+<tr class="row-odd"><th class="head">Upgrade Enum</th>
+<th class="head">Stat Upgraded</th>
 <th class="head">Level 0</th>
 <th class="head">Level 1</th>
 <th class="head">Level 2</th>
@@ -215,49 +217,54 @@ For any modules, you must purchase an additional slot for the module from the se
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>Hull Strength</td>
+<tr class="row-even"><td>ModuleType.hull</td>
+<td>Hull Strength</td>
 <td>1000</td>
-<td>2000</td>
-<td>3000</td>
-<td>4000</td>
-<td>5000</td>
+<td>3645</td>
+<td>4506</td>
+<td>6243</td>
+<td>10000</td>
 </tr>
-<tr class="row-odd"><td>Engine Speed</td>
+<tr class="row-odd"><td>ModuleType.engine_speed</td>
+<td>Engine Speed</td>
 <td>5</td>
 <td>7</td>
 <td>9</td>
 <td>11</td>
-<td>666</td>
+<td>15</td>
 </tr>
-<tr class="row-even"><td>Weapon Damage</td>
-<td>10</td>
-<td>20</td>
-<td>30</td>
-<td>40</td>
-<td>50</td>
+<tr class="row-even"><td rowspan="2">ModuleType.weapons</td>
+<td>Weapon Damage</td>
+<td>83</td>
+<td>270</td>
+<td>458</td>
+<td>645</td>
+<td>2081</td>
 </tr>
 <tr class="row-odd"><td>Weapon Range</td>
+<td>25</td>
 <td>50</td>
 <td>75</td>
 <td>100</td>
 <td>125</td>
-<td>150</td>
 </tr>
-<tr class="row-even"><td>Cargo Space</td>
-<td>500000</td>
-<td>600000</td>
-<td>700000</td>
-<td>800000</td>
-<td>1000000</td>
+<tr class="row-even"><td rowspan="2">ModuleType.cargo_and_mining</td>
+<td>Cargo Space</td>
+<td>500</td>
+<td>600</td>
+<td>700</td>
+<td>800</td>
+<td>1000</td>
 </tr>
 <tr class="row-odd"><td>Mining Yield</td>
-<td>50000</td>
-<td>60000</td>
-<td>70000</td>
-<td>80000</td>
-<td>100000</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>8</td>
+<td>10</td>
 </tr>
-<tr class="row-even"><td>Sensor Range</td>
+<tr class="row-even"><td>ModuleType.Sensors</td>
+<td>Sensor Range</td>
 <td>75</td>
 <td>100</td>
 <td>125</td>
@@ -267,8 +274,25 @@ For any modules, you must purchase an additional slot for the module from the se
 </tbody>
 </table>
 </div>
+<div class="section" id="module-price-table">
+<span id="module-price-table"></span><h2>Module Price Table<a class="headerlink" href="#module-price-table" title="Permalink to this headline">¶</a></h2>
+<p>Module and module slot prices are dependent on the median price of all the materials in the universe. To find the cost
+of a module or a module slot, take the price listed below and multiply it by the median price in the universe.</p>
+<p>In game, you should be using self.get_module_price(median_price, ship_slot).</p>
+<p>Please note that all ships are outfitted with the level 0 modules, and all ships start with module slot 0.
++—————-+———+———+———+———+———+
+| Module Upgrade | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
++================+=========+=========+=========+=========+=========+
+| Price          | base    | 100     | 400     | 900     | 1600    |
++—————-+———+———+———+———+———+</p>
+<p>+—————+———+———+———+———+
+| Module Slot   | Slot  0 | Slot 1  | Slot 2  | Slot 3  |
++===============+=========+=========+=========+=========+
+| Price         | base    | 150     | 225     | 300     |
++—————+———+———+———+———+</p>
+</div>
 <div class="section" id="related-links">
-<h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
+<span id="related-links"></span><h2>Related Links<a class="headerlink" href="#related-links" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference external" href="https://royale.ndacm.org/documentation!/combat.html">Combat</a></li>
@@ -288,7 +312,7 @@ For any modules, you must purchase an additional slot for the module from the se
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, NDSU ACM &amp; Jordan Goetze
+        &copy; Copyright 2018-2019, NDSU ACM &amp; Jordan Goetze
 
     </p>
   </div>
@@ -313,7 +337,6 @@ For any modules, you must purchase an additional slot for the module from the se
         <script type="text/javascript" src="_static/jquery.js"></script>
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
-        <script type="text/javascript" src="_static/language_data.js"></script>
         <script type="text/javascript" src="_static/accordion.js"></script>
     
 

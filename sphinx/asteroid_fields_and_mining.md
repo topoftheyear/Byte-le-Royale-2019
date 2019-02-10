@@ -20,3 +20,15 @@ The following shows what [Stations](stations.html) these fields resources can be
 
 To mine from an asteroid field, approach the field and call `self.mine()` in the client to obtain the resources.
 
+
+Listed below are the stats for each asteroid field.
+```
++---------------------+----------------+-------------+-------------+
+| Field Name          | Position (x,y) |  Produces   | Mining Rate |
++=====================+================+=============+=============+
+| Gold Field          | 850, 595       | Gold        | 0.4         |
++---------------------+----------------+-------------+-------------+
+| Goethite Field      |  50,  35       | Goethite    | 0.55        |
++---------------------+----------------+-------------+-------------+
+| Cuprite Field       | 500, 595       | Cuprite     | 0.7         |
++---------------------+----------------+-------------+-------------+

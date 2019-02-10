@@ -61,17 +61,17 @@ class AsteroidField(GameObject):
         if security_level is SecurityLevel.engine:
             # properties that will only be populated by the engine,
             #   prevents user tampering with variables
+            pass
 
+
+        if security_level <= SecurityLevel.player_owned:
+            pass
+
+        if security_level <= SecurityLevel.other_player:
             self.name = data["name"]
             self.position = data["position"]
             self.material_type = data["material_type"]
             self.mining_rate = data["mining_rate"]
 
             self.accessibility_radius = data["accessibility_radius"]
-
-        if security_level <= SecurityLevel.player_owned:
-            pass
-
-        if security_level <= SecurityLevel.other_player:
-            pass
 

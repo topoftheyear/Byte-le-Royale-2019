@@ -187,6 +187,13 @@ class Ship(GameObject):
             self.action_param_2 = data["action_param_2"]
             self.action_param_3 = data["action_param_3"]
 
+            if((type(self.action_param_1) == int and self.action_param_1 > 2147483647)
+                    or (type(self.action_param_2) == int  and self.action_param_2 > 2147483647)
+                    or (type(self.action_param_3) == int and self.action_param_3 > 2147483647)):
+
+                print("Action parameters cannot be larter than 2147483647")
+                exit(1)
+
 
         if security_level <= SecurityLevel.other_player:
             self.public_id = data["public_id"]
@@ -214,6 +221,9 @@ class Ship(GameObject):
             self.position = data["position"]
 
             self.inventory = data["inventory"]
+            for k,v in self.inventory.items():
+                del self.inventory[k]
+                self.inventory[int(k)] = v
 
             self.notoriety = data["notoriety"]
             self.legal_standing = data["legal_standing"]

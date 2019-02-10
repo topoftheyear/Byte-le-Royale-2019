@@ -49,8 +49,8 @@ source_suffix = [ '.rst', '.md' ]
 master_doc = 'index'
 
 # General information about the project.
-project = 'Byte-le-Royale 201X'
-copyright = '2017-2018, NDSU ACM & Jordan Goetze'
+project = 'Byte-le-Royale 2019'
+copyright = '2018-2019, NDSU ACM & Jordan Goetze'
 author = 'NDSU ACM & Jordan Goetze'
 
 # The version info for the project you're documenting, acts as replacement for

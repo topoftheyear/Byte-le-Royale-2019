@@ -7,6 +7,7 @@ from game.common.station import *
 from game.common.asteroid_field_types import *
 from game.common.police_ship import PoliceShip
 from game.common.illegal_salvage import IllegalSalvage
+from game.common.universe_manager import UniverseManager
 
 
 
@@ -63,6 +64,11 @@ class ClientLogic:
         if turn_data["message_type"] == MessageType.team_name:
             team_name = self.player_client.team_name()
             team_color = self.player_client.team_color()
+
+            if type(team_color) != list or len(team_color) != 3 or type(team_color[0]) != int:
+                print("Invalid color. Due to a limitation in the Unity Visualizer. Only a list of red, green, and blue color values i.e. [255, 255, 255] are allowed.")
+                exit()
+
             return {
                 "message_type": MessageType.team_name,
                 "team_name": team_name,
@@ -76,7 +82,7 @@ class ClientLogic:
         elif turn_data["message_type"] == MessageType.take_turn:
             self.player_client.reset_actions()
 
-            deserialized_universe = self.deserialize(turn_data["universe"])
+            deserialized_universe = UniverseManager(self.deserialize(turn_data["universe"]))
             ship = Ship()
             ship.from_dict(turn_data["ship"], security_level=SecurityLevel.player_owned)
 
