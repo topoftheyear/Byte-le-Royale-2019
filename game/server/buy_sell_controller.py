@@ -138,7 +138,7 @@ class BuySellController:
     def process_sell_action(self, ship, station):
 
         self.print('Ship in range of a station to sell')
-        material = ship.action_param_1
+        material = int(ship.action_param_1)
         amount = ship.action_param_2
 
         # Check if material and the amount is in ships inventory, if not set amount to max held in inventory
@@ -274,7 +274,7 @@ class BuySellController:
                         for bid in primary_bids:
                             # modify ship values
                             bid.ship.credits += price
-                            bid.ship.inventory[bid.material] -= distribute
+                            bid.ship.inventory[int(bid.material)] -= distribute
 
                             # give material to station
                             if bid.material not in station.cargo:
@@ -303,7 +303,7 @@ class BuySellController:
                     price = amount * station.primary_buy_price
                     # modify ship values
                     bid.ship.credits += price
-                    bid.ship.inventory[bid.material] -= amount
+                    bid.ship.inventory[int(bid.material)] -= amount
 
                     # give material to station
                     if bid.material not in station.cargo:
@@ -354,7 +354,7 @@ class BuySellController:
 
                                 # modify ship values
                                 bid.ship.credits += price
-                                bid.ship.inventory[bid.material] -= num_bought
+                                bid.ship.inventory[int(bid.material)] -= num_bought
 
                                 # give material to station
                                 if bid.material not in station.cargo:
@@ -390,7 +390,7 @@ class BuySellController:
                         for bid in secondary_bids:
                             # modify ship values
                             bid.ship.credits += price
-                            bid.ship.inventory[bid.material] -= distribute
+                            bid.ship.inventory[int(bid.material)] -= distribute
 
                             # give material to station
                             if bid.material not in station.cargo:
@@ -420,7 +420,7 @@ class BuySellController:
                     price = amount * station.secondary_buy_price
                     # modify ship values
                     bid.ship.credits += price
-                    bid.ship.inventory[bid.material] -= amount
+                    bid.ship.inventory[int(bid.material)] -= amount
 
                     # give material to station
                     if bid.material not in station.cargo:
@@ -498,12 +498,12 @@ class BuySellController:
                 ))
 
                 if bid.material not in bid.ship.inventory:
-                    bid.ship.inventory[bid.material] = min(
+                    bid.ship.inventory[int(bid.material)] = min(
                         quantity,
                         bid.ship.cargo_space - sum(bid.ship.inventory.values()))
                 else:
                     bid.ship.inventory[bid.material] = min(
-                        quantity+bid.ship.inventory[bid.material],
+                        quantity+bid.ship.inventory[int(bid.material)],
                         bid.ship.cargo_space - sum(bid.ship.inventory.values()))
 
                 # remove quantity from station
