@@ -33,7 +33,7 @@ If your notoriety goes too high, you will be labeled a pirate.
 Pirates are forbidden to access the Secure Station and a radius around the secure station UNLESS they pay off their bounty.
 Any pirates within the Secure Zone will be fired upon by the police.
 Additionally, citizens and bounty hunters are free to hunt down pirates without fear of reprisal from law enforcement.
-Bounty hunters will earn bounties for 
+Non-pirates will claim the bounties that the pirates rack up upon death of the pirate.
 If private citizens, bounty hunters and police are unable to curb an especially menacing pirate, Enforcers may be sent out in waves to bring the pirate ship down.
 
 
