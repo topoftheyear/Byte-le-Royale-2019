@@ -19,6 +19,7 @@ Your ship may perform up to one action each turn, and one move each turn.
  * `self.collect_illegal_salvage()` - Attempt to collect some illegal salvage in the area.
  * `self.unlock_module()` - Spend credits to unlock a module slot, fails if you do not have enough credits. 
  * `self.pay_off_bounty()` - Pay off your bounty if you can afford to pay off all of it.
+ * `self.buy_material(amount)` - Buy `amount` of the production material of the station in range.
 
 ### Ship Movement
  Your ship may perform one movement per turn
@@ -27,6 +28,41 @@ Your ship may perform up to one action each turn, and one move each turn.
 
 
 ### Helper Methods
+
+#### Loading useful info from the universe
+
+At the top of your `take_turn()` method, call `self.update_cached_data(universe)`.
+This method will load a bunch of useful information from the universe. This change (part of v1.2) introduced breaking changes that simplify the api of all of the methods that rely on `median_price`.
+
+Properties loaded:
+- `self.asteroid_fields`: list of the three asteroid fields.
+- `self.stations`: List of all of the stations.
+- `self.police`: List of all of the police ships.
+- `self.ships`: List of all ships, excluding police.
+- `self.sell_prices`: A dictionary of material types to sell price for the given material.
+- `self.buy_prices`: A dictionary of material types to buy price for the given material.
+- `self.best_export_prices`: A dictionary of material types to another dictionary containing the sell price and what station is offering that price.
+- `self.best_import_prices`: A dictionary of material types to another dictionary containing the buy price and what station is offering that price.
+
+
+**Best Export Prices example:**
+```python
+print(self.best_export_prices)
+{
+    3:{'export_price': 233, 'station': <Station: 161bc414-be02-4624-85e1-e8386b52fc80>}, 
+    5: {'export_price': 217, 'station': <Station: 15835be7-c40a-439c-a134-0ab3c30424d4>}, 
+    6: {'export_price': 282, 'station': <Station: 6387faa8-4d4b-4313-a5a4-c171e81c1c47>}, 
+    7: {'export_price': 254, 'station': <Station: ef4a980a-44c4-41bc-b429-1557ccd329d9>}, 
+    13: {'export_price': 163, 'station': <Station: 68a26979-fdf2-48e3-8677-53a4a665eeaa>}, 
+    1: {'export_price': 190, 'station': <Station: 5b3d1e03-b037-4c29-80f6-2171901dc72d>}, 
+    8: {'export_price': 266, 'station': <Station: 7ab9792f-7bb7-4a9c-a2d6-6fb9f4f7108b>}, 
+    4: {'export_price': 263, 'station': <Station: 337683da-03a2-4c17-97ba-fe91af9098ff>}, 
+    9: {'export_price': 289, 'station': <Station: 659e0226-1895-435f-8315-d10d9d8395a6>}, 
+    2: {'export_price': 239, 'station': <Station: 1349ed91-79b4-4de4-b8a0-a6ff80034926>}
+}
+```
+
+
 
 #### Getting Objects of a certain type
  * `universe.get(ObjectType.ship)` - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).
@@ -52,27 +88,10 @@ Your ship may perform up to one action each turn, and one move each turn.
  * `self.in_weapons_range(self, your_ship, target_ship)` - Returns `True` if `target_ship` is in range.
 
 ##### Finding Prices
-Once a turn call get `self.material_price_info(universe)`. This returns a dictionarity with the keys `"sell_prices"`, `"buy_prices"`, `"best_import_prices"`, `"best_export_prices"`. This method should be called **at most** once per turn.
 
-To get the `material_prices` for `self.get_median_material_price(material_prices)`, use the result of `self.material_price_info` like so:
-
-```python
-# Gets material price info 
-material_price_info = self.get_material_price_info(universe)
-
-# Calculates median price (serves as our market index)
-median_prices = self.get_median_material_price(material_price_info["sell_prices"])
-
-# Then, to get other prices such as the repair price, call `self.get_repair_price()` like so:
-repair_price = self.get_repair_price(median_prices)
-```
-
- * `self.get_material_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
- * `self.get_median_material_price(material_prices)` - Provide's the median material price to be used to calculate other prices.
- * `self.buy_material(amount)` - Buy `amount` of the production material of the station in range.
- * `get_repair_price(median_price)` - get the price to repair your ship.
- * `self.get_module_price(median_price, ship_slot)` - Return module price at `ship_slot` with `median_price`
- * `self.get_module_unlock_price(median_price, ship_slot)` - Return module slot price at `ship_slot` with `median_price`
+ * `self.get_repair_price()` - get the price to repair your ship.
+ * `self.get_module_price(ship_slot)` - Return module price for `ship_slot` 
+ * `self.get_module_unlock_price(ship_slot)` - Return module slot price for `ship_slot` 
 
 #### Other
  * `self.get_material_name(material_type)` - Return name of `material_type`.

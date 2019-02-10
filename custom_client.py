@@ -9,6 +9,7 @@ class CustomClient(UserClient):
 
     def __init__(self):
         """ Use the constructor to initialize any variables you would like to track between turns. """
+        super(UserClient).__init__()
         self.purchase_station = None
         self.sell_station = None
         self.destination = None
@@ -32,8 +33,10 @@ class CustomClient(UserClient):
         stations = []
         ships_in_scanner = []
 
+        self.update_cached_data(universe)
+
         # Compile universe list into stations and scan-range ships
-        for obj in universe.dump():
+        for obj in universe.flatten():
             if obj.object_type is ObjectType.station and obj.object_type not in [ObjectType.secure_station, ObjectType.black_market_station]:
                 stations.append(obj)
             elif obj.object_type is ObjectType.ship:

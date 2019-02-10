@@ -7,6 +7,18 @@ class UserClient:
     def __init__(self):
         self.reset_actions()
 
+        self._fetch_asteroid_fields = False
+
+        self.asteroid_fields = None
+        self.stations = None
+        self.ships = None
+
+        self.sell_prices = None
+        self.buy_prices = None
+        self.best_sell_prices = None
+        self.best_buy_prices = None
+        self.median_price = None
+
 
     def reset_actions(self):
 
@@ -174,6 +186,24 @@ class UserClient:
     # Helper Methods #
     ##################
 
+    def update_cached_data(self, universe):
+        if not hasattr(self, "_fetch_asteroid_fields"):
+            self._fetch_asteroid_fields = True
+            self.asteroid_fields = universe.get("asteroid_fields")
+
+        self.stations = universe.get("all_stations")
+        self.police = universe.get("police")
+        self.ships = universe.get(ObjectType.ship)
+
+        price_data = self._get_material_price_info(universe)
+        self.sell_prices = price_data["sell_prices"]
+        self.buy_prices = price_data["buy_prices"]
+        self.best_export_prices = price_data["best_export_prices"]
+        self.best_import_prices = price_data["best_import_prices"]
+
+        self.median_price = self._get_median_material_price(self.sell_prices)
+
+
     # Helper class wrappers start here
     def distance_to_object(self, your_ship, target):
         """Returns the distance between `your_ship` an an object in the game"""
@@ -219,24 +249,22 @@ class UserClient:
     def get_material_name(self, material_type):
         return get_material_name(material_type)
 
-    def universe_by_object_type(self, flat_universe):
-        """Returns the universe as a dictionary of object types. e.g.
-        { ObjectType.ship: [<list of ships>], ObjectType.stations:[<list of stations>]}"""
-        return separate_universe(flat_universe)
+    def get_repair_price(self):
+        return get_repair_price(self.median_price)
 
-    def get_median_material_price(self, material_prices):
+    def get_module_price(self, level):
+        return get_module_price(self.median_price, level)
+
+    def get_module_unlock_price(self, ship_slot):
+        return get_module_unlock_price(self.median_price, ship_slot)
+
+
+    ## Hidden
+
+    def _get_median_material_price(self, material_prices):
         return get_median_material_price(material_prices)
 
-    def get_repair_price(self, median_price):
-        return get_repair_price(median_price)
-
-    def get_module_price(self, median_price, level):
-        return get_module_price(median_price, level)
-
-    def get_module_unlock_price(self, median_price, ship_slot):
-        return get_module_unlock_price(self, median_price, ship_slot)
-
-    def get_material_price_info(self, universe):
+    def _get_material_price_info(self, universe):
         """Cache this result at most once per turn, otherwise your client will be very slow.
 
         Returns a dictionary containing:
@@ -249,9 +277,9 @@ class UserClient:
         :return:
         """
         return {
-                "sell_prices": get_material_sell_prices(universe),
-                "buy_prices": get_material_buy_prices(universe),
-                **get_best_material_prices(universe)
+            "sell_prices": get_material_sell_prices(universe),
+            "buy_prices": get_material_buy_prices(universe),
+            **get_best_material_prices(universe)
         }
 
 
