@@ -90,7 +90,7 @@ print(self.best_export_prices)
 ##### Finding Prices
 
  * `self.get_repair_price()` - get the price to repair your ship.
- * `self.get_module_price(ship_slot)` - Return module price for `ship_slot` 
+ * `self.get_module_price(module_level)` - Return module price for `module_level` 
  * `self.get_module_unlock_price(ship_slot)` - Return module slot price for `ship_slot` 
 
 #### Other
