@@ -388,8 +388,8 @@ class CustomServer(ServerControl):
             self.accolade_controller.ship_moved(ship, sqrt(x_move**2 + y_move**2) )
 
             ship.position = (
-                x_direction*x_move + ship.position[0],
-                y_direction*y_move + ship.position[1]
+                math.floor(x_direction*x_move + ship.position[0]),
+                math.floor(y_direction*y_move + ship.position[1])
             )
 
             # Destroy ship if destination is outside of world bounds
