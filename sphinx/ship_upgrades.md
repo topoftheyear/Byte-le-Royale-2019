@@ -53,6 +53,7 @@ For any modules, you must purchase an additional slot for the module from the se
 Module and module slot prices are dependent on the median price of all the materials in the universe. To find the cost
 of a module or a module slot, take the price listed below and multiply it by the median price in the universe.
 
+Please note that all ships are outfitted with the level 0 modules, and all ships start with module slot 0.
 +----------------+---------+---------+---------+---------+---------+
 | Module Upgrade | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
 +================+=========+=========+=========+=========+=========+
