@@ -44,7 +44,7 @@ response=$( http --json \
     tag_commitish="master" \
     name="Version $release_version" \
     body="Release Notes: $@" \
-    draft:=true 2>&1 )
+    draft:=false 2>&1 )
 
 echo $response
 

@@ -64,6 +64,11 @@ class ClientLogic:
         if turn_data["message_type"] == MessageType.team_name:
             team_name = self.player_client.team_name()
             team_color = self.player_client.team_color()
+
+            if type(team_color) != list or len(team_color) != 3 or type(team_color[0]) != int:
+                print("Invalid color. Due to a limitation in the Unity Visualizer. Only a list of red, green, and blue color values i.e. [255, 255, 255] are allowed.")
+                exit()
+
             return {
                 "message_type": MessageType.team_name,
                 "team_name": team_name,
