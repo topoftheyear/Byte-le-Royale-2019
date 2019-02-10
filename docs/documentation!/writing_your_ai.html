@@ -224,11 +224,23 @@
 </ul>
 <div class="section" id="finding-prices">
 <span id="finding-prices"></span><h5>Finding Prices<a class="headerlink" href="#finding-prices" title="Permalink to this headline">¶</a></h5>
+<p>Once a turn call get <code class="docutils literal notranslate"><span class="pre">self.material_price_info(universe)</span></code>. This returns a dictionarity with the keys <code class="docutils literal notranslate"><span class="pre">&quot;sell_prices&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;buy_prices&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;best_import_prices&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;best_export_prices&quot;</span></code>. This method should be called <strong>at most</strong> once per turn.</p>
+<p>To get the <code class="docutils literal notranslate"><span class="pre">material_prices</span></code> for <code class="docutils literal notranslate"><span class="pre">self.get_median_material_price(material_prices)</span></code>, use the result of <code class="docutils literal notranslate"><span class="pre">self.material_price_info</span></code> like so:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Gets material price info </span>
+<span class="n">material_price_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_material_price_info</span><span class="p">(</span><span class="n">universe</span><span class="p">)</span>
+
+<span class="c1"># Calculates median price (serves as our market index)</span>
+<span class="n">median_prices</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_median_material_price</span><span class="p">(</span><span class="n">material_price_info</span><span class="p">[</span><span class="s2">&quot;sell_prices&quot;</span><span class="p">])</span>
+
+<span class="c1"># Then, to get other prices such as the repair price, call `self.get_repair_price()` like so:</span>
+<span class="n">repair_price</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_repair_price</span><span class="p">(</span><span class="n">median_prices</span><span class="p">)</span>
+</pre></div>
+</div>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
-<li><code class="docutils literal notranslate"><span class="pre">self.buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.get_median_price_info(universe)</span></code> - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.</li>
-<li><code class="docutils literal notranslate"><span class="pre">self.get_median_material_price(material_prices)</span></code> - Provide</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.get_median_material_price(material_prices)</span></code> - Provide’s the median material price to be used to calculate other prices.</li>
+<li><code class="docutils literal notranslate"><span class="pre">self.buy_material(amount)</span></code> - Buy <code class="docutils literal notranslate"><span class="pre">amount</span></code> of the production material of the station in range.</li>
+<li><code class="docutils literal notranslate"><span class="pre">get_repair_price(median_price)</span></code> - get the price to repair your ship.</li>
 <li><code class="docutils literal notranslate"><span class="pre">self.get_module_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
 <li><code class="docutils literal notranslate"><span class="pre">self.get_module_unlock_price(median_price,</span> <span class="pre">ship_slot)</span></code> - Return module slot price at <code class="docutils literal notranslate"><span class="pre">ship_slot</span></code> with <code class="docutils literal notranslate"><span class="pre">median_price</span></code></li>
 </ul>
