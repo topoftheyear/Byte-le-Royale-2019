@@ -44,7 +44,7 @@ class ModuleController:
             if ship.action is PlayerAction.buy_module:
 
                 if not ship.is_alive():
-                    break
+                    continue
 
                 self.print('Found a ship trying to purchase a module: ' + str(ship.team_name))
 
@@ -149,7 +149,7 @@ class ModuleController:
 
             if ship.action == PlayerAction.unlock_module:
                 if not ship.is_alive():
-                    break
+                    continue
 
                 self.print('Found a ship trying to unlock a module')
 
