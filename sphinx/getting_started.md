@@ -10,12 +10,11 @@ There are 3 components to the launcher:
 To initialize each component, run br_launcher.pyz in CMD with the corresponding command
 / argument. Here are the steps for setting up the server:
 1. Open a command prompt / PowerShell / terminal in the folder that `br_launcher.pyz` is located in.
-2. Run `by_launcher.pyz update` to check if any updates have occurred since last runtime and automatically update.
-3. Use `br_launcher.pyz run` to run the client and server. Alternatively you can run them in separate windows by running `br_launcher.pyz server` in one prompt followed by `br_launcher.pyz client` in another.
-    - When the client and server are running, watch the 2 prompts for potential output.
-4. Once the run has completed, run `br_launcher.pyz visualizer` to watch the match.
+2. Run `python .\by_launcher.pyz update` to check if any updates have occurred since last runtime and automatically update.
+3. Use `python .\br_launcher.pyz run` to run the client and server.
+4. Once the run has completed, run `python .\br_launcher.pyz visualizer` to watch the match.
 
-Note: You can run `br_launcher.pyz run --game-length 5000` to set the length of the game.
+Note: You can run `python .\br_launcher.pyz run --game-length 5000` to set the length of the game.
 
 ## Visualizer
 

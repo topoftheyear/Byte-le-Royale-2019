@@ -56,7 +56,7 @@ Your ship may perform up to one action each turn, and one move each turn.
  * `self.buy_material(amount)` - Buy `amount` of the production material of the station in range.
  * `self.get_median_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
  * `self.get_median_material_price(material_prices)` - Provide 
- * `self.get_module_price(median_price, ship_slot)` - Return module price at `ship_slot` with `median_price`
+ * `self.get_module_price(median_price, module_level)` - Return module price at `module_level` with `median_price`
  * `self.get_module_unlock_price(median_price, ship_slot)` - Return module slot price at `ship_slot` with `median_price`
 
 #### Other
