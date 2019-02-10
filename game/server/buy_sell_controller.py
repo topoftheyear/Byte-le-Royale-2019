@@ -230,7 +230,7 @@ class BuySellController:
                     bid_len = len(primary_bids)
 
                     # enough room to buy the minimum of primary_bids from all the bids
-                    if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.primary_import, 0):
+                    if bid_min * bid_len + num_bought * bid_len + station.cargo.get(station.primary_import, 0) <= station.primary_max:
                         num_bought += bid_min
                         remove = []
                         for bid in primary_bids:
@@ -342,8 +342,7 @@ class BuySellController:
                     bid_len = len(secondary_bids)
 
                     # enough room to buy the minimum of secondary_bids from all the bids
-                    if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.secondary_import,
-                                                                                     0):
+                    if bid_min * bid_len + num_bought * bid_len + station.cargo.get(station.secondary_import, 0) <= station.secondary_max:
                         num_bought += bid_min
                         remove = []
                         for bid in secondary_bids:
