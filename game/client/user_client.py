@@ -79,11 +79,18 @@ class UserClient:
         self.reset_player_action()
 
         # module checking, ModuleType type
-        if module in [ModuleType.locked, ModuleType.empty]:
+        if module not in [ModuleType.hull,
+                          ModuleType.engine_speed,
+                          ModuleType.weapons,
+                          ModuleType.cargo_and_mining,
+                          ModuleType.sensors]:
             return
 
         # upgrade_level checking, ModuleLevel type
-        if upgrade_level in [ModuleLevel.base]:
+        if upgrade_level not in [ModuleLevel.one,
+                                 ModuleLevel.two,
+                                 ModuleLevel.three,
+                                 ModuleLevel.illegal]:
             return
 
         # ship_slot checking
