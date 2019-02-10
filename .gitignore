@@ -120,3 +120,5 @@ scrimmage/server/uploads/*
 scrimmage/server/runs/*
 scrimmage/*/uploads/*
 scrimmage/visualizer/vis/
+
+!final_results/*

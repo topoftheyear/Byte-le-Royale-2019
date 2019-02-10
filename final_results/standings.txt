@@ -1,0 +1,22 @@
+1.
+    "team_name" : "Chaotic Neutral Lambs",
+    "credits" : 60540194
+2.
+    "team_name" : "Tabs vs Spaces",
+    "credits" : 31347813.6563267
+3. 
+    "team_name" : "Hooligans",
+    "credits" : 26712160
+4. 
+    "team_name" : "Jelli-",
+    "credits" : 5668152.0
+5.
+    "team_name" : "-Boi",
+    "credits" : 86004
+6.
+    "team_name" : "Team Rocket",
+    "credits" : 55750
+7.
+    "team_name" : "daddy latty",
+    "credits" : 2000
+8. 
