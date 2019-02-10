@@ -187,9 +187,9 @@ class Ship(GameObject):
             self.action_param_2 = data["action_param_2"]
             self.action_param_3 = data["action_param_3"]
 
-            if(self.action_param_1 > 2147483647
-                    or self.action_param_2 > 2147483647
-                    or self.action_param_3 > 2147483647):
+            if((self.action_param_1 is not None and self.action_param_1 > 2147483647)
+                    or (self.action_param_2 is not None and self.action_param_2 > 2147483647)
+                    or (self.action_param_3 is not None and self.action_param_3 > 2147483647)):
                 print("Action parameters cannot be larter than 2147483647")
                 exit(1)
 
