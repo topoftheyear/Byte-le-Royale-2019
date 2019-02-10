@@ -19,7 +19,7 @@ class CustomClient(UserClient):
     def team_name(self):
         self.print("Sending Team Name")
 
-        return "NoChangeMe"
+        return "BL Royale Staff"
 
     def team_color(self):
         self.print("Sending Team Color")

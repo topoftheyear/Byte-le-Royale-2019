@@ -397,7 +397,7 @@ class CustomServer(ServerControl):
                 ship.current_hull = 0  # boom
                 ship.respawn_counter = RESPAWN_TIME + 1  # +1 to account for this turn
                 # Log "abandoned" event
-                self.events.append({
+                self.turn_log["events"].append({
                     "type": LogEvent.ship_abandoned,
                     "ship": ship.id,
                 })
