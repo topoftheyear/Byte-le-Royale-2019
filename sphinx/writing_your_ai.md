@@ -62,8 +62,6 @@ print(self.best_export_prices)
 }
 ```
 
-
-
 #### Getting Objects of a certain type
  * `universe.get(ObjectType.ship)` - Get list of the ships in the area, of which callback allows for checking specific ships (ship, police, enforcer).
  * `universe.get("asteroid_fields")` - Get list of asteroid fields in the universe.
@@ -84,7 +82,6 @@ print(self.best_export_prices)
  * `self.in_radius_of_station(your_ship, station)` - Returns `True` if in range of `station`. If `True`, can do the following actions:
  * `in_radius_of_illegal_salvage(your_ship, salvage)` - Returns `True` if your ship can gather from the pile of salvage.
  * `in_secure_zone(check)` - Returns `True` if `check` is in secure zone.
- * `self.ships_in_attack_range(universe)` - Return list of ships in attack range.
  * `self.in_weapons_range(self, your_ship, target_ship)` - Returns `True` if `target_ship` is in range.
 
 ##### Finding Prices
