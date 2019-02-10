@@ -236,6 +236,9 @@ def get_best_material_prices(universe):
         if station.sell_price < best_export_prices[station.production_material]["export_price"]:
             best_export_prices[station.production_material] = { "export_price": station.sell_price, "station": station}
 
+    if -1 in best_import_prices:
+        del best_import_prices[-1]
+
     # Add salvage to import prices
     best_import_prices[MaterialType.salvage] = {"import_price": ILLEGAL_SCRAP_VALUE,
                                                 "station":      universe.get(ObjectType.black_market_station)[0]}
