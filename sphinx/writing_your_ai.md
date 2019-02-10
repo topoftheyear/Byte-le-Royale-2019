@@ -67,7 +67,7 @@ median_prices = self.get_median_material_price(material_price_info["sell_prices"
 repair_price = self.get_repair_price(median_prices)
 ```
 
- * `self.get_median_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
+ * `self.get_material_price_info(universe)` - ONLY USE THIS ONCE A TURN - returns dictionary with sell_prices, buy_prices, best_import_prices, and best_export_prices.
  * `self.get_median_material_price(material_prices)` - Provide's the median material price to be used to calculate other prices.
  * `self.buy_material(amount)` - Buy `amount` of the production material of the station in range.
  * `get_repair_price(median_price)` - get the price to repair your ship.
