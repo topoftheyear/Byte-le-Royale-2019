@@ -232,9 +232,11 @@ class BuySellController:
                     # enough room to buy the minimum of primary_bids from all the bids
                     if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.primary_import, 0):
                         num_bought += bid_min
+                        remove = []
                         for bid in primary_bids:
                             bid.quantity -= bid_min
                             if bid.quantity == 0:
+                                remove.append(bid)
                                 price = num_bought * station.primary_buy_price
 
                                 # modify ship values
@@ -262,9 +264,8 @@ class BuySellController:
                                     "total_sale": price
                                 })
                         # delete a fulfilled order
-                        for bid in primary_bids:
-                            if bid.quantity == 0:
-                                primary_bids.remove(bid)
+                        for rem_bid in remove:
+                            primary_bids.remove(rem_bid)
                     else:
                         # equally distribute remaining space
                         distribute = math.floor((station.primary_max - (station.cargo.get(station.primary_import, 0) + num_bought * bid_len))/bid_len) + num_bought
@@ -344,9 +345,11 @@ class BuySellController:
                     if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.secondary_import,
                                                                                      0):
                         num_bought += bid_min
+                        remove = []
                         for bid in secondary_bids:
                             bid.quantity -= bid_min
                             if bid.quantity == 0:
+                                remove.append(bid)
                                 price = num_bought * station.secondary_buy_price
 
                                 # modify ship values
@@ -375,9 +378,8 @@ class BuySellController:
                                     "total_sale": price
                                 })
                         # delete a fulfilled order
-                        for bid in secondary_bids:
-                            if bid.quantity == 0:
-                                secondary_bids.remove(bid)
+                        for rem_bid in remove:
+                            secondary_bids.remove(rem_bid)
                     else:
                         # equally distribute remaining space
                         distribute = math.floor((station.secondary_max - (
