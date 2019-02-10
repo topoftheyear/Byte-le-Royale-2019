@@ -150,8 +150,7 @@ def get_repair_price(median_price):
 
 
 #  Determine module price
-def get_module_price(level, universe):
-    median_price = get_median_material_price(get_material_sell_prices(universe))
+def get_module_price(median_price, level):
     if level == ModuleLevel.one:
         return math.floor(GameStats.module_level_1_adjustment * median_price * GameStats.module_level_1_materials_cost)
     elif level == ModuleLevel.two:
