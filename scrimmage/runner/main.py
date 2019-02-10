@@ -154,6 +154,7 @@ class ScrimmageRunner:
                     Config.DOCKER_IMAGE_CLIENT,
                     detach=True,
                     network="br_net",
+                    cpu_shares=128,
                     mounts=[
                         docker.types.Mount(
                             target="/code/custom_client.py",
