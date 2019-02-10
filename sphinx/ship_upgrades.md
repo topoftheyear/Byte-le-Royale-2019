@@ -56,6 +56,7 @@ of a module or a module slot, take the price listed below and multiply it by the
 In game, you should be using self.get_module_price(median_price, ship_slot).
 
 Please note that all ships are outfitted with the level 0 modules, and all ships start with module slot 0.
+```
 +----------------+---------+---------+---------+---------+---------+
 | Module Upgrade | Level 0 | Level 1 | Level 2 | Level 3 | Illegal |
 +================+=========+=========+=========+=========+=========+
@@ -67,7 +68,7 @@ Please note that all ships are outfitted with the level 0 modules, and all ships
 +===============+=========+=========+=========+=========+
 | Price         | base    | 150     | 225     | 300     |
 +---------------+---------+---------+---------+---------+
-
+```
 ## Related Links
 
 * [Combat](combat.html)
