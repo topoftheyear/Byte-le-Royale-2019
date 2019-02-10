@@ -216,91 +216,228 @@ class BuySellController:
 
             # ### Process Primary Bids ###
             # determine if the station has enough room for the cargo
-            if num_primary_bids > 0:
-                new_cargo_size = primary_qty + station.cargo.get(station.primary_import, 0)
-                self.print("Checking station primary cargo space. Current: {} projected: {} max: {}".format(
-                    station.cargo.get(station.primary_import, 0),
-                    new_cargo_size,
-                    station.primary_max
-                ))
-                if new_cargo_size > station.primary_max:
-                    # we there isn't enough cargo space for all items
-                    cargo_to_refuse = new_cargo_size - station.primary_max
-                    cargo_to_refuse_per_ship = math.ceil(cargo_to_refuse/num_primary_bids)
-                else:
-                    cargo_to_refuse_per_ship = 0
-                self.print("Deciding to refuse {} per ship.".format(cargo_to_refuse_per_ship))
+            new_cargo_size = primary_qty + station.cargo.get(station.primary_import, 0)
+            self.print("Checking station primary cargo space. Current: {} projected: {} max: {}".format(
+                station.cargo.get(station.primary_import, 0),
+                new_cargo_size,
+                station.primary_max
+            ))
+            if new_cargo_size > station.primary_max:
+                # value to track already sold material as the loop goes
+                num_bought = 0
+                while len(primary_bids) > 0:
+                    bid_min = min([bid.quantity for bid in primary_bids])
+                    bid_len = len(primary_bids)
 
-                # buy cargo from ships
+                    # enough room to buy the minimum of primary_bids from all the bids
+                    if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.primary_import, 0):
+                        num_bought += bid_min
+                        for bid in primary_bids:
+                            bid.quantity -= bid_min
+                            if bid.quantity == 0:
+                                price = num_bought * station.primary_buy_price
+
+                                # modify ship values
+                                bid.ship.credits += price
+                                bid.ship.inventory[bid.material] -= num_bought
+
+                                # give material to station
+                                if bid.material not in station.cargo:
+                                    station.cargo[bid.material] = num_bought
+                                else:
+                                    station.cargo[bid.material] += num_bought
+
+                                self.accolade_controller.credits_earned(bid.ship, price)
+                                self.accolade_controller.all_credits_earned(bid.ship, price)
+
+                                self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
+                                    bid.ship.team_name, num_bought, price
+                                ))
+                                self.events.append({
+                                    "type": LogEvent.material_sold,
+                                    "station_id": station.id,
+                                    "ship_id": bid.ship.team_name,
+                                    "material": bid.material,
+                                    "amount": num_bought,
+                                    "total_sale": price
+                                })
+                        # delete a fulfilled order
+                        for bid in primary_bids:
+                            if bid.quantity == 0:
+                                primary_bids.remove(bid)
+                    else:
+                        # equally distribute remaining space
+                        distribute = math.floor((station.primary_max - (station.cargo.get(station.primary_import, 0) + num_bought * bid_len))/bid_len) + num_bought
+                        price = distribute * station.primary_buy_price
+
+                        for bid in primary_bids:
+                            # modify ship values
+                            bid.ship.credits += price
+                            bid.ship.inventory[bid.material] -= distribute
+
+                            # give material to station
+                            if bid.material not in station.cargo:
+                                station.cargo[bid.material] = distribute
+                            else:
+                                station.cargo[bid.material] += distribute
+
+                            self.accolade_controller.credits_earned(bid.ship, price)
+                            self.accolade_controller.all_credits_earned(bid.ship, price)
+
+                            self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
+                                bid.ship.team_name, distribute, price
+                            ))
+                            self.events.append({
+                                "type": LogEvent.material_sold,
+                                "station_id": station.id,
+                                "ship_id": bid.ship.team_name,
+                                "material": bid.material,
+                                "amount": distribute,
+                                "total_sale": price
+                            })
+                        break
+            else:
                 for bid in primary_bids:
-                    quantity = bid.quantity - cargo_to_refuse_per_ship
-                    price = quantity * station.primary_buy_price
+                    amount = bid.quantity
+                    price = amount * station.primary_buy_price
+                    # modify ship values
                     bid.ship.credits += price
-                    bid.ship.inventory[bid.material] -= quantity
+                    bid.ship.inventory[bid.material] -= amount
+
+                    # give material to station
+                    if bid.material not in station.cargo:
+                        station.cargo[bid.material] = amount
+                    else:
+                        station.cargo[bid.material] += amount
 
                     self.accolade_controller.credits_earned(bid.ship, price)
                     self.accolade_controller.all_credits_earned(bid.ship, price)
 
                     self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
-                        bid.ship.team_name, quantity, price
+                        bid.ship.team_name, amount, price
                     ))
-
-                    # give material to station
-                    if bid.material not in station.cargo:
-                        station.cargo[bid.material] = quantity
-                    else:
-                        station.cargo[bid.material] += quantity
-
                     self.events.append({
                         "type": LogEvent.material_sold,
                         "station_id": station.id,
                         "ship_id": bid.ship.team_name,
                         "material": bid.material,
-                        "amount": quantity,
+                        "amount": amount,
                         "total_sale": price
                     })
 
             # ### Process Secondary Bids ###
             # determine if the station has enough room for the cargo
-            if num_secondary_bids > 0:
-                new_cargo_size = secondary_qty + station.cargo.get(station.secondary_import, 0)
-                self.print("Checking station secondary cargo space. Current: {} projected: {} max: {}".format(
-                    station.cargo.get(station.secondary_import, 0),
-                    new_cargo_size,
-                    station.secondary_max
-                ))
-                if new_cargo_size > station.secondary_max:
-                    # we there isn't enough cargo space for all items
-                    cargo_to_refuse = new_cargo_size - station.secondary_max
-                    cargo_to_refuse_per_ship = math.ceil(cargo_to_refuse/num_secondary_bids)
-                else:
-                    cargo_to_refuse_per_ship = 0
-                self.print("Deciding to refuse {} per ship.".format(cargo_to_refuse_per_ship))
+            new_cargo_size = secondary_qty + station.cargo.get(station.secondary_import, 0)
+            self.print("Checking station secondary cargo space. Current: {} projected: {} max: {}".format(
+                station.cargo.get(station.secondary_import, 0),
+                new_cargo_size,
+                station.secondary_max
+            ))
+            if new_cargo_size > station.secondary_max:
+                # value to track already sold material as the loop goes
+                num_bought = 0
+                while len(secondary_bids) > 0:
+                    bid_min = min([bid.quantity for bid in secondary_bids])
+                    bid_len = len(secondary_bids)
 
-                # buy cargo from ships
+                    # enough room to buy the minimum of secondary_bids from all the bids
+                    if bid_min * bid_len + num_bought * bid_len <= station.cargo.get(station.secondary_import,
+                                                                                     0):
+                        num_bought += bid_min
+                        for bid in secondary_bids:
+                            bid.quantity -= bid_min
+                            if bid.quantity == 0:
+                                price = num_bought * station.secondary_buy_price
+
+                                # modify ship values
+                                bid.ship.credits += price
+                                bid.ship.inventory[bid.material] -= num_bought
+
+                                # give material to station
+                                if bid.material not in station.cargo:
+                                    station.cargo[bid.material] = num_bought
+                                else:
+                                    station.cargo[bid.material] += num_bought
+
+                                self.accolade_controller.credits_earned(bid.ship, price)
+                                self.accolade_controller.all_credits_earned(bid.ship, price)
+
+                                self.print(
+                                "Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
+                                    bid.ship.team_name, num_bought, price
+                                ))
+                                self.events.append({
+                                    "type": LogEvent.material_sold,
+                                    "station_id": station.id,
+                                    "ship_id": bid.ship.team_name,
+                                    "material": bid.material,
+                                    "amount": num_bought,
+                                    "total_sale": price
+                                })
+                        # delete a fulfilled order
+                        for bid in secondary_bids:
+                            if bid.quantity == 0:
+                                secondary_bids.remove(bid)
+                    else:
+                        # equally distribute remaining space
+                        distribute = math.floor((station.secondary_max - (
+                                    station.cargo.get(station.secondary_import,
+                                                      0) + num_bought * bid_len)) / bid_len) + num_bought
+                        price = distribute * station.secondary_buy_price
+
+                        for bid in secondary_bids:
+                            # modify ship values
+                            bid.ship.credits += price
+                            bid.ship.inventory[bid.material] -= distribute
+
+                            # give material to station
+                            if bid.material not in station.cargo:
+                                station.cargo[bid.material] = distribute
+                            else:
+                                station.cargo[bid.material] += distribute
+
+                            self.accolade_controller.credits_earned(bid.ship, price)
+                            self.accolade_controller.all_credits_earned(bid.ship, price)
+
+                            self.print(
+                            "Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
+                                bid.ship.team_name, distribute, price
+                            ))
+                            self.events.append({
+                                "type": LogEvent.material_sold,
+                                "station_id": station.id,
+                                "ship_id": bid.ship.team_name,
+                                "material": bid.material,
+                                "amount": distribute,
+                                "total_sale": price
+                            })
+                        break
+            else:
                 for bid in secondary_bids:
-                    quantity = bid.quantity - cargo_to_refuse_per_ship
-                    price = quantity * station.secondary_buy_price
+                    amount = bid.quantity
+                    price = amount * station.secondary_buy_price
+                    # modify ship values
                     bid.ship.credits += price
-                    bid.ship.inventory[bid.material] -= quantity
-
-                    self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
-                        bid.ship.team_name, quantity, price
-                    ))
+                    bid.ship.inventory[bid.material] -= amount
 
                     # give material to station
                     if bid.material not in station.cargo:
-                        station.cargo[bid.material] = quantity
+                        station.cargo[bid.material] = amount
                     else:
-                        station.cargo[bid.material] += quantity
+                        station.cargo[bid.material] += amount
 
-                    # Logging
+                    self.accolade_controller.credits_earned(bid.ship, price)
+                    self.accolade_controller.all_credits_earned(bid.ship, price)
+
+                    self.print("Processing sell bid from ship: {}. Quantity to sell: {} Price: {} ".format(
+                        bid.ship.team_name, amount, price
+                    ))
                     self.events.append({
                         "type": LogEvent.material_sold,
                         "station_id": station.id,
                         "ship_id": bid.ship.team_name,
                         "material": bid.material,
-                        "amount": quantity,
+                        "amount": amount,
                         "total_sale": price
                     })
 
