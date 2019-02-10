@@ -11,7 +11,6 @@ Note: the Black Market Stations and the Secure Station don't have imports or pro
 ## Station API
 
 - `name` - name of station
-= `station_type` - black market, station, or secure station
 - `position` - x,y of station
 
 - `primary_import` - the station's primary import
