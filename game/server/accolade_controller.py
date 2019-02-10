@@ -25,6 +25,7 @@ class AccoladeController:
         self.moved = dict()
         self.upgrades = dict()
         self.kInnocent = dict() #killed an innocent
+        self.kills = dict()
         self.notorious = {"name": "", "notoriety": 4}
 
 
@@ -190,6 +191,24 @@ class AccoladeController:
 
     def most_notorious(self):
         return self.notorious
+
+    # Most Kills
+    def get_kill(self, killer):
+        if killer not in self.kills:
+            self.kills[killer] = 1
+        else:
+            self.kills[killer] += 1
+
+    def most_kills(self):
+        most = -1
+        killerName = ""
+        for ship in self.kills:
+            if ship.is_npc:
+                continue
+            elif self.kills[ship] > most:
+                most = self.kills[ship]
+                killerName = ship.team_name
+        return [killerName, most]
 
     def final_scores(self, universe):
         toSort = dict()
