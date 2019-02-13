@@ -1,11 +1,11 @@
 # Byte-le-Royale-2019
 A Space Game
 
-[Website]()
+[Website](https://topoftheyear.github.io/Byte-le-Royale-2019/)
 
 # Documentation
 
-[Documentation Website]()
+[Documentation Website](https://topoftheyear.github.io/Byte-le-Royale-2019/documentation!)
 
 # 3D Visualizer
 While the game does come with a package pygame (2d) visualizer [we also developed a 3d visualizer in unity to acompany the game](https://github.com/jghibiki/Byte-le-Royale-2019-Visualizer). The 3d visualizer was run on a scrimmage sever which contestants submitted their clients to in order to have them run against other compeditor's clients.
